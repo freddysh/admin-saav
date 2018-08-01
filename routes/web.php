@@ -37,7 +37,7 @@ Route::get('/logout',[
 //    'uses' => 'IndexController@ventas',
 //    'as' => 'ventas_path',
 //]);
-Route::get('/ventas',[
+Route::get('/ventas/{id}',[
     'uses' => 'IndexController@index',
     'as' => 'ventas_path',
 ]);
@@ -54,10 +54,6 @@ Route::get('/reservas', [
 //    'as' => 'reservas_path',
 //]);
 
-Route::get('admin/',[
-    'uses' => 'IndexController@index',
-    'as' => 'index_path',
-]);
 
 Route::post('ventas/vista/',[
     'uses' => 'IndexController@ventas_now',
@@ -1055,4 +1051,11 @@ Route::post('/admin/book/hotel/costo/edit',[
     'uses' => 'BookController@asignar_proveedor_costo_hotel',
     'as' => 'asignar_proveedor_costo_hotel',
 ]);
-
+Route::post('admin/book/listar-servicios',[
+    'uses' => 'ServicesController@listar_servicios',
+    'as' => 'reservas_listar_servicios_path',
+]);
+Route::post('admin/book/listar-servicios/localizacion',[
+    'uses' => 'ServicesController@listar_servicios_localizacion',
+    'as' => 'reservas_localizacion_listar_servicios_path',
+]);

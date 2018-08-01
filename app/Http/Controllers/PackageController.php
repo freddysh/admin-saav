@@ -447,6 +447,7 @@ class PackageController extends Controller
             $p_itinerario->destino_duerme=$m_itineario->destino_duerme;
             $p_itinerario->sugerencia=$txt_sugerencia[$dia];
             $p_itinerario->estado=1;
+            $p_itinerario->m_itinerario_id=$m_itineario->id;
             $p_itinerario->p_paquete_id=$paquete->id;
             $p_itinerario->save();
             $dia++;

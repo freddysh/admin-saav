@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 hide">
+                    <div class="col-md-6 d-none">
                         <div class="form-group">
                             <label for="txt_title">Title</label>
                             <input type="text" class="form-control" id="txt_title" name="txt_title" placeholder="Title"  value="{{$itinerary->titulo}}">
@@ -43,7 +43,7 @@
                         <input type="text" class="form-control" id="txta_description" name="txta_description" placeholder="Descripcion"  value="{{$itinerary->descripcion}}">
                     </div>
                 </div>
-                <div class="row hide">
+                <div class="row d-none">
                     <div class="col-md-3">
                         <div class="checkbox1">
                             <label class=" text-green-goto">
@@ -214,9 +214,9 @@
                                                         <input type="hidden" class="servicios_new" name="servicios_new_" value="{{$iti_id}}">
                                                         <img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">
                                                         <input type="hidden" name="itinerarios_1[]" value="{{$itinerario_total}}">
-                                                        <input type="hidden" name="itinerarios_2[]" value="{{$iti_id}}">
-                                                        <span class="itinerarios_1 hide">{{$itinerario_total}}</span>
-                                                        <span class="txt_itinerarios hide" name="itinerarios1">{{$iti_id}}</span>
+                                                        <input type="hidden" name="itinerarios_2[]" value="{{$itinerario->m_itinerario_id}}">
+                                                        <span class="itinerarios_1 d-none">{{$itinerario_total}}</span>
+                                                        <span class="txt_itinerarios d-none" name="itinerarios1">{{$iti_id}}</span>
                                                         <b class="dias_iti_c2" id="dias_' + total_Itinerarios + '">Dia {{$itinerario->dias}}:</b>
                                                         <b id="titulo_{{$itinerario->id}}">{{$itinerario->titulo}}
                                                         @if($existextitle==0)
@@ -259,7 +259,7 @@
                             @endphp
                             @foreach($destinos->sortBy('destino') as $destino)
                                 @php
-                                    $mostrar_servi='hide';
+                                    $mostrar_servi='d-none';
                                 @endphp
                                 @if(in_array($destino->destino,$arra_destinos))
                                     @php

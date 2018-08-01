@@ -4556,3 +4556,40 @@ function nuevos_proveedores_trains_ruta(pos,categoria,grupo) {
         }
     })
 }
+function traer_servicios(itinerario_id,servicios_id,localizacion,grupo) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../admin/book/listar-servicios',
+        data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
+        // Mostramos un mensaje con la respuesta de PHP
+        success: function(data) {
+            $('#list_servicios_grupo_'+servicios_id).html(data);
+        }
+    })
+}
+function mostrar_servicios_localizacion(itinerario_id,servicios_id,localizacion,grupo,proveedor_id) {
+    console.log('itinerario_id:'+itinerario_id);
+    console.log('servicios_id:'+servicios_id);
+    console.log('localizacion:'+localizacion);
+    console.log('grupo:'+grupo);
+    console.log('proveedor_id:'+proveedor_id);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../admin/book/listar-servicios/localizacion',
+        data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id+'&proveedor_id='+proveedor_id,
+        // Mostramos un mensaje con la respuesta de PHP
+        success: function(data) {
+            $('#servicio_localizacion_'+servicios_id).html(data);
+        }
+    })
+}
