@@ -1,0 +1,260 @@
+@page{
+    font-family: "arial", sans-serif;
+}
+.margin-all-5{
+    margin: 5px !important;
+}
+.no-margin{
+    margin: 0 !important;
+}
+.margin-top-20{
+    margin-top: 20px;
+}
+.margin-top-40{
+    margin-top: 40px;
+}
+.margin-bottom-3{
+    margin-bottom: 3px;
+}
+.margin-bottom-5{
+    margin-bottom: 5px;
+}
+.margin-bottom-20{
+    margin-bottom: 20px;
+}
+h2{
+    color: #9e9d24 ;
+}
+h3{
+    color: #f9a825;
+}
+h4{
+    color: #232323;
+}
+h5{
+    color: #9e9d24;
+}
+p{
+    color: #2c2c2c;
+}
+b{
+    font-weight: bold;
+}
+.blue-text{
+    color: blue;
+}
+.position-relative{
+    position: relative;
+}
+.text-10{
+    font-size: 10px;
+}
+.text-12{
+    font-size: 12px;
+}
+.text-20{
+    font-size: 20px;
+}
+.text-center{
+    text-align: center;
+}
+.text-left{
+    text-align: left !important;
+}
+.text-right{
+    text-align: right !important;
+}
+.container{
+    margin:  133px 94px;
+}
+.text-center{
+    text-align: center;
+}
+.firstpage{
+    position: absolute;
+    /*page-break-after: always;*/
+    top: -50px;
+    left: -50px;
+    width: 115%;
+    margin: 0;
+
+}
+.margin-port{
+    margin: -133px 94px;
+    padding: -133px 94px;
+}
+.responsive-img{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    height: auto;
+}
+.responsive-img2{
+    margin-top: 25px;
+    margin-bottom: 1px;
+    margin-left: 8px;
+    margin-right: 8px;
+    width:215px;
+    height:215px;
+}
+.responsive-img3{
+    margin-top: 20px;
+    margin-bottom: 1px;
+    margin-left: 8px;
+    margin-right: 8px;
+    width:180px;
+    height:180px;
+}
+.centrar-todo{
+    text-align: center;
+}
+.table-price-accommodation{
+    border-collapse: collapse;
+    text-align: center;
+    border: 1px solid #949494;
+    width: 100%;
+}
+.table-price-accommodation td{
+    border-left: 1px solid #333;
+}
+.table-price-accommodation th{
+    background-color: #333;
+    color: #FFFFFF;
+}
+.table-price-accommodation th, .table-price-accommodation td{
+    border: 1px solid #949494;
+    padding: 3px 10px;
+}
+.table-price-accommodation .hour-text{
+    color: #b71c1c ;
+}
+.page-break {
+    page-break-after: always;
+}
+.green-row{
+    background-color: #e8f5e9;
+}
+
+.table-price-accommodation .active b{
+    color: #f9a825;
+}
+.table-price-accommodation .active span{
+    color: #b71c1c ;
+}
+.table-price-accommodation .disabled{
+    color: #949494;
+}
+.text-destinations{
+    position: absolute;
+    margin-top: -40px;
+    left: -330px;
+    text-align: center;
+}
+.footer {
+    position: fixed;
+    left: 0px;
+    bottom: -45px;
+    right: 0px;
+    height: 55px;
+    line-height:2px;
+}
+.footer span{
+    color: #949494;
+}
+.footer .page:after {
+    content: counter(page);
+}
+.footer table {
+    width: 100%;
+}
+/*# sourceMappingURL=quotes-pdf.css.map */
+.cabecera_pdf{
+    position: absolute;
+    background:url("img/portada/proposal-cabecera-pdf.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 0px;
+    /*page-break-after: always;*/
+    top: -50px;
+    left: -50px;
+    height: 500px;
+    width: 900px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: medium;
+}
+.cuerpo_pdf{
+    height: 200px;
+    background: #2c2c2c;
+}
+.pie_pdf{
+//background:url("img/portada/proposal-pie-pdf.jpg");
+    margin: 0px;
+    padding: 100px;
+    height: 300px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: medium;
+}
+.bienvenida{
+    position: absolute;
+    page-break-after: always;
+    top: 350px;
+    margin: 50px;
+    color: white;
+}
+.pie{
+    position: absolute;
+    page-break-after: always;
+    top: 920px;
+    text-align: right;
+}
+/*.table-border{*/
+   /*border: 1px solid #ccc;*/
+/*}*/
+
+/*.table-proveedor{*/
+    /*color: #3097D1;*/
+/*}*/
+/*.table-fondo{*/
+    /*background: #3097D1;*/
+    /*color: white;*/
+/*}*/
+.table-proveedor{
+     color: #3097D1;
+}
+
+/** {*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+/*}*/
+#page-wrap {
+    margin: 9px;
+}
+p {
+    margin: 8px 0;
+}
+
+/*
+Generic Styling, for Desktops/Laptops
+*/
+table {
+    font: 10px/1 Georgia, Serif;
+    width: 99%;
+    border-collapse: collapse;
+}
+/* Zebra striping */
+tr:nth-of-type(odd) {
+    background: #eee;
+}
+th {
+    background: #3097D1;
+    color: white;
+    font-weight: bold;
+}
+td, th {
+    padding: 1px;
+    border: 1px solid #ccc;
+    text-align: left;
+}

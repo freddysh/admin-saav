@@ -1,0 +1,138 @@
+@extends('layouts.admin.admin')
+@section('content')
+
+@php
+    $s=0;
+    $d=0;
+    $m=0;
+    $t=0;
+    $nroPersonas=0;
+    $nro_dias=0;
+    $precio_iti=0;
+    $precio_hotel_s=0;
+    $precio_hotel_d=0;
+    $precio_hotel_m=0;
+    $precio_hotel_t=0;
+    $cotizacion_id='';
+    $utilidad_s=0;
+    $utilidad_por_s=0;
+    $utilidad_d=0;
+    $utilidad_por_d=0;
+    $utilidad_m=0;
+    $utilidad_por_m=0;
+    $utilidad_t=0;
+    $utilidad_por_t=0;
+@endphp
+
+@foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+    @foreach($paquete->paquete_precios as $precio)
+        @if($precio->personas_s>0)
+            @php
+                $s=1;
+            @endphp
+        @endif
+        @if($precio->personas_d>0)
+            @php
+                $d=1;
+            @endphp
+        @endif
+        @if($precio->personas_m>0)
+            @php
+                $m=1;
+            @endphp
+        @endif
+        @if($precio->personas_t>0)
+            @php
+                $t=1;
+            @endphp
+        @endif
+    @endforeach
+    @foreach($paquete->itinerario_cotizaciones as $itinerario)
+        @php
+            $rango='';
+        @endphp
+        @foreach($itinerario->itinerario_servicios as $servicios)
+            @php
+                $preciom=0;
+            @endphp
+            @if($servicios->min_personas<= $cotizacion->nropersonas&&$cotizacion->nropersonas <=$servicios->max_personas)
+            @else
+                @php
+                    $rango=' ';
+                @endphp
+            @endif
+            @if($servicios->precio_grupo==1)
+                @php
+                    $precio_iti+=round($servicios->precio/$cotizacion->nropersonas,1);
+                    $preciom=round($servicios->precio/$cotizacion->nropersonas,1);
+                @endphp
+            @else
+                @php
+                    $precio_iti+=round($servicios->precio,1);
+                    $preciom=round($servicios->precio,1);
+                @endphp
+            @endif
+        @endforeach
+        @foreach($itinerario->hotel as $hotel)
+            @if($hotel->personas_s>0)
+                @php
+                    $precio_hotel_s+=$hotel->precio_s;
+                    $utilidad_s=intval($hotel->utilidad_s);
+                    $utilidad_por_s=$hotel->utilidad_por_s;
+                @endphp
+            @endif
+            @if($hotel->personas_d>0)
+                @php
+                    $precio_hotel_d+=$hotel->precio_d/2;
+                    $utilidad_d=intval($hotel->utilidad_d);
+                    $utilidad_por_d=$hotel->utilidad_por_d;
+                @endphp
+            @endif
+            @if($hotel->personas_m>0)
+                @php
+                    $precio_hotel_m+=$hotel->precio_m/2;
+                    $utilidad_m=intval($hotel->utilidad_m);
+                    $utilidad_por_m=$hotel->utilidad_por_m;
+                @endphp
+            @endif
+            @if($hotel->personas_t>0)
+                @php
+                    $precio_hotel_t+=$hotel->precio_t/3;
+                    $utilidad_t=intval($hotel->utilidad_t);
+                    $utilidad_por_t=$hotel->utilidad_por_t;
+                @endphp
+            @endif
+        @endforeach
+    @endforeach
+@endforeach
+@php
+    $precio_hotel_s+=$precio_iti;
+    $precio_hotel_d+=$precio_iti;
+    $precio_hotel_m+=$precio_iti;
+    $precio_hotel_t+=$precio_iti;
+@endphp
+@php
+    $valor=0;
+@endphp
+@if($s!=0)
+    @php
+        $valor+=round($precio_hotel_s+$utilidad_s,2);
+    @endphp
+@endif
+@if($d!=0)
+    @php
+        $valor+=round($precio_hotel_d+$utilidad_d,2);
+    @endphp
+@endif
+@if($m!=0)
+    @php
+        $valor+=round($precio_hotel_m+$utilidad_m,2);
+    @endphp
+@endif
+@if($t!=0)
+    @php
+        $valor+=round($precio_hotel_t+$utilidad_t,2);
+    @endphp
+@endif
+{{$valor}}
+@stop
