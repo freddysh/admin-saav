@@ -1,0 +1,15 @@
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+//@import "node_modules/sweetalert2/dist/sweetalert2/sweetalert2.min.css";
+// Admin
+@import "admin";
+
+// Owl Carousel
+@import "owl-carousel/owl.carousel";
+@import "owl-carousel/owl.theme.default";
