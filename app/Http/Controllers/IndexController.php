@@ -360,4 +360,8 @@ class IndexController extends Controller
         return view('admin.crear-usuario');
 
     }
+
+    public function inventory(){
+        return view('admin.inventory');
+    }
 }
