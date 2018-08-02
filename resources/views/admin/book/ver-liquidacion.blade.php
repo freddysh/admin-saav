@@ -6,22 +6,25 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
 @endphp
 @extends('layouts.admin.book')
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Reservas</li>
-            <li>Liquidacion</li>
-            <li class="active">Ver Liquidacion</li>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Reservas</li>
+            <li class="breadcrumb-item active">Ver Liquidacion</li>
         </ol>
-    </div>
+    </nav>
+    <hr>
     <div class="panel panel-default">
         <div class="panel-body">
             <form action="{{route('guardar_liquidacion_reservas_path')}}" method="post">
-                <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-12">
                     <h4 class="text-unset">LIQUIDACION DESDE: <span class="text-green-goto">{{fecha_peru($fecha_ini)}}</span> - HASTA: <span class="text-green-goto">{{fecha_peru($fecha_fin)}}</span></h4>
                     <hr>
-                    <h4>LIQUIDACION DE BOLETOS TURISTICOS</h4>
-                    <table  class="table table-bordered table-striped table-responsive table-hover">
+                    <h5 class="text-secondary mt-4"><i class="fas fa-angle-right text-primary"></i> LIQUIDACION DE BOLETOS TURISTICOS</h5>
+                    <table  class="table table-bordered table-sm table-hover">
+
                         <thead>
                         <tr>
                             <th width="75px">FECHA</th>
@@ -76,14 +79,16 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                     {{'Con factura'}}
                                                     @endif
                                                 </td>
-                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+
+                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success text-center"  @else class="bg-danger" @endif>
                                                     @if($itinerario_servicio->liquidacion==1)
-                                                        <i class="fa fa-clock-o text-unset fa-2x"></i>
+                                                        <i class="far fa-clock text-white"></i>
                                                     @elseif($itinerario_servicio->liquidacion==2)
-                                                        <i class="fa fa-check-square-o text-success fa-2x"></i>
+                                                        <i class="fas fa-check text-white"></i>
                                                     @endif
                                                     @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
-                                                            <span class="text-danger">Falta asignar proveedor para realizar el pago</span>
+                                                            <span class="text-white">Falta asignar proveedor para realizar el pago</span>
+
                                                     @endif
 
                                                 </td>
@@ -102,9 +107,11 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                         </tbody>
                     </table>
                 </div>
-                <div class="col-lg-12">
-                    <h4>LIQUIDACION DE INGRESOS A CATEDRAL</h4>
-                    <table class="table table-bordered table-striped table-responsive table-hover">
+
+                    <div class="col-12">
+                    <h5 class="text-secondary mt-4"><i class="fas fa-angle-right text-primary"></i> LIQUIDACION DE INGRESOS A CATEDRAL</h5>
+                    <table class="table table-bordered table-sm table-hover">
+
                         <thead>
                         <tr>
                             <th width="75px">FECHA</th>
@@ -159,14 +166,16 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                     {{'Con factura'}}
                                                     @endif
                                                 </td>
-                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+
+                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success text-center"  @else class="bg-danger" @endif>
                                                     @if($itinerario_servicio->liquidacion==1)
-                                                        <i class="fa fa-clock-o text-unset fa-2x"></i>
+                                                        <i class="far fa-clock text-white"></i>
                                                     @elseif($itinerario_servicio->liquidacion==2)
-                                                        <i class="fa fa-check-square-o text-success fa-2x"></i>
+                                                        <i class="fas fa-check text-white"></i>
                                                     @endif
                                                     @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
-                                                            <span class="text-danger">Falta asignar proveedor para realizar el pago</span>
+                                                            <span class="text-white">Falta asignar proveedor para realizar el pago</span>
+
                                                     @endif
                                                 </td>
                                             </tr>
@@ -184,9 +193,11 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                         </tbody>
                     </table>
                 </div>
-                <div class="col-lg-12">
-                    <h4>LIQUIDACION DE INGRESOS AL KORICANCHA</h4>
-                    <table class="table table-bordered table-striped table-responsive table-hover">
+
+                    <div class="col-12">
+                    <h5 class="text-secondary mt-4"><i class="fas fa-angle-right text-primary"></i> LIQUIDACION DE INGRESOS AL KORICANCHA</h5>
+                    <table class="table table-bordered table-sm table-hover">
+
                         <thead>
                         <tr>
                             <th width="75px">FECHA</th>
@@ -241,14 +252,16 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                     {{'Con factura'}}
                                                     @endif
                                                 </td>
-                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+
+                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success text-center"  @else class="bg-danger" @endif>
                                                     @if($itinerario_servicio->liquidacion==1)
-                                                        <i class="fa fa-clock-o text-unset fa-2x"></i>
+                                                        <i class="far fa-clock text-white"></i>
                                                     @elseif($itinerario_servicio->liquidacion==2)
-                                                        <i class="fa fa-check-square-o text-success fa-2x"></i>
+                                                        <i class="fas fa-check text-white"></i>
                                                     @endif
                                                     @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
-                                                            <span class="text-danger">Falta asignar proveedor para realizar el pago</span>
+                                                            <span class="text-white">Falta asignar proveedor para realizar el pago</span>
+
                                                     @endif
                                                 </td>
                                             </tr>
@@ -266,9 +279,11 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                         </tbody>
                     </table>
                 </div>
-                <div class="col-lg-12">
-                    <h4>LIQUIDACION DE ENTRADAS A MACHUPICCHU</h4>
-                    <table class="table table-bordered table-striped table-responsive table-hover">
+
+                    <div class="col-12">
+                    <h5 class="text-secondary mt-4"><i class="fas fa-angle-right text-primary"></i> LIQUIDACION DE ENTRADAS A MACHUPICCHU</h5>
+                    <table class="table table-bordered table-sm table-hover">
+
                         <thead>
                         <tr>
                             <th width="75px">FECHA</th>
@@ -323,14 +338,16 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                         {{'Con factura'}}
                                                     @endif
                                                 </td>
-                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+
+                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success text-center"  @else class="bg-danger" @endif>
                                                     @if($itinerario_servicio->liquidacion==1)
-                                                        <i class="fa fa-clock-o text-unset fa-2x"></i>
+                                                        <i class="far fa-clock text-white"></i>
                                                     @elseif($itinerario_servicio->liquidacion==2)
-                                                        <i class="fa fa-check-square-o text-success fa-2x"></i>
+                                                        <i class="fas fa-check text-white"></i>
                                                     @endif
                                                     @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
-                                                            <span class="text-danger">Falta asignar proveedor para realizar el pago</span>
+                                                            <span class="text-white">Falta asignar proveedor para realizar el pago</span>
+
                                                     @endif
                                                 </td>
                                             </tr>
@@ -348,9 +365,11 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                         </tbody>
                     </table>
                 </div>
-                <div class="col-lg-12">
-                    <h4>LIQUIDACION DE ENTRADAS A OTROS LUGARES</h4>
-                    <table class="table table-bordered table-striped table-responsive table-hover">
+
+                    <div class="col-12">
+                    <h5 class="text-secondary mt-4"><i class="fas fa-angle-right text-primary"></i> LIQUIDACION DE ENTRADAS A OTROS LUGARES</h5>
+                    <table class="table table-bordered table-sm table-hover">
+
                         <thead>
                         <tr>
                             <th width="75px">FECHA</th>
@@ -405,14 +424,16 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                         {{'Con factura'}}
                                                     @endif
                                                 </td>
-                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+
+                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success text-center"  @else class="bg-danger" @endif>
                                                     @if($itinerario_servicio->liquidacion==1)
-                                                        <i class="fa fa-clock-o text-unset fa-2x"></i>
+                                                        <i class="far fa-clock text-white"></i>
                                                     @elseif($itinerario_servicio->liquidacion==2)
-                                                        <i class="fa fa-check-square-o text-success fa-2x"></i>
+                                                        <i class="fas fa-check text-white"></i>
                                                     @endif
                                                     @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
-                                                            <span class="text-danger">Falta asignar proveedor para realizar el pago</span>
+                                                            <span class="text-white">Falta asignar proveedor para realizar el pago</span>
+
                                                     @endif
                                                 </td>
                                             </tr>
@@ -430,9 +451,11 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                         </tbody>
                     </table>
                 </div>
-                <div class="col-lg-12">
-                    <h4>LIQUIDACION DE BUSES</h4>
-                    <table class="table table-bordered table-striped table-responsive table-hover">
+
+                    <div class="col-12">
+                    <h5 class="text-secondary mt-4"><i class="fas fa-angle-right text-primary"></i> LIQUIDACION DE BUSES</h5>
+                    <table class="table table-bordered table-sm table-hover">
+
                         <thead>
                         <tr>
                             <th width="75px">FECHA</th>
@@ -487,14 +510,16 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                         {{'Con factura'}}
                                                     @endif
                                                 </td>
-                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger"  @endif>
+
+                                                <td @if($itinerario_servicio->liquidacion==2) class="bg-success text-center"  @else class="bg-danger"  @endif>
                                                     @if($itinerario_servicio->liquidacion==1)
-                                                        <i class="fa fa-clock-o text-unset fa-2x"></i>
+                                                        <i class="far fa-clock text-white"></i>
                                                     @elseif($itinerario_servicio->liquidacion==2)
-                                                        <i class="fa fa-check-square-o text-success fa-2x"></i>
+                                                        <i class="fas fa-check text-white"></i>
                                                     @endif
                                                     @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
-                                                            <span class="text-danger">Falta asignar proveedor para realizar el pago</span>
+                                                            <span class="text-white">Falta asignar proveedor para realizar el pago</span>
+
                                                     @endif
                                                 </td>
                                             </tr>
@@ -512,13 +537,16 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                         </tbody>
                     </table>
                 </div>
-                <div class="col-lg-12">
-                    <div class="col-lg-12 text-right padding-15">
+
+                    <div class="col-12 text-right">
+
                         <h2 class="text-grey-goto">
                             TOTAL: ${{($total_BTG+$total_CAT+$total_KORI+$total_MAPI+$total_BUSES)}}
                         </h2>
                     </div>
-                    <div class="col-lg-12 text-right hide">
+
+                    <div class="col-lg-12 text-right d-none">
+
                         {{csrf_field()}}
                         <input type="hidden" name="desde" value="{{$fecha_ini}}">
                         <input type="hidden" name="hasta" value="{{$fecha_fin}}">
@@ -536,6 +564,7 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                         <input type="hidden" name="cotis" value="{{$cotisa}}">
                         <button type="submit" class="btn btn-primary" id="buscar" name="buscar">Enviar liquidacion</button>
                     </div>
+
                 </div>
             </form>
         </div>

@@ -9,16 +9,27 @@
     </style>
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Quotes</li>
-            <li class="active">Current planes</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Qoutes</a></li>
+            <li class="breadcrumb-item active">Current Planes</li>
         </ol>
+    </nav>
+    <hr>
+    <div class="row">
+        <div class="col">
+            @foreach($cotizacion as $cotizacion1)
+                @php
+                    $cotizacion_=$cotizacion1;
+                @endphp
+            @endforeach
+            <a href="{{route('new_plan_cotizacion_path',$cotizacion_->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Nuevo Plan</a>
+        </div>
     </div>
-    <form class="hide"  action="{{route('cotizacion_show_path')}}" method="post" id="package_new_path_id">
+    <form class="d-none"  action="{{route('cotizacion_show_path')}}" method="post" id="package_new_path_id">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col">
                 <h4 class="font-montserrat text-orange-goto"><span class="label bg-orange-goto">1</span> Search client</h4>
                 <div class="divider margin-bottom-20"></div>
             </div>
@@ -38,7 +49,8 @@
         </div>
 
     </form>
-    <div id="lista_cotizacione" class="margin-top-10">
+
+    <div id="lista_cotizacione" class="row">
         <?php
         $planes[]='A';
         $planes[]='B';
@@ -178,98 +190,121 @@
                             $sumatotal=$total_utilidad_s+$total_utilidad_d+$total_utilidad_m+$total_utilidad_t;
                         @endphp
                         <div class="col-md-3 margin-top-10">
-                            <div class="row caja_current">
-                                <div class="col-lg-12 btn-primary text-center text-13">
-                                    @php
-                                        $date = date_create($cotizacion_->fecha);
-                                        $fecha=date_format($date, 'jS F Y');
-                                        $titulo='';
-                                    @endphp
-                                    @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                        @if($cliente_coti->estado=='1')
-                                            @php
-                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                            @endphp
-                                            <b>
-                                                {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} ({{$fecha}})
-                                            </b>
-                                        @endif
-                                    @endforeach
+                            <div class="card">
+                                <div class="">
+                                    <div class="card-header text-center">
+                                        <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
+                                        <small class="display-block text-primary"><sup>$</sup>1500</small>
+                                    </div>
                                 </div>
-                                <div class="col-lg-6 text-center">
-                                    <p class="text-25 text-orange-goto">PLAN {{$planes[$pos_plan]}}</p>
-                                    <p class="text-25 text-success">1500$</p>
-                                </div>
-                                <div class="col-lg-6">
+                                <div class="card-body py-2">
                                     <div class="row">
-                                        <div class="col-lg-11 btn-link_">
-                                            <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>
+                                        <div class="col text-right">
+                                            <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
+                                            <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
+                                            <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
                                         </div>
-                                        <div class="col-lg-11 btn-link_">
-                                            <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/
-                                            <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col">
+                                            @php
+                                                $date = date_create($cotizacion_->fecha);
+                                                $fecha=date_format($date, 'jS F Y');
+                                                $titulo='';
+                                            @endphp
+                                            @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
+                                                @if($cliente_coti->estado=='1')
+                                                    @php
+                                                        $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                    @endphp
+
+                                                    <small>
+                                                        <b><i class="fas fa-angle-right text-primary"></i> {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                    </small>
+                                                @endif
+                                            @endforeach
                                         </div>
-                                        <div class="col-lg-11 btn-link_">
-                                            <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-info"><b><i class="fa fa-files-o" aria-hidden="true"></i>CREATE TEMPLATE</b></a>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-2 text-center">
+                                    <div class="row no-gutters">
+                                        <div class="col">
+                                            <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
                                         </div>
-                                        <div class="col-lg-11 btn-link_">
+                                        <div class="col">
                                             @if($paquete->estado==2)
-                                                <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-success"><b><i class="fa fa-check-square-o" aria-hidden="true"></i> CONFIRMAR</b></a>
+                                                <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
                                                 {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
                                             @else
-                                                <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-default"><b><i class="fa fa-check-square-o" aria-hidden="true"></i> CONFIRMAR</b></a>
+                                                <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-secondary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
                                                 {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
                                             @endif
 
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     @elseif($paquete->estado==1)
-                            <div class="col-md-3 margin-top-10">
-                                <div class="row caja_current">
-                                    <div class="col-lg-12 btn-primary text-center text-13">
-                                        @php
-                                            $date = date_create($cotizacion_->fecha);
-                                            $fecha=date_format($date, 'jS F Y');
-                                            $titulo='';
-                                        @endphp
-                                        @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                            @if($cliente_coti->estado=='1')
-                                                @php
-                                                    $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                                @endphp
-                                                <b>
-                                                    {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} ({{$fecha}})
-                                                </b>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                    <div class="col-lg-6 text-center">
-                                        <p class="text-25 text-orange-goto">PLAN {{$planes[$pos_plan]}}</p>
-                                        <p class="text-25 text-success">1500$</p>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-11 btn-link_">
-                                                <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>
+                            <div class="col-3 margin-top-10">
+                                <div class="card">
+                                    <div class="">
+                                        <div class="card-header text-center">
+                                            <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
+                                            <small class="display-block text-primary"><sup>$</sup>1500</small>
+                                        </div>
+                                        <div class="card-body py-2">
+                                            <div class="row">
+                                                <div class="col text-right">
+                                                    <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
+                                                    <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
+                                                    <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
+                                                </div>
                                             </div>
-                                            <div class="col-lg-11 btn-link_">
-                                                <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/
-                                                <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>
+                                            <div class="row">
+                                                <div class="col">
+                                                    @php
+                                                        $date = date_create($cotizacion_->fecha);
+                                                        $fecha=date_format($date, 'jS F Y');
+                                                        $titulo='';
+                                                    @endphp
+                                                    @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
+                                                        @if($cliente_coti->estado=='1')
+                                                            @php
+                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                            @endphp
+                                                            <small>
+                                                                <b><i class="fas fa-angle-right text-primary"></i> {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                            </small>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
                                             </div>
-                                            <div class="col-lg-11 btn-link_">
-                                                <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-info"><b><i class="fa fa-files-o" aria-hidden="true"></i>CREATE TEMPLATE</b></a>
-                                            </div>
-                                            <div class="col-lg-11 btn-link_">
-                                                @if($paquete->estado==2)
-                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-success"><b><i class="fa fa-check-square-o" aria-hidden="true"></i> CONFIRMAR</b></a>
-                                                    {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                @else
-                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-default"><b><i class="fa fa-check-square-o" aria-hidden="true"></i> CONFIRMAR</b></a>
-                                                    {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                @endif
+                                        </div>
+                                        <div class="card-footer p-2 text-center">
+                                            <div class="row no-gutters">
+                                                {{--<div class="col-lg-11 btn-link_">--}}
+                                                {{--<a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>--}}
+                                                {{--</div>--}}
+                                                {{--<div class="col-lg-11 btn-link_">--}}
+                                                {{--<a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/--}}
+                                                {{--<a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>--}}
+                                                {{--</div>--}}
+                                                <div class="col">
+                                                    <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
+                                                </div>
+                                                <div class="col">
+                                                    @if($paquete->estado==2)
+                                                        <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
+                                                        {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
+                                                    @else
+                                                        <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-secondary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
+                                                        {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
+                                                    @endif
+
+                                                </div>
 
                                             </div>
                                         </div>
@@ -280,49 +315,63 @@
                     @endif
                 @else
                     @if($paquete->estado==2)
-                            <div class="col-md-3 margin-top-10">
-                                <div class="row caja_current">
-                                    <div class="col-lg-12 btn-primary text-center text-13">
-                                        @php
-                                            $date = date_create($cotizacion_->fecha);
-                                            $fecha=date_format($date, 'jS F Y');
-                                            $titulo='';
-                                        @endphp
-                                        @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                            @if($cliente_coti->estado=='1')
-                                                @php
-                                                    $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                                @endphp
-                                                <b>
-                                                    {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} ({{$fecha}})
-                                                </b>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                    <div class="col-lg-6 text-center">
-                                        <p class="text-25 text-orange-goto">PLAN {{$planes[$pos_plan]}}</p>
-                                        <p class="text-25 text-success">1500$</p>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-11 btn-link_">
-                                                <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>
+                            <div class="col-3 margin-top-10">
+                                <div class="card">
+                                    <div class="">
+                                        <div class="card-header text-center">
+                                            <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
+                                            <small class="display-block text-primary"><sup>$</sup>1500</small>
+                                        </div>
+                                        <div class="card-body py-2">
+                                            <div class="row">
+                                                <div class="col text-right">
+                                                    <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
+                                                    <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
+                                                    <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
+                                                </div>
                                             </div>
-                                            <div class="col-lg-11 btn-link_">
-                                                <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/
-                                                <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>
+                                            <div class="row">
+                                                <div class="col">
+                                                    @php
+                                                        $date = date_create($cotizacion_->fecha);
+                                                        $fecha=date_format($date, 'jS F Y');
+                                                        $titulo='';
+                                                    @endphp
+                                                    @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
+                                                        @if($cliente_coti->estado=='1')
+                                                            @php
+                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                            @endphp
+                                                            <small>
+                                                                <b><i class="fas fa-angle-right text-primary"></i> {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                            </small>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
                                             </div>
-                                            <div class="col-lg-11 btn-link_">
-                                                <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-info"><b><i class="fa fa-files-o" aria-hidden="true"></i>CREATE TEMPLATE</b></a>
-                                            </div>
-                                            <div class="col-lg-11 btn-link_">
-                                                @if($paquete->estado==2)
-                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-success"><b><i class="fa fa-check-square-o" aria-hidden="true"></i> CONFIRMAR</b></a>
-                                                    {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                @else
-                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-default"><b><i class="fa fa-check-square-o" aria-hidden="true"></i> CONFIRMAR</b></a>
-                                                    {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                @endif
+                                        </div>
+                                        <div class="card-footer p-2 text-center">
+                                            <div class="row no-gutters">
+                                                {{--<div class="col-lg-11 btn-link_">--}}
+                                                {{--<a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>--}}
+                                                {{--</div>--}}
+                                                {{--<div class="col-lg-11 btn-link_">--}}
+                                                {{--<a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/--}}
+                                                {{--<a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>--}}
+                                                {{--</div>--}}
+                                                <div class="col">
+                                                    <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
+                                                </div>
+                                                <div class="col">
+                                                    @if($paquete->estado==2)
+                                                        <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
+                                                        {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
+                                                    @else
+                                                        <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-secondary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
+                                                        {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
+                                                    @endif
+
+                                                </div>
 
                                             </div>
                                         </div>
@@ -330,47 +379,59 @@
                                 </div>
                             </div>
                     @elseif($paquete->estado==1)
-                            <div class="col-md-3 margin-top-10">
-                                <div class="row caja_current">
-                                    <div class="col-lg-12 btn-primary text-center text-13">
-                                        @php
-                                            $date = date_create($cotizacion_->fecha);
-                                            $fecha=date_format($date, 'jS F Y');
-                                            $titulo='';
-                                        @endphp
-                                        @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                            @if($cliente_coti->estado=='1')
-                                                @php
-                                                    $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                                @endphp
-                                                <b>
-                                                    {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} ({{$fecha}})
-                                                </b>
-                                            @endif
-                                        @endforeach
+                            <div class="col-3 margin-top-10">
+                                <div class="card">
+                                <div class="">
+                                    <div class="card-header text-center">
+                                        <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
+                                        <small class="display-block text-primary"><sup>$</sup>1500</small>
                                     </div>
-                                    <div class="col-lg-6 text-center">
-                                        <p class="text-25 text-orange-goto">PLAN {{$planes[$pos_plan]}}</p>
-                                        <p class="text-25 text-success">1500$</p>
-                                    </div>
-                                    <div class="col-lg-6">
+                                    <div class="card-body py-2">
                                         <div class="row">
-                                            <div class="col-lg-11 btn-link_">
-                                                <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>
+                                            <div class="col text-right">
+                                                <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
+                                                <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
+                                                <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
                                             </div>
-                                            <div class="col-lg-11 btn-link_">
-                                                <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/
-                                                <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                @php
+                                                    $date = date_create($cotizacion_->fecha);
+                                                    $fecha=date_format($date, 'jS F Y');
+                                                    $titulo='';
+                                                @endphp
+                                                @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
+                                                    @if($cliente_coti->estado=='1')
+                                                        @php
+                                                            $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                        @endphp
+                                                        <small>
+                                                            <b><i class="fas fa-angle-right text-primary"></i> {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                        </small>
+                                                    @endif
+                                                @endforeach
                                             </div>
-                                            <div class="col-lg-11 btn-link_">
-                                                <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-info"><b><i class="fa fa-files-o" aria-hidden="true"></i>CREATE TEMPLATE</b></a>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-2 text-center">
+                                        <div class="row no-gutters">
+                                            {{--<div class="col-lg-11 btn-link_">--}}
+                                                {{--<a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="col-lg-11 btn-link_">--}}
+                                                {{--<a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/--}}
+                                                {{--<a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>--}}
+                                            {{--</div>--}}
+                                            <div class="col">
+                                                <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
                                             </div>
-                                            <div class="col-lg-11 btn-link_">
+                                            <div class="col">
                                                 @if($paquete->estado==2)
-                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-success"><b><i class="fa fa-check-square-o" aria-hidden="true"></i> CONFIRMAR</b></a>
+                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
                                                     {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
                                                 @else
-                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-default"><b><i class="fa fa-check-square-o" aria-hidden="true"></i> CONFIRMAR</b></a>
+                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-secondary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
                                                     {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
                                                 @endif
 
@@ -673,9 +734,6 @@
 
             <input type="hidden" name="nro_planes" id="nro_planes" value="{{$pos_plan}}">
         @endif
-            <div class="col-md-3 margin-top-10">
-                <a href="{{route('new_plan_cotizacion_path',$cotizacion_->id)}}" class="btn btn-primary">NUEVO PLAN</a>
-            </div>
     </div>
 
     <script>

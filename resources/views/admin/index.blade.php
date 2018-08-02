@@ -1,7 +1,11 @@
 @extends('layouts.admin.admin')
 @section('content')
-    <h1 class="page-header">Dashboard</h1>
-    <i class="fa fa-camera-retro fa-5x"></i>
+
+    <div class="row pt-3">
+        <div class="col">
+            <h1 class="text-g-dark">Dashboards</h1>
+        </div>
+    </div>
     <div class="row">
         @php
             $fecha_pqt=date("Y");
@@ -22,7 +26,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
         {{--<div class="col-lg-1"></div>--}}
         {{--<div class="col-lg-2 text-center bg-grey-goto-light1">--}}
                 {{--{!! $chart->html() !!}--}}
@@ -44,15 +47,15 @@
             {{--{!! $chart4->html() !!}--}}
             {{--<p><b class="text-20 text-danger">PAXS</b></p>--}}
         {{--</div>--}}
-        <div class="col-lg-1"></div>
-        <!-- End Of Main Application -->
+        {{--<div class="col-lg-1"></div>--}}
+        {{--<!-- End Of Main Application -->--}}
         {{--{!! Charts::scripts() !!}--}}
         {{--{!! $chart->script() !!}--}}
         {{--{!! $chart1->script() !!}--}}
         {{--{!! $chart2->script() !!}--}}
         {{--{!! $chart3->script() !!}--}}
         {{--{!! $chart4->script() !!}--}}
-    </div>
+
 
 
 @stop

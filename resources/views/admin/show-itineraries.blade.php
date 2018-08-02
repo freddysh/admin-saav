@@ -7,19 +7,19 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Inventory</li>
-            <li>Itineraries</li>
-            <li class="active">List</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Inventory</li>
+            <li class="breadcrumb-item">Itinerary</li>
+            <li class="breadcrumb-item active">List</li>
         </ol>
-    </div>
-    <div class="row margin-top-20">
-        </div>
-    <div class="row margin-top-20">
+    </nav>
+    <hr>
 
-        <table id="example" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
+    <div class="row mt-3">
+        <div class="col">
+        <table id="example" class="table table-sm table-bordered" cellspacing="0">
             <thead>
             <tr>
                 <th>Codigo</th>
@@ -55,7 +55,7 @@
                         @endif
 
                         @php
-                            $lista.="<p class=\"text-12 text-primary\"><b>Dia: ".$itinerario->dias."</b> ".$itinerario->titulo."</p>";
+                            $lista.="<p class=\"small text-primary\"><b>Dia: ".$itinerario->dias."</b> ".$itinerario->titulo."</p>";
                         @endphp
                         @foreach($itinerario->destinos as $destino)
                             @php
@@ -65,64 +65,34 @@
                     @endforeach
 
                     <td>
-                        <a id="propover_{{$itinerary->id}}" href="{{route('show_itinerary_path',$itinerary->id)}}" data-toggle="popover" title="{{$itinerary->titulo}} x {{$itinerary->duracion}} DAYS" data-content="{{$lista}}">{{$itinerary->titulo}} x {{$itinerary->duracion}} DAYS</a>
+                        <a id="propover_{{$itinerary->id}}" href="{{route('show_itinerary_path',$itinerary->id)}}" data-toggle="popover" title="{{$itinerary->titulo}} x {{$itinerary->duracion}} DAYS" data-content="{{$lista}}">{{ucwords(strtolower($itinerary->titulo))}} x {{$itinerary->duracion}} DAYS</a>
                         @if(($itinerary->itinerarios->count()-$existe)>0)
-                            <span class="text-12 text-danger">({{($itinerary->itinerarios->count()-$existe)}} de {{$itinerary->itinerarios->count()}} "Day by Day" se modificaron)</span>
+                            <span class="small text-danger">({{($itinerary->itinerarios->count()-$existe)}} de {{$itinerary->itinerarios->count()}} "Day by Day" se modificaron)</span>
                         @endif
-                        <p class='text-12 text-success'>Creado: {{$itinerario->created_at}}</p>
+                        <i class='small text-secondary d-block'>Creado: {{$itinerario->created_at}}</i>
                     </td>
                     <td>
                         @foreach($arra_destinos as $destino)
-                                <p class="text-12 text-unset"><i class="fa fa-map-marker" aria-hidden="true"></i> {{$destino}}</p>
+                                <p class="small m-0"><i class="fa fa-map-marker-alt text-secondary" aria-hidden="true"></i> {{ucwords(strtolower($destino)) }}</p>
                         @endforeach
                     </td>
-                    <td>
-                        {{--<button type="button" class="btn btn-warning"  data-toggle="modal" data-target="#modal_edit_destination_{{$itinerary->id}}">--}}
-                            {{--<i class="fa fa-eye" aria-hidden="true"></i>--}}
-                        {{--</button>--}}
-                        <a href="{{route('package_pdf_path',$itinerary->id)}}" type="button" class="btn btn-success">
-                            <i class="fa fa-download" aria-hidden="true"></i>
+                    <td class="text-center">
+                        <a href="{{route('package_pdf_path',$itinerary->id)}}" class="btn btn-success btn-sm">
+                            <i class="fa fa-download"></i>
                         </a>
-                        <a href="{{route('duplicate_package_path',$itinerary->id)}}" type="button" class="btn btn-primary">
-                            <i class="fa fa-files-o" aria-hidden="true"></i>
+                        <a href="{{route('duplicate_package_path',$itinerary->id)}}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-file"></i>
                         </a>
                         {{csrf_field()}}
-                        <button type="button" class="btn btn-danger" onclick="eliminar_paquete('{{$itinerary->id}}','{{$itinerary->titulo}} x {{$itinerary->duracion}} DAYS')">
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_paquete('{{$itinerary->id}}','{{$itinerary->titulo}} x {{$itinerary->duracion}} DAYS')">
+                            <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        {{--@foreach($itineraries->sortByDesc('fecha') as $itinerary)--}}
-        {{--<!-- Modal -->--}}
-            {{--<div class="modal fade bd-example-modal-lg" id="modal_edit_destination_{{$itinerary->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
-                {{--<div class="modal-dialog modal-m" role="document">--}}
-                    {{--<div class="modal-content">--}}
-                        {{--<form action="{{route('destination_edit_path')}}" method="post" id="destination_edit_id" enctype="multipart/form-data">--}}
-                            {{--<div class="modal-header">--}}
-                                {{--<h5 class="modal-title" id="exampleModalLabel">Outline</h5>--}}
-                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-                                    {{--<span aria-hidden="true">&times;</span>--}}
-                                {{--</button>--}}
-                            {{--</div>--}}
-                            {{--<div class="modal-body">--}}
-                                {{--<h2 class="text-center text-primary">{{$itinerary->titulo}} x {{$itinerary->duracion}} DAYS</h2>--}}
-                                {{--<ul class="list-group">--}}
-                                {{--@foreach($itinerary->itinerarios as $itinerario)--}}
-                                    {{--<li class="list-group-item"><b class="col-sm-2 text-primary">Dia :{{$itinerario->dias}}</b>{{$itinerario->titulo}}</li>--}}
-                                {{--@endforeach--}}
-                                {{--</ul>--}}
-                            {{--</div>--}}
-                            {{--<div class="modal-footer">--}}
-                                {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-                            {{--</div>--}}
-                        {{--</form>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--@endforeach--}}
+        </div>
     </div>
     <script>
         $(document).ready(function() {

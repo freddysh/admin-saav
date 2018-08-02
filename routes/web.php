@@ -9,6 +9,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
 Route::get('/crear',[
     'uses' => 'IndexController@crear',
     'as' => 'crear_path',
@@ -267,7 +271,12 @@ Route::post('admin/show-cotization/', [
     'as' => 'cotizacion_show_path',
 ]);
 //hidalgo
-//client
+
+//INVENTORY
+Route::get('admin/inventory/', [
+    'uses' => 'IndexController@inventory',
+    'as' => 'inventory_path',
+]);
 Route::get('admin/pax/', [
     'uses' => 'QouteController@pax',
     'as' => 'pax_path',
@@ -966,6 +975,7 @@ Route::post('/admin/contabilidad/confirmar-fecha-hotel',[
     'uses' => 'ContabilidadController@precio_fecha_hotel_add',
     'as' => 'contabilidad_add_fecha_hotel_path',
 ]);
+
 Route::post('/admin/contabilidad/pagar_a_cuenta',[
     'uses' => 'ContabilidadController@pagar_a_cuenta_c',
     'as' => 'pagar_a_cuenta_c_path',
@@ -1058,3 +1068,4 @@ Route::post('admin/book/listar-servicios/localizacion',[
     'uses' => 'ServicesController@listar_servicios_localizacion',
     'as' => 'reservas_localizacion_listar_servicios_path',
 ]);
+

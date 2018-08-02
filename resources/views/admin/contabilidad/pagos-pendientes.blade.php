@@ -14,33 +14,37 @@ use Carbon\Carbon;
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Contabilidad</li>
-            <li>Operaciones</li>
-            <li class="active">Pagos pendientes</li>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Contabilidad</li>
+            <li class="breadcrumb-item">Operaciones</li>
+            <li class="breadcrumb-item active">Pagos pendientes</li>
         </ol>
-    </div>
+    </nav>
+    <hr>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#home">HOTELS</a></li>
-                        <li><a data-toggle="tab" href="#menu1">TOURS</a></li>
-                        <li><a data-toggle="tab" href="#menu2">MOVILID</a></li>
-                        <li><a data-toggle="tab" href="#menu3">REPRESENT</a></li>
-                        <li><a data-toggle="tab" href="#menu4">ENTRANCES</a></li>
-                        <li><a data-toggle="tab" href="#menu5">FOOD</a></li>
-                        <li><a data-toggle="tab" href="#menu6">TRAINS</a></li>
-                        <li><a data-toggle="tab" href="#menu7">FLIGHTS</a></li>
-                        <li><a data-toggle="tab" href="#menu8">OTHERS</a></li>
+
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="nav-item active"><a data-toggle="tab" href="#home" class="nav-link active rounded-0">HOTELS</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#menu1" class="nav-link rounded-0">TOURS</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#menu2" class="nav-link rounded-0">MOVILID</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#menu3" class="nav-link rounded-0">REPRESENT</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#menu4" class="nav-link rounded-0">ENTRANCES</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#menu5" class="nav-link rounded-0">FOOD</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#menu6" class="nav-link rounded-0">TRAINS</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#menu7" class="nav-link rounded-0">FLIGHTS</a></li>
+                        <li class="nav-item"><a data-toggle="tab" href="#menu8" class="nav-link rounded-0">OTHERS</a></li>
                     </ul>
 
                     <div class="tab-content">
-                        <div id="home" class="tab-pane fade in active">
-                            <div class="row">
+                        <div id="home" class="tab-pane fade show active">
+                            <div class="row mt-3">
+
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -140,7 +144,7 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu1" class="tab-pane fade">
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -238,7 +242,7 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu2" class="tab-pane fade">
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -336,7 +340,7 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu3" class="tab-pane fade">
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -434,12 +438,12 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu4" class="tab-pane fade">
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-lg-12">
                                     <table id="lista_liquidaciones"  class="table table-bordered table-striped table-responsive table-hover">
                                         <thead>
                                         <tr>
-                                            <th class="hide">ID</th>
+                                            <th class="d-none">ID</th>
                                             <th>DESDE</th>
                                             <th>HASTA</th>
                                             <th>ENVIADO POR</th>
@@ -495,7 +499,7 @@ use Carbon\Carbon;
                                                 @endforeach
                                             @endforeach
                                             <tr id="lista_liquidaciones_{{$liquidacion->id}}">
-                                                <td class="hide">{{$liquidacion->id}}</td>
+                                                <td class="d-none">{{$liquidacion->id}}</td>
                                                 <td>{{fecha_peru($liquidacion->ini)}}</td>
                                                 <td>{{fecha_peru($liquidacion->fin)}}</td>
                                                 <td>
@@ -564,7 +568,7 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu5" class="tab-pane fade">
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -662,7 +666,7 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu6" class="tab-pane fade">
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -760,7 +764,7 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu7" class="tab-pane fade">
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -858,7 +862,7 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu8" class="tab-pane fade">
-                            <div class="row">
+                            <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">

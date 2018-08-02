@@ -15,16 +15,17 @@
     <script type="text/JavaScript">
         window.onload=new function() {if (window.location.href.indexOf('#')==-1) window.location.href='#lista_servicios_{{$id_serv}}';}
     </script>
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Quotes</li>
-            <li class="active">New</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Qoutes</a></li>
+            <li class="breadcrumb-item active">Edit</li>
         </ol>
-    </div>
+    </nav>
+    <hr>
     {{--<form action="{{route('package_cotizacion_save_path')}}" method="post" id="package_new_path_id">--}}
-    <div class="row">
-        <div class="col-lg-6">
+    <div class="row align-items-center">
+        <div class="col-6">
             <h3>{{$cliente->nombres}} {{$cliente->apellidos}}</h3>
             @php
                 $s=0;
@@ -34,10 +35,10 @@
             @endphp
             @foreach($cotizaciones as $cotizacion)
                 <p><b>Pagina de origen {{$cotizacion->web}}</b></p>
-                <b class="text-warning text-25">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} STARS:</b>
+                <b class="text-g-yellow h2">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} STARS:</b>
                 @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
                     @foreach($paquete->paquete_precios as $precio)
-                        <b class="text-unset text-20">
+                        <b class="text-secondary h2">
                             @if($precio->personas_s>0)
                                 S |
                                 @php
@@ -67,13 +68,18 @@
                 @endforeach
             @endforeach
         </div>
-        <div class="col-lg-6">
-            <div class="col-lg-2"></div>
-            <div class="col-lg-1 caja_paso_activo text-30 text-center"><b>1</b></div>
-            <div class="col-lg-1 caja_paso_noactivo text-30 text-center"><b>2</b></div>
-            <div class="col-lg-2"></div>
+        <div class="col-6">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col caja_paso_activo text-30 text-center"><b>1</b></div>
+                        <div class="col caja_paso_noactivo text-30 text-center"><b>2</b></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <hr>
     @php
     $nroPersonas=0;
     $nro_dias=0;
@@ -94,24 +100,23 @@
                         $itis='';
                     @endphp
                     @foreach($paquete->itinerario_cotizaciones as $itinerario)
-                        <div class="row caja_items">
-                            <div class="col-lg-1 caja_dia_indice">
-                                DAY {{$itinerario->dias}}
+                        <div class="row">
+                            <div class="col-1">
+                                <b class="text-g-dark">DAY {{$itinerario->dias}}</b>
                             </div>
-                            <div class="col-lg-5">
-                                <div class="row caja_dia">
-                                    <div class="col-lg-7">
-                                        {{$itinerario->titulo}}
+                            <div class="col-5">
+                                <div class="row bg-g-dark rounded text-white">
+                                    <div class="col-7">
+                                        <b>{{ ucwords(strtolower($itinerario->titulo))}}</b>
                                     </div>
-                                    <div class="col-lg-1 @if($s==0) hide @endif">S</div>
-                                    <div class="col-lg-1 @if($d==0) hide @endif">D</div>
-                                    <div class="col-lg-1 @if($m==0) hide @endif">M</div>
-                                    <div class="col-lg-1 @if($t==0) hide @endif">T</div>
-                                    <div class="col-lg-2 hide"></div>
+                                    <div class="col @if($s==0) d-none @endif">S</div>
+                                    <div class="col @if($d==0) d-none @endif">D</div>
+                                    <div class="col @if($m==0) d-none @endif">M</div>
+                                    <div class="col @if($t==0) d-none @endif">T</div>
+                                    {{--<div class="col-2 d-none"></div>--}}
                                 </div>
                                 <div class="row caja_detalle">
-
-
+                                    <div class="col">
                                     @foreach($itinerario->itinerario_servicios as $servicios)
                                         @php
                                             $rango='';
@@ -146,9 +151,9 @@
                                         @endif
                                         {{--@endif--}}
                                         <div class="row" id="lista_servicios_{{$servicios->id}}">
-                                            <div class="col-lg-7">
+                                            <div class="col-7">
                                                 <div class="row">
-                                                    <div class="col-lg-10{{$rango}}">
+                                                    <div class="col-10{{$rango}}">
                                                         @if($servicios->servicio->grupo=='TOURS')
                                                             <b class="text-primary text-13"><i class="fa fa-map-o" aria-hidden="true"></i></b>
                                                         @endif
@@ -173,20 +178,20 @@
                                                         @if($servicios->servicio->grupo=='OTHERS')
                                                             <b class="text-primary text-13"><i class="fa fa-question" aria-hidden="true"></i></b>
                                                         @endif
-                                                        {{$servicios->nombre}}
+                                                        <span>{{ucwords(strtolower($servicios->nombre))}}</span>
                                                         @if($servicios->servicio->grupo=='MOVILID')
                                                                 <b class="text-primary text-12">{{$servicios->servicio->tipoServicio}} [{{$servicios->min_personas}} - {{$servicios->max_personas}}] p.p.</b>
                                                         @endif
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-1 @if($s==0) hide @endif">$<input type="hidden" class="precio_servicio_s" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
-                                            <div class="col-lg-1 @if($d==0) hide @endif">$<input type="hidden" class="precio_servicio_d" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
-                                            <div class="col-lg-1 @if($m==0) hide @endif">$<input type="hidden" class="precio_servicio_m" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
-                                            <div class="col-lg-1 @if($t==0) hide @endif">$<input type="hidden" class="precio_servicio_t" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
-                                            <div class="col-lg-1">
-                                                <a class="btn" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}">
-                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            <div class="col @if($s==0) d-none @endif">$<input type="hidden" class="precio_servicio_s" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
+                                            <div class="col @if($d==0) d-none @endif">$<input type="hidden" class="precio_servicio_d" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
+                                            <div class="col @if($m==0) d-none @endif">$<input type="hidden" class="precio_servicio_m" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
+                                            <div class="col @if($t==0) d-none @endif">$<input type="hidden" class="precio_servicio_t" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
+                                            <div class="col">
+                                                <a class="btn py-0 text-primary" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}">
+                                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                                                 </a>
                                                 <!-- Modal -->
                                                 <div class="modal fade bd-example-modal-lg" id="modal_new_destination1_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -286,6 +291,7 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    </div>
                                 </div>
                                     @foreach($itinerario->hotel as $hotel)
                                         @if($hotel->personas_s>0)
@@ -309,23 +315,23 @@
                                             @endphp
                                         @endif
                                     <div id="caja_detalle_{{$hotel->id}}" class="row caja_detalle_hotel margin-bottom-15">
-                                    <div class="col-lg-7">
+                                    <div class="col-7">
                                             <div class="row">
-                                                <div class="col-lg-10 text-12">HOTEL | <span class="text-11">{{strtoupper($hotel->estrellas) }}STARS</span> | <span class="text-11">{{$hotel->localizacion}}</span>
+                                                <div class="col-10 text-12">HOTEL | <span class="text-11">{{strtoupper($hotel->estrellas) }}STARS</span> | <span class="text-11">{{$hotel->localizacion}}</span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-1 @if($hotel->personas_s==0) hide @endif">${{round(explode('.00',$hotel->precio_s)[0],2)}}</div>
-                                        <div class="col-lg-1 @if($hotel->personas_d==0) hide @endif">${{round(explode('.00',$hotel->precio_d)[0]/2,2)}}</div>
-                                        <div class="col-lg-1 @if($hotel->personas_m==0) hide @endif">${{round(explode('.00',$hotel->precio_m)[0]/2,2)}}</div>
-                                        <div class="col-lg-1 @if($hotel->personas_t==0) hide @endif">${{round(explode('.00',$hotel->precio_t)[0]/3,2)}}</div>
+                                        <div class="col @if($hotel->personas_s==0) d-none @endif">${{round(explode('.00',$hotel->precio_s)[0],2)}}</div>
+                                        <div class="col @if($hotel->personas_d==0) d-none @endif">${{round(explode('.00',$hotel->precio_d)[0]/2,2)}}</div>
+                                        <div class="col @if($hotel->personas_m==0) d-none @endif">${{round(explode('.00',$hotel->precio_m)[0]/2,2)}}</div>
+                                        <div class="col @if($hotel->personas_t==0) d-none @endif">${{round(explode('.00',$hotel->precio_t)[0]/3,2)}}</div>
                                         <input type="hidden" class="precio_servicio_s_h" value="{{explode('.00',$hotel->precio_s)[0]}}">
                                         <input type="hidden" class="precio_servicio_d_h" value="{{explode('.00',$hotel->precio_d)[0]/2}}">
                                         <input type="hidden" class="precio_servicio_m_h" value="{{explode('.00',$hotel->precio_m)[0]/2}}">
                                         <input type="hidden" class="precio_servicio_t_h" value="{{explode('.00',$hotel->precio_t)[0]/3}}">
-                                        <div class="col-lg-1">
-                                            <a class="btn" data-toggle="modal" data-target="#modal_new_destinationh_{{$hotel->id}}">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <div class="col">
+                                            <a class="btn py-0" data-toggle="modal" data-target="#modal_new_destinationh_{{$hotel->id}}">
+                                                <i class="fas fa-pencil-alt text-primary" aria-hidden="true"></i>
                                             </a>
                                             <div class="modal fade bd-example-modal-m" id="modal_new_destinationh_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-m" role="document">
@@ -383,7 +389,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-1 text-right">
+                                        <div class="col text-right">
+
                                             <b class="text-right text-danger puntero" onclick="borrar_hotel_quot_paso1('{{$hotel->id}}','{{$itinerario->dias}}')">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </b>
@@ -396,6 +403,7 @@
                                 <textarea form="step1" name="txt_descr_{{$itinerario->id}}"  id="txt_descr_{{$itinerario->id}}" cols="70" rows="8">{!! $itinerario->descripcion !!}</textarea>
                             </div>
                         </div>
+                        <hr>
                         @php
                             $itis.=$itinerario->id.'_';
                         @endphp
@@ -412,37 +420,35 @@
         @endphp
     {{--<form action="{{route('show_step2_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" method="get">--}}
         <div class="row">
-            <div class="col-lg-12">
-                <div class="col-lg-1">
+            <div class="col">
+                <div class="row bg-g-dark text-white rounded py-2">
+                        <div class="col-lg-8"><b>COST</b></div>
+                        <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s)}}</span></b></div>
+                        <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d)}}</span></b></div>
+                        <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m)}}</span></b></div>
+                        <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t)}}</span></b></div>
                 </div>
-                <div class="col-lg-5">
-                    <div class="row caja_dia">
-                        <div class="col-lg-7"><b>COST</b></div>
-                        <div class="col-lg-1 text-warning @if($s==0) hide @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s)}}</span></b></div>
-                        <div class="col-lg-1 text-warning @if($d==0) hide @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d)}}</span></b></div>
-                        <div class="col-lg-1 text-warning @if($m==0) hide @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m)}}</span></b></div>
-                        <div class="col-lg-1 text-warning @if($t==0) hide @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t)}}</span></b></div>
-                        <div class="col-lg-2"></div>
-                    </div>
-                    <div class="col-lg-12 text-right text-warninggit">PRICE PER PERSON</div>
+                <div class="row">
+                    <div class="col text-right">PRICE PER PERSON</div>
                 </div>
-                <div class="col-lg-6 text-right">
-                    <form id="step1" action="{{route('show_step2_post_path')}}" method="post">
-                        {{csrf_field()}}
-                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">
-                        <input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">
-                        <input type="hidden" name="imprimir" value="si">
-                        <input type="hidden" name="itis" value="{{$itis}}">
-                        <button class="btn btn-warning" type="submit">EDIT</button>
-                        {{--                        <a href="{{route('show_step2_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" class="btn btn-warning btn-lg" type="submit" name="create">CREATE</a>--}}
-                    </form>
+            </div>
+            <div class="col text-right">
+                <form id="step1" action="{{route('show_step2_post_path')}}" method="post">
+                    {{csrf_field()}}
+                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">
+                    <input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">
+                    <input type="hidden" name="imprimir" value="si">
+                    <input type="hidden" name="itis" value="{{$itis}}">
+                    <button class="btn btn-success btn-lg" type="submit">EDIT</button>
+                    {{--                        <a href="{{route('show_step2_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" class="btn btn-warning btn-lg" type="submit" name="create">CREATE</a>--}}
+                </form>
 
-                    {{--{{csrf_field()}}--}}
-                    {{--<input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">--}}
-                    {{--<input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">--}}
-                    {{--<input type="hidden" name="imprimir" value="no">--}}
-{{--                    <a href="{{route('show_step2_edit_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" class="btn btn-warning btn-lg" type="submit" name="create">EDIT</a>--}}
-                </div>
+                {{--{{csrf_field()}}--}}
+                {{--<input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">--}}
+                {{--<input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">--}}
+                {{--<input type="hidden" name="imprimir" value="no">--}}
+                {{--                    <a href="{{route('show_step2_edit_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" class="btn btn-warning btn-lg" type="submit" name="create">EDIT</a>--}}
+
             </div>
         </div>
     {{--</form>--}}

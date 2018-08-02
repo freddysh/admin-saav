@@ -460,10 +460,10 @@
                                     <thead>
                                     <tr class="bg-grey-goto-light text-white">
                                         <th class="text-center">Hotels</th>
-                                        <th id="precio_2_t" class="text-center hide">2 Stars</th>
-                                        <th id="precio_3_t" class="text-center hide">3 Stars</th>
-                                        <th id="precio_4_t" class="text-center hide">4 Stars</th>
-                                        <th id="precio_5_t" class="text-center hide">5 Stars</th>
+                                        <th id="precio_2_t" class="text-center d-none">2 Stars</th>
+                                        <th id="precio_3_t" class="text-center d-none">3 Stars</th>
+                                        <th id="precio_4_t" class="text-center d-none">4 Stars</th>
+                                        <th id="precio_5_t" class="text-center d-none">5 Stars</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -473,7 +473,7 @@
                                             <i class="fa fa-bed fa-2x text-green-goto" aria-hidden="true"></i>
                                             <i class="fa fa-bed fa-2x text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td id="precio_t_2" class="hide">
+                                        <td id="precio_t_2" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -483,7 +483,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="precio_t_3" class="hide">
+                                        <td id="precio_t_3" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -493,7 +493,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="precio_t_4" class="hide">
+                                        <td id="precio_t_4" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -503,7 +503,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="precio_t_5" class="hide">
+                                        <td id="precio_t_5" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -519,7 +519,7 @@
                                             <i class="fa fa-bed fa-2x text-green-goto" aria-hidden="true"></i>
                                             <i class="fa fa-bed fa-2x text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td id="precio_d_2" class="hide">
+                                        <td id="precio_d_2" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -529,7 +529,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="precio_d_3" class="hide">
+                                        <td id="precio_d_3" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -539,7 +539,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="precio_d_4" class="hide">
+                                        <td id="precio_d_4" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -549,7 +549,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td  id="precio_d_5" class="hide">
+                                        <td  id="precio_d_5" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -564,7 +564,7 @@
                                         <td class="col-md-2">
                                             <i class="fa fa-bed fa-2x text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td id="precio_s_2" class="hide">
+                                        <td id="precio_s_2" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -574,7 +574,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="precio_s_3" class="hide">
+                                        <td id="precio_s_3" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -584,7 +584,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="precio_s_4" class="hide">
+                                        <td id="precio_s_4" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -594,7 +594,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="precio_s_5" class="hide">
+                                        <td id="precio_s_5" class="d-none">
                                             <div class="form-group margin-bottom-0">
                                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                                 <div class="input-group">
@@ -609,13 +609,13 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row margin-top-20 hide">
+                        <div class="row margin-top-20 d-none">
                             <div class="col-md-12">
                                 <h4 class="font-montserrat text-orange-goto"><span class="label bg-orange-goto">6</span> Package Price</h4>
                                 <div class="divider margin-bottom-20"></div>
                             </div>
                         </div>
-                        <div class="row hide">
+                        <div class="row d-none">
                             <div class="col-md-3 ">
                                 <div class="form-group margin-bottom-0">
                                     <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
@@ -994,7 +994,7 @@
                                 <div class="divider margin-bottom-20"></div>
                             </div>
                         </div>
-                        <div class="row hide">
+                        <div class="row d-none">
                             <div class="col-md-12">
                                 <table class="table table-condensed table-bordered font-montserrat">
                                     <caption class="text-right"><b>Todos los precios tienen un 40% de utilidad y son para dos personas</b></caption>
@@ -1182,7 +1182,7 @@
                             @endif
                         @endforeach
 
-                        <div id="precio_2" class="row hide">
+                        <div id="precio_2" class="row d-none">
                             <div class="col-md-12">
                                 <b class="font-montserrat text-pink-goto">
                                     {{--<span class="label bg-orange-goto">1</span>--}}
@@ -1201,8 +1201,8 @@
                                     <tbody>
                                     <tr>
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1220,9 +1220,9 @@
                                             <b class="text-16">$ <span id="amount_t2_a_v"></span>.00</b>
                                         </td>
                                     </tr>
-                                    <tr class="hide">
+                                    <tr class="d-none">
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1240,7 +1240,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1302,7 +1302,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="precio_3" class="row hide">
+                        <div id="precio_3" class="row d-none">
                             <div class="col-md-12">
                                 <b class="font-montserrat text-pink-goto">
                                     {{--<span class="label bg-orange-goto">1</span>--}}
@@ -1321,8 +1321,8 @@
                                     <tbody>
                                     <tr>
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1340,9 +1340,9 @@
                                             <b class="text-16">$ <span id="amount_t3_a_v"></span>.00</b>
                                         </td>
                                     </tr>
-                                    <tr class="hide">
+                                    <tr class="d-none">
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1360,7 +1360,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1423,7 +1423,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="precio_4" class="row hide">
+                        <div id="precio_4" class="row d-none">
                             <div class="col-md-12">
                                 <b class="font-montserrat text-pink-goto">
                                     {{--<span class="label bg-orange-goto">1</span>--}}
@@ -1442,8 +1442,8 @@
                                     <tbody>
                                     <tr>
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1461,9 +1461,9 @@
                                             <b class="text-16">$ <span id="amount_t4_a_v"></span>.00</b>
                                         </td>
                                     </tr>
-                                    <tr class="hide">
+                                    <tr class="d-none">
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1481,7 +1481,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1544,7 +1544,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div id="precio_5" class="row hide">
+                        <div id="precio_5" class="row d-none">
                         <div class="col-md-12">
                             <b class="font-montserrat text-pink-goto">
                                 {{--<span class="label bg-orange-goto">1</span>--}}
@@ -1563,8 +1563,8 @@
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
-                                        <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                        <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
+                                        <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                         <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                     </td>
                                     <td>
@@ -1582,9 +1582,9 @@
                                         <b class="text-16">$ <span id="amount_t5_a_v"></span>.00</b>
                                     </td>
                                 </tr>
-                                <tr class="hide">
+                                <tr class="d-none">
                                     <td>
-                                        <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                        <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                         <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                     </td>
                                     <td>
@@ -1602,7 +1602,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <i class="fa fa-male fa-2x hide" aria-hidden="true"></i>
+                                        <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                         <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                     </td>
                                     <td>
@@ -1665,7 +1665,7 @@
                             </table>
                         </div>
                         </div>
-                        <div class="row hide">
+                        <div class="row d-none">
                             <div class="col-md-12">
                                 <div class="text-center">
                                 </div>
@@ -1675,13 +1675,13 @@
                                         <input type="number" class="form-control" id="totalItinerario" name="totalItinerario" min="0" value="{{$iti_precio}}" readonly>
                                     </div>
                                 </div>
-                                <div class="col-md-3 hide">
+                                <div class="col-md-3 d-none">
                                     <div class="form-group">
                                         <label for="txt_day">Utilidad</label>
                                         <input type="number" class="form-control" id="txt_utilidad" name="txt_utilidad" min="0" value="0" onchange="calcular_utilidad()">
                                     </div>
                                 </div>
-                                <div class="col-md-3 hide">
+                                <div class="col-md-3 d-none">
                                     <div class="form-group">
                                         <label for="txt_day">Total venta</label>
                                         <input type="number" class="form-control" id="totalItinerario_venta" name="totalItinerario_venta" min="0" value="0">

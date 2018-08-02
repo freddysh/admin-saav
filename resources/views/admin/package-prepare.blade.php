@@ -3,13 +3,14 @@
     <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Quotes</li>
-            <li class="active">New</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Qoutes</a></li>
+            <li class="breadcrumb-item active">New</li>
         </ol>
-    </div>
+    </nav>
+    <hr>
     {{--<form action="{{route('package_cotizacion_save_path')}}" method="post" id="package_new_path_id">--}}
     @php
         $cliente='';
@@ -34,8 +35,8 @@
             @endphp
         @endforeach
     @endforeach
-        <div class="row">
-        <div class="col-lg-6">
+        <div class="row align-items-center">
+        <div class="col-6">
             <h3>{{$cliente}} {{$cliente}}</h3>
             @php
                 $s=0;
@@ -47,11 +48,11 @@
                 @php
                     $cotizacion_id=$cotizacion->id;
                 @endphp
-                <p><b>Pagina de origen {{$cotizacion->web}}</b></p>
-                <b class="text-warning text-25">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} <i class="fa fa-star" aria-hidden="true"></i>:</b>
+                <p class="text-secondary"><b>Pagina de origen {{$cotizacion->web}}</b></p>
+                <b class="text-g-yellow h2">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} <i class="fa fa-star" aria-hidden="true"></i>:</b>
                 @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
                     @foreach($paquete->paquete_precios as $precio)
-                        <b class="text-unset text-20">
+                        <b class="text-secondary h2">
                             @if($precio->personas_s>0)
                                 SINGLE
                                 @php
@@ -81,19 +82,24 @@
                 @endforeach
             @endforeach
         </div>
-        <div class="col-lg-6">
-            <div class="col-lg-2"></div>
-            <div class="col-lg-1 caja_paso_noactivo text-30 text-center">
-                <a href="{{route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete_id])}}" class="caja_paso_noactivo_ no_stilo">1</a>
-                {{--<b>1</b>--}}
+        <div class="col-6">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col caja_paso_noactivo text-30 text-center">
+                            <a href="{{route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete_id])}}" class="caja_paso_noactivo_ no_stilo">1</a>
+                            {{--<b>1</b>--}}
+                        </div>
+                        <div class="col caja_paso_activo text-30 text-center">
+                            <a href="#!" class="caja_paso_activo_ no_stilo">2</a>
+                            {{--<b>2</b>--}}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-1 caja_paso_activo text-30 text-center">
-                <a href="#!" class="caja_paso_activo_ no_stilo">2</a>
-                {{--<b>2</b>--}}
-            </div>
-            <div class="col-lg-2"></div>
         </div>
     </div>
+    <hr>
     @php
         $nroPersonas=0;
         $nro_dias=0;
@@ -159,49 +165,65 @@
             @endforeach
         @endforeach
         <div class="row">
-            <div class="col-lg-6">
-                <p class="text-25"><b>{{$plan[$pos_plan]}}</b></p>
-                <p class="text-20"><b>{{$dias}} DAYS</b></p>
-                <p class="text-20"><b>CODE:{{$codigo}}</b></p>
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                 @foreach($array_destinos as $destino)
+            <div class="col text-center">
+                <p class="text-center h2 text-g-green"><b>{{$plan[$pos_plan]}}</b></p>
+                <p class="text-center m-0"><b>{{$codigo}} | {{$dias}} DAYS</b></p>
+                {{--<p class="text-20"><b></b></p>--}}
+                {{--<i class="fa fa-map-marker-alt" aria-hidden="true"></i>--}}
+                @foreach($array_destinos as $destino)
                     @if($destino!=null)
                         {{--<div class="col-md-4">--}}
-                            {{--<div class="checkbox1">--}}
-                                <label class="text-green-goto text-unset">
-                                    {{--<input class="destinospack" type="checkbox" name="destinos[]" checked="checked">--}}
-                                    {{$destino}} <span class="text-warning">|</span>
-                                </label>
-                            {{--</div>--}}
+                        {{--<div class="checkbox1">--}}
+                        <small class="text-primary">
+                            {{--<input class="destinospack" type="checkbox" name="destinos[]" checked="checked">--}}
+                            {{ucwords(strtolower($destino))}} <span class="text-g-yellow">|</span>
+                        </small>
+                        {{--</div>--}}
                         {{--</div>--}}
                     @endif
                 @endforeach
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="txt_country">Title</label>
-                        <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo" value="{{$titulo}}">
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="txt_country" class="font-weight-bold text-secondary">Title</label>
+                            <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo" value="{{$titulo}}">
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="txt_country">Description</label>
-                        <textarea class="form-control" name="descripcion" id="descripcion" cols="10" rows="5">{{$descr}}</textarea>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="txt_country" class="font-weight-bold text-secondary">Description</label>
+                            <textarea class="form-control" name="descripcion" id="descripcion" cols="10" rows="5">{{$descr}}</textarea>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="txt_country">Include</label>
-                        <textarea class="form-control" name="incluye" id="incluye" cols="10" rows="5">{{$include}}</textarea>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="txt_country" class="font-weight-bold text-secondary">Include</label>
+                            <textarea class="form-control" name="incluye" id="incluye" cols="10" rows="5">{{$include}}</textarea>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="row">
+                    <div class="col">
                     <div class="form-group">
-                        <label for="txt_country">not Include</label>
+                        <label for="txt_country" class="font-weight-bold text-secondary">not Include</label>
                         <textarea class="form-control" name="no_incluye" id="no_incluye" cols="10" rows="5">{{$no_include}}</textarea>
                     </div>
                 </div>
+                </div>
+
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 py-1">
+                <div class="sticky-top py-4">
+
                 @php
                     $nroPersonas=0;
                     $nro_dias=0;
@@ -253,7 +275,6 @@
                         @endphp
                         @foreach($paquete->itinerario_cotizaciones as $itinerario)
                             @php
-{{--                        $precio_iti+=$itinerario->precio;--}}
                             $precio_hotel_s=0;
                             $precio_hotel_d=0;
                             $precio_hotel_m=0;
@@ -321,30 +342,34 @@
                                 $prem_t+=$pre_t;
                             @endphp
 
-                            <div id="itinerario_" class="caja_itineario text-11">
+                            <div id="itinerario_" class="bg-g-dark text-white p-2 rounded small mb-2">
                                 <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="col-lg-12">
-                                            @foreach($itinerario->itinerario_destinos as $destino)
-                                                <b class="dias text-warning">{{$destino->destino}}</b> |
-                                            @endforeach
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <b class="dias" id="dias_"+total_Itinerarios+>Dia :{{$itinerario->dias}}</b> {{$itinerario->titulo}}
+                                    <div class="col-10">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                @foreach($itinerario->itinerario_destinos as $destino)
+                                                    <b class="dias text-g-yellow">{{ucwords(strtolower($destino->destino))}}</b> |
+                                                @endforeach
+                                            </div>
+                                            <div class="col-12">
+                                                <b class="dias" id="dias_"+total_Itinerarios+>Dia {{$itinerario->dias}}: </b> {{ucwords(strtolower($itinerario->titulo))}}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="col-lg-3 @if($s==0) hide @endif">
-                                            <b>$ {{round($pre_s,0)}}</b>
-                                        </div>
-                                        <div class="col-lg-3 @if($d==0) hide @endif">
-                                            <b>$ {{round($pre_d,0)}}</b>
-                                        </div>
-                                        <div class="col-lg-3 @if($m==0) hide @endif">
-                                            <b>$ {{round($pre_m,0)}}</b>
-                                        </div>
-                                        <div class="col-lg-3 @if($t==0) hide @endif">
-                                            <b>$ {{round($pre_t,0)}}</b>
+                                    <div class="col text-right">
+                                        <div class="row">
+                                            <div class="col @if($s==0) d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_s,0)}}</b>
+                                            </div>
+                                            <div class="col @if($d==0) d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_d,0)}}</b>
+                                            </div>
+                                            <div class="col @if($m==0) d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_m,0)}}</b>
+                                            </div>
+                                            <div class="col @if($t==0) d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_t,0)}}</b>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -364,68 +389,70 @@
                     $precio_hotel_m+=$precio_iti;
                     $precio_hotel_t+=$precio_iti;
                 @endphp
-                <div class="col-lg-12">
-                    <div class="row ">
-                        <div class="col-lg-4">
-                            <b CLASS="text-warning text-15">PRICE PER PERSON</b>
+
+                <div class="col-12">
+                    <div class="row text-right">
+                        <div class="col-9 text-left">
+                            <b class="">PRICE PER PERSON</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
-                            <div class="col-lg-2 @if($s==0) hide @endif">
-                                <b CLASS="text-unset text-15">S</b>
+                            <div class="col @if($s==0) d-none @endif">
+                                <b class="text-secondary">S</b>
                             </div>
-                            <div class="col-lg-2 @if($d==0) hide @endif">
-                                <b CLASS="text-unset text-15">D</b>
+                            <div class="col @if($d==0) d-none @endif">
+                                <b class="text-secondary">D</b>
                             </div>
-                            <div class="col-lg-2 @if($m==0) hide @endif">
-                                <b CLASS="text-unset text-15">M</b>
+                            <div class="col @if($m==0) d-none @endif">
+                                <b class="text-secondary">M</b>
                             </div>
-                            <div class="col-lg-2 @if($t==0) hide @endif">
-                                <b CLASS="text-unset text-15">T</b>
+                            <div class="col @if($t==0) d-none @endif">
+                                <b class="text-secondary">T</b>
                             </div>
                         {{--</div>--}}
                     </div>
-                    <div class="row ">
-                        <div class="col-lg-4">
-                            <b CLASS="text-warning text-15">COST</b>
+                    <div class="row text-right">
+                        <div class="col-9 text-left">
+                            <b class="text-g-yellow">COST</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
-                            <div class="col-lg-2 @if($s==0) hide @endif">
-                                <b CLASS="text-unset text-15">$<span name="cost_s" id="cost_s">{{ceil($prem_s)}}</span></b>
+                            <div class="col @if($s==0) d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_s" id="cost_s">{{ceil($prem_s)}}</span></b>
                             </div>
-                            <div class="col-lg-2 @if($d==0) hide @endif">
-                                <b CLASS="text-unset text-15">$<span name="cost_d" id="cost_d">{{ceil($prem_d)}}</span></b>
+                            <div class="col @if($d==0) d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_d" id="cost_d">{{ceil($prem_d)}}</span></b>
                             </div>
-                            <div class="col-lg-2 @if($m==0) hide @endif">
-                                <b CLASS="text-unset text-15">$<span name="cost_m" id="cost_m">{{ceil($prem_m)}}</span></b>
+                            <div class="col @if($m==0) d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_m" id="cost_m">{{ceil($prem_m)}}</span></b>
                             </div>
-                            <div class="col-lg-2 @if($t==0) hide @endif">
-                                <b CLASS="text-unset text-15">$<span name="cost_t" id="cost_t">{{ceil($prem_t)}}</span></b>
+                            <div class="col @if($t==0) d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_t" id="cost_t">{{ceil($prem_t)}}</span></b>
                             </div>
                         {{--</div>--}}
                     </div>
-                    <div class="row linea text-11">
-                        <div class="col-lg-4">
-                            <b CLASS="text-warning text-15">PROFIT</b>
+                    <div class="row text-right">
+                        <div class="col-9 text-left">
+                            <b class="text-secondary">PROFIT</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
-                            <div class="col-lg-2 @if($s==0) hide @endif">
-                                <input class="form-control" type="text" name="pro_s" id="pro_s" value="{{$utilidad_s}}" onchange="variar_profit('s')">
-                                <b CLASS="text-warning text-15"><span id="porc_s">{{$utilidad_por_s}}</span>%</b>
+                            <div class="col @if($s==0) d-none @endif">
+                                <input class="form-control text-right" type="text" name="pro_s" id="pro_s" value="{{$utilidad_s}}" onchange="variar_profit('s')">
+                                <b class="text-secondary"><span id="porc_s">{{$utilidad_por_s}}</span>%</b>
                             </div>
-                            <div class="col-lg-2 @if($d==0) hide @endif">
-                                <input class="form-control" type="text" name="pro_d" id="pro_d" value="{{$utilidad_d}}" onchange="variar_profit('d')">
-                                <b CLASS="text-warning text-15"><span id="porc_d">{{$utilidad_por_d}}</span>%</b>
+                            <div class="col @if($d==0) d-none @endif">
+                                <input class="form-control text-right" type="text" name="pro_d" id="pro_d" value="{{$utilidad_d}}" onchange="variar_profit('d')">
+                                <b class="text-secondary"><span id="porc_d">{{$utilidad_por_d}}</span>%</b>
                             </div>
-                            <div class="col-lg-2 @if($m==0) hide @endif">
-                                <input class="form-control" type="text" name="pro_m" id="pro_m" value="{{$utilidad_m}}" onchange="variar_profit('m')">
-                                <b CLASS="text-warning text-15"><span id="porc_m">{{$utilidad_por_m}}</span>%</b>
+                            <div class="col @if($m==0) d-none @endif">
+                                <input class="form-control text-right" type="text" name="pro_m" id="pro_m" value="{{$utilidad_m}}" onchange="variar_profit('m')">
+                                <b class="text-secondary"><span id="porc_m">{{$utilidad_por_m}}</span>%</b>
                             </div>
-                            <div class="col-lg-2 @if($t==0) hide @endif">
-                                <input class="form-control" type="text" name="pro_t" id="pro_t" value="{{$utilidad_t}}" onchange="variar_profit('t')">
-                                <b CLASS="text-warning text-15"><span id="porc_t">{{$utilidad_por_t}}</span>%</b>
+                            <div class="col @if($t==0) d-none @endif">
+                                <input class="form-control text-right" type="text" name="pro_t" id="pro_t" value="{{$utilidad_t}}" onchange="variar_profit('t')">
+                                <b class="text-secondary"><span id="porc_t">{{$utilidad_por_t}}</span>%</b>
                             </div>
                         {{--</div>--}}
                     </div>
+                    <hr>
                     <div class="row ">
                         @php
                             $valor=0;
@@ -450,29 +477,34 @@
                                 $valor+=round($prem_t+$utilidad_t,2);
                             @endphp
                         @endif
-                        <div class="col-lg-4">
-                            <b CLASS="text-warning text-15">SALES</b>
+
+                        <div class="col-9">
+                            <b class="text-g-yellow text-15">SALES</b>
                         </div>
-                        <div class="col-lg-2 @if($s==0) hide @endif">
-                            <input class="form-control" type="text" name="sale_s" id="sale_s" value="@if($s!=0){{round(ceil($prem_s)+$utilidad_s,2)}}@else{{0}}@endif" onchange="variar_sales('s')">
+                        <div class="col @if($s==0) d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_s" id="sale_s" value="@if($s!=0){{round(ceil($prem_s)+$utilidad_s,2)}}@else{{0}}@endif" onchange="variar_sales('s')">
                         </div>
-                        <div class="col-lg-2 @if($d==0) hide @endif">
-                            <input class="form-control" type="text" name="sale_d" id="sale_d" value="@if($d!=0){{round(ceil($prem_d)+$utilidad_d,2)}}@else{{0}}@endif" onchange="variar_sales('d')">
+                        <div class="col @if($d==0) d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_d" id="sale_d" value="@if($d!=0){{round(ceil($prem_d)+$utilidad_d,2)}}@else{{0}}@endif" onchange="variar_sales('d')">
                         </div>
-                        <div class="col-lg-2 @if($m==0) hide @endif">
-                            <input class="form-control" type="text" name="sale_m" id="sale_m" value="@if($m!=0){{round(ceil($prem_m)+$utilidad_m,2)}}@else{{0}}@endif" onchange="variar_sales('m')">
+                        <div class="col @if($m==0) d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_m" id="sale_m" value="@if($m!=0){{round(ceil($prem_m)+$utilidad_m,2)}}@else{{0}}@endif" onchange="variar_sales('m')">
                         </div>
-                        <div class="col-lg-2 @if($t==0) hide @endif">
-                            <input class="form-control" type="text" name="sale_t" id="sale_t" value="@if($t!=0){{round(ceil($prem_t)+$utilidad_t,2)}}@else{{0}}@endif" onchange="variar_sales('t')">
-                        </div>
-                    </div>
-                    <div class="row text-center">
-                        <div class="text-center col-lg-12 total_profit">
-                            <b CLASS="text-15">TOTAL SALE $<span id="total_profit">{{ceil($valor)}}</span></b>
+                        <div class="col @if($t==0) d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_t" id="sale_t" value="@if($t!=0){{round(ceil($prem_t)+$utilidad_t,2)}}@else{{0}}@endif" onchange="variar_sales('t')">
                         </div>
                     </div>
-                    <div class="row text-center margin-top-10">
-                        <div class="text-center col-lg-12 ">
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="alert alert-primary  clearfix">
+                                <b class="h5 float-left">TOTAL SALE </b>
+                                <span id="total_profit" class="float-right"><sup>$</sup>{{ceil($valor)}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row text-right mt-4">
+                        <div class="text-center col-12 ">
                             <input type="hidden" name="paquete_id" value="{{$paquete_id}}">
                             <input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id1}}">
                             <input type="hidden" name="profit_por_s" id="profit_por_s" value="40">
@@ -483,10 +515,10 @@
 
                             {{csrf_field()}}
                             @if($imprimir=='no')
-                                <button class="btn btn-warning btn-lg" type="submit" name="create" value="create">GUARDAR {{$plan[$pos_plan]}}</button>
-                                <button class="btn btn-warning btn-lg" type="submit" name="create" value="create_template">GUARDAR {{$plan[$pos_plan]}} y CREAR TEMPLATE</button>
+                                <button class="btn btn-g-yellow" type="submit" name="create" value="create">GUARDAR {{$plan[$pos_plan]}}</button>
+                                <button class="btn btn-success" type="submit" name="create" value="create_template">GUARDAR {{$plan[$pos_plan]}} y CREAR TEMPLATE</button>
                             @else
-                                <button class="btn btn-warning btn-lg" type="submit" name="create">EDITAR {{$plan[$pos_plan]}}</button>
+                                <button class="btn btn-g-yellow" type="submit" name="create">EDITAR {{$plan[$pos_plan]}}</button>
                                 @if($imprimir=='si_create')
                                     <p><b class="text-success text-20">Gracias. Su paquete fue creado correctamente!!!</b></p>
                                 @else
@@ -499,7 +531,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+
+        </div></div>
+
     </form>
     <script>
         $(document).ready(function() {

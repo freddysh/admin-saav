@@ -13,18 +13,21 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Reservas</li>
-            <li>Liquidacion</li>
-            <li class="active">Liquidaciones</li>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Reservas</li>
+            <li class="breadcrumb-item">Liquidacion</li>
+            <li class="breadcrumb-item active">Liquidacion</li>
         </ol>
-    </div>
+    </nav>
+    <hr>
     <div class="panel panel-default">
         <div class="panel-body">
             {{csrf_field()}}
-            <table id="lista_liquidaciones1"  class="table table-bordered table-striped table-responsive table-hover">
+            <table id="lista_liquidaciones1"  class="table table-bordered table-sm table-hover" cellspacing="0">
+
                 <thead>
                 <tr>
                     <th>DESDE</th>
@@ -35,6 +38,8 @@
                     <th>SALDO</th>
                     <th>ESTADO</th>
                     <th>OPERACIONES</th>
+                    <th>Action</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -90,9 +95,11 @@
                                 {{$user->name}} {{$liquidacion->tipo_user}}
                             @endforeach
                         </td>
-                        <td>${{$total_monto}}</td>
-                        <td>${{$total_pagado_monto}}</td>
-                        <td>${{$total_monto-$total_pagado_monto}}</td>
+
+                        <td class="text-right"><sup>$</sup>{{$total_monto}}</td>
+                        <td class="text-right"><sup>$</sup>{{$total_pagado_monto}}</td>
+                        <td class="text-right"><sup>$</sup>{{$total_monto-$total_pagado_monto}}</td>
+
 
                         <td>
                             @if($total==0)
@@ -125,9 +132,11 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <a href="{{route('ver_liquidacion_path',[$liquidacion->ini,$liquidacion->fin])}}" class="btn btn-primary"><i class="fa fa-eye-slash"></i></a>
-                            <a class="btn btn-danger" onclick="eliminar_liquidacion('{{$liquidacion->id}}','{{$liquidacion->ini}}','{{$liquidacion->fin}}')"><i class="fa fa-trash-o"></i></a>
+
+                        <td class="text-center">
+                            <a href="{{route('ver_liquidacion_path',[$liquidacion->ini,$liquidacion->fin])}}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-danger btn-sm" onclick="eliminar_liquidacion('{{$liquidacion->id}}','{{$liquidacion->ini}}','{{$liquidacion->fin}}')"><i class="fas fa-trash text-white"></i></a>
+
                         </td>
                     </tr>
                 @endforeach

@@ -24,43 +24,48 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Database</li>
-            <li class="active">Costs</li>
-        </ol>
-    </div>
-    <div class="row margin-top-20">
-        <a href="{{route('mostrar_cost_new_path')}}" type="button" class="btn btn-primary">
-            New <i class="fa fa-plus-circle" aria-hidden="true"></i>
-        </a>
-        @foreach($categorias->where('nombre','HOTELS') as $categoria)
-            @php
-                $tipoServicio[]=$categoria->nombre;
-            @endphp
-        @endforeach
-        <?php
-        $pos=0;
-        ?>
-        @foreach($categorias->where('nombre','HOTELS') as $categoria)
-            <?php
-            $activo_='';
-            ?>
-            @if($pos==0)
-                <?php
-                $activo_='active';
-                ?>
-            @endif
-            <?php
-            $pos++;
-            ?>
-        @endforeach
 
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Database</li>
+            <li class="breadcrumb-item active">Cost</li>
+        </ol>
+    </nav>
+    <hr>
+
+    <div class="row mt-3">
+        <div class="col">
+            <a href="{{route('mostrar_cost_new_path')}}" class="btn btn-primary btn-sm">
+                <i class="fa fa-plus" aria-hidden="true"></i> New
+            </a>
+            @foreach($categorias->where('nombre','HOTELS') as $categoria)
+                @php
+                    $tipoServicio[]=$categoria->nombre;
+                @endphp
+            @endforeach
+            <?php
+            $pos=0;
+            ?>
+            @foreach($categorias->where('nombre','HOTELS') as $categoria)
+                <?php
+                $activo_='';
+                ?>
+                @if($pos==0)
+                    <?php
+                    $activo_='active';
+                    ?>
+                @endif
+                <?php
+                $pos++;
+                ?>
+            @endforeach
+        </div>
     </div>
-    <div class="row margin-top-20">
-        <div class="col-lg-12">
-            <ul class="nav nav-tabs">
+    <div class="row mt-3">
+        <div class="col">
+            <ul class="nav nav-tabs nav-justified">
+
                 <?php
                 $pos=0;
                 ?>
@@ -73,7 +78,11 @@
                         $activo_='active';
                         ?>
                     @endif
-                    <li class="{{$activo_}}"><a data-toggle="tab" href="#t_{{$categoria->nombre}}">{{$categoria->nombre}}</a></li>
+
+                        <li class="nav-item active">
+                            <a data-toggle="tab" href="#t_{{$categoria->nombre}}" class="nav-link show {{$activo_}} rounded-0" role="tab" aria-controls="pills-home" aria-selected="true">{{$categoria->nombre}}</a>
+                        </li>
+
                     <?php
                     $pos++;
                     ?>
@@ -93,7 +102,9 @@
                         ?>
                     @endif
                     @if($categoria->nombre!='HOTELS')
-                        <div id="t_{{$categoria->nombre}}" class="tab-pane fade {{$activo_}}">
+
+                        <div id="t_{{$categoria->nombre}}" class="tab-pane show fade {{$activo_}}">
+
                             <div class="margin-top-20">
                                 <table id="tb_{{$categoria->nombre}}" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
                                     <thead>
@@ -148,13 +159,14 @@
                             </div>
                         </div>
                     @else
-                        <div id="t_{{$categoria->nombre}}" class="tab-pane fade {{$activo_}}">
-                            <div class="margin-top-20">
-                                <div class="row">
-                                    <div class="col-lg-2">
+
+                        <div id="t_{{$categoria->nombre}}" class="tab-pane show fade {{$activo_}}">
+                                <div class="row mt-3">
+                                    <div class="col">
                                         {{csrf_field()}}
                                         <div class="form-group">
-                                            <label for="txt_codigo">Location</label>
+                                            <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+
                                             <select class="form-control" name="localizacion" id="localizacion" onchange="mostrar_proveedores_cost($('#localizacion').val(),'{{$categoria->nombre}}')">
                                                 <option value="0_ninguno">Escoja un destino</option>
                                                 @foreach($destinations as $destinos)
@@ -163,9 +175,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2">
+
+                                    <div class="col">
                                         <div class="form-group">
-                                            <label for="txt_codigo">Estrellas</label>
+                                            <label for="txt_codigo" class="font-weight-bold text-secondary">Estrellas</label>
+
                                             <select class="form-control" name="estrellas" id="estrellas" onchange="mostrar_proveedores_x_estrellas_cost($('#localizacion').val(),'{{$categoria->nombre}}',$('#estrellas').val())">
                                                 <option value="0">Escoja una opcion</option>
                                                 <option value="2">2 Stars</option>
@@ -179,7 +193,7 @@
                                 <div id="caja_listado_cost_proveedores_{{$categoria->nombre}}">
 
                                 </div>
-                            </div>
+
                         </div>
                     @endif
                     <?php

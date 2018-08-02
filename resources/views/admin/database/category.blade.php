@@ -7,17 +7,21 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Database</li>
-            <li class="active">Categories</li>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Database</li>
+            <li class="breadcrumb-item active">Category</li>
         </ol>
-    </div>
-    <div class="row margin-top-20">
+    </nav>
+    <hr>
+    <div class="row mt-3">
+        <div class="col">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_new_destination">
-            New <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal_new_destination">
+            <i class="fa fa-plus" aria-hidden="true"></i> New
+
         </button>
 
         <!-- Modal -->
@@ -35,18 +39,23 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="txt_nombre">Nombre</label>
+
+                                        <label for="txt_nombre" class="font-weight-bold text-secondary">Nombre</label>
+
                                         <input type="text" class="form-control" id="txt_nombre" name="txt_nombre" placeholder="Nombre de la categoria" required>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label  for="txt_imagen">Periodo de pago</label>
+
+                                        <label  for="txt_imagen" class="font-weight-bold text-secondary">Periodo de pago</label>
+
                                         <input class="form-control" type="number" name="periodo" min="1" required>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <div class="form-group margin-top-25">
+                                    <div class="form-group">
+                                        <label for="tipo_periodo" class="font-weight-bold text-secondary mt-3"></label>
                                         <select class="custom-select form-control" id="tipo_periodo" name="tipo_periodo"  required>
                                             <option value="Antes">Antes</option>
                                             <option value="Despues">Despues</option>
@@ -64,16 +73,20 @@
                 </div>
             </div>
         </div>
+
+        </div>
     </div>
-    <div class="row margin-top-20">
-        <table id="example" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
+    <hr>
+    <div class="row mt-3">
+        <table id="example" class="table table-bordered table-sm">
             <thead>
-            <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Periodo pago</th>
-                <th>Operaciones</th>
-            </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Periodo pago</th>
+                    <th>Operaciones</th>
+                </tr>
+
             </thead>
             <tfoot>
             <tr>
@@ -88,14 +101,15 @@
             @foreach($categorias as $categoria)
                 <tr id="lista_categoria_{{$categoria->id}}">
                     <td>{{$i++}}</td>
-                    <td>{{$categoria->nombre}}</td>
+
+                    <td>{{ucwords(strtolower($categoria->nombre))}}</td>
                     <td>{{$categoria->periodo}} {{$categoria->tipo_periodo}}</td>
-                    <td>
-                        <button type="button" class="btn btn-warning"  data-toggle="modal" data-target="#modal_edit_categoria_{{$categoria->id}}">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_categoria_{{$categoria->id}}">
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="btn btn-danger" onclick="eliminar_categoria1({{$categoria->id}},'{{$categoria->nombre}}')">
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_categoria1('{{$categoria->id}}','{{$categoria->nombre}}')">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                     </td>
                 </tr>

@@ -1,27 +1,31 @@
 
-<table id="tb_HOTELS" class="table table-striped table-bordered table-responsive text-12" cellspacing="0" width="100%">
+
+<table id="tb_HOTELS" class="table table-bordered table-sm">
     <thead>
     <tr>
-        <th class="col-lg-1">Localizacion</th>
-        <th class="col-lg-1">Categoria</th>
-        <th class="col-lg-1">Proveedor</th>
-        <th class="col-lg-1">Opciones</th>
+        <th>Localizacion</th>
+        <th>Categoria</th>
+        <th>Proveedor</th>
+        <th>Opciones</th>
+
     </tr>
     </thead>
     <tbody>
     @foreach($hotel->where('estrellas',$estrellas) as $hotel_)
         <tr id="h_p_{{$hotel_->id}}">
-            <td>{{$hotel_->localizacion}}</td>
+
+            <td>{{ucwords(strtolower($hotel_->localizacion))}}</td>
             <td>{{$hotel_->estrellas}} Stars</td>
-            <td>{{$hotel_->proveedor->nombre_comercial}}</td>
-            <td>
+            <td>{{ucwords(strtolower($hotel_->proveedor->nombre_comercial))}}</td>
+            <td class="text-center">
                 <b class="text-warning">
                     <a class="text-warning" href="{{route('editar_hotel_proveedor_path',$hotel_->id)}}">
-                        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                     </a>
                 </b>
                 <b href="!#" class="puntero text-danger" onclick="eliminar_hotel_pro('{{$hotel_->proveedor->nombre_comercial}}','{{$hotel_->id}}')">
-                    <i class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+
                 </b>
             </td>
         </tr>

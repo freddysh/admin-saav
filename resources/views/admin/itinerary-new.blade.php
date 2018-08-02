@@ -12,6 +12,7 @@
     {{--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
 @stop
 @section('content')
+
     <div class="row">
         <ol class="breadcrumb">
             <li><a href="/">Home</a></li>
@@ -172,25 +173,27 @@
                                             @endforeach
                                         </select>
                                         <input type="hidden" name="duerme" id="duerme" value="0">
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 text-left text-16 hide">
-                    <label class="text-green-goto">Total(cost without hotel) $<span id="total_ci_0"></span></label>
+                <div class="row">
+                    <div class="col-lg-6 text-left text-16 d-none">
+                        <label class="text-green-goto">Total(cost without hotel) $<span id="total_ci_0"></span></label>
+                    </div>
+                    <div class="col-lg-6">
+                        {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
+                        <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-                    <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
-                </div>
-            </div>
-            {{csrf_field()}}
-            <input type="hidden" name="precio_itinerario" id="precio_itinerario_0" value="0">
-        </form>
+                {{csrf_field()}}
+                <input type="hidden" name="precio_itinerario" id="precio_itinerario_0" value="0">
+            </form>
+        </div>
+
     </div>
     <script>
 

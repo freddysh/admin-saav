@@ -8,7 +8,7 @@
     {{--estilos--}}
     <link rel="stylesheet" href="{{mix("css/admin/admin.css")}}">
     {{--fonts--}}
-    <link rel="stylesheet" href="{{mix("css/font-awesome.css")}}">
+{{--    <link rel="stylesheet" href="{{mix("css/font-awesome.css")}}">--}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.css">
 
     <script src="{{asset("js/app.js")}}"></script>

@@ -6,6 +6,7 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
 @endphp
 @extends('layouts.admin.book')
 @section('content')
+
     <div class="row">
         <ol class="breadcrumb">
             <li><a href="/">Home</a></li>
@@ -161,10 +162,12 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                     @endif
                                                 </td>
                                             </tr>
+
                                         @endforeach
                                     @endforeach
                                 @endforeach
                             @endforeach
+
                         @endforeach
                         <tr>
                             <td colspan="5"><b>Total</b></td>
@@ -204,22 +207,26 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                 @endphp
                                             @endif
                                             <tr>
+
                                                 <td>
                                                     <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                     {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                 </td>
                                                 <td>{{$servicio->clase}}</td>
+
                                                 <td>{{$itinerario_servicio->nombre}}</td>
                                                 <td>{{$liquidacion->nropersonas}}</td>
                                                 <td>
                                                     @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                         {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                     @endforeach
+
                                                 </td>
                                                 <td>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
                                                 <td>
                                                     ${{$itinerario_servicio->precio_proveedor}}
                                                     @php
+
                                                         $total_KORI+=$itinerario_servicio->precio_proveedor;
                                                     @endphp
                                                 </td>
@@ -231,10 +238,12 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                     @endif
                                                 </td>
                                             </tr>
+
                                         @endforeach
                                     @endforeach
                                 @endforeach
                             @endforeach
+
                         @endforeach
                         <tr>
                             <td colspan="5"><b>Total</b></td>
@@ -302,10 +311,12 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                 </td>
 
                                             </tr>
+
                                         @endforeach
                                     @endforeach
                                 @endforeach
                             @endforeach
+
                         @endforeach
                         <tr>
                             <td colspan="5"><b>Total</b></td>
@@ -373,10 +384,12 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                 </td>
 
                                             </tr>
+
                                         @endforeach
                                     @endforeach
                                 @endforeach
                             @endforeach
+
                         @endforeach
                         <tr>
                             <td colspan="5"><b>Total</b></td>
@@ -444,10 +457,12 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                                                 </td>
 
                                             </tr>
+
                                         @endforeach
                                     @endforeach
                                 @endforeach
                             @endforeach
+
                         @endforeach
                         <tr>
                             <td colspan="6"><b>Total</b></td>
@@ -459,6 +474,7 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                     </table>
                 </div>
                 <div class="col-lg-12">
+
                     <div class="col-lg-12 text-right">
                         {{csrf_field()}}
                         <input type="hidden" name="desde" value="{{$fecha_ini}}">
@@ -475,9 +491,11 @@ return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
                             $cotisa=substr($cotisa,0,strlen($cotisa)-1);
                         @endphp
                         <input type="hidden" name="cotis" value="{{$cotisa}}">
+
                         <button type="submit" class="btn btn-primary" id="buscar" name="buscar">Enviar liquidacion</button>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>

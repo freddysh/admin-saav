@@ -489,7 +489,7 @@ class ServicesController extends Controller
         $destinations = M_Destino::get();
 //        return $sericios;
         $cadena = '';
-        $cadena .= '<table id="tb_' . $destino[0] . '_' . $destino[1] . '" class="' . $destino[1] . ' table tb table-striped table-bordered table-responsive" cellspacing="0" width="100%">
+        $cadena .= '<table id="tb_' . $destino[0] . '_' . $destino[1] . '" class="' . $destino[1] . ' table table-sm table-striped table-bordered mt-3" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th>Localizacion</th>
@@ -530,27 +530,27 @@ class ServicesController extends Controller
         if ($destino[1] == 'TRAINS')
             $cadena .= '<th>Horario</th>';
         $cadena .= '<th>Precio</th>
-                              <th>Operaciones</th>
+                              <th>Action</th>
                               </tr>
                               </tfoot>
                               <tbody>';
         $pos = 0;
         foreach ($sericios->sortBy('localizacion') as $servicio) {
             $cadena .= '<tr class="' . $servicio->localizacion . '" id="lista_services_' . $servicio->id . '">
-    <td class="text-green-goto">' . $servicio->localizacion . '</td>
+    <td class="text-green-goto">' . ucwords(strtolower($servicio->localizacion)) . '</td>
     <td class="text-green-goto">' . $servicio->codigo . '</td>
-    <td id="tipo_' . $servicio->id . '">' . $servicio->tipoServicio;
+    <td id="tipo_' . $servicio->id . '">' . ucwords(strtolower($servicio->tipoServicio));
             if ($destino[1] == 'MOVILID')
                 $cadena .= '[' . $servicio->min_personas . ' - ' . $servicio->max_personas . ']';
             $cadena .= '</td>
-    <td id="nombre_' . $servicio->id . '">' . $servicio->nombre . '</td>';
+    <td id="nombre_' . $servicio->id . '">' . ucwords(strtolower($servicio->nombre)) . '</td>';
             if ($destino[1] == 'TRAINS')
                 $cadena .= '<td id="horario_' . $servicio->id . '">' . $servicio->salida . ' - ' . $servicio->llegada . '</td>';
 
-            $cadena .= '<td id="precio_' . $servicio->id . '">$' . $servicio->precio_venta . '</td>
-    <td>
-        <button type="button" class="btn btn-warning"  data-toggle="modal" data-target="#modal_edit_producto' . $servicio->id . '">
-            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            $cadena .= '<td id="precio_' . $servicio->id . '" class="text-right"><sup>$</sup>' . $servicio->precio_venta . '</td>
+    <td class="text-center">
+        <button type="button" class="btn btn-warning btn-sm mr-2"  data-toggle="modal" data-target="#modal_edit_producto' . $servicio->id . '">
+            <i class="fas fa-pencil-alt"></i>
         </button>';
 
 
@@ -626,7 +626,7 @@ class ServicesController extends Controller
                     $vision++;
                     $cadena .='<div id="proveedor_'.$provider->id.'" class="col-md-2';
                     if($proveedor_id1!=$provider->id){
-                        $cadena .=' hide';
+                        $cadena .=' d-none';
                     }
                     $cadena .='">
                             <div class="form-group">
@@ -1246,8 +1246,8 @@ class ServicesController extends Controller
                     '<input name="costo_val[]" type="number" class="form-control" style="width: 85px" value="'.$costo->precio_costo.'">'.
                     '</div>'.
                     '<div class="col-lg-2">'.
-                    '<button type="button" class="btn btn-danger" onclick="eliminar_proveedor_comprobando('.$servicio->id.','.$costo->id.','.$costo->proveedor->id.',\''.$costo->proveedor->nombre_comercial.'\')">'.
-                    '<i class="fa fa-trash-o" aria-hidden="true"></i>'.
+                    '<button type="button" class="btn btn-danger btn-sm" onclick="eliminar_proveedor_comprobando('.$servicio->id.','.$costo->id.','.$costo->proveedor->id.',\''.$costo->proveedor->nombre_comercial.'\')">'.
+                    '<i class="fa fa-trash"></i>'.
                     '</button>'.
                     '</div>'.
                     '</div>';
@@ -1272,9 +1272,8 @@ class ServicesController extends Controller
             </div>
         </div>';
 
-
-            $cadena .= '<button type="button" class="btn btn-danger" onclick="eliminar_servicio(\'' . $servicio->localizacion . '\',\'' . $servicio->id . '\',\'' . $servicio->nombre . '\')">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
+            $cadena .= '<button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio(\'' . $servicio->localizacion . '\',\'' . $servicio->id . '\',\'' . $servicio->nombre . '\')">
+                <i class="fa fa-trash"></i>
             </button>
     </td>
 </tr>';

@@ -7,9 +7,9 @@
     <title>Document</title>
 
     {{--estilos--}}
+    <link rel="stylesheet" href="{{mix("css/app.css")}}">
     <link rel="stylesheet" href="{{mix("css/admin/admin.css")}}">
     {{--fonts--}}
-    <link rel="stylesheet" href="{{mix("css/font-awesome.css")}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.css">
 
     <script src="{{asset("js/app.js")}}"></script>
@@ -20,32 +20,38 @@
     <script src="{{asset("js/admin/plugins.js")}}"></script>
     @yield('archivos-js')
 </head>
-<body>
-
-@include('layouts.admin.nav')
+<body data-spy="scroll" data-target="#menu" class="position-relative">
 @php
     function activar_link2($link){
         $activo='';
         if(request()->is($link))
         $activo=' menu-lista-activo';
 
-
         return $activo;
     }
 @endphp
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            @include('layouts.menu-lateral')
+        <div class="col-2">
+            @include('layouts.admin.nav')
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-10">
             @yield('content')
         </div>
     </div>
 </div>
 {{--scripts--}}
-
+<script src="{{asset("js/font-awesome.js")}}"></script>
 <script>
+    var swiper = new Swiper('.swiper-container', {
+        direction: 'vertical',
+        slidesPerView: 'auto',
+        freeMode: true,
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+        mousewheel: true,
+    });
 
     var jumboHeight = $('.jumbotron').outerHeight();
     function parallax(){
@@ -57,6 +63,27 @@
         parallax();
     });
 
+    $('.popover-hover').popover({
+        trigger: 'hover'
+    });
+    $('.popover-focus').popover({
+        trigger: 'focus',
+        html: true
+    });
+    $('.popover-dismiss').popover({
+        trigger: 'focus',
+        html: true
+    })
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+
+    $(function () {
+        $('[data-toggle="popover"]').popover({
+            html: true
+        })
+    })
 </script>
 
 

@@ -1,19 +1,21 @@
 
-<table id="tb_HOTELS" class="table table-striped table-bordered table-responsive text-12" cellspacing="0" width="100%">
+<div class="table-responsive">
+<table id="tb_HOTELS" class="table table-striped table-bordered table-sm small">
     <thead>
     <tr>
         @if($grupo=='HOTELS')
-            <th class="col-lg-1">Cat</th>
+            <th>Cat</th>
         @endif
-        <th class="col-lg-1">Codigo</th>
-        <th class="col-lg-1">Ruc</th>
-        <th class="col-lg-1">Razon social</th>
-        <th class="col-lg-1">Nombre comercial</th>
-        <th class="col-lg-1">Reservas</th>
-        <th class="col-lg-1">Contabilidad</th>
-        <th class="col-lg-1">Operaciones</th>
-        <th class="col-lg-1">Plazo</th>
-        <th class="col-lg-1">Opciones</th>
+        <th>Codigo</th>
+        <th>Ruc</th>
+        <th>Razon social</th>
+        <th>Nombre comercial</th>
+        <th>Reservas</th>
+        <th>Contabilidad</th>
+        <th>Operaciones</th>
+        <th>Plazo</th>
+        <th>Opciones</th>
+
     </tr>
     </thead>
     <tbody>
@@ -28,20 +30,22 @@
             <td>{{$provider->nombre_comercial}}</td>
             <td>
                 <b>Cel:</b>{{$provider->r_telefono}}<br>
-                <b>Email:</b>{{$provider->r_email}}
+
+                <b>Email:</b><br>{{$provider->r_email}}
             </td>
             <td>
                 <b>Cel:</b>{{$provider->c_telefono}}<br>
-                <b>Email:</b>{{$provider->c_email}}
+                <b>Email:</b><br>{{$provider->c_email}}
             </td>
             <td>
                 <b>Cel:</b>{{$provider->o_telefono}}<br>
-                <b>Email:</b>{{$provider->o_email}}
+                <b>Email:</b><br>{{$provider->o_email}}
             </td>
             <td>{{$provider->plazo}} dias {{$provider->desci}}</td>
-            <td>
+            <td class="text-center">
                 <b href="!#" class="puntero text-warning"  data-toggle="modal" data-target="#modal_edit_cost_{{$provider->id}}">
-                    <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                    <i class="fas fa-pencil-alt"></i>
+
                 </b>
                 <div class="modal fade bd-example-modal-lg" id="modal_edit_cost_{{$provider->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -202,10 +206,14 @@
                 </div>
 
                 <b href="!#" class="puntero text-danger" onclick="eliminar_provider('{{$provider->id}}','{{$provider->razon_social}}')">
-                    <i class="fa fa-trash-o fa-2x" aria-hidden="true"></i>
+
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+
                 </b>
             </td>
         </tr>
     @endforeach
     </tbody>
 </table>
+</div>
+

@@ -24,24 +24,29 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Database</li>
-            <li class="active">Costs</li>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Database</li>
+            <li class="breadcrumb-item active">Cost</li>
         </ol>
-    </div>
-    <div class="row margin-top-20">
-        <div class="margin-top-20 panel panel-default panel-floating panel-floating-inline " id="modal_new_cost">
-            <div class="panel-body">
+    </nav>
+    <hr>
+    <div class="row mt-3">
+        <div class="col" id="modal_new_cost">
+
             <form  action="{{route('costs_save_path')}}" method="post" id="service_save_id" enctype="multipart/form-data">
-            @foreach($categorias->where('nombre','HOTELS') as $categoria)
+                @foreach($categorias->where('nombre','HOTELS') as $categoria)
+
                 <?php
                     $tipoServicio[]=$categoria->nombre;
                 ?>
             @endforeach
 
-                <ul class="nav nav-tabs">
+
+                    <ul class="nav nav-tabs nav-justified">
+
                     <?php
                     $pos=0;
                     ?>
@@ -54,7 +59,11 @@
                             $activo_='active';
                             ?>
                         @endif
-                        <li class="{{$activo_}}"><a data-toggle="tab" href="#{{$categoria->nombre}}" onclick="escojerPos({{$pos}})">{{$categoria->nombre}}</a></li>
+
+                            <li class="nav-item active">
+                                <a data-toggle="tab" href="#{{$categoria->nombre}}" class="nav-link show {{$activo_}} rounded-0" onclick="escojerPos({{$pos}})">{{$categoria->nombre}}</a>
+                            </li>
+
                             <?php
                             $pos++;
                             ?>
@@ -73,12 +82,14 @@
                                 $activo='in active';
                             ?>
                         @endif
-                        <div id="{{$categoria->nombre}}" class="tab-pane fade {{$activo}}">
-                                <div class="row">
+
+                        <div id="{{$categoria->nombre}}" class="tab-pane fade show {{$activo}}">
+                                <div class="row mt-3">
                                     @if($categoria->nombre!='HOTELS')
-                                        <div class="col-md-4">
+                                        <div class="col">
                                             <div class="form-group">
-                                                <label for="txt_codigo">Location</label>
+                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+
                                                 {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
                                                 <select class="form-control" id="txt_localizacion_{{$pos0}}" name="txt_localizacion_{{$pos0}}" onchange="mostrar_hoteles('{{$pos0}}')">
                                                     @foreach($destinations as $destination)
@@ -92,9 +103,11 @@
 
                                     @endif
                                     @if($categoria->nombre=='HOTELS')
-                                            <div class="col-md-2">
+
+                                            <div class="col">
                                                 <div class="form-group">
-                                                    <label for="txt_codigo">Location</label>
+                                                    <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+
                                                     {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
                                                     <select class="form-control" id="txt_localizacion_{{$pos0}}" name="txt_localizacion_{{$pos0}}" onchange="mostrar_hoteles('{{$pos0}}')">
                                                         <option value="0">Escoja el destino</option>
@@ -110,9 +123,11 @@
                                                     <input type="hidden" name="tipoServicio_{{$pos0}}" id="tipoServicio_{{$pos0}}" value="{{$categoria->nombre}}">
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
+
+                                            <div class="col">
                                                 <div class="form-group">
-                                                    <label for="txt_codigo">Categoria</label>
+                                                    <label for="txt_codigo" class="font-weight-bold text-secondary">Categoria</label>
+
                                                     {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
                                                     <select class="form-control" id="txt_categoria_{{$pos0}}" name="txt_categoria_{{$pos0}}" onchange="mostrar_hoteles_categoria('{{$pos0}}')">
                                                         <option value="2">2 Stars</option>
@@ -123,188 +138,167 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
-                                            <div class="form-group col-md-9">
-                                                <label for="txt_precio">Provider</label>
-                                                <input type="text" class="form-control" id="txt_provider_{{$pos0}}" name="txt_provider_{{$pos0}}" placeholder="Provider" >
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="form-group col-9">
+                                                        <label for="txt_precio" class="font-weight-bold text-secondary">Provider</label>
+                                                        <input type="text" class="form-control" id="txt_provider_{{$pos0}}" name="txt_provider_{{$pos0}}" placeholder="Provider" >
+                                                    </div>
+                                                    <div class="col mt-1">
+                                                        <button type="button" class="btn btn-primary mt-4" data-toggle="modal" data-target="#modal_new_provider" onclick="pasar_pos_provider('0')">
+                                                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-2 margin-top-25 ">
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_new_provider" onclick="pasar_pos_provider('0')">
-                                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                        </div>
                                     @endif
-                                    @if($categoria->nombre=='HOTELS')
-                                        <div class="col-md-3">
-                                            <table class="table table-responsive table-striped table-condensed">
-                                                <thead>
-                                                <tr>
-                                                    <th class="col-lg-2 text-primary">ACOMODATION</th>
-                                                    <th id="header_2" class="col-lg-2 text-warning text-center text-15">2 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
-                                                    <th id="header_3" class="col-lg-2 text-warning text-center text-15 hide">3 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
-                                                    <th id="header_4" class="col-lg-2 text-warning text-center text-15 hide">4 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
-                                                    <th id="header_5" class="col-lg-2 text-warning text-center text-15 hide">5 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>SIMGLE</td>
-                                                    <td id="dato_s_2"><input type="number" name="S_2" id="S_2" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_s_3" class="hide"><input type="number" name="S_3" id="S_3" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_s_4" class="hide"><input type="number" name="S_4" id="S_4" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_s_5" class="hide"><input type="number" name="S_5" id="S_5" class="form-control" min="0" step="0.01" value="0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>DOUBLE</td>
-                                                    <td id="dato_d_2"><input type="number" name="D_2" id="D_2" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_d_3" class="hide"><input type="number" name="D_3" id="D_3" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_d_4" class="hide"><input type="number" name="D_4" id="D_4" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_d_5" class="hide"><input type="number" name="D_5" id="D_5" class="form-control" min="0" step="0.01" value="0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>MATRIMONIAL</td>
-                                                    <td id="dato_m_2"><input type="number" name="M_2" id="M_2" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_m_3" class="hide"><input type="number" name="M_3" id="M_3" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_m_4" class="hide"><input type="number" name="M_4" id="M_4" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_m_5" class="hide"><input type="number" name="M_5" id="M_5" class="form-control" min="0" step="0.01" value="0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>TRIPLE</td>
-                                                    <td id="dato_t_2"><input type="number" name="T_2" id="T_2" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_t_3" class="hide"><input type="number" name="T_3" id="T_3" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_t_4" class="hide"><input type="number" name="T_4" id="T_4" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_t_5" class="hide"><input type="number" name="T_5" id="T_5" class="form-control" min="0" step="0.01" value="0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>SUPERIOR SIMPLE</td>
-                                                    <td id="dato_ss_2"><input type="number" name="SS_2" id="SS_2" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_ss_3" class="hide"><input type="number" name="SS_3" id="SS_3" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_ss_4" class="hide"><input type="number" name="SS_4" id="SS_4" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_ss_5" class="hide"><input type="number" name="SS_5" id="SS_5" class="form-control" min="0" step="0.01" value="0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>SUPERIOR DOUBLE</td>
-                                                    <td id="dato_sd_2"><input type="number" name="SD_2" id="SD_2" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_sd_3" class="hide"><input type="number" name="SD_3" id="SD_3" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_sd_4" class="hide"><input type="number" name="SD_4" id="SD_4" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_sd_5" class="hide"><input type="number" name="SD_5" id="SD_5" class="form-control" min="0" step="0.01" value="0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>SUITE</td>
-                                                    <td id="dato_su_2"><input type="number" name="SU_2" id="SU_2" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_su_3" class="hide"><input type="number" name="SU_3" id="SU_3" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_su_4" class="hide"><input type="number" name="SU_4" id="SU_4" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_su_5" class="hide"><input type="number" name="SU_5" id="SU_5" class="form-control" min="0" step="0.01" value="0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>JR. SUITE</td>
-                                                    <td id="dato_js_2"><input type="number" name="JS_2" id="JS_2" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_js_3" class="hide"><input type="number" name="JS_3" id="JS_3" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_js_4" class="hide"><input type="number" name="JS_4" id="JS_4" class="form-control" min="0" step="0.01" value="0"></td>
-                                                    <td id="dato_js_5" class="hide"><input type="number" name="JS_5" id="JS_5" class="form-control" min="0" step="0.01" value="0"></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    @endif
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            {{--<label for="txt_type">Type</label>--}}
-                                            {{--<input type="text" class="form-control" id="txt_type_0" name="txt_type_0" placeholder="Type">--}}
 
-{{--                                                        @if($categoria->nombre=='HOTELS')--}}
-                                                {{--<select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">--}}
-                                                    {{--<option value="2 STARS">2 STARS</option>--}}
-                                                    {{--<option value="3 STARS">3 STARS</option>--}}
-                                                    {{--<option value="4 STARS">4 STARS</option>--}}
-                                                    {{--<option value="5 STARS">5 STARS</option>--}}
-                                                {{--</select>--}}
-                                            {{--@endif--}}
-                                            @if($categoria->nombre=='TOURS')
-                                                <label for="txt_type">Type</label>
-                                                <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
-                                                    <option value="GROUP">GROUP</option>
-                                                    <option value="PRIVATE">PRIVATE</option>
-                                                </select>
-                                            @endif
-                                            @if($categoria->nombre=='MOVILID')
-                                                <label for="txt_type">Type</label>
-                                                <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
-                                                    <option value="AUTO">AUTO</option>
-                                                    <option value="SUV">SUV</option>
-                                                    <option value="VAN">VAN</option>
-                                                    <option value="H1">H1</option>
-                                                    <option value="SPRINTER">SPRINTER</option>
-                                                    <option value="BUS">BUS</option>
-                                                </select>
-                                            @endif
-                                            @if($categoria->nombre=='REPRESENT')
-                                                <label for="txt_type">Type</label>
-                                                <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
-                                                    <option value="GUIDE">GUIDE</option>
-                                                    <option value="TRANSFER">TRANSFER</option>
-                                                    <option value="ASSISTANCE">ASSISTANCE</option>
-                                                </select>
-                                            @endif
-                                            @if($categoria->nombre=='ENTRANCES')
-                                                <label for="txt_type">Type</label>
-                                                <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
-                                                    <option value="EXTRANJERO">EXTRANJERO</option>
-                                                    <option value="NATIONAL">NATIONAL</option>
-                                                </select>
-                                            @endif
-                                            @if($categoria->nombre=='FOOD')
-                                                <label for="txt_type">Type</label>
-                                                <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
-                                                    <option value="LUNCH">LUNCH</option>
-                                                    <option value="DINNER">DINNER</option>
-                                                    <option value="BOX LUNCH">BOX LUNCH</option>
-                                                </select>
-                                            @endif
-                                            @if($categoria->nombre=='TRAINS')
-                                                <label for="txt_type">Type</label>
-                                                <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
-                                                    <option value="EXPEDITION">EXPEDITION</option>
-                                                    <option value="VISITADOME">VISITADOME</option>
-                                                    <option value="HIRAN BINGHAN">BOX LUNCH</option>
-                                                    <option value="EJECUTIVO">EJECUTIVO</option>
-                                                    <option value="PRIMERA CLASE">PRIMERA CLASE</option>
-                                                </select>
-                                            @endif
-                                            @if($categoria->nombre=='FLIGHTS')
-                                                <label for="txt_type">Type</label>
-                                                <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
-                                                    <option value="NATIONAL">NATIONAL</option>
-                                                    <option value="INTERNATIONAL">INTERNATIONAL</option>
-                                                </select>
-                                            @endif
-                                            @if($categoria->nombre=='OTHERS')
-                                                <input type="text" class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}" placeholder="Type">
-                                            @endif
 
-                                        </div>
+                                </div>
+
+                            <div class="row justify-content-center">
+                                @if($categoria->nombre=='HOTELS')
+                                    <div class="col-6">
+                                        <table class="table table-bordered table-sm">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-primary">ACOMODATION</th>
+                                                <th id="header_2" class="text-warning text-center">2 <i class="fa fa-star"></i></th>
+                                                <th id="header_3" class="text-warning text-center d-none">3 <i class="fa fa-star"></i></th>
+                                                <th id="header_4" class="text-warning text-center d-none">4 <i class="fa fa-star"></i></th>
+                                                <th id="header_5" class="text-warning text-center d-none">5 <i class="fa fa-star"></i></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>SIMGLE</td>
+                                                <td id="dato_s_2"><input type="number" name="S_2" id="S_2" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_s_3" class="d-none"><input type="number" name="S_3" id="S_3" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_s_4" class="d-none"><input type="number" name="S_4" id="S_4" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_s_5" class="d-none"><input type="number" name="S_5" id="S_5" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>DOUBLE</td>
+                                                <td id="dato_d_2"><input type="number" name="D_2" id="D_2" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_d_3" class="d-none"><input type="number" name="D_3" id="D_3" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_d_4" class="d-none"><input type="number" name="D_4" id="D_4" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_d_5" class="d-none"><input type="number" name="D_5" id="D_5" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>MATRIMONIAL</td>
+                                                <td id="dato_m_2"><input type="number" name="M_2" id="M_2" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_m_3" class="d-none"><input type="number" name="M_3" id="M_3" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_m_4" class="d-none"><input type="number" name="M_4" id="M_4" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_m_5" class="d-none"><input type="number" name="M_5" id="M_5" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>TRIPLE</td>
+                                                <td id="dato_t_2"><input type="number" name="T_2" id="T_2" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_t_3" class="d-none"><input type="number" name="T_3" id="T_3" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_t_4" class="d-none"><input type="number" name="T_4" id="T_4" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_t_5" class="d-none"><input type="number" name="T_5" id="T_5" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>SUPERIOR SIMPLE</td>
+                                                <td id="dato_ss_2"><input type="number" name="SS_2" id="SS_2" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_ss_3" class="d-none"><input type="number" name="SS_3" id="SS_3" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_ss_4" class="d-none"><input type="number" name="SS_4" id="SS_4" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_ss_5" class="d-none"><input type="number" name="SS_5" id="SS_5" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>SUPERIOR DOUBLE</td>
+                                                <td id="dato_sd_2"><input type="number" name="SD_2" id="SD_2" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_sd_3" class="d-none"><input type="number" name="SD_3" id="SD_3" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_sd_4" class="d-none"><input type="number" name="SD_4" id="SD_4" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_sd_5" class="d-none"><input type="number" name="SD_5" id="SD_5" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>SUITE</td>
+                                                <td id="dato_su_2"><input type="number" name="SU_2" id="SU_2" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_su_3" class="d-none"><input type="number" name="SU_3" id="SU_3" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_su_4" class="d-none"><input type="number" name="SU_4" id="SU_4" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_su_5" class="d-none"><input type="number" name="SU_5" id="SU_5" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>JR. SUITE</td>
+                                                <td id="dato_js_2"><input type="number" name="JS_2" id="JS_2" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_js_3" class="d-none"><input type="number" name="JS_3" id="JS_3" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_js_4" class="d-none"><input type="number" name="JS_4" id="JS_4" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                                <td id="dato_js_5" class="d-none"><input type="number" name="JS_5" id="JS_5" class="form-control form-control-sm" min="0" step="0.01" value="0"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    {{--@if($categoria->nombre=='HOTELS')--}}
-                                    {{--<div class="col-md-4">--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label for="txt_type">Accommodation</label>--}}
-                                            {{--<input type="text" class="form-control" id="txt_type_0" name="txt_type_0" placeholder="Type">--}}
-                                            {{--<select class="form-control" id="txt_acomodacion_0" name="txt_acomodacion_{{$pos0}}">--}}
-                                                {{--<option value="S">SIMPLE</option>--}}
-                                                {{--<option value="D">DOBLE</option>--}}
-                                                {{--<option value="M">MATRIMONIAL</option>--}}
-                                                {{--<option value="T">TRIPLE</option>--}}
-                                                {{--<option value="SS">SUPERIOR SIMPLE</option>--}}
-                                                {{--<option value="SD">SUPERIOR DOBLE</option>--}}
-                                                {{--<option value="SU">SUITE</option>--}}
-                                                {{--<option value="JS">JR. SUITE</option>--}}
-                                            {{--</select>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--@endif--}}
-                                    @if($categoria->nombre!='HOTELS')
-                                    <div class="col-md-4">
+                                @endif
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        @if($categoria->nombre=='TOURS')
+                                            <label for="txt_type">Type</label>
+                                            <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
+                                                <option value="GROUP">GROUP</option>
+                                                <option value="PRIVATE">PRIVATE</option>
+                                            </select>
+                                        @endif
+                                        @if($categoria->nombre=='MOVILID')
+                                            <label for="txt_type">Type</label>
+                                            <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
+                                                <option value="AUTO">AUTO</option>
+                                                <option value="SUV">SUV</option>
+                                                <option value="VAN">VAN</option>
+                                                <option value="H1">H1</option>
+                                                <option value="SPRINTER">SPRINTER</option>
+                                                <option value="BUS">BUS</option>
+                                            </select>
+                                        @endif
+                                        @if($categoria->nombre=='REPRESENT')
+                                            <label for="txt_type">Type</label>
+                                            <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
+                                                <option value="GUIDE">GUIDE</option>
+                                                <option value="TRANSFER">TRANSFER</option>
+                                                <option value="ASSISTANCE">ASSISTANCE</option>
+                                            </select>
+                                        @endif
+                                        @if($categoria->nombre=='ENTRANCES')
+                                            <label for="txt_type">Type</label>
+                                            <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
+                                                <option value="EXTRANJERO">EXTRANJERO</option>
+                                                <option value="NATIONAL">NATIONAL</option>
+                                            </select>
+                                        @endif
+                                        @if($categoria->nombre=='FOOD')
+                                            <label for="txt_type">Type</label>
+                                            <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
+                                                <option value="LUNCH">LUNCH</option>
+                                                <option value="DINNER">DINNER</option>
+                                                <option value="BOX LUNCH">BOX LUNCH</option>
+                                            </select>
+                                        @endif
+                                        @if($categoria->nombre=='TRAINS')
+                                            <label for="txt_type">Type</label>
+                                            <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
+                                                <option value="EXPEDITION">EXPEDITION</option>
+                                                <option value="VISITADOME">VISITADOME</option>
+                                                <option value="HIRAN BINGHAN">BOX LUNCH</option>
+                                                <option value="EJECUTIVO">EJECUTIVO</option>
+                                                <option value="PRIMERA CLASE">PRIMERA CLASE</option>
+                                            </select>
+                                        @endif
+                                        @if($categoria->nombre=='FLIGHTS')
+                                            <label for="txt_type">Type</label>
+                                            <select class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}">
+                                                <option value="NATIONAL">NATIONAL</option>
+                                                <option value="INTERNATIONAL">INTERNATIONAL</option>
+                                            </select>
+                                        @endif
+                                        @if($categoria->nombre=='OTHERS')
+                                            <input type="text" class="form-control" id="txt_type_0" name="txt_type_{{$pos0}}" placeholder="Type">
+                                        @endif
+
+                                    </div>
+                                </div>
+                                @if($categoria->nombre!='HOTELS')
+                                    <div class="col-6">
+
                                         <div class="form-group col-md-9">
                                             <label for="txt_precio">Provider</label>
                                             <input type="text" class="form-control" id="txt_provider_{{$pos0}}" name="txt_provider_{{$pos0}}" placeholder="Provider">
@@ -316,45 +310,52 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+
+                                    <div class="col-6">
+
                                         <div class="form-group">
                                             <label for="txt_product">Product</label>
                                             <input type="text" class="form-control" id="txt_product_{{$pos0}}" name="txt_product_{{$pos0}}" placeholder="Product">
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 hide">
+
+                                    <div class="col-6 d-none">
+
                                         <div class="form-group">
                                             <label for="txt_code">Code product</label>
                                             <input type="text" class="form-control" id="txt_code_0" name="txt_code_{{$pos0}}" placeholder="Code product">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+
+                                    <div class="col-6">
+
                                         <div class="form-group">
                                             <label for="txt_price">Price</label>
                                             <input type="number" class="form-control" id="txt_price_0" name="txt_price_{{$pos0}}" placeholder="Price" min="0.00" step="0.01">
                                         </div>
                                     </div>
-                                    @endif
-                                    <div class="col-md-4 hide">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label class=" text-green-goto">
-                                                    <input type="radio" name="txt_tipo_grupo_{{$pos0}}" value="Absoluto" checked="checked">
-                                                    Precio es absoluto
-                                                </label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class=" text-green-goto">
-                                                    <input type="radio" name="txt_tipo_grupo_{{$pos0}}" value="Individual">
-                                                    Precio es individual
-                                                </label>
-                                            </div>
+
+                                @endif
+                                <div class="col-6 d-none">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class=" text-green-goto">
+                                                <input type="radio" name="txt_tipo_grupo_{{$pos0}}" value="Absoluto" checked="checked">
+                                                Precio es absoluto
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class=" text-green-goto">
+                                                <input type="radio" name="txt_tipo_grupo_{{$pos0}}" value="Individual">
+                                                Precio es individual
+                                            </label>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
+                            </div>
+
                     <?php
                     $pos0++;
                     ?>
@@ -369,8 +370,10 @@
                 <input type="hidden" name="hotel_id_5" id="hotel_id_5" value="0">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
-        </form>
-        </div>
+
+            </form>
+
+
         </div>
 
     </div>

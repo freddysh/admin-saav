@@ -6,11 +6,15 @@
 /vendor
 /vendor2
 /.idea
+/.vscode
 /.vagrant
 Homestead.json
 Homestead.yaml
+npm-debug.log
+yarn-error.log
 .env
+
 node_modules.zip
+vendor.zip
 vendor1.zip
 vendor2.zip
-vendor.zip

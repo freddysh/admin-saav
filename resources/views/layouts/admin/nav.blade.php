@@ -1,4 +1,43 @@
-<nav class="navbar bg-white">
+            {{--@include('layouts.menu-lateral')--}}
+
+            <nav id="sidebar" class="bg-light p-2">
+                <div class="sidebar-header">
+                    <img alt="Brand" src="{{asset("img/logos/logo-gotoperu.png")}}" class="w-100">
+                    <div class="row justify-content-center my-3">
+                        <div class="col-8 text-center">
+                            <img src="https://scontent.flim9-1.fna.fbcdn.net/v/t1.0-9/31739806_993323907486435_1000599518791598080_n.jpg?_nc_cat=0&oh=5eb66ecc0cc7c6c1897958ef0907c7b1&oe=5B9E1A5A" alt="" class="rounded-circle w-100">
+                            <p class="m-0">
+                                {{auth()->guard('admin')->user()->name}}
+                                <a href="#" class="popover-dismiss"
+                                   data-toggle="popover" data-trigger="focus" data-placement="bottom"
+                                   data-content="
+                                    <ul class='list-style-none text-left p-0'>
+                                        <li><a href=''><i class='fas fa-user-circle'></i> <span class='pl-2'>Profile</span></a></li>
+                                        <li><a href='{{route('logout_path')}}'><i class='fas fa-sign-out-alt'></i> <span class='pl-2'>Logout</span></a></li>
+                                    </ul>
+                                "
+                                ><i class="fas fa-caret-down"></i></a>
+                                <span class="d-block text-info">(Administrador)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="list-unstyled components">
+                    {{--<p>VENTAS</p>--}}
+                    @include('layouts.menu-lateral')
+
+                    <hr>
+
+                    @include('layouts.menu')
+
+                </ul>
+
+
+            </nav>
+
+
+<nav class="navbar bg-white d-none">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="nav-brand-goto margin-top-10" href="/">
