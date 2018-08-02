@@ -68,6 +68,7 @@
                 @endforeach
             @endforeach
         </div>
+
         <div class="col-6">
             <div class="row align-items-center">
                 <div class="col-6">
@@ -88,6 +89,7 @@
         </div>
     </div>
     <hr>
+
     @php
     $nroPersonas=0;
     $nro_dias=0;
@@ -283,17 +285,20 @@
                                                                                         </div>
                                                                                 @endif
                                                                             @else
+
                                                                                 <div class="checkbox1">
                                                                                         <label>
                                                                                             <input type="radio" name="op_services" id="serv_{{$servicio->id}}" value="{{$servicio->id}}" @if($servicios->codigo == $servicio->codigo) checked @endif>
                                                                                             {{$servicio->nombre}}<br>
                                                                                             <span class="padding-left-10 text-primary">
+
                                                                                                 @if($grupo=='TOURS')
                                                                                                     <i class="fa fa-map-o text-info" aria-hidden="true"></i>
                                                                                                 @endif
                                                                                                 @if($grupo=='MOVILID')
                                                                                                     <i class="fa fa-bus text-warning" aria-hidden="true"></i>
                                                                                                 @endif
+
                                                                                                 @if($grupo=='REPRESENT')
                                                                                                     <i class="fa fa-users text-success" aria-hidden="true"></i>
                                                                                                 @endif
@@ -339,6 +344,7 @@
                                             </div>
                                         @endforeach
                                     </div>
+
                                 </div>
                                     @foreach($itinerario->hotel as $hotel)
                                         @if($hotel->personas_s>0)
@@ -423,6 +429,7 @@
                                                                         <input class="form-control" type="number" name="precio_m" value="{{explode('.00',$hotel->precio_m)[0]/2}}">
                                                                     </div>
                                                                     <div class="col @if($hotel->personas_t==0) d-none @endif">
+
                                                                         <input class="form-control" type="number" name="precio_t" value="{{explode('.00',$hotel->precio_t)[0]/3}}">
                                                                     </div>
                                                                 </div>

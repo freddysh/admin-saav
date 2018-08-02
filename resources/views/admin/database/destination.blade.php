@@ -7,6 +7,7 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -20,6 +21,7 @@
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_new_destination">
             <i class="fa fa-plus" aria-hidden="true"></i> New
+
         </button>
 
         <!-- Modal -->
@@ -36,6 +38,7 @@
                         <div class="modal-body">
 
                                 <div class="row">
+
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
@@ -63,6 +66,7 @@
                                     <div class="col-3 hide">
                                         <div class="form-group">
                                             <label for="txt_region" class="font-weight-bold text-secondary">Region</label>
+
                                             <select class="custom-select form-control" id="txt_region" name="txt_region" >
                                                 <option selected>Abrir menu</option>
                                                 <option value="COSTA">COSTA</option>
@@ -71,9 +75,11 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col-3 hide">
                                         <div class="form-group">
                                             <label for="txt_departamento" class="font-weight-bold text-secondary">Departamento</label>
+
                                             <select class="custom-select form-control" id="txt_departamento" name="txt_departamento" >
                                                 <option selected>Abrir menu</option>
                                                 <option value="AMAZONAS">AMAZONAS</option>
@@ -104,10 +110,12 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col-3">
                                         <div class="form-group">
                                             <label for="txt_imagen" class="font-weight-bold text-secondary">Imagen</label>
                                             <input type="file" class="form-control-file" id="txt_imagen" name="txt_imagen" placeholder="Imagen">
+
                                         </div>
                                     </div>
 
@@ -123,10 +131,12 @@
                 </div>
             </div>
         </div>
+
         </div>
     </div>
     <div class="row margin-top-20">
         <table id="example" class="table table-bordered table-sm">
+
             <thead>
             <tr>
                 <th>Pais</th>
@@ -152,7 +162,9 @@
                 <tr id="lista_destinos_{{$destino->id}}">
                     <td>{{$destino->pais}}</td>
                     <td>{{$destino->codigo}}</td>
+
                     <td>{{ucwords(strtolower($destino->destino))}}</td>
+
                     <td>{{$destino->descripcion}}</td>
 
                     <td>
@@ -164,12 +176,14 @@
                             </picture>
                         @endif
                     </td>
+
                     <td class="text-center">
                         <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_destination_{{$destino->id}}">
                              <i class="fa fa-pencil-alt" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_destino('{{$destino->id}}','{{$destino->destino}}')">
                             <i class="fas fa-trash" aria-hidden="true"></i>
+
                         </button>
                     </td>
                 </tr>
@@ -191,6 +205,7 @@
                                 <div class="modal-body">
 
                                     <div class="row">
+
                                         <div class="col-3">
                                             <div class="form-group">
                                                 <label for="txt_codigo" class="text-secondary font-weight-bold">Codigo</label>
@@ -206,11 +221,13 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="txt_descripcion" class="text-secondary font-weight-bold">Descripcion</label>
+
                                                 <input type="text" class="form-control" id="txt_descripcion" name="txt_descripcion" placeholder="Descripcion" value="{{$destino->descripcion}}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
+
                                         <div class="col-3">
                                             <div class="form-group">
                                                 <label for="txt_pais" class="text-secondary font-weight-bold">Pais</label>
@@ -220,6 +237,7 @@
                                         <div class="col-3 hide">
                                             <div class="form-group">
                                                 <label for="txt_region" class="text-secondary font-weight-bold">Region</label>
+
                                                 <select class="custom-select form-control" id="txt_region" name="txt_region" >
                                                     <option selected>Abrir menu</option>
                                                     <option value="COSTA" @if($destino->region='COSTA') selected @endif>COSTA</option>
@@ -228,9 +246,11 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-3 hide">
+
+                                        <div class="col-3 d-none">
                                             <div class="form-group">
                                                 <label for="txt_departamento" class="text-secondary font-weight-bold">Departamento</label>
+
                                                 <select class="custom-select form-control" id="txt_departamento" name="txt_departamento" >
                                                     <option disabled>Abrir menu</option>
                                                     <option value="AMAZONAS" @if($destino->region='AMAZONAS') selected @endif>AMAZONAS</option>
@@ -261,9 +281,11 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="col-3">
                                             <div class="form-group">
                                                 <label for="txt_imagen" class="text-secondary font-weight-bold">Imagen</label>
+
                                                 @if (Storage::disk('destination')->has($destino->imagen))
                                                     <picture>
                                                         <img
@@ -272,9 +294,11 @@
                                                     </picture>
                                                     {{--<img src="{{ route('destination_image_path', ['filename' => $destino->imagen])}}" alt="" width="100px" height="100px">--}}
 {{--                                                    <input type="file" id="file" name="file" class="dropify" data-default-file="{{ route('admin_itinerary_image_path', ['filename' => $destino->imagen])}}"/>--}}
+
                                                     <input type="file" class="form-control-file" id="txt_imagen" name="txt_imagen" placeholder="Imagen">
                                                 @else
                                                     <input type="file" class="form-control-file" id="txt_imagen" name="txt_imagen" placeholder="Imagen">
+
                                                 @endif
 
                                             </div>

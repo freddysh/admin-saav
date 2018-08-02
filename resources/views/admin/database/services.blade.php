@@ -79,6 +79,7 @@
                 @endforeach
             </ul>
             <div class="tab-content margin-top-20">
+
             <?php
             $pos=0;
             ?>
@@ -152,6 +153,7 @@
                                             @foreach($destinations as $destination)
                                                 <option value="{{$destination->id}}_{{$categoria->nombre}}_{{$destination->destino}}">{{$destination->destino}}</option>
                                             @endforeach
+
                                         </select>
                                     </div>
                                 </div>
@@ -323,6 +325,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         @endforeach
 
                     @endif
@@ -332,8 +335,10 @@
                 ?>
             @endforeach
         </div>
+
         </div>
         </div>
+
     </div>
     <script>
         $(document).ready(function() {

@@ -1,4 +1,3 @@
-
             {{--@include('layouts.menu-lateral')--}}
 
             <nav id="sidebar" class="bg-light p-2">

@@ -390,6 +390,7 @@
                                             </div>
                                         </div>
                                         <div class="col text-right">
+
                                             <b class="text-right text-danger puntero" onclick="borrar_hotel_quot_paso1('{{$hotel->id}}','{{$itinerario->dias}}')">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </b>
@@ -447,6 +448,7 @@
                 {{--<input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">--}}
                 {{--<input type="hidden" name="imprimir" value="no">--}}
                 {{--                    <a href="{{route('show_step2_edit_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" class="btn btn-warning btn-lg" type="submit" name="create">EDIT</a>--}}
+
             </div>
         </div>
     {{--</form>--}}

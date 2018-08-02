@@ -223,6 +223,7 @@
             </div>
             <div class="col-lg-6 py-1">
                 <div class="sticky-top py-4">
+
                 @php
                     $nroPersonas=0;
                     $nro_dias=0;
@@ -274,7 +275,6 @@
                         @endphp
                         @foreach($paquete->itinerario_cotizaciones as $itinerario)
                             @php
-
                             $precio_hotel_s=0;
                             $precio_hotel_d=0;
                             $precio_hotel_m=0;
@@ -389,6 +389,7 @@
                     $precio_hotel_m+=$precio_iti;
                     $precio_hotel_t+=$precio_iti;
                 @endphp
+
                 <div class="col-12">
                     <div class="row text-right">
                         <div class="col-9 text-left">
@@ -476,6 +477,7 @@
                                 $valor+=round($prem_t+$utilidad_t,2);
                             @endphp
                         @endif
+
                         <div class="col-9">
                             <b class="text-g-yellow text-15">SALES</b>
                         </div>
@@ -529,6 +531,7 @@
                     </div>
                 </div>
             </div>
+
         </div></div>
 
     </form>

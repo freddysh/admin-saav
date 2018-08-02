@@ -257,7 +257,6 @@
                                 $hotel_id_2=$hotels->id;
                             @endphp
                         @endif
-
                         @if($hotels->estrellas=='3')
                             @php
                                 $h3_s=$hotels->single;
@@ -802,7 +801,6 @@
                             </form>
                         </div>
                     </div>
-
                 </div>
                 <div role="tabpanel" class="tab-pane" id="new">
                     <div class="row">
@@ -1044,6 +1042,7 @@
         </div>
 
     </div>
+
 
     {{--</form>--}}
     <script>

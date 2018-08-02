@@ -21,6 +21,7 @@
 
 </head>
 <body>
+
 <div class="container-fluid">
     <div class="row">
         {{--<div class="hide col-sm-3 col-md-2 sidebar">--}}
@@ -79,7 +80,6 @@
                 {{--<li><a href="{{route("current-quote_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Current</a></li>--}}
                 {{--<li class="divider"></li>--}}
                 {{--<li class="padding-side-20 bg-sub-title-aside"><b class="text-green-goto text-16">Sales</b></li>--}}
-
             {{--</ul>--}}
             {{--<ul class="nav nav-sidebar hide">--}}
             {{--<li class="padding-side-20 bg-green-goto text-white text-20">Operations</li>--}}

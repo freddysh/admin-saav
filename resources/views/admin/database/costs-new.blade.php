@@ -24,6 +24,7 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -37,12 +38,15 @@
 
             <form  action="{{route('costs_save_path')}}" method="post" id="service_save_id" enctype="multipart/form-data">
                 @foreach($categorias->where('nombre','HOTELS') as $categoria)
+
                 <?php
                     $tipoServicio[]=$categoria->nombre;
                 ?>
             @endforeach
 
+
                     <ul class="nav nav-tabs nav-justified">
+
                     <?php
                     $pos=0;
                     ?>
@@ -55,9 +59,11 @@
                             $activo_='active';
                             ?>
                         @endif
+
                             <li class="nav-item active">
                                 <a data-toggle="tab" href="#{{$categoria->nombre}}" class="nav-link show {{$activo_}} rounded-0" onclick="escojerPos({{$pos}})">{{$categoria->nombre}}</a>
                             </li>
+
                             <?php
                             $pos++;
                             ?>
@@ -76,12 +82,14 @@
                                 $activo='in active';
                             ?>
                         @endif
+
                         <div id="{{$categoria->nombre}}" class="tab-pane fade show {{$activo}}">
                                 <div class="row mt-3">
                                     @if($categoria->nombre!='HOTELS')
                                         <div class="col">
                                             <div class="form-group">
                                                 <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+
                                                 {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
                                                 <select class="form-control" id="txt_localizacion_{{$pos0}}" name="txt_localizacion_{{$pos0}}" onchange="mostrar_hoteles('{{$pos0}}')">
                                                     @foreach($destinations as $destination)
@@ -95,9 +103,11 @@
 
                                     @endif
                                     @if($categoria->nombre=='HOTELS')
+
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+
                                                     {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
                                                     <select class="form-control" id="txt_localizacion_{{$pos0}}" name="txt_localizacion_{{$pos0}}" onchange="mostrar_hoteles('{{$pos0}}')">
                                                         <option value="0">Escoja el destino</option>
@@ -113,9 +123,11 @@
                                                     <input type="hidden" name="tipoServicio_{{$pos0}}" id="tipoServicio_{{$pos0}}" value="{{$categoria->nombre}}">
                                                 </div>
                                             </div>
+
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="txt_codigo" class="font-weight-bold text-secondary">Categoria</label>
+
                                                     {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
                                                     <select class="form-control" id="txt_categoria_{{$pos0}}" name="txt_categoria_{{$pos0}}" onchange="mostrar_hoteles_categoria('{{$pos0}}')">
                                                         <option value="2">2 Stars</option>
@@ -286,6 +298,7 @@
                                 </div>
                                 @if($categoria->nombre!='HOTELS')
                                     <div class="col-6">
+
                                         <div class="form-group col-md-9">
                                             <label for="txt_precio">Provider</label>
                                             <input type="text" class="form-control" id="txt_provider_{{$pos0}}" name="txt_provider_{{$pos0}}" placeholder="Provider">
@@ -297,25 +310,32 @@
                                         </div>
                                     </div>
 
+
                                     <div class="col-6">
+
                                         <div class="form-group">
                                             <label for="txt_product">Product</label>
                                             <input type="text" class="form-control" id="txt_product_{{$pos0}}" name="txt_product_{{$pos0}}" placeholder="Product">
                                         </div>
                                     </div>
 
+
                                     <div class="col-6 d-none">
+
                                         <div class="form-group">
                                             <label for="txt_code">Code product</label>
                                             <input type="text" class="form-control" id="txt_code_0" name="txt_code_{{$pos0}}" placeholder="Code product">
                                         </div>
                                     </div>
+
                                     <div class="col-6">
+
                                         <div class="form-group">
                                             <label for="txt_price">Price</label>
                                             <input type="number" class="form-control" id="txt_price_0" name="txt_price_{{$pos0}}" placeholder="Price" min="0.00" step="0.01">
                                         </div>
                                     </div>
+
                                 @endif
                                 <div class="col-6 d-none">
                                     <div class="row">
@@ -335,6 +355,7 @@
                                 </div>
                             </div>
                             </div>
+
                     <?php
                     $pos0++;
                     ?>
@@ -349,7 +370,9 @@
                 <input type="hidden" name="hotel_id_5" id="hotel_id_5" value="0">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
+
             </form>
+
 
         </div>
 

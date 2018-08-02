@@ -8,6 +8,7 @@
 {{--@stop--}}
 @section('content')
 
+
     <div class="row no-gutters mb-2">
         <div class="col text-center">
             <a href="{{route('current_quote_page_path', 'gotoperu.com')}}" class="btn btn-block btn-sm @if($page == 'gotoperu.com') btn-success @endif">gotoperu.com</a>
@@ -29,6 +30,7 @@
 
     <div class="row no-gutters">
         <div class="col">
+
             <div class="box-header-book">
                 <h4 class="no-margin">New
                     <span>
@@ -38,22 +40,28 @@
                 </h4>
             </div>
         </div>
+
         <div class="col">
+
             <div class="box-header-book">
                 <h4 class="no-margin">Proposal Sent<span><b class="label label-warning">#12</b> <small><b>$9542</b></small></span></h4>
             </div>
         </div>
-        {{--<div class="col">--}}
+
         {{--<div class="box-header-book border-right-0">--}}
         {{--<h4 class="no-margin">1st Follow Up<span><b class="label label-success">#12</b> <small><b>arrival date:</b> june</small></span></h4>--}}
         {{--</div>--}}
         {{--</div>--}}
+
         <div class="col">
+
             <div class="box-header-book border-right-0">
                 <h4 class="no-margin">30%<span><b class="label label-info">#12</b> <small><b>$9542</b></small></span></h4>
             </div>
         </div>
+
         <div class="col">
+
             <div class="box-header-book border-right-0">
                 <h4 class="no-margin">60%<span><b class="label label-info">#12</b> <small><b>$9542</b></small></span></h4>
             </div>
@@ -373,6 +381,7 @@
                 </ol>
             </li>
         </div>
+
         <div class='col box-list-book'>
             <li value="90">
                 <ol class='simple_with_animation vertical no-padding'>
@@ -413,6 +422,7 @@
                 </ol>
             </li>
         </div>
+
         <div class='col box-list-book'>
             <li value="100">
                 <ol class='simple_with_animation vertical no-padding'>

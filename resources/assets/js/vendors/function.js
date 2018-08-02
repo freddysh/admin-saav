@@ -1,6 +1,5 @@
 /**
  * Created by Sigma on 12/04/2017.
-<<<<<<< HEAD
  */
 //sortable itinerary
 $(function () {
@@ -218,6 +217,7 @@ function mostrar_pivot(cate){
     $("#t_FLIGHTS").addClass('d-none');
     $("#t_OTHERS").addClass('d-none');
     $("#t_"+cate).removeClass('d-none');
+
 }
 
 function eliminar_servicio(local,id,servicio) {
@@ -509,7 +509,9 @@ function  filtrar_grupos_edit(itinerario){
             }
         });
         if(esta==1) {
+
             $('#service_'+servicio3[2]).removeClass("d-none");
+
             $('#service_'+servicio3[2]).fadeIn("slow");
 
         }
@@ -545,13 +547,16 @@ function  filtrar_grupos_edit(itinerario){
                 }
             });
             if(esta==1) {
+
                 $('#service_edit_'+itinerario+'_'+servicio3[2]).removeClass("d-none");
                 $('#service_edit_'+itinerario+'_'+servicio3[2]).fadeIn("slow");
                 // console.log('no borrando:'+'#service_edit_'+itinerario+'_'+servicio3[2]);
             }
             else {
                 $(this).prop("checked", "");
+
                 $('#service_edit_'+itinerario+'_'+servicio3[2]).addClass("d-none");
+
                 $('#service_edit_'+itinerario+'_'+servicio3[2]).fadeOut("slow");
                 console.log('borrando:'+'#service_edit_'+itinerario+'_'+servicio3[2]);
             }
@@ -568,7 +573,9 @@ function  filtrar_itinerarios(){
     var destino1 =$('#desti').val().split('/');
     //
     $.each(destino1,function (index1,value){
+
         $('#group_destino_'+value).addClass("d-none");
+
         $('#group_destino_'+value).fadeOut("slow");
     });
     var esta=0;
@@ -579,7 +586,9 @@ function  filtrar_itinerarios(){
             valorci=$(this).val().split('_');
             console.log('destino escojido:'+valorci[0]);
             destinos+=valorci[0]+'/';
+
             $('#group_destino_'+valorci[0]).removeClass("d-none");
+
             $('#group_destino_'+valorci[0]).fadeIn("slow");
 
         }
@@ -1054,11 +1063,13 @@ function mostrar_categoria(plan_id){
     var $categoria=$('#categoria').val();
     var $travelers=$('#travelers').val();
     console.log($categoria+'_'+$travelers);
+
     $('#star_2').addClass('d-none');
     $('#star_3').addClass('d-none');
     $('#star_4').addClass('d-none');
     $('#star_5').addClass('d-none');
     $('#star_'+$categoria).removeClass('d-none');
+
     $('#pos').val($categoria);
     var s=0;
     var d=0;
@@ -1333,11 +1344,13 @@ function calcular_saldo(id){
     var $saldo=parseFloat($total-$serv_acta);
     console.log('total:'+$total+'_acta:'+$serv_acta+'_saldo:'+$saldo);
     $('#saldo_'+id).val($saldo);
+
     $('#ifecha_pago_'+id).removeClass('d-none');
     if($saldo==0)
         $('#ifecha_pago_'+id).addClass('d-none');
     else
         $('#ifecha_pago_'+id).removeClass('d-none');
+
 }
 function enviar_form(id){
     $('#fo_'+id).submit(function() {
@@ -1354,6 +1367,7 @@ function enviar_form(id){
             success: function(data) {
                 if(data==1){
                     $('#for_'+id).addClass('d-none');
+
                     $('#result_'+id).removeClass('text-danger');
                     $('#result_'+id).addClass('text-success');
                     $('#result_'+id).html('Pago guardado Correctamente!');
@@ -1471,7 +1485,9 @@ function Eliminar_cotizacion(id,titulo) {
         $.post('/admin/cotizacion/delete', 'id='+id, function(data) {
             if(data==1){
                 // $("#coti_new"+id).fadeOut( "slow");
+
                 $('#content-list-'+id).addClass('d-none');
+
             }
         }).fail(function (data) {
             console.log(data);
@@ -1584,10 +1600,12 @@ var escojer_consulta1=0;
 function escojer_consulta() {
     if(escojer_consulta1==0) {
         $('#lista').fadeOut();
+
         $('#lista').addClass('d-none');
 
         $('#custon').fadeIn();
         $('#custon').removeClass('d-none');
+
         escojer_consulta1=1;
         $('#custon1').html('Lista');
         $('#opcion').val('Custon');
@@ -1669,6 +1687,7 @@ function Pasar_datos1(){
                     '<input type="hidden" name="itinerarios_2[]" value="' + itinerario[0] + '">' +
                     '<span class="itinerarios_1 d-none">' + itinerario[5] + '</span>' +
                     '<span class="txt_itinerarios d-none" name="itinerarios1">' + itinerario[0] + '</span>' +
+
                     '<b class="dias_iti_c2" id="dias_' + total_Itinerarios_camino2 + '">Dia ' + total_Itinerarios_camino2 + ':</b> ' + itinerario[2] +
                     '</strong>' +
                     '<small>' +
@@ -3362,6 +3381,7 @@ function pagar_entrada(id,valor){
                     'El pago se guardo correctamente!',
                     'success'
                 )
+
                 $('#check_'+id).removeClass('d-none');
 
                 $('#fecha_'+id).removeClass('bg-danger');
@@ -3429,6 +3449,7 @@ function pagar_entrada_pagos(id,valor){
                 console.log('data:'+data);
                 if(data==1) {
                     var cvalor=parseFloat(valor);
+
                     $('#btn_pagar_ticket_'+id).addClass('d-none');
                     $('#a_cuenta_r_'+id).html('$'+cvalor);
                     $('#saldo_r_'+id).html('$0');
@@ -3444,13 +3465,13 @@ function pagar_entrada_pagos(id,valor){
                         'success'
                     )
                     $('#check_'+id).removeClass('d-none');
+
                 }
 
             }
         })
     })
 }
-
 
 function Pasar_pro(id,grupo,idservicio){
     // $('#lista_costos_'+id).append('iti_temp');
@@ -3471,6 +3492,7 @@ function Pasar_pro(id,grupo,idservicio){
                             '<div class="col-3">'+
                                 '<button type="button" class="btn btn-danger btn-sm" onclick="eliminar_proveedor('+id+','+grupo+','+idservicio+','+proveedor[0]+',\''+proveedor[1]+'\')">'+
                                     '<i class="fas fa-trash"></i>'+
+
                                 '</button>'+
                             '</div>'+
                           '</div>';
@@ -3611,13 +3633,16 @@ function guardarPrecio_Ticket(valor,id,fecha,pax){
             success: function(data) {
                 console.log('data:'+data);
                 if(data==1) {
+
                     $('#btn_save_ticket_'+id).addClass('d-none');
                     swal(
                         'Genial...',
                         'El precio se guardo correctamente!',
                         'success'
                     )
+
                     $('#btn_pagar_ticket_'+id).removeClass('d-none');
+
                 }
 
             }
@@ -3853,15 +3878,19 @@ function revertir_pago_entrada(id,valor){
             success: function(data) {
                 console.log('data:'+data);
                 if(data==1) {
+
                     $('#btn_pagar_'+id).removeClass('d-none');
                     $('#btn_revertir_'+id).addClass('d-none');
+
 
                     swal(
                         'Genial...',
                         'El pago se revirtio correctamente!',
                         'success'
                     )
+
                     $('#check_'+id).addClass('d-none');
+
 
                     $('#fecha_'+id).removeClass('bg-success');
                     $('#fecha_'+id).addClass('bg-danger');
@@ -4026,6 +4055,7 @@ function escojer_servicio(){
                 total_serv++;
                 iti_temp = '<div id="elto_'+itinerario[2]+'" class="col-lg-11 elemento_sort">'+
                     '<div class="row">'+
+
                 '<div class="col-lg-1 text-11 puntero"><span class="text-unset"><i class="fas fa-arrows-alt" aria-hidden="true"></i></span></div>'+
                 '<div class="col-lg-1 pos text-10">'+total_serv+'</div>'+
                 '<div class="col-lg-9 text-12">';
@@ -4043,6 +4073,7 @@ function escojer_servicio(){
                     iti_temp += '<i class = "fa fa-users text-success" aria-hidden="true"></i>';
                 else if($grupo == 'ENTRANCES')
                     iti_temp += '<i class= "fas fa-ticket-alt text-success" aria-hidden="true"></i>';
+
                 else if($grupo == 'FOOD')
                     iti_temp += '<i class = "fa fa-cutlery text-danger" aria-hidden="true"></i>';
                 else if($grupo == 'TRAINS')
@@ -4124,6 +4155,7 @@ function ordenar_servicios() {
 function mostrar_hoteles_categoria(pos) {
     var cate = $('#txt_categoria_' + pos).val();
     for(var i=2;i<=5;i++) {
+
         $("#header_"+i).addClass("d-none");
         $("#dato_s_"+i).addClass("d-none");
         $("#dato_d_"+i).addClass("d-none");

@@ -1,3 +1,4 @@
+
 <div class="table-responsive">
 <table id="tb_HOTELS" class="table table-striped table-bordered table-sm small">
     <thead>
@@ -14,6 +15,7 @@
         <th>Operaciones</th>
         <th>Plazo</th>
         <th>Opciones</th>
+
     </tr>
     </thead>
     <tbody>
@@ -28,6 +30,7 @@
             <td>{{$provider->nombre_comercial}}</td>
             <td>
                 <b>Cel:</b>{{$provider->r_telefono}}<br>
+
                 <b>Email:</b><br>{{$provider->r_email}}
             </td>
             <td>
@@ -42,6 +45,7 @@
             <td class="text-center">
                 <b href="!#" class="puntero text-warning"  data-toggle="modal" data-target="#modal_edit_cost_{{$provider->id}}">
                     <i class="fas fa-pencil-alt"></i>
+
                 </b>
                 <div class="modal fade bd-example-modal-lg" id="modal_edit_cost_{{$provider->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -202,7 +206,9 @@
                 </div>
 
                 <b href="!#" class="puntero text-danger" onclick="eliminar_provider('{{$provider->id}}','{{$provider->razon_social}}')">
+
                     <i class="fa fa-trash" aria-hidden="true"></i>
+
                 </b>
             </td>
         </tr>
@@ -210,3 +216,4 @@
     </tbody>
 </table>
 </div>
+

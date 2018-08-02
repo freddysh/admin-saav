@@ -17,6 +17,8 @@
     <script src="{{asset("https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.js")}}"></script>
     @yield('archivos-js')
     <script src="{{asset("js/admin/plugins.js")}}"></script>
+
+    <link rel="stylesheet" href="{{mix("css/bootstrap-clockpicker.css")}}">
 </head>
 <body>
 
@@ -39,7 +41,8 @@
     </div>
 </div>
 {{--scripts--}}
-{{--scripts--}}
 <script src="{{asset("js/font-awesome.js")}}"></script>
+<script src="{{asset("js/admin/bootstrap-clockpicker.js")}}"></script>
+
 </body>
 </html>

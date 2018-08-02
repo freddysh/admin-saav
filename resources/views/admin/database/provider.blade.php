@@ -7,6 +7,7 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -19,6 +20,7 @@
         <div class="col">
         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_new_provider">
             <i class="fa fa-plus" aria-hidden="true"></i> New
+
         </button>
         @foreach($categorias as $categoria)
             <?php
@@ -38,7 +40,9 @@
                             </button>
                         </div>
                         <div class="modal-body">
+
                             <ul class="nav nav-tabs nav-justified">
+
                                 <?php
                                 $pos=0;
                                 ?>
@@ -48,13 +52,15 @@
                                         if($pos==0)
                                             $activo='active';
                                         ?>
+
                                             <li class="nav-item active">
-                                            <a data-toggle="tab" href="#t_{{$tipoServicio_}}" class="nav-link show {{$activo}} rounded-0" onclick="escojerPos({{$pos++}},'{{$tipoServicio_}}')">{{$tipoServicio_}}</a>
+                                            <a data-toggle="tab" href="#t_{{$tipoServicio_}}" class="nav-link show {{$activo}} rounded-0" onclick="escojerPos('{{$pos++}}','{{$tipoServicio_}}')">{{$tipoServicio_}}</a>
                                         </li>
                                 @endforeach
 
                             </ul>
                             <div class="tab-content mt-3">
+
                                 <?php
                                 $in_pos=0;
                                 ?>
@@ -64,6 +70,7 @@
                                     if($in_pos==0)
                                         $in_activo='in active';
                                     ?>
+
                                     <div id="t_{{$tipoServicio_}}" class="tab-pane fade show {{$in_activo}}">
 
                                             <div class="row mt-3">
@@ -152,6 +159,7 @@
                                                                         <div class="form-group">
                                                                             <label for="txt_precio" class="font-weight-bold text-secondary">Direccion</label>
                                                                             <input type="text" class="form-control" id="txt_direccion_{{$in_pos}}" name="txt_direccion_{{$in_pos}}" placeholder="Direccion">
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -231,11 +239,13 @@
                 </div>
             </div>
         </div>
+
         </div>
     </div>
     <div class="row margin-top-20">
         <div class="col">
             <ul class="nav nav-tabs nav-justified">
+
                 <?php
                 $pos=0;
                 ?>
@@ -279,6 +289,7 @@
                                             {{csrf_field()}}
                                             <div class="form-group">
                                                 <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+
                                                 <select class="form-control" name="localizacion" id="localizacion" onchange="mostrar_proveedores($('#localizacion').val(),'{{$tipoServicio_}}')">
                                                     <option value="0_ninguno">Escoja un destino</option>
                                                     @foreach($destinations as $destinos)
@@ -287,9 +298,11 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="col">
                                             <div class="form-group">
                                                 <label for="txt_codigo" class="font-weight-bold text-secondary">Estrellas</label>
+
                                                 <select class="form-control" name="estrellas" id="estrellas" onchange="mostrar_proveedores_x_estrellas($('#localizacion').val(),'{{$tipoServicio_}}',$('#estrellas').val())">
                                                     <option value="0">Escoja una opcion</option>
                                                     <option value="2">2 Stars</option>
@@ -302,10 +315,12 @@
                                     </div>
                                 @else
                                     <div class="row">
+
                                         <div class="col-6">
                                             {{csrf_field()}}
                                             <div class="form-group">
                                                 <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+
                                                 <select class="form-control" name="localizacion" id="localizacion" onchange="mostrar_proveedores($(this).val(),'{{$tipoServicio_}}')">
                                                     <option value="0_ninguno">Escoja un destino</option>
                                                     @foreach($destinations as $destinos)

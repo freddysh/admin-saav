@@ -1272,7 +1272,6 @@ class ServicesController extends Controller
             </div>
         </div>';
 
-
             $cadena .= '<button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio(\'' . $servicio->localizacion . '\',\'' . $servicio->id . '\',\'' . $servicio->nombre . '\')">
                 <i class="fa fa-trash"></i>
             </button>

@@ -49,6 +49,7 @@
         </div>
 
     </form>
+
     <div id="lista_cotizacione" class="row">
         <?php
         $planes[]='A';
@@ -304,6 +305,7 @@
                                                     @endif
 
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -370,6 +372,7 @@
                                                     @endif
 
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -435,7 +438,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
 
@@ -732,7 +734,6 @@
 
             <input type="hidden" name="nro_planes" id="nro_planes" value="{{$pos_plan}}">
         @endif
-
     </div>
 
     <script>

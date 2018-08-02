@@ -705,10 +705,12 @@
 
                                     </div>
                                 </div>
+
                             </div>
 
 
                         </div>
+
                     </div>
                     <?php
                     $pos++;
@@ -730,6 +732,7 @@
 
         </form>
         </div>
+
     </div>
 
     <script>

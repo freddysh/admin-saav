@@ -22,6 +22,7 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -34,6 +35,7 @@
     <div class="row mt-3">
         <div class="col" id="modal_new_cost">
 
+
                 <form  action="{{route('hotel_proveedor_edit_path')}}" method="post" id="service_save_id" enctype="multipart/form-data">
                     @foreach($categorias as $categoria)
                         <?php
@@ -43,6 +45,7 @@
                     @php
                         $pos0=0;
                     @endphp
+
 
                             <div id="hotel">
                                 <div class="row">
@@ -75,6 +78,7 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="txt_codigo" class="font-weight-bold text-secondary">Categoria</label>
+
                                             {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
                                             <select class="form-control" id="txt_categoria_{{$pos0}}" name="txt_categoria_{{$pos0}}" onchange="mostrar_hoteles('{{$pos0}}')" readonly="readonly">
                                                 @php
@@ -87,6 +91,7 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col">
                                         <div class="row">
                                             <div class="form-group col-9">
@@ -95,10 +100,12 @@
                                             </div>
                                             <div class="col-3 my-4 ">
                                                 <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#modal_new_provider" onclick="pasar_pos_provider('0')">
+
                                                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                                 </button>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <hr>

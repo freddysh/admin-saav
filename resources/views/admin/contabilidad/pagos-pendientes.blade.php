@@ -14,6 +14,7 @@ use Carbon\Carbon;
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -27,6 +28,7 @@ use Carbon\Carbon;
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
+
                     <ul class="nav nav-tabs nav-justified">
                         <li class="nav-item active"><a data-toggle="tab" href="#home" class="nav-link active rounded-0">HOTELS</a></li>
                         <li class="nav-item"><a data-toggle="tab" href="#menu1" class="nav-link rounded-0">TOURS</a></li>
@@ -42,6 +44,7 @@ use Carbon\Carbon;
                     <div class="tab-content">
                         <div id="home" class="tab-pane fade show active">
                             <div class="row mt-3">
+
                                 <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-body">

@@ -1,16 +1,19 @@
 @extends('layouts.admin.contabilidad')
 @section('content')
+
     <div class="row no-gutters">
         <div class="col-4">
             <div class="box-header-book">
                 <h4 class="no-margin">New
                     <span>
                         <b class="badge badge-danger">#{{$cotizacion->count()}}</b>
+
                         <small><b>Travel date:</b> june</small>
                     </span>
                 </h4>
             </div>
         </div>
+
         <div class="col-4">
             <div class="box-header-book">
                 <h4 class="no-margin">Current<span><b class="badge badge-warning">#12</b> <small><b>arrival date:</b> june</small></span></h4>
@@ -24,6 +27,7 @@
     </div>
     <div class="row no-gutters">
         <div class="col-4 box-list-book">
+
             @php
                 $dato_cliente='';
             @endphp
@@ -48,6 +52,7 @@
                         </a>
                         <div class="icon">
                             <a href=""><i class="fas fa-exclamation-triangle"></i></a>
+
                         </div>
                     </div>
                 </div>
@@ -76,12 +81,14 @@
             <div class="content-list-book">
                 <div class="content-list-book-s">
                     <a href="">
+
                         <small class="font-weight-bold text-dark">
                             <i class="fas fa-user-circle"></i>
                             Hidalgo x2: 8 days: Jan 2018
                         </small>
                         <small class="text-primary">
                             <sup>$</sup>1800
+
                         </small>
                     </a>
                     <div class="icon">
@@ -91,6 +98,7 @@
             </div>
 
         </div>
+
         <div class="col-4 box-list-book border-right-0">
             <div class="content-list-book">
                 <div class="content-list-book-s">
@@ -101,6 +109,43 @@
                         </small>
                         <small class="text-primary">
                             <sup>$</sup>1800
+
+                        </small>
+                    </a>
+                    <div class="icon">
+                        <a href="" class="text-success"><i class="fa fa-check"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="content-list-book">
+                <div class="content-list-book-s">
+                    <a href="">
+
+                        <small class="font-weight-bold text-dark">
+                            <i class="fas fa-user-circle"></i>
+                            Hidalgo x2: 8 days: Jan 2018
+                        </small>
+                        <small class="text-primary">
+                            <sup>$</sup>1800
+
+                        </small>
+                    </a>
+                    <div class="icon">
+                        <a href="" class="text-success"><i class="fa fa-check"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="content-list-book">
+                <div class="content-list-book-s">
+                    <a href="">
+
+                        <small class="font-weight-bold text-dark">
+                            <i class="fas fa-user-circle"></i>
+                            Hidalgo x2: 8 days: Jan 2018
+                        </small>
+                        <small class="text-primary">
+                            <sup>$</sup>1800
+
                         </small>
                     </a>
                     <div class="icon">
@@ -117,38 +162,7 @@
                         </small>
                         <small class="text-primary">
                             <sup>$</sup>1800
-                        </small>
-                    </a>
-                    <div class="icon">
-                        <a href="" class="text-success"><i class="fa fa-check"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="content-list-book">
-                <div class="content-list-book-s">
-                    <a href="">
-                        <small class="font-weight-bold text-dark">
-                            <i class="fas fa-user-circle"></i>
-                            Hidalgo x2: 8 days: Jan 2018
-                        </small>
-                        <small class="text-primary">
-                            <sup>$</sup>1800
-                        </small>
-                    </a>
-                    <div class="icon">
-                        <a href="" class="text-success"><i class="fa fa-check"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="content-list-book">
-                <div class="content-list-book-s">
-                    <a href="">
-                        <small class="font-weight-bold text-dark">
-                            <i class="fas fa-user-circle"></i>
-                            Hidalgo x2: 8 days: Jan 2018
-                        </small>
-                        <small class="text-primary">
-                            <sup>$</sup>1800
+
                         </small>
                     </a>
                     <div class="icon">

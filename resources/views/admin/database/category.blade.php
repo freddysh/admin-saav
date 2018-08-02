@@ -7,6 +7,7 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -20,6 +21,7 @@
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal_new_destination">
             <i class="fa fa-plus" aria-hidden="true"></i> New
+
         </button>
 
         <!-- Modal -->
@@ -37,13 +39,17 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
+
                                         <label for="txt_nombre" class="font-weight-bold text-secondary">Nombre</label>
+
                                         <input type="text" class="form-control" id="txt_nombre" name="txt_nombre" placeholder="Nombre de la categoria" required>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
+
                                         <label  for="txt_imagen" class="font-weight-bold text-secondary">Periodo de pago</label>
+
                                         <input class="form-control" type="number" name="periodo" min="1" required>
                                     </div>
                                 </div>
@@ -67,6 +73,7 @@
                 </div>
             </div>
         </div>
+
         </div>
     </div>
     <hr>
@@ -79,6 +86,7 @@
                     <th>Periodo pago</th>
                     <th>Operaciones</th>
                 </tr>
+
             </thead>
             <tfoot>
             <tr>
@@ -93,13 +101,14 @@
             @foreach($categorias as $categoria)
                 <tr id="lista_categoria_{{$categoria->id}}">
                     <td>{{$i++}}</td>
+
                     <td>{{ucwords(strtolower($categoria->nombre))}}</td>
                     <td>{{$categoria->periodo}} {{$categoria->tipo_periodo}}</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_categoria_{{$categoria->id}}">
                             <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_categoria1({{$categoria->id}},'{{$categoria->nombre}}')">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_categoria1('{{$categoria->id}}','{{$categoria->nombre}}')">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                     </td>

@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{{mix("css/app.css")}}">
     <link rel="stylesheet" href="{{mix("css/admin/admin.css")}}">
     {{--fonts--}}
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.css">
 
     <script src="{{asset("js/app.js")}}"></script>
@@ -22,8 +21,6 @@
     @yield('archivos-js')
 </head>
 <body data-spy="scroll" data-target="#menu" class="position-relative">
-
-
 @php
     function activar_link2($link){
         $activo='';
@@ -56,9 +53,6 @@
         mousewheel: true,
     });
 
-
-
-
     var jumboHeight = $('.jumbotron').outerHeight();
     function parallax(){
         var scrolled = $(window).scrollTop();
@@ -68,7 +62,6 @@
     $(window).scroll(function(e){
         parallax();
     });
-
 
     $('.popover-hover').popover({
         trigger: 'hover'
@@ -91,7 +84,6 @@
             html: true
         })
     })
-
 </script>
 
 

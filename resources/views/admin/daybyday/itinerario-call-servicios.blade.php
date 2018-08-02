@@ -98,6 +98,7 @@
                                     {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
                                 </label>
                             </div>
+
                         </div>
                     </div>
                 @endforeach
@@ -117,6 +118,7 @@
                 @endforeach
             </div>
         @elseif($grupo=='MOVILID')
+
             <div id="auto" class="tab-pane fade show active">
                 @foreach($servicios->where('tipoServicio','AUTO') as $servicio)
                     <div class="row">
@@ -127,6 +129,7 @@
                                     {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
                                 </label>
                             </div>
+
                         </div>
                     </div>
                 @endforeach
@@ -147,6 +150,7 @@
             </div>
             <div id="van" class="tab-pane fade">
                 @foreach($servicios->where('tipoServicio','VAN') as $servicio)
+
                     <div class="row">
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
@@ -389,6 +393,7 @@
             </div>
             <div id="presidential" class="tab-pane fade">
                 @foreach($servicios->where('tipoServicio','PRESIDENTIAL') as $servicio)
+
                     <div class="row">
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
@@ -397,10 +402,12 @@
                                     {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
                                 </label>
                             </div>
+                        </div>
                     </div>
                 @endforeach
             </div>
         @elseif($grupo=='FLIGHTS')
+
             <div id="national" class="tab-pane fade show active">
                 @foreach($servicios->where('tipoServicio','NATIONAL') as $servicio)
                     <div class="row">
@@ -411,6 +418,7 @@
                                     {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
                                 </label>
                             </div>
+
                         </div>
                     </div>
                 @endforeach
@@ -447,6 +455,7 @@
         @endif
     </div>
     <div class="row">
+
         <div class="col text-right">
             <a class="text-12 text-success" href="#destino" data-toggle="tab"><i class="fa fa-map-marker-alt" aria-hidden="true"></i>
                 <span class="d-none" id="destinos_escoj">{{$destino_id}}</span><span class="d-none" id="destinos_escoj_titulo">{{$destino}}</span>{{$destino}}</a>

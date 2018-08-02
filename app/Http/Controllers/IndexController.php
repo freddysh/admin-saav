@@ -75,6 +75,7 @@ class IndexController extends Controller
         session()->put('menu', 'ventas');
         return view('admin.index');
 //        return view('admin.index',['chart' => $chart,'chart1' => $chart1,'chart2' => $chart2,'chart3' => $chart3,'chart4' => $chart4]);
+
     }
 
 public function inicio()
@@ -262,11 +263,6 @@ public function inicio()
 //        $productos=M_Producto::get();
 //        $proveedores=Proveedor::get();
 //        $hotel_proveedor=HotelProveedor::get();
-
-
-
-
-
 //        $mes='Septiembre';
 //        $chart = Charts::create('percentage', 'justgage')
 //            ->title('$68000')
@@ -355,7 +351,6 @@ public function inicio()
         return view('admin.crear-usuario');
 
     }
-
     public function inventory(){
         return view('admin.inventory');
     }

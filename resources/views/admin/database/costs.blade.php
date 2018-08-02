@@ -24,6 +24,7 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
@@ -64,6 +65,7 @@
     <div class="row mt-3">
         <div class="col">
             <ul class="nav nav-tabs nav-justified">
+
                 <?php
                 $pos=0;
                 ?>
@@ -76,9 +78,11 @@
                         $activo_='active';
                         ?>
                     @endif
+
                         <li class="nav-item active">
                             <a data-toggle="tab" href="#t_{{$categoria->nombre}}" class="nav-link show {{$activo_}} rounded-0" role="tab" aria-controls="pills-home" aria-selected="true">{{$categoria->nombre}}</a>
                         </li>
+
                     <?php
                     $pos++;
                     ?>
@@ -98,7 +102,9 @@
                         ?>
                     @endif
                     @if($categoria->nombre!='HOTELS')
+
                         <div id="t_{{$categoria->nombre}}" class="tab-pane show fade {{$activo_}}">
+
                             <div class="margin-top-20">
                                 <table id="tb_{{$categoria->nombre}}" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
                                     <thead>
@@ -153,12 +159,14 @@
                             </div>
                         </div>
                     @else
+
                         <div id="t_{{$categoria->nombre}}" class="tab-pane show fade {{$activo_}}">
                                 <div class="row mt-3">
                                     <div class="col">
                                         {{csrf_field()}}
                                         <div class="form-group">
                                             <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+
                                             <select class="form-control" name="localizacion" id="localizacion" onchange="mostrar_proveedores_cost($('#localizacion').val(),'{{$categoria->nombre}}')">
                                                 <option value="0_ninguno">Escoja un destino</option>
                                                 @foreach($destinations as $destinos)
@@ -167,9 +175,11 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="txt_codigo" class="font-weight-bold text-secondary">Estrellas</label>
+
                                             <select class="form-control" name="estrellas" id="estrellas" onchange="mostrar_proveedores_x_estrellas_cost($('#localizacion').val(),'{{$categoria->nombre}}',$('#estrellas').val())">
                                                 <option value="0">Escoja una opcion</option>
                                                 <option value="2">2 Stars</option>

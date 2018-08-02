@@ -1,16 +1,19 @@
 @extends('layouts.admin.book')
 @section('content')
+
     <div class="row no-gutters">
         <div class="col-4">
             <div class="box-header-book">
                 <h4 class="no-margin">New
                     <span>
                         <b class="badge badge-danger">#24</b>
+
                         <small><b>Travel date:</b> june</small>
                     </span>
                 </h4>
             </div>
         </div>
+
         <div class="col-4">
             <div class="box-header-book">
                 <h4 class="no-margin">Current<span><b class="badge badge-g-yellow">#12</b> <small><b>arrival date:</b> june</small></span></h4>
@@ -24,6 +27,7 @@
     </div>
     <div class="row no-gutters">
         <div class="col-4 box-list-book">
+
             @php
                 $dato_cliente='';
             @endphp
@@ -38,6 +42,7 @@
                     <div class="content-list-book">
                         <div class="content-list-book-s">
                             <a href="{{route('book_show_path', $cotizacion_cat_->id)}}">
+
                                 <small class="text-dark font-weight-bold">
                                     <i class="fas fa-user-circle text-secondary"></i>
                                     {{ucwords(strtolower($dato_cliente))}} X{{$cotizacion_cat_->nropersonas}}: {{$cotizacion_cat_->duracion}} days: {{strftime("%d %B, %Y", strtotime(str_replace('-','/', $cotizacion_cat_->fecha)))}}
@@ -48,22 +53,27 @@
                             </a>
                             <div class="icon">
                                 <a href=""><i class="fas fa-exclamation-triangle"></i></a>
+
                             </div>
                         </div>
                     </div>
             @endforeach
+
         </div>
         <div class="col-4 box-list-book">
+
 
             <div class="content-list-book">
                 <div class="content-list-book-s">
                     <a href="">
+
                         <small class="text-dark font-weight-bold">
                             <i class="fas fa-user-circle text-secondary"></i>
                             Hidalgo x2: 8 days: Jan 2018
                         </small>
                         <small class="text-primary">
                             <sup>$</sup>1800
+
                         </small>
                     </a>
                     <div class="icon">
@@ -72,7 +82,6 @@
                 </div>
             </div>
 
-
         </div>
         <div class="col-4 box-list-book">
             <div class="content-list-book">
@@ -84,6 +93,7 @@
                         </small>
                         <small class="text-primary">
                             <sup>$</sup>1800
+
                         </small>
                     </a>
                     <div class="icon">

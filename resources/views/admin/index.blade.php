@@ -1,5 +1,6 @@
 @extends('layouts.admin.admin')
 @section('content')
+
     <div class="row pt-3">
         <div class="col">
             <h1 class="text-g-dark">Dashboards</h1>
@@ -25,6 +26,7 @@
             </div>
         </div>
     </div>
+
     {{--<div class="row">--}}
         {{--<div class="col-lg-1"></div>--}}
         {{--<div class="col-lg-2 text-center bg-grey-goto-light1">--}}
@@ -56,6 +58,7 @@
         {{--{!! $chart3->script() !!}--}}
         {{--{!! $chart4->script() !!}--}}
     {{--</div>--}}
+
 
 
 @stop
