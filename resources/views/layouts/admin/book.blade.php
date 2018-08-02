@@ -18,7 +18,7 @@
     @yield('archivos-js')
     <script src="{{asset("js/admin/plugins.js")}}"></script>
 
-    <link rel="stylesheet" href="{{mix("css/bootstrap-clockpicker.css")}}">
+    {{--<link rel="stylesheet" href="{{mix("css/bootstrap-clockpicker.css")}}">--}}
 </head>
 <body>
 
@@ -42,7 +42,7 @@
 </div>
 {{--scripts--}}
 <script src="{{asset("js/font-awesome.js")}}"></script>
-<script src="{{asset("js/admin/bootstrap-clockpicker.js")}}"></script>
+{{--<script src="{{asset("js/admin/bootstrap-clockpicker.js")}}"></script>--}}
 
 </body>
 </html>
