@@ -76,7 +76,7 @@
                     <div class="divider margin-bottom-20"></div>
                 </div>
             </div>
-            <div class="row hide">
+            <div class="row d-none">
                 {{csrf_field()}}
                 @foreach($destinations as $destino)
                 <div class="col-md-3">
@@ -191,7 +191,8 @@
                 </div>
                 {{csrf_field()}}
                 <input type="hidden" name="precio_itinerario" id="precio_itinerario_0" value="0">
-            </form>
+            </div>
+        </form>
         </div>
 
     </div>
