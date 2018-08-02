@@ -1352,4 +1352,25 @@ class ServicesController extends Controller
         $pos=$request->input('pos');
         return view('admin.contabilidad.lista-ruta-llegada',compact(['punto_inicio','pos']));
     }
+    public function listar_servicios(Request $request){
+        $itinerario_id=$request->input('itinerario_id');
+        $localizacion=$request->input('localizacion');
+        $grupo=$request->input('grupo');
+        $servicios_id=$request->input('servicios_id');
+        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
+        $destinos=M_Destino::get();
+        $proveedores=Proveedor::where('grupo',$grupo)->get();
+        return view('admin.book.mostrar-servicios',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','proveedores']));
+    }
+    public function listar_servicios_localizacion(Request $request){
+        $itinerario_id=$request->input('itinerario_id');
+        $localizacion=$request->input('localizacion');
+        $grupo=$request->input('grupo');
+        $servicios_id=$request->input('servicios_id');
+        $proveedor_id=$request->input('proveedor_id');
+        $clases=ProveedorClases::where('proveedor_id',$proveedor_id)->where('estado','1')->get();
+        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
+        $destinos=M_Destino::get();
+        return view('admin.book.mostrar-servicios-localizacion',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));
+    }
 }

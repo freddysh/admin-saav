@@ -26,8 +26,6 @@
             </div>
         </div>
     </div>
-
-    {{--<div class="row">--}}
         {{--<div class="col-lg-1"></div>--}}
         {{--<div class="col-lg-2 text-center bg-grey-goto-light1">--}}
                 {{--{!! $chart->html() !!}--}}
@@ -57,7 +55,6 @@
         {{--{!! $chart2->script() !!}--}}
         {{--{!! $chart3->script() !!}--}}
         {{--{!! $chart4->script() !!}--}}
-    {{--</div>--}}
 
 
 
