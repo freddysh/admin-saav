@@ -430,7 +430,8 @@ class BookController extends Controller
             }
         }
 //        dd($array_servicios);
-        return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios]);
+//        return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios]);
+        return redirect()->route('book_show_path',$cotizacion_id);
     }
     function crear_liquidacion_storage(Request $request){
         $fecha_ini=$request->input('fecha_ini');
@@ -484,11 +485,11 @@ class BookController extends Controller
         return view('admin.book.ver-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi]);
     }
     function nuevo_servicio($cotizaciones_id,$itinerartio_cotis_id,$dia){
-//            $destinations=M_Destino::get();
-//            $services=M_Servicio::get();
-//            $categorias=M_Category::get();
-//            $servicios=array();
-//            return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id]);
+            $destinations=M_Destino::get();
+            $services=M_Servicio::get();
+            $categorias=M_Category::get();
+            $servicios=array();
+            return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id]);
     }
     public function nuevo_servicio_add(Request $request){
         $origen=$request->input('origen');

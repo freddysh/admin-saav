@@ -1369,7 +1369,7 @@ class ServicesController extends Controller
         $grupo=$request->input('grupo');
         $servicios_id=$request->input('servicios_id');
         $proveedor_id=$request->input('proveedor_id');
-        $clases=ProveedorClases::where('proveedor_id',$proveedor_id)->get();
+        $clases=ProveedorClases::where('proveedor_id',$proveedor_id)->where('estado','1')->get();
         $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
         $destinos=M_Destino::get();
         return view('admin.book.mostrar-servicios-localizacion',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));

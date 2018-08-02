@@ -862,12 +862,11 @@ Route::get('/admin/book/nuevo-servicio/{id1}/{id}/{dia}',[
     'as' => 'nuevo_servicio_show_add_path',
 ]);
 Route::get('/admin/book/servicios/add/{id1}/{id2}/{id3}',[
-    'uses' => 'BookController@servicios_add',
+    'uses' => 'BookController@nuevo_servicio',
     'as' => 'servicios_add_path',
 ]);
-
 Route::post('/admin/book/nuevo-servicio/nuevo',[
-    'uses' => 'BookController@nuevo_servicio',
+    'uses' => 'BookController@nuevo_servicio_add',
     'as' => 'nuevo_servicio_add_path',
 ]);
 Route::post('/admin/contabilidad/confirmar-precio-c',[

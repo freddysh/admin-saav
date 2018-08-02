@@ -178,10 +178,13 @@
                                         @endforeach
                                         <tr>
                                             {{--<td rowspan="{{$nro_servicios}}"><b class="text-primary">Day {{$itinerario->dias}}</b></td>--}}
-                                            <td class="bg-grey-goto text-white">
+                                            <td class="bg-grey-goto text-white" colspan="2">
                                                 <b>Day {{$itinerario->dias}}</b>
                                             </td>
-                                            <td class="bg-grey-goto text-white " colspan="9">
+                                            <td class="bg-grey-goto text-white " colspan="6">
+                                                <b>{{$itinerario->titulo}}</b>
+                                            </td>
+                                            <td class="bg-grey-goto text-white " colspan="2">
                                                 <b>{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
                                             </td>
                                             <td class="bg-grey-goto text-white">
@@ -766,7 +769,7 @@
                                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                     </button>
                                                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_servicio_{{$servicios->id}}" onclick="traer_servicios('{{$itinerario->id}}','{{$servicios->id}}','{{$localizacion}}','{{$grupo}}')">
-                                                        <i class="fa fa-exchange" aria-hidden="true"></i>a
+                                                        <i class="fa fa-exchange" aria-hidden="true"></i>
                                                     </button>
 
                                                     <!-- Modal -->
@@ -1241,7 +1244,7 @@
                                 <div class="col-lg-12 text-center">
                                     <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
                                     {{csrf_field()}}
-                                    <button type="submit" class="btn btn-lg btn-success">Guardar reserva
+                                    <button type="submit" class="btn btn-lg btn-success">Enviar a contabilidad
                                         <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                                     </button>
                                 </div>

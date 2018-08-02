@@ -3914,14 +3914,14 @@ function Guardar_proveedor_hotel(id,url,csrf_field,s,d,m,t) {
                     '</span>' +
                     '</td>' +
                     '<td width="100px">' +
-                    '<input type="number" class="form-control" id="book_price_edit_h_t_p_{{$hotel->id}}" name="txt_costo_edit_t" value="'+$('#book_price_t_'+dato_producto_hotel_id).html()+'">' +
+                    '<input type="number" class="form-control" id="book_price_edit_h_t_p_'+id+'" name="txt_costo_edit_t" value="'+$('#book_price_t_'+dato_producto_hotel_id).html()+'">' +
                     '</td>' +
                     '</tr>';
                 }
                 precio += '' +
                     '</table>'+
                     '<div class="col-md-12">'+
-                        '<b id="rpt_precio_proveedor_hotel_{{$hotel->id}}" class="text-success text-14"></b>'+
+                        '<b id="rpt_precio_proveedor_hotel_'+id+'" class="text-success text-14"></b>'+
                     '</div>'+
                 '</div>'+
                 '<div class="modal-footer">'+csrf+
@@ -5295,6 +5295,43 @@ function nuevos_proveedores_trains_ruta(pos,categoria,grupo) {
         success: function(data) {
             console.log(data);
             $('#lista_proveedores_'+pos+'_'+categoria).html(data);
+        }
+    })
+}
+function traer_servicios(itinerario_id,servicios_id,localizacion,grupo) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../admin/book/listar-servicios',
+        data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
+        // Mostramos un mensaje con la respuesta de PHP
+        success: function(data) {
+            $('#list_servicios_grupo_'+servicios_id).html(data);
+        }
+    })
+}
+function mostrar_servicios_localizacion(itinerario_id,servicios_id,localizacion,grupo,proveedor_id) {
+    console.log('itinerario_id:'+itinerario_id);
+    console.log('servicios_id:'+servicios_id);
+    console.log('localizacion:'+localizacion);
+    console.log('grupo:'+grupo);
+    console.log('proveedor_id:'+proveedor_id);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../admin/book/listar-servicios/localizacion',
+        data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id+'&proveedor_id='+proveedor_id,
+        // Mostramos un mensaje con la respuesta de PHP
+        success: function(data) {
+            $('#servicio_localizacion_'+servicios_id).html(data);
         }
     })
 }

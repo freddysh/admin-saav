@@ -3172,14 +3172,14 @@ function Guardar_proveedor_hotel(id,url,csrf_field,s,d,m,t) {
                     '</span>' +
                     '</td>' +
                     '<td width="100px">' +
-                    '<input type="number" class="form-control" id="book_price_edit_h_t_p_{{$hotel->id}}" name="txt_costo_edit_t" value="'+$('#book_price_t_'+dato_producto_hotel_id).html()+'">' +
+                    '<input type="number" class="form-control" id="book_price_edit_h_t_p_'+id+'" name="txt_costo_edit_t" value="'+$('#book_price_t_'+dato_producto_hotel_id).html()+'">' +
                     '</td>' +
                     '</tr>';
                 }
                 precio += '' +
                     '</table>'+
                     '<div class="col-md-12">'+
-                        '<b id="rpt_precio_proveedor_hotel_{{$hotel->id}}" class="text-success text-14"></b>'+
+                        '<b id="rpt_precio_proveedor_hotel_'+id+'" class="text-success text-14"></b>'+
                     '</div>'+
                 '</div>'+
                 '<div class="modal-footer">'+csrf+
