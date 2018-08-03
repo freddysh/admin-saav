@@ -9,7 +9,7 @@
     <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 
     {{--<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--}}
-    {{--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
 
@@ -24,9 +24,9 @@
         <form action="{{route('itinerary_save_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
             <h3 class="">New Day by Day</h3>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-12">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="txt_titulo">Titulo</label>
                                 <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo">
@@ -34,37 +34,41 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-6">
                     <div class="form-group">
                         <label for="txt_resumen">Resumen</label>
                         <textarea class="form-control textarea" name="txt_resumen" id="txt_resumen" cols="30" rows="5"></textarea>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-6">
                     <div class="form-group">
                         <label for="txt_descripcion">Descripcion</label>
                         <textarea class="form-control textarea" name="txt_descripcion" id="txt_descripcion" cols="30" rows="5"></textarea>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <div class="col-lg-4">
-                            <label for="txt_imagen">Primera imagen</label>
-                            <input type="file" class="form-control" id="txt_imagen" name="txt_imagen" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,1);">
-                            <span id="mensaje_file1" class="text-danger text-15"></span>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-4">
-                                <label for="txt_imagen">Segunda imagen</label>
-                                <input type="file" class="form-control" id="txt_imagenB" name="txt_imagenB" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,2);">
-                                <span id="mensaje_file2" class="text-danger text-15"></span>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="txt_imagen">Primera imagen</label>
+                                    <input type="file" class="form-control" id="txt_imagen" name="txt_imagen" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,1);">
+                                    <span id="mensaje_file1" class="text-danger text-15"></span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-4">
-                                <label for="txt_imagen">Tercera imagen</label>
-                                <input type="file" class="form-control" id="txt_imagenC" name="txt_imagenC" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,3);">
-                                <span id="mensaje_file3" class="text-danger text-15"></span>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="txt_imagen">Segunda imagen</label>
+                                    <input type="file" class="form-control" id="txt_imagenB" name="txt_imagenB" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,2);">
+                                    <span id="mensaje_file2" class="text-danger text-15"></span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="txt_imagen">Tercera imagen</label>
+                                    <input type="file" class="form-control" id="txt_imagenC" name="txt_imagenC" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,3);">
+                                    <span id="mensaje_file3" class="text-danger text-15"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,7 +111,7 @@
                             <div class="row">
                                 <div class="col-lg-3 no-margin">
                                     <div class="list-group">
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"><i class="fa fa-map-o fa-2x text-info" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[1]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fa fa-map-o fa-2x text-info" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[1] }}</b></a>
                                         <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus fa-2x text-warning" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[2]}}</b></a>
                                         <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users fa-2x text-success" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[3]}}</b></a>
                                         <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fa fa-ticket fa-2x text-warning" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[4]}}</b></a>

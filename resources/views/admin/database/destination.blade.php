@@ -25,8 +25,8 @@
         </button>
 
         <!-- Modal -->
-        <div class="modal fade bd-example-modal-lg" id="modal_new_destination" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
+        <div class="modal fade bd-example-modal-md" id="modal_new_destination" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
                     <form action="{{route('destination_save_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
                         <div class="modal-header">
@@ -36,91 +36,84 @@
                             </button>
                         </div>
                         <div class="modal-body">
-
-                                <div class="row">
-
-                                    <div class="col-3">
-                                        <div class="form-group">
-                                            <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
-                                            <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Codigo">
-                                        </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
+                                        <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Codigo">
                                     </div>
-                                    <div class="col-3 ">
-                                        <div class="form-group">
-                                            <label for="txt_destino" class="font-weight-bold text-secondary">Destino</label>
-                                            <input type="text" class="form-control" id="txt_destino" name="txt_destino" placeholder="Destino">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="txt_descripcion" class="font-weight-bold text-secondary">Descripcion</label>
-                                            <input type="text" class="form-control" id="txt_descripcion" name="txt_descripcion" placeholder="Descripcion">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="form-group">
-                                            <label for="txt_pais" class="font-weight-bold text-secondary">Pais</label>
-                                            <input type="text" class="form-control" id="txt_pais" name="txt_pais" placeholder="Pais" VALUE="PERÚ">
-                                        </div>
-                                    </div>
-                                    <div class="col-3 hide">
-                                        <div class="form-group">
-                                            <label for="txt_region" class="font-weight-bold text-secondary">Region</label>
-
-                                            <select class="custom-select form-control" id="txt_region" name="txt_region" >
-                                                <option selected>Abrir menu</option>
-                                                <option value="COSTA">COSTA</option>
-                                                <option value="SIERRA">SIERRA</option>
-                                                <option value="SELVA">SELVA</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-3 hide">
-                                        <div class="form-group">
-                                            <label for="txt_departamento" class="font-weight-bold text-secondary">Departamento</label>
-
-                                            <select class="custom-select form-control" id="txt_departamento" name="txt_departamento" >
-                                                <option selected>Abrir menu</option>
-                                                <option value="AMAZONAS">AMAZONAS</option>
-                                                <option value="ANCASH">ANCASH</option>
-                                                <option value="APURIMAC">APURIMAC</option>
-                                                <option value="AREQUIPA">AREQUIPA</option>
-                                                <option value="AYACUCHO">AYACUCHO</option>
-                                                <option value="CAJAMARCA">CAJAMARCA</option>
-                                                <option value="CALLAO">CALLAO</option>
-                                                <option value="CUSCO">CUSCO</option>
-                                                <option value="HUANCAVELICA">HUANCAVELICA</option>
-                                                <option value="HUANUCO">HUANUCO</option>
-                                                <option value="ICA">ICA</option>
-                                                <option value="JUNIN">JUNIN</option>
-                                                <option value="LA LIBERTAD">LA LIBERTAD</option>
-                                                <option value="LAMBAYEQUE">LAMBAYEQUE</option>
-                                                <option value="LIMA">LIMA</option>
-                                                <option value="LORETO">LORETO</option>
-                                                <option value="MADRE DE DIOS">MADRE DE DIOS</option>
-                                                <option value="MOQUEGUA">MOQUEGUA</option>
-                                                <option value="PASCO">PASCO</option>
-                                                <option value="PIURA">PIURA</option>
-                                                <option value="PUNO">PUNO</option>
-                                                <option value="SAN MARTIN">SAN MARTIN</option>
-                                                <option value="TACNA">TACNA</option>
-                                                <option value="TUMBES">TUMBES</option>
-                                                <option value="UCAYALI">UCAYALI</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-3">
-                                        <div class="form-group">
-                                            <label for="txt_imagen" class="font-weight-bold text-secondary">Imagen</label>
-                                            <input type="file" class="form-control-file" id="txt_imagen" name="txt_imagen" placeholder="Imagen">
-
-                                        </div>
-                                    </div>
-
                                 </div>
+                                <div class="col-6 d-none">
+                                    <div class="form-group">
+                                        <label for="txt_descripcion" class="font-weight-bold text-secondary">Descripcion</label>
+                                        <input type="text" class="form-control" id="txt_descripcion" name="txt_descripcion" placeholder="Descripcion">
+                                    </div>
+                                </div>
+                                <div class="col-3 d-none">
+                                    <div class="form-group">
+                                        <label for="txt_pais" class="font-weight-bold text-secondary">Pais</label>
+                                        <input type="text" class="form-control" id="txt_pais" name="txt_pais" placeholder="Pais" VALUE="PERÚ">
+                                    </div>
+                                </div>
+                                <div class="col-3  d-none">
+                                    <div class="form-group">
+                                        <label for="txt_region" class="font-weight-bold text-secondary">Region</label>
 
+                                        <select class="custom-select form-control" id="txt_region" name="txt_region" >
+                                            <option selected>Abrir menu</option>
+                                            <option value="COSTA">COSTA</option>
+                                            <option value="SIERRA">SIERRA</option>
+                                            <option value="SELVA">SELVA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_departamento" class="font-weight-bold text-secondary">Departamento</label>
+                                        <select class="custom-select form-control" id="txt_departamento" name="txt_departamento" >
+                                            <option selected>Escoja un departamento</option>
+                                            <option value="AMAZONAS">AMAZONAS</option>
+                                            <option value="ANCASH">ANCASH</option>
+                                            <option value="APURIMAC">APURIMAC</option>
+                                            <option value="AREQUIPA">AREQUIPA</option>
+                                            <option value="AYACUCHO">AYACUCHO</option>
+                                            <option value="CAJAMARCA">CAJAMARCA</option>
+                                            <option value="CALLAO">CALLAO</option>
+                                            <option value="CUSCO">CUSCO</option>
+                                            <option value="HUANCAVELICA">HUANCAVELICA</option>
+                                            <option value="HUANUCO">HUANUCO</option>
+                                            <option value="ICA">ICA</option>
+                                            <option value="JUNIN">JUNIN</option>
+                                            <option value="LA LIBERTAD">LA LIBERTAD</option>
+                                            <option value="LAMBAYEQUE">LAMBAYEQUE</option>
+                                            <option value="LIMA">LIMA</option>
+                                            <option value="LORETO">LORETO</option>
+                                            <option value="MADRE DE DIOS">MADRE DE DIOS</option>
+                                            <option value="MOQUEGUA">MOQUEGUA</option>
+                                            <option value="PASCO">PASCO</option>
+                                            <option value="PIURA">PIURA</option>
+                                            <option value="PUNO">PUNO</option>
+                                            <option value="SAN MARTIN">SAN MARTIN</option>
+                                            <option value="TACNA">TACNA</option>
+                                            <option value="TUMBES">TUMBES</option>
+                                            <option value="UCAYALI">UCAYALI</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_destino" class="font-weight-bold text-secondary">Destino</label>
+                                        <input type="text" class="form-control" id="txt_destino" name="txt_destino" placeholder="Destino">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_imagen" class="font-weight-bold text-secondary">Imagen</label>
+                                        <input type="file" class="form-control-file" id="txt_imagen" name="txt_imagen" placeholder="Imagen">
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             {{csrf_field()}}
@@ -139,20 +132,18 @@
 
             <thead>
             <tr>
-                <th>Pais</th>
                 <th>Codigo</th>
+                <th>Departamento</th>
                 <th>Destino</th>
-                <th>Descripcion</th>
                 <th>Imagen</th>
                 <th>Operaciones</th>
             </tr>
             </thead>
             <tfoot>
             <tr>
-                <th>Pais</th>
                 <th>Codigo</th>
+                <th>Departamento</th>
                 <th>Destino</th>
-                <th>Descripcion</th>
                 <th>Imagen</th>
                 <th>Operaciones</th>
             </tr>
@@ -160,13 +151,9 @@
             <tbody>
             @foreach($destinos as $destino)
                 <tr id="lista_destinos_{{$destino->id}}">
-                    <td>{{$destino->pais}}</td>
                     <td>{{$destino->codigo}}</td>
-
+                    <td>{{$destino->departamento}}</td>
                     <td>{{ucwords(strtolower($destino->destino))}}</td>
-
-                    <td>{{$destino->descripcion}}</td>
-
                     <td>
                         @if (Storage::disk('destination')->has($destino->imagen))
                             <picture>
@@ -176,7 +163,6 @@
                             </picture>
                         @endif
                     </td>
-
                     <td class="text-center">
                         <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_destination_{{$destino->id}}">
                              <i class="fa fa-pencil-alt" aria-hidden="true"></i>
@@ -192,8 +178,8 @@
         </table>
         @foreach($destinos as $destino)
             <!-- Modal -->
-                <div class="modal fade bd-example-modal-lg" id="modal_edit_destination_{{$destino->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
+                <div class="modal fade bd-example-modal-md" id="modal_edit_destination_{{$destino->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-md" role="document">
                         <div class="modal-content">
                             <form action="{{route('destination_edit_path')}}" method="post" id="destination_edit_id" enctype="multipart/form-data">
                                 <div class="modal-header">
@@ -203,38 +189,33 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-
                                     <div class="row">
-
-                                        <div class="col-3">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label for="txt_codigo" class="text-secondary font-weight-bold">Codigo</label>
                                                 <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Codigo" value="{{$destino->codigo}}">
                                             </div>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label for="txt_destino" class="text-secondary font-weight-bold">Destino</label>
                                                 <input type="text" class="form-control" id="txt_destino" name="txt_destino" placeholder="Destino" value="{{$destino->destino}}">
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-6 d-none">
                                             <div class="form-group">
                                                 <label for="txt_descripcion" class="text-secondary font-weight-bold">Descripcion</label>
 
                                                 <input type="text" class="form-control" id="txt_descripcion" name="txt_descripcion" placeholder="Descripcion" value="{{$destino->descripcion}}">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-
-                                        <div class="col-3">
+                                        <div class="col-3 d-none">
                                             <div class="form-group">
                                                 <label for="txt_pais" class="text-secondary font-weight-bold">Pais</label>
                                                 <input type="text" class="form-control" id="txt_pais" name="txt_pais" placeholder="Pais"  value="{{$destino->pais}}">
                                             </div>
                                         </div>
-                                        <div class="col-3 hide">
+                                        <div class="col-3 d-none">
                                             <div class="form-group">
                                                 <label for="txt_region" class="text-secondary font-weight-bold">Region</label>
 
@@ -246,43 +227,40 @@
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <div class="col-3 d-none">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label for="txt_departamento" class="text-secondary font-weight-bold">Departamento</label>
-
                                                 <select class="custom-select form-control" id="txt_departamento" name="txt_departamento" >
-                                                    <option disabled>Abrir menu</option>
-                                                    <option value="AMAZONAS" @if($destino->region='AMAZONAS') selected @endif>AMAZONAS</option>
-                                                    <option value="ANCASH" @if($destino->region='ANCASH') selected @endif>ANCASH</option>
-                                                    <option value="APURIMAC" @if($destino->region='APURIMAC') selected @endif>APURIMAC</option>
-                                                    <option value="AREQUIPA" @if($destino->region='AREQUIPA') selected @endif>AREQUIPA</option>
-                                                    <option value="AYACUCHO" @if($destino->region='AYACUCHO') selected @endif>AYACUCHO</option>
-                                                    <option value="CAJAMARCA" @if($destino->region='CAJAMARCA') selected @endif>CAJAMARCA</option>
-                                                    <option value="CALLAO" @if($destino->region='CALLAO') selected @endif>CALLAO</option>
-                                                    <option value="CUSCO" @if($destino->region='CUSCO') selected @endif>CUSCO</option>
-                                                    <option value="HUANCAVELICA" @if($destino->region='HUANCAVELICA') selected @endif>HUANCAVELICA</option>
-                                                    <option value="HUANUCO" @if($destino->region='HUANUCO') selected @endif>HUANUCO</option>
-                                                    <option value="ICA" @if($destino->region='ICA') selected @endif>ICA</option>
-                                                    <option value="JUNIN" @if($destino->region='JUNIN') selected @endif>JUNIN</option>
-                                                    <option value="LA LIBERTAD" @if($destino->region='LA LIBERTAD') selected @endif>LA LIBERTAD</option>
-                                                    <option value="LAMBAYEQUE" @if($destino->region='LAMBAYEQUE') selected @endif>LAMBAYEQUE</option>
-                                                    <option value="LIMA" @if($destino->region='LIMA') selected @endif>LIMA</option>
-                                                    <option value="LORETO" @if($destino->region='LORETO') selected @endif>LORETO</option>
-                                                    <option value="MADRE DE DIOS" @if($destino->region='MADRE DE DIOS') selected @endif>MADRE DE DIOS</option>
-                                                    <option value="MOQUEGUA" @if($destino->region='MOQUEGUA') selected @endif>MOQUEGUA</option>
-                                                    <option value="PASCO" @if($destino->region='PASCO') selected @endif>PASCO</option>
-                                                    <option value="PIURA" @if($destino->region='PIURA') selected @endif>PIURA</option>
-                                                    <option value="PUNO" @if($destino->region='PUNO') selected @endif>PUNO</option>
-                                                    <option value="SAN MARTIN" @if($destino->region='SAN MARTIN') selected @endif>SAN MARTIN</option>
-                                                    <option value="TACNA" @if($destino->region='TACNA') selected @endif>TACNA</option>
-                                                    <option value="TUMBES" @if($destino->region='TUMBES') selected @endif>TUMBES</option>
-                                                    <option value="UCAYALI" @if($destino->region='UCAYALI') selected @endif>UCAYALI</option>
+                                                    <option disabled>Escoja un departamento</option>
+                                                    <option value="AMAZONAS" @if($destino->departamento=='AMAZONAS') selected @endif>AMAZONAS</option>
+                                                    <option value="ANCASH" @if($destino->departamento=='ANCASH') selected @endif>ANCASH</option>
+                                                    <option value="APURIMAC" @if($destino->departamento=='APURIMAC') selected @endif>APURIMAC</option>
+                                                    <option value="AREQUIPA" @if($destino->departamento=='AREQUIPA') selected @endif>AREQUIPA</option>
+                                                    <option value="AYACUCHO" @if($destino->departamento=='AYACUCHO') selected @endif>AYACUCHO</option>
+                                                    <option value="CAJAMARCA" @if($destino->departamento=='CAJAMARCA') selected @endif>CAJAMARCA</option>
+                                                    <option value="CALLAO" @if($destino->departamento=='CALLAO') selected @endif>CALLAO</option>
+                                                    <option value="CUSCO" @if($destino->departamento=='CUSCO') selected @endif>CUSCO</option>
+                                                    <option value="HUANCAVELICA" @if($destino->departamento=='HUANCAVELICA') selected @endif>HUANCAVELICA</option>
+                                                    <option value="HUANUCO" @if($destino->departamento=='HUANUCO') selected @endif>HUANUCO</option>
+                                                    <option value="ICA" @if($destino->departamento=='ICA') selected @endif>ICA</option>
+                                                    <option value="JUNIN" @if($destino->departamento=='JUNIN') selected @endif>JUNIN</option>
+                                                    <option value="LA LIBERTAD" @if($destino->departamento=='LA LIBERTAD') selected @endif>LA LIBERTAD</option>
+                                                    <option value="LAMBAYEQUE" @if($destino->departamento=='LAMBAYEQUE') selected @endif>LAMBAYEQUE</option>
+                                                    <option value="LIMA" @if($destino->departamento=='LIMA') selected @endif>LIMA</option>
+                                                    <option value="LORETO" @if($destino->departamento=='LORETO') selected @endif>LORETO</option>
+                                                    <option value="MADRE DE DIOS" @if($destino->departamento=='MADRE DE DIOS') selected @endif>MADRE DE DIOS</option>
+                                                    <option value="MOQUEGUA" @if($destino->departamento=='MOQUEGUA') selected @endif>MOQUEGUA</option>
+                                                    <option value="PASCO" @if($destino->departamento=='PASCO') selected @endif>PASCO</option>
+                                                    <option value="PIURA" @if($destino->departamento=='PIURA') selected @endif>PIURA</option>
+                                                    <option value="PUNO" @if($destino->departamento=='PUNO') selected @endif>PUNO</option>
+                                                    <option value="SAN MARTIN" @if($destino->departamento=='SAN MARTIN') selected @endif>SAN MARTIN</option>
+                                                    <option value="TACNA" @if($destino->departamento=='TACNA') selected @endif>TACNA</option>
+                                                    <option value="TUMBES" @if($destino->departamento=='TUMBES') selected @endif>TUMBES</option>
+                                                    <option value="UCAYALI" @if($destino->departamento=='UCAYALI') selected @endif>UCAYALI</option>
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <div class="col-3">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label for="txt_imagen" class="text-secondary font-weight-bold">Imagen</label>
 
@@ -304,7 +282,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="modal-footer">
                                     {{csrf_field()}}
