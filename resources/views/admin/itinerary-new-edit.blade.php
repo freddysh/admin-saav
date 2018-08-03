@@ -9,7 +9,7 @@
     <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 
     {{--<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--}}
-    {{--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
     <nav aria-label="breadcrumb">
@@ -250,7 +250,7 @@
                                                 {{--@endphp--}}
                                                 {{--<option value="{{$destins_[0]}}" @if($itinerarios->destino_duerme==$destins_[0]){{'selected'}}@endif>{{$destins_[1]}}</option>--}}
                                             {{--@endforeach--}}
-                                        {{--</select>--}}
+                                        </select>
                                     </div>
                                 </div>
                             </div>

@@ -45,18 +45,18 @@
                                         <input type="text" class="form-control" id="txt_nombre" name="txt_nombre" placeholder="Nombre de la categoria" required>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 d-none">
                                     <div class="form-group">
 
                                         <label  for="txt_imagen" class="font-weight-bold text-secondary">Periodo de pago</label>
 
-                                        <input class="form-control" type="number" name="periodo" min="1" required>
+                                        <input class="form-control" type="number" name="periodo" min="1" >
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 d-none">
                                     <div class="form-group">
                                         <label for="tipo_periodo" class="font-weight-bold text-secondary mt-3"></label>
-                                        <select class="custom-select form-control" id="tipo_periodo" name="tipo_periodo"  required>
+                                        <select class="custom-select form-control" id="tipo_periodo" name="tipo_periodo"  >
                                             <option value="Antes">Antes</option>
                                             <option value="Despues">Despues</option>
                                         </select>
@@ -137,15 +137,15 @@
                                             <input type="text" class="form-control" id="txt_nombre" name="txt_nombre" placeholder="Codigo" value="{{$categoria->nombre}}">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 d-none">
                                         <div class="form-group">
                                             <label  for="txt_imagen">Periodo de pago</label>
-                                            <input class="form-control" type="number" name="periodo" min="1"  value="{{$categoria->periodo}}" required>
+                                            <input class="form-control" type="number" name="periodo" min="1"  value="{{$categoria->periodo}}" >
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 d-none">
                                         <div class="form-group margin-top-25">
-                                            <select class="custom-select form-control" id="tipo_periodo" name="tipo_periodo" required>
+                                            <select class="custom-select form-control" id="tipo_periodo" name="tipo_periodo" >
                                                 <option @if($categoria->tipo_periodo=='Antes') {{selected}}@endif value="Antes">Antes</option>
                                                 <option @if($categoria->tipo_periodo=='Despues') {{selected}}@endif value="Despues">Despues</option>
                                             </select>

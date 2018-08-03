@@ -20,8 +20,8 @@ class CategoryController extends Controller
         $tipo_periodo=strtoupper($request->input('tipo_periodo'));
         $categoria=new M_Category();
         $categoria->nombre=$txt_nombre;
-        $categoria->periodo=$periodo;
-        $categoria->tipo_periodo=$tipo_periodo;
+//        $categoria->periodo=$periodo;
+//        $categoria->tipo_periodo=$tipo_periodo;
         $categoria->save();
 
         $categorias=M_Category::get();
@@ -35,8 +35,8 @@ class CategoryController extends Controller
         $tipo_periodo=strtoupper($request->input('tipo_periodo'));
         $categoria=M_Category::FindOrFail($txt_id);
         $categoria->nombre=$txt_nombre;
-        $categoria->periodo=$periodo;
-        $categoria->tipo_periodo=$tipo_periodo;
+//        $categoria->periodo=$periodo;
+//        $categoria->tipo_periodo=$tipo_periodo;
         $categoria->save();
 
         $categorias=M_Category::get();
