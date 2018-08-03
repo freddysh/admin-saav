@@ -52,33 +52,45 @@
 
     @endif
     @if(session()->get('menu')=='operaciones')
-        <div class="menu-titulo text-center"><a href="#!"  class="link text-grey-goto">QUOTES</a></div>
-        <ul class="nav nav-sidebar margin-bottom-0 hide">
-            <li class="padding-side-20 bg-green-goto text-white text-20">Sales</li>
-            <li class="divider"></li>
-            <li class="padding-side-20 bg-sub-title-aside"><b class="text-green-goto text-16">Inventory</b></li>
-            <li class="divider"></li>
-            <li ><a href="{{route("itinerari_index_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Day by Day</a></li>
-            <li class="bg-sub-title-aside"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> Itineraries</a>
-                <ul class="padding-side-20 nav nav-sidebar margin-bottom-0">
-                    <li class="padding-left-30 text-unset"><a href="{{route("package_create_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> New</a></li>
-                    <li class="padding-left-30 text-unset"><a href="{{route("show_itineraries_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> List</a></li>
-                </ul>
-            </li>
-            <li class="hide"><a href="{{route("catalog_show_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Catalog</a></li>
-            <li class="divider"></li>
-            <li class="padding-side-20 bg-sub-title-aside"><b class="text-green-goto text-16">Quotes</b></li>
-            <li class="divider"></li>
-            <li><a href="{{route("quotes_new1_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> New</a></li>
-            <li><a href="{{route("current-quote_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Current</a></li>
-            <li class="divider"></li>
-            <li class="padding-side-20 bg-sub-title-aside"><b class="text-green-goto text-16">Sales</b></li>
-            <li class="divider"></li>
-            <li><a href="{{route("pax_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Paxs</a></li>
-          </ul>
+        <li class="active">
+            <a href="{{route('inventory_path')}}">Inventory</a>
+        </li>
+        <li>
+            <a href="{{route('current_quote_page_path', 'gotoperu.com')}}">Leads</a>
+
+        </li>
+        <li>
+            <a href="#">Sales</a>
+        </li>
+        {{--<div class="menu-titulo text-center"><a href="#!"  class="link text-grey-goto">QUOTES</a></div>--}}
+        {{--<ul class="nav nav-sidebar margin-bottom-0 hide">--}}
+            {{--<li class="padding-side-20 bg-green-goto text-white text-20">Sales</li>--}}
+            {{--<li class="divider"></li>--}}
+            {{--<li class="padding-side-20 bg-sub-title-aside"><b class="text-green-goto text-16">Inventory</b></li>--}}
+            {{--<li class="divider"></li>--}}
+            {{--<li ><a href="{{route("itinerari_index_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Day by Day</a></li>--}}
+            {{--<li class="bg-sub-title-aside"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> Itineraries</a>--}}
+                {{--<ul class="padding-side-20 nav nav-sidebar margin-bottom-0">--}}
+                    {{--<li class="padding-left-30 text-unset"><a href="{{route("package_create_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> New</a></li>--}}
+                    {{--<li class="padding-left-30 text-unset"><a href="{{route("show_itineraries_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> List</a></li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
+            {{--<li class="hide"><a href="{{route("catalog_show_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Catalog</a></li>--}}
+            {{--<li class="divider"></li>--}}
+            {{--<li class="padding-side-20 bg-sub-title-aside"><b class="text-green-goto text-16">Quotes</b></li>--}}
+            {{--<li class="divider"></li>--}}
+            {{--<li><a href="{{route("quotes_new1_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> New</a></li>--}}
+            {{--<li><a href="{{route("current-quote_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Current</a></li>--}}
+            {{--<li class="divider"></li>--}}
+            {{--<li class="padding-side-20 bg-sub-title-aside"><b class="text-green-goto text-16">Sales</b></li>--}}
+            {{--<li class="divider"></li>--}}
+            {{--<li><a href="{{route("pax_path")}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Paxs</a></li>--}}
+          {{--</ul>--}}
     @endif
     @if(session()->get('menu')=='reportes')
         {{--menu lateral para reportes--}}
-        <div class="menu-titulo text-center"><a href="!#"  class="link text-grey-goto">QUOTES</a></div>
+        <li class="active">
+            <a href="!#">QUOTES</a>
+        </li>
         @endif
 @endif

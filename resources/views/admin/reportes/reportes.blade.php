@@ -12,19 +12,26 @@
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
 @stop
 @section('content')
-    <table id="example" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Reportes</li>
+        </ol>
+    </nav>
+    <hr>
+    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
         <tr>
             <th>#</th>
             <th>Cotizaciones</th>
-            <th class="col-lg-1">Operaciones</th>
+            <th>Operaciones</th>
         </tr>
         </thead>
         <tfoot>
         <tr>
             <th>#</th>
             <th>Cotizaciones</th>
-            <th class="col-lg-1">Operaciones</th>
+            <th>Operaciones</th>
         </tr>
         </tfoot>
         <tbody>
@@ -51,8 +58,8 @@
                        $
                     </small>
                 </td>
-                <td class="col-lg-1">
-                    <a type="button" class="btn btn-primary" href="{{route('ver_cotizacion_path',$cotizacion_cat_->id)}}" >
+                <td class="text-center">
+                    <a type="button" class="btn btn-primary btn-sm" href="{{route('ver_cotizacion_path',$cotizacion_cat_->id)}}" >
                         <i class="fa fa-eye-slash" aria-hidden="true"></i>
                     </a>
                 </td>
@@ -62,18 +69,18 @@
     </table>
 
 
-    <div class="row margin-top-5 hide">
-        <div class="col-md-6 no-padding">
-            <div class="box-header-book">
-                <h4 class="no-margin">New
-                    <span>
-                        <b class="label label-danger">#{{$cotizacion->count()}}</b>
-                        <small><b> </b>  </small>
-                    </span>
-                </h4>
-            </div>
-        </div>
-    </div>
+    {{--<div class="row margin-top-5 hide">--}}
+        {{--<div class="col-md-6 no-padding">--}}
+            {{--<div class="box-header-book">--}}
+                {{--<h4 class="no-margin">New--}}
+                    {{--<span>--}}
+                        {{--<b class="label label-danger">#{{$cotizacion->count()}}</b>--}}
+                        {{--<small><b> </b>  </small>--}}
+                    {{--</span>--}}
+                {{--</h4>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
     <script>
         $(document).ready(function() {
             $('#example').DataTable();

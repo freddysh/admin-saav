@@ -369,7 +369,6 @@
                     @if($servicio->precio_c>0)
                         @php
                             $tour_confirm_c++;
-{{--                            $tours_p_con_t+=$servicio->pagos->where('estado',1)->sum('a_cuenta');--}}
                         @endphp
                     @endif
 
@@ -611,7 +610,6 @@
 
     @php
         $p_res_con=$hotel_p_res_t-$total_pagos_hotel;
-{{--        $p_res_con=($hotel_p_res_t-$hotel_p_con_t);--}}
     @endphp
     @if($p_res_con>0)
         @php
@@ -638,7 +636,7 @@
     @endif
 
     @php
-        {{--$tours_p_res_con=($tours_p_res_t-$tours_p_con_t);--}}
+
         $tours_p_res_con=$tours_p_res_t-$total_pagos_tour;
     @endphp
     @if($tours_p_res_con>0)
@@ -666,7 +664,7 @@
     @endif
 
     @php
-        {{--$movilid_p_res_con=($movilid_p_res_t-$movilid_p_con_t);--}}
+
         $movilid_p_res_con=($total_movilid-$total_pagos_movilid);
 
     @endphp
@@ -695,7 +693,7 @@
     @endif
 
     @php
-        {{--$represent_p_res_con=($represent_p_res_t-$represent_p_con_t);--}}
+
         $represent_p_res_con=($total_represent-$total_pagos_represent);
 
     @endphp
@@ -724,7 +722,7 @@
     @endif
 
     @php
-        {{--$entr_p_res_con=($entr_p_res_t-$entr_p_con_t);--}}
+
         $entr_p_res_con=($total_entrances-$total_pagos_entrances);
     @endphp
     @if($entr_p_res_con>0)
@@ -752,7 +750,7 @@
     @endif
 
     @php
-{{--        $food_p_res_con=($food_p_res_t-$food_p_con_t);--}}
+
     $food_p_res_con=($total_food-$total_pagos_food);
     @endphp
     @if($food_p_res_con>0)
@@ -780,7 +778,7 @@
     @endif
 
     @php
-{{--        $train_p_res_con=($train_p_res_t-$train_p_con_t);--}}
+
     $train_p_res_con=($total_trains-$total_pagos_trains);
     @endphp
     @if($train_p_res_con>0)
@@ -808,7 +806,7 @@
     @endif
 
     @php
-{{--        $flight_p_res_con=($flight_p_res_t-$flight_p_con_t);--}}
+
     $flight_p_res_con=($total_flights-$total_pagos_flights);
     @endphp
     @if($flight_p_res_con>0)
@@ -836,7 +834,7 @@
     @endif
 
     @php
-{{--        $other_p_res_con=($other_p_res_t-$other_p_con_t);--}}
+
     $other_p_res_con=($total_others-$total_pagos_others);
     @endphp
     @if($other_p_res_con>0)
@@ -918,12 +916,19 @@
         $porc_reserva_total=$porc_hotel_r+$porc_tour_r+$porc_movilid_r+$porc_represent_r+$porc_entr_r+$porc_food_r+$porc_train_r+$porc_flight_r+$porc_other_r;
         $porc_reserva_total=round($porc_reserva_total/$nroservicios);
 
-{{--        $porc_conta_total=$porc_hotel_c+$porc_tour_c+$porc_movilid_c+$porc_represent_c+$porc_entr_c+$porc_food_c+$porc_train_c+$porc_flight_c+$porc_other;--}}
         $porc_conta_total=$porc_hotel_c+$porc_tour_c+$porc_movilid_c+$porc_represent_c+$porc_entr_c+$porc_food_c+$porc_train_c+$porc_flight_c+$porc_other;
         $porc_conta_total=round($porc_conta_total/$nroservicios);
     @endphp
-    <div class="row">
-        <div class="col-lg-9">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Reportes</li>
+            <li class="breadcrumb-item active">View</li>
+        </ol>
+    </nav>
+    <hr>
+    <div class="row mt-3 no-gutters">
+        <div class="col-9">
             <div class="row">
                 <div class="col-lg-1 cabecera-res bg-sombra">%</div>
                 <div class="col-lg-2 cabecera-res bg-sombra">SERVICIO</div>
@@ -1120,7 +1125,6 @@
                 $total_reservado=($hotel_p_res_t+$tours_p_res_t+$movilid_p_res_t+$represent_p_res_t+$entr_p_res_t+$food_p_res_t+$train_p_res_t+$flight_p_res_t+$other_p_res_t);
                 $total_contabilizado=$total_pagos_hotel+$total_pagos_tour+$total_pagos_movilid+$total_pagos_represent+
                                      $total_pagos_entrances+$total_pagos_food+$total_pagos_trains+$total_pagos_flights+$total_pagos_others;
-{{--                $total_contabilizado=($hotel_p_con_t+$tours_p_con_t+$movilid_p_con_t+$represent_p_con_t+$entr_p_con_t+$food_p_con_t+$train_p_con_t+$flight_p_con_t+$other_p_con_t);--}}
                 @endphp
                 <div class="col-lg-1 cabecera-res-lat-invi"></div>
                 <div class="col-lg-2 cabecera-res-lat-invi"></div>
@@ -1150,7 +1154,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-3">
             @php
                 $profit_total=$total_cotizado-$total_contabilizado;
                 $color_pro='text-info';
@@ -1175,7 +1179,7 @@
                 @endforeach
             </h2>
             <p class="text-center">{{fecha_texto($cotizacion->fecha)}}</p>
-            <div class="divider"></div>
+            <hr>
             <div class="row">
                 <div class="col-lg-6">VENTAS</div>
                 <div class="col-lg-4 text-right"><b>$</b><b>{{$total_cotizado}}</b></div>
