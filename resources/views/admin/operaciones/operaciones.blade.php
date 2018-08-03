@@ -8,32 +8,33 @@
 
 @extends('layouts.admin.operaciones')
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Operaciones</li>
-            <li class="active">Lista</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Operaciones</a></li>
+            <li class="breadcrumb-item active">List</li>
         </ol>
-    </div>
+    </nav>
+    <hr>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form action="{{route('operaciones_lista_path')}}" method="post">
                         <div class="row">
-                            <div class="col-lg-3">
+                            <div class="col-3">
                                 <div class="form-group">
-                                    <label for="txt_desde">Desde</label>
+                                    <label for="txt_desde" class="font-weight-bold text-secondary">Desde</label>
                                     <input type="date" class="form-control" id="txt_desde" name="txt_desde" required="required" value="{{$desde}}">
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-3">
                                 <div class="form-group">
-                                    <label for="txt_hasta">Hasta</label>
+                                    <label for="txt_hasta" class="font-weight-bold text-secondary">Hasta</label>
                                     <input type="date" class="form-control" id="txt_hasta" name="txt_hasta" required="required" value="{{$hasta}}">
                                 </div>
                             </div>
-                            <div class="col-lg-2 margin-top-20">
+                            <div class="col-2 mt-4">
                                 {{csrf_field()}}
                                 <input type="submit" class="btn btn-primary btn-lg" name="Buscar">
                             </div>
@@ -49,20 +50,20 @@
 
     <div class="row">
         <div class="col-md-12">
-        <div class="panel panel-default table-responsive">
+        <div class="card w-100">
             <!-- Default panel contents -->
-            <div class="panel-heading">
+            <div class="card-header">
 
-                Lista de operaciones de <span class="bg-primary text-15">{{fecha_peru($desde)}}</span> a <span class="bg-primary text-15">{{fecha_peru($hasta)}}</span>
+                Lista de operaciones de <span class="badge badge-primary">{{fecha_peru($desde)}}</span> a <span class="badge badge-primary">{{fecha_peru($hasta)}}</span>
 
                     <a href="{{route('imprimir_operaciones_path',[$desde,$hasta])}}" class="btn btn-danger btn-sm">
-                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                        <i class="fas fa-file-pdf"></i>
                     </a>
             </div>
             <!-- Table -->
-            <table class="table table-striped table-responsive table-bordered table-hover text-10">
+            <table class="table table-striped table-responsive table-bordered table-hover small">
                 <thead>
-                    <tr class="bg-primary">
+                    <tr class="bg-primary text-white">
                         <td>FECHA</td>
                         <td>N°</td>
                         <td>NOMBRE</td>
@@ -136,10 +137,10 @@
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @else
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="1">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @endif
                                             </td>
                                         @else
@@ -152,10 +153,10 @@
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @else
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="1">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @endif
                                             </td>
                                         @else
@@ -188,10 +189,10 @@
                                                 <p class="text-primary">{{$prov_hotel_rs}}<br>{{$prov_hotel_celular}}</p>
                                                     @if($hotel->segunda_confirmada==1)
                                                         <input type="hidden" id="confi2_v_h_{{$hotel->id}}" value="0">
-                                                        <a id="confi2_h_{{$hotel->id}}" href="#!" class="text-success" onclick="segunda_confirmada_hotel('{{$hotel->id}}','0')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                        <a id="confi2_h_{{$hotel->id}}" href="#!" class="text-success" onclick="segunda_confirmada_hotel('{{$hotel->id}}','0')"><i class="fas fa-clock fa-3x"></i></a>
                                                     @else
                                                         <input type="hidden" id="confi2_v_h_{{$hotel->id}}" value="1">
-                                                        <a id="confi2_h_{{$hotel->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada_hotel('{{$hotel->id}}','1')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                        <a id="confi2_h_{{$hotel->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada_hotel('{{$hotel->id}}','1')"><i class="fas fa-clock fa-3x"></i></a>
                                                     @endif
                                             @endforeach
                                         </td>
@@ -201,10 +202,10 @@
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @else
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="1">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @endif
                                             </td>
                                         @else
@@ -216,10 +217,10 @@
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @else
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="1">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @endif
                                             </td>
                                         @else
@@ -231,10 +232,10 @@
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @else
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="1">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @endif
                                             </td>
                                         @else
@@ -246,10 +247,10 @@
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @else
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="1">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @endif
                                             </td>
                                         @else
@@ -261,10 +262,10 @@
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-success" onclick="segunda_confirmada('{{$servicio->id}}','0')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @else
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="1">
-                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fa fa-clock-o fa-3x"></i></a>
+                                                    <a id="confi2_{{$servicio->id}}" href="#!" class="text-grey-goto" onclick="segunda_confirmada('{{$servicio->id}}','1')"><i class="fas fa-clock fa-3x"></i></a>
                                                 @endif
                                             </td>
                                             @endif
@@ -277,14 +278,16 @@
                                                     <div class="modal-content">
 {{--                                                        <form action="{{route('asignar_observacion_servicio_path')}}" method="post">--}}
                                                             <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                 <h4 class="modal-title" id="myModalLabel"><i class="fa fa-list-alt" aria-hidden="true"></i> Observaciones</h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                             </div>
                                                             <div class="modal-body clearfix">
-                                                                <div class="col-md-12">
-                                                                    <label for="obs" class="text-15">Ingrese las observaciones</label>
-                                                                    <textarea class="form-control" name="obs" id="obs_{{$servicio->id}}" cols="30" rows="10">{{$servicio->obs_operaciones}}</textarea>
-                                                                    <span id="rpt_{{$servicio->id}}" class="text-16 text-success"></span>
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <label for="obs" class="text-secondary font-weight-bold">Ingrese las observaciones</label>
+                                                                        <textarea class="form-control" name="obs" id="obs_{{$servicio->id}}" cols="30" rows="10">{{$servicio->obs_operaciones}}</textarea>
+                                                                        <span id="rpt_{{$servicio->id}}" class="h5 text-success"></span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
