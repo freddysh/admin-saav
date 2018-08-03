@@ -5390,6 +5390,10 @@ function buscar_day_by_day(destino) {
         url: '../../admin/package/buscar-day-by-day/ajax',
         data: 'destino='+destino,
         // Mostramos un mensaje con la respuesta de PHP
+        beforeSend:
+            function() {
+                $('#resultado_busqueda').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
         success: function(data) {
             $('#resultado_busqueda').html(data);
         }

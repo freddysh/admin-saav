@@ -959,9 +959,10 @@ class PackageController extends Controller
     public function buscar_day_by_day_ajax(Request $request)
     {
         //
-        $destino=$request->input('destino');
-        if($destino!=0)
-            $day_by_days = M_Itinerario::where('destino_foco',$destino)->get();
-            return view('admin.daybyday.get-day-by-day-x-destino',compact('day_by_days'));
+        $destino = $request->input('destino');
+        if ($destino != 0){
+            $day_by_days = M_Itinerario::where('destino_foco', $destino)->get();
+            return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days'));
+        }
     }
 }
