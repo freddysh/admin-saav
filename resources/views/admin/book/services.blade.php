@@ -1,12 +1,13 @@
 @extends('layouts.admin.book')
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Reservas</li>
-            <li class="active">New</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Reservas</a></li>
+            <li class="breadcrumb-item active">New</li>
         </ol>
-    </div>
+    </nav>
+    <hr>
     <div class="row">
         @php
             $estrellas=2;
@@ -28,7 +29,7 @@
                 $estrellas=5;
             @endphp
         @endif
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <ul class="nav nav-tabs nav-justified">
@@ -42,7 +43,7 @@
                     <div class="tab-content">
                         <div id="itinerario" class="tab-pane fade show active">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-12">
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
@@ -141,23 +142,23 @@
                         </span>
                                 </div>
                             </div>
-                            <table class="table table-bordered tb table-striped table-responsive table-hover">
+                            <table class="table table-bordered table-sm table-hover">
                                 <thead>
-                                <tr>
-                                    <th width="50px"></th>
+                                <tr class="small">
+                                    <th></th>
                                     <th class="d-none">GROUP</th>
-                                    <th width="60px">SERVICE</th>
-                                    <th width="60px">DESTINATION</th>
-                                    <th width="60px">TYPE</th>
-                                    <th width="60px">CALCULO</th>
-                                    <th width="60px">SALES</th>
-                                    <th width="60px">RESERVED</th>
-                                    <th width="150px">PROVIDER</th>
-                                    <th width="130px">VERIFICATION CODE</th>
-                                    <th width="100px">HOUR</th>
+                                    <th>SERVICE</th>
+                                    <th>DESTINATION</th>
+                                    <th>TYPE</th>
+                                    <th>CALCULO</th>
+                                    <th>SALES</th>
+                                    <th>RESERVED</th>
+                                    <th>PROVIDER</th>
+                                    <th>VERIFICATION CODE</th>
+                                    <th>HOUR</th>
                                     <th class="d-none">S/P</th>
-                                    <th width="50px"></th>
-                                    <th width="64px"></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -182,21 +183,21 @@
                                             @endforeach
                                             <tr>
                                                 {{--<td rowspan="{{$nro_servicios}}"><b class="text-primary">Day {{$itinerario->dias}}</b></td>--}}
-                                                <td class="bg-grey-goto text-white" colspan="2">
-                                                    <b>Day {{$itinerario->dias}}</b>
+                                                <td class="bg-g-dark text-white" colspan="12">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-auto">
+                                                        <b class="px-2"><i class="fas fa-angle-right"></i> Day {{$itinerario->dias}}</b>
+                                                        <b class="badge badge-g-yellow">{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
+                                                        <b>{{$itinerario->titulo}}</b>
+                                                        </div>
+                                                        <div class="col">
+                                                            <a href="{{route('servicios_add_path',[$cotizacion->id,$itinerario->id,$itinerario->dias])}}"  class="btn btn-link float-right">
+                                                                <i class="fa fa-plus"></i> Servicio
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                 </td>
-                                                <td class="bg-grey-goto text-white " colspan="6">
-                                                    <b>{{$itinerario->titulo}}</b>
-                                                </td>
-                                                <td class="bg-grey-goto text-white " colspan="2">
-                                                    <b>{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
-                                                </td>
-                                                <td class="bg-grey-goto text-white">
-                                                    <a href="{{route('servicios_add_path',[$cotizacion->id,$itinerario->id,$itinerario->dias])}}"  class="btn btn-success">
-                                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>Servicio
-                                                    </a>
-                                                </td>
-                                                <td class="bg-grey-goto text-white"></td>
+
                                             </tr>
 
                                             @foreach($itinerario->itinerario_servicios->sortBy('pos') as $servicios)
@@ -217,11 +218,11 @@
                                                             @endphp
                                                         @endforeach
                                                         @if($grupe=='TOURS')
-                                                            <i class="fa fa-map-o text-info" aria-hidden="true"></i>
+                                                            <i class="fas fa-map text-info" aria-hidden="true"></i>
                                                         @endif
                                                         @if($grupe=='MOVILID')
                                                             @if($clase=='BOLETO')
-                                                                <i class="fa fa-ticket text-warning" aria-hidden="true"></i>
+                                                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                             @else
                                                                 <i class="fa fa-bus text-warning" aria-hidden="true"></i>
                                                             @endif
@@ -230,10 +231,10 @@
                                                             <i class="fa fa-users text-success" aria-hidden="true"></i>
                                                         @endif
                                                         @if($grupe=='ENTRANCES')
-                                                            <i class="fa fa-ticket text-warning" aria-hidden="true"></i>
+                                                            <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                         @endif
                                                         @if($grupe=='FOOD')
-                                                            <i class="fa fa-cutlery text-danger" aria-hidden="true"></i>
+                                                            <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
                                                         @endif
                                                         @if($grupe=='TRAINS')
                                                             <i class="fa fa-train text-info" aria-hidden="true"></i>
@@ -247,14 +248,14 @@
                                                     </td>
                                                     <td class="d-none">{{$grupe}}</td>
                                                     <td class="lefts">
-                                                    <span class="text-11"><b>{{$servicios->nombre}}</b>
+                                                    <span class="small"><b>{{$servicios->nombre}}</b>
                                                         @if($grupe=='TRAINS')
                                                             <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
                                                         @endif
                                                     </span>
                                                     </td>
-                                                    <td><span class="text-10 text-warning">({{$destino}})</span></td>
-                                                    <td><span class="text-10 text-primary">{{$tipoServicio}}</span></td>
+                                                    <td><span class="small text-warning">({{$destino}})</span></td>
+                                                    <td><span class="small text-primary">{{$tipoServicio}}</span></td>
                                                     @php
                                                         $mate='$';
                                                         $mate_SALE='$';
@@ -325,7 +326,7 @@
                                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                                 <h4 class="modal-title" id="myModalLabel">
                                                                                     @if($grupe=='TOURS')
-                                                                                        <i class="fa fa-map-o text-info" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-map text-info" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='MOVILID')
                                                                                         <i class="fa fa-bus text-warning" aria-hidden="true"></i>
@@ -334,10 +335,10 @@
                                                                                         <i class="fa fa-users text-success" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='ENTRANCES')
-                                                                                        <i class="fa fa-ticket text-warning" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='FOOD')
-                                                                                        <i class="fa fa-cutlery text-danger" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='TRAINS')
                                                                                         <i class="fa fa-train text-info" aria-hidden="true"></i>
@@ -364,7 +365,7 @@
 
                                                                                 </div>
                                                                                 <div class="col-md-12">
-                                                                                    <b id="rpt_book_proveedor_costo_{{$servicios->id}}" class="text-success text-14"></b>
+                                                                                    <b id="rpt_book_proveedor_costo_{{$servicios->id}}" class="text-success"></b>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="modal-footer">
@@ -382,7 +383,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="boton">
-                                                        <b class="text-10" id="book_proveedor_{{$servicios->id}}">
+                                                        <b class="small" id="book_proveedor_{{$servicios->id}}">
                                                             @if($servicios->itinerario_proveedor)
                                                                 {{$servicios->itinerario_proveedor->nombre_comercial}}
                                                             @endif
@@ -407,7 +408,7 @@
                                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                                 <h4 class="modal-title" id="myModalLabel">
                                                                                     @if($grupe=='TOURS')
-                                                                                        <i class="fa fa-map-o text-info" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-map text-info" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='MOVILID')
                                                                                         <i class="fa fa-bus text-warning" aria-hidden="true"></i>
@@ -416,10 +417,10 @@
                                                                                         <i class="fa fa-users text-success" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='ENTRANCES')
-                                                                                        <i class="fa fa-ticket text-warning" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='FOOD')
-                                                                                        <i class="fa fa-cutlery text-danger" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='TRAINS')
                                                                                         <i class="fa fa-train text-info" aria-hidden="true"></i>
@@ -435,7 +436,7 @@
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
                                                                                     @if($productos->where('m_servicios_id',$servicios->m_servicios_id)->count()==0)
-                                                                                        <b class="text-danger text-15">No tenemos proveedores disponibles!</b>
+                                                                                        <b class="text-danger">No tenemos proveedores disponibles!</b>
                                                                                     @elseif($servicios->servicio)
                                                                                         <p class="d-none">{{$productos->where('m_servicios_id',$servicios->m_servicios_id)->count()}} - {{$servicios->m_servicios_id}}</p>
                                                                                         @foreach($productos as $producto)
@@ -462,9 +463,9 @@
                                                                                                     <div class="checkbox11 text-left">
                                                                                                         <div class="row">
                                                                                                             <div class="col-lg-12 bg-green-goto">
-                                                                                                                <b class="text-13 text-grey-goto text-center">{{$producto->nombre}}</b><br>
-                                                                                                                <span class="text-10 text-white">({{$producto->localizacion}})</span>
-                                                                                                                <span class="text-10 text-white">{{$producto->tipo_producto}}</span>
+                                                                                                                <b class="text-grey-goto text-center">{{$producto->nombre}}</b><br>
+                                                                                                                <span class="small text-white">({{$producto->localizacion}})</span>
+                                                                                                                <span class="small text-white">{{$producto->tipo_producto}}</span>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <div class="row">
@@ -472,7 +473,7 @@
                                                                                                                 <label class="text-grey-goto">
                                                                                                                     <p class="text-grey-goto">{{$producto->proveedor->nombre_comercial}}
                                                                                                                         @if($producto->grupo=='TRAINS')
-                                                                                                                            <span class="text-10 text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
+                                                                                                                            <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
                                                                                                                         @endif
                                                                                                                     </p>
                                                                                                                     <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
@@ -496,7 +497,7 @@
                                                                                     @endif
                                                                                 </div>
                                                                                 <div class="col-md-12">
-                                                                                    <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success text-14"></b>
+                                                                                    <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="modal-footer">
@@ -509,7 +510,7 @@
                                                                 </div>
                                                             </div>
                                                         @else
-                                                            <a id="boton_prove_{{$servicios->id}}" type="button" class="" data-toggle="modal" data-target="#myModal_{{$servicios->id}}">
+                                                            <a id="boton_prove_{{$servicios->id}}" href="#" class="" data-toggle="modal" data-target="#myModal_{{$servicios->id}}">
                                                                 <i class="fa fa-edit"></i>
                                                             </a>
                                                             <div class="modal fade" id="myModal_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -520,7 +521,7 @@
                                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                                 <h4 class="modal-title" id="myModalLabel">
                                                                                     @if($grupe=='TOURS')
-                                                                                        <i class="fa fa-map-o text-info" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-map text-info" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='MOVILID')
                                                                                         <i class="fa fa-bus text-warning" aria-hidden="true"></i>
@@ -529,10 +530,10 @@
                                                                                         <i class="fa fa-users text-success" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='ENTRANCES')
-                                                                                        <i class="fa fa-ticket text-warning" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='FOOD')
-                                                                                        <i class="fa fa-cutlery text-danger" aria-hidden="true"></i>
+                                                                                        <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
                                                                                     @endif
                                                                                     @if($grupe=='TRAINS')
                                                                                         <i class="fa fa-train text-info" aria-hidden="true"></i>
@@ -548,7 +549,7 @@
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
                                                                                     @if($productos->where('m_servicios_id',$servicios->m_servicios_id)->count()==0)
-                                                                                        <b class="text-danger text-15">No tenemos proveedores disponibles!</b>
+                                                                                        <b class="text-danger">No tenemos proveedores disponibles!</b>
                                                                                     @elseif($servicios->servicio)
 
                                                                                         @foreach($productos as $producto)
@@ -582,13 +583,13 @@
                                                                                                 {{--<div class="col-md-6">--}}
                                                                                                 {{--<div class="checkbox11 text-left bg-info">--}}
                                                                                                 {{--<label class="text-danger">--}}
-                                                                                                {{--<span class="text-10 text-grey-goto">{{$producto->nombre}}</span>--}}
-                                                                                                {{--<span class="text-10 text-warning">{{$producto->localizacion}}</span>--}}
-                                                                                                {{--<span class="text-10 text-primary">{{$producto->tipo_producto}}</span>--}}
+                                                                                                {{--<span class="small text-grey-goto">{{$producto->nombre}}</span>--}}
+                                                                                                {{--<span class="small text-warning">{{$producto->localizacion}}</span>--}}
+                                                                                                {{--<span class="small text-primary">{{$producto->tipo_producto}}</span>--}}
                                                                                                 {{--<hr>--}}
                                                                                                 {{--<p class="text-primary" >{{$producto->proveedor->nombre_comercial}}--}}
                                                                                                 {{--@if($producto->grupo=='TRAINS')--}}
-                                                                                                {{--<span class="text-10 text-warning" >[{{$servicios->salida}} - {{$servicios->llegada}}]</span>--}}
+                                                                                                {{--<span class="small text-warning" >[{{$servicios->salida}} - {{$servicios->llegada}}]</span>--}}
                                                                                                 {{--@endif--}}
                                                                                                 {{--</p>--}}
                                                                                                 {{--<input type="hidden" {{$m_servicio->precio_venta}}$) id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">--}}
@@ -609,9 +610,9 @@
                                                                                                     <div class="checkbox11 text-left">
                                                                                                         <div class="row">
                                                                                                             <div class="col-lg-12 bg-green-goto">
-                                                                                                                <b class="text-13 text-grey-goto text-center">{{$producto->nombre}}</b><br>
-                                                                                                                <span class="text-10 text-white">({{$producto->localizacion}})</span>
-                                                                                                                <span class="text-10 text-white">{{$producto->tipo_producto}}</span>
+                                                                                                                <b class="text-grey-goto text-center">{{$producto->nombre}}</b><br>
+                                                                                                                <span class="small text-white">({{$producto->localizacion}})</span>
+                                                                                                                <span class="small text-white">{{$producto->tipo_producto}}</span>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <div class="row">
@@ -619,7 +620,7 @@
                                                                                                                 <label class="text-grey-goto">
                                                                                                                     <p class="text-grey-goto">{{$producto->proveedor->nombre_comercial}}
                                                                                                                         @if($producto->grupo=='TRAINS')
-                                                                                                                            <span class="text-10 text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
+                                                                                                                            <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
                                                                                                                         @endif
                                                                                                                     </p>
                                                                                                                     <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
@@ -643,7 +644,7 @@
                                                                                     @endif
                                                                                 </div>
                                                                                 <div class="col-md-12">
-                                                                                    <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success text-14"></b>
+                                                                                    <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="modal-footer">
@@ -755,7 +756,7 @@
                                                         @if($servicios->itinerario_proveedor)
                                                             <i class="fa fa-check fa-2x text-success"></i>
                                                         @else
-                                                            <i class="fa fa-clock-o fa-2x text-unset"></i>
+                                                            <i class="fas fa-clock fa-2x text-unset"></i>
                                                         @endif
                                                     </td>
                                                     <td class="text-center">
@@ -769,11 +770,11 @@
                                                                 $grupo=$res->grupo;
                                                             @endphp
                                                         @endforeach
-                                                        <button type="button" class="btn btn-danger" onclick="eliminar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}')">
-                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}')">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_servicio_{{$servicios->id}}" onclick="traer_servicios('{{$itinerario->id}}','{{$servicios->id}}','{{$localizacion}}','{{$grupo}}')">
-                                                            <i class="fa fa-exchange" aria-hidden="true"></i>
+                                                            <i class="fas fa-exchange-alt" aria-hidden="true"></i>
                                                         </button>
 
                                                         <!-- Modal -->
@@ -894,10 +895,10 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <span class="text-10 text-warning">({{$hotel->localizacion}})</span>
+                                                        <span class="small text-warning">({{$hotel->localizacion}})</span>
                                                     </td>
                                                     <td>
-                                                        <span class="text-10 text-primary">HOTEL</span>
+                                                        <span class="small text-primary">HOTEL</span>
 
                                                     </td>
                                                     <td class="rights">
@@ -950,7 +951,7 @@
                                                                                 <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Editar costo del hotel</h4>
                                                                             </div>
                                                                             <div class="modal-body clearfix">
-                                                                                <table>
+                                                                                <table class="table m-0">
                                                                                     @php
                                                                                         $s=0;
                                                                                         $d=0;
@@ -1039,7 +1040,7 @@
                                                                                     @endif
                                                                                 </table>
                                                                                 <div class="col-md-12">
-                                                                                    <b id="rpt_precio_proveedor_hotel_{{$hotel->id}}" class="text-success text-14"></b>
+                                                                                    <b id="rpt_precio_proveedor_hotel_{{$hotel->id}}" class="text-success"></b>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="modal-footer">
@@ -1058,7 +1059,7 @@
                                                         </p>
                                                     </td>
                                                     <td class="boton">
-                                                        <b class="text-11" id="book_proveedor_hotel_{{$hotel->id}}">
+                                                        <b class=h5 id="book_proveedor_hotel_{{$hotel->id}}">
                                                             @if($hotel->proveedor)
                                                                 {{$hotel->proveedor->nombre_comercial}}
                                                             @endif
@@ -1149,7 +1150,7 @@
                                                                                 @endforeach
                                                                             </div>
                                                                             <div class="col-md-12">
-                                                                                <b id="rpt_book_proveedor_hotel_{{$hotel->id}}" class="text-success text-14"></b>
+                                                                                <b id="rpt_book_proveedor_hotel_{{$hotel->id}}" class="text-success"></b>
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -1226,7 +1227,7 @@
                                                         @if($hotel->proveedor)
                                                             <i class="fa fa-check fa-2x text-success"></i>
                                                         @else
-                                                            <i class="fa fa-clock-o fa-2x text-unset"></i>
+                                                            <i class="fas fa-clock fa-2x text-unset"></i>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -1238,8 +1239,8 @@
                                 <tbody>
                                 <tr>
                                     <td colspan="5"><b>Total</b></td>
-                                    <td class="text-right text-18 text-warning"><b>{{$sumatotal_v}} $</b></td>
-                                    <td class="text-right text-18 text-info"><b>{{$sumatotal_v_r}} $</b></td>
+                                    <td class="text-right h5 text-g-yellow"><b><sup>$</sup>{{$sumatotal_v}}</b></td>
+                                    <td class="text-right h5 text-info"><b><sup>$</sup>{{$sumatotal_v_r}}</b></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -1249,7 +1250,7 @@
                                         <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
                                         {{csrf_field()}}
                                         <button type="submit" class="btn btn-lg btn-success">Enviar a contabilidad
-                                            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                            <i class="far fa-thumbs-up" aria-hidden="true"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -1414,15 +1415,15 @@
                                 </div>
                             </div>
 
-                            <table class="table table-striped table-bordered table-responsive ">
+                            <table class="table table-bordered table-sm">
                                 <thead>
                                 <tr>
-                                    <th class="text-center" width="50px">NOMBRES</th>
-                                    <th class="text-center" width="50px">NACIONALIDAD</th>
-                                    <th class="text-center" width="60px">NRO DOC.</th>
-                                    <th class="text-center" width="60px">SEXO</th>
-                                    <th class="text-center" width="60px">HOTEL</th>
-                                    <th class="text-center" width="60px">EDAD</th>
+                                    <th class="text-center">NOMBRES</th>
+                                    <th class="text-center">NACIONALIDAD</th>
+                                    <th class="text-center">NRO DOC.</th>
+                                    <th class="text-center">SEXO</th>
+                                    <th class="text-center">HOTEL</th>
+                                    <th class="text-center">EDAD</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -1463,17 +1464,17 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            <table class="table table-bordered table-responsive color-borde">
+                            <table class="table table-bordered table-sm color-borde">
                                 <thead>
                                 <tr>
-                                    <th class="text-center" width="50px">DIA</th>
-                                    <th class="text-center" width="50px">DATE</th>
-                                    <th class="text-center" width="60px">HOUR</th>
-                                    <th class="text-center" width="60px">SERVICE</th>
-                                    <th class="text-center" width="60px">PROVEEDOR</th>
-                                    <th class="text-center" width="60px">HOTEL</th>
-                                    <th class="text-center" width="60px">OBSERVACIONES</th>
-                                    <th class="text-center" width="60px">CONF.</th>
+                                    <th class="text-center">DIA</th>
+                                    <th class="text-center">DATE</th>
+                                    <th class="text-center">HOUR</th>
+                                    <th class="text-center">SERVICE</th>
+                                    <th class="text-center">PROVEEDOR</th>
+                                    <th class="text-center">HOTEL</th>
+                                    <th class="text-center">OBSERVACIONES</th>
+                                    <th class="text-center">CONF.</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -1553,12 +1554,12 @@
                                                         </td>
 
                                                         <td class="{{$color}}">
-                                                            <table>
+                                                            <table class="table m-0">
                                                                 <tr>
                                                                     <td width="15px">
                                                                         @if($servicios->servicio->grupo=='FOOD' ||$servicios->servicio->grupo=='MOVILID' || $servicios->servicio->grupo=='REPRESENT' || $servicios->servicio->grupo=='FLIGHT' || $servicios->servicio->grupo=='TOURS' || $servicios->servicio->grupo=='TRAINS')
                                                                             @if($servicios->servicio->grupo=='TOURS')
-                                                                                <i class="fa fa-map-o text-info" aria-hidden="true"></i>
+                                                                                <i class="fas fa-map text-info" aria-hidden="true"></i>
                                                                             @endif
                                                                             @if($servicios->servicio->grupo=='MOVILID' &&$servicios->servicio->clase!='BOLETO')
                                                                                 <i class="fa fa-bus text-warning" aria-hidden="true"></i>
@@ -1567,10 +1568,10 @@
                                                                                 <i class="fa fa-users text-success" aria-hidden="true"></i>
                                                                             @endif
                                                                             @if($servicios->servicio->grupo=='ENTRANCES')
-                                                                                <i class="fa fa-ticket text-warning" aria-hidden="true"></i>
+                                                                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                                             @endif
                                                                             @if($servicios->servicio->grupo=='FOOD')
-                                                                                <i class="fa fa-cutlery text-danger" aria-hidden="true"></i>
+                                                                                <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
                                                                             @endif
                                                                             @if($servicios->servicio->grupo=='TRAINS')
                                                                                 <i class="fa fa-train text-info" aria-hidden="true"></i>
@@ -1585,7 +1586,7 @@
                                                                     </td>
                                                                     <td>
                                                                         @if($servicios->servicio->grupo=='FOOD'|| ($servicios->servicio->grupo=='MOVILID' &&$servicios->servicio->clase!='BOLETO') || $servicios->servicio->grupo=='REPRESENT' || $servicios->servicio->grupo=='FLIGHT' || $servicios->servicio->grupo=='TOURS' || $servicios->servicio->grupo=='TRAINS')
-                                                                            <b>Nom.:</b> {{$servicios->nombre}} <span class="text-10 text-warning">@if($servicios->servicio->grupo=='REPRESENT') ({{$servicios->servicio->tipoServicio}}) @endif</span>         <!-- para transfer,flight,tours,treins --> <br>
+                                                                            <b>Nom.:</b> {{$servicios->nombre}} <span class="small text-warning">@if($servicios->servicio->grupo=='REPRESENT') ({{$servicios->servicio->tipoServicio}}) @endif</span>         <!-- para transfer,flight,tours,treins --> <br>
                                                                         @endif
                                                                         @if($servicios->servicio->grupo=='TOURS')
                                                                             <b>Tipo Servicio:</b> {{$servicios->servicio->tipoServicio}}<!-- para tours --> <br>
@@ -1612,7 +1613,7 @@
                                                                 @endif
                                                                 @if($servicios->servicio->grupo=='TOURS')
                                                                     @foreach($proveedores->where('id',$servicios->proveedor_id)  as $proveedor_serv)
-                                                                        <i class="fa fa-map-o text-info" aria-hidden="true"></i> {{$proveedor_serv->nombre_comercial}}
+                                                                        <i class="fas fa-map text-info" aria-hidden="true"></i> {{$proveedor_serv->nombre_comercial}}
                                                                     @endforeach
                                                                 @endif
                                                             </td>
@@ -1640,22 +1641,24 @@
                                                                         <div class="modal-content">
                                                                             <form id="ingresar_observaciones_hoja_path_{{$servicios->id}}" action="{{route('asignar_proveedor_observaciones_path')}}" method="post">
                                                                                 <div class="modal-header">
-                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                                     <h4 class="modal-title" id="myModalLabel">
                                                                                         Ingrese sus observaciones
                                                                                     </h4>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                                 </div>
                                                                                 <div class="modal-body clearfix">
-                                                                                    <div class="col-md-12">
-                                                                                        <div class="form-group col-md-9">
-                                                                                            <label for="txt_name">Observacion</label>
-                                                                                            <textarea class="form-control" name="txt_observacion_hoja_ruta" id="txt_observacion_hoja_ruta_{{$servicios->id}}" cols="40" rows="10">
-                                                                                            {{$servicios->observacion_hoja_ruta}}
+                                                                                    <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="txt_name" class="text-secondary font-weight-bold">Observacion</label>
+                                                                                            <textarea class="form-control" name="txt_observacion_hoja_ruta" id="txt_observacion_hoja_ruta_{{$servicios->id}}">
+                                                                                            @php echo $servicios->observacion_hoja_ruta; @endphp
                                                                                         </textarea>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="col-md-12">
-                                                                                        <b id="rpt_book_hoja_costo_{{$servicios->id}}" class="text-success text-14"></b>
+                                                                                    <div class="col-12">
+                                                                                        <b id="rpt_book_hoja_costo_{{$servicios->id}}" class="text-success"></b>
+                                                                                    </div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="modal-footer">
@@ -1679,12 +1682,12 @@
                                                                 @if($servicios->confimacion_envio)
                                                                     <input type="hidden" id="estado_send_{{$servicios->id}}" value="0">
                                                                     <button id="confirm_send_{{$servicios->id}}" type="button" class="btn btn-success" onclick="confirma_envio_servicio_reservas('{{$servicios->id}}','0')">
-                                                                        <i class="fa fa-send" aria-hidden="true"></i>
+                                                                        <i class="far fa-share-square" aria-hidden="true"></i>
                                                                     </button>
                                                                 @else
                                                                     <input type="hidden" id="estado_send_{{$servicios->id}}" value="1">
                                                                     <button id="confirm_send_{{$servicios->id}}" type="button" class="btn btn-unset" onclick="confirma_envio_servicio_reservas('{{$servicios->id}}','1')">
-                                                                        <i class="fa fa-send" aria-hidden="true"></i>
+                                                                        <i class="far fa-share-square" aria-hidden="true"></i>
                                                                     </button>
                                                                 @endif
                                                             </td>
