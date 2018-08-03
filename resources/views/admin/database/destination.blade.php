@@ -21,9 +21,7 @@
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_new_destination">
             <i class="fa fa-plus" aria-hidden="true"></i> New
-
         </button>
-
         <!-- Modal -->
         <div class="modal fade bd-example-modal-md" id="modal_new_destination" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-md" role="document">
@@ -124,7 +122,6 @@
                 </div>
             </div>
         </div>
-
         </div>
     </div>
     <div class="row margin-top-20">

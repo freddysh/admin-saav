@@ -5377,3 +5377,21 @@ function mostrar_servicios_localizacion(itinerario_id,servicios_id,localizacion,
         }
     })
 }
+
+function buscar_day_by_day(destino) {
+    console.log('destino:'+destino);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../admin/package/buscar-day-by-day/ajax',
+        data: 'destino='+destino,
+        // Mostramos un mensaje con la respuesta de PHP
+        success: function(data) {
+            $('#resultado_busqueda').html(data);
+        }
+    })
+}

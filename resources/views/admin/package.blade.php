@@ -132,7 +132,22 @@
             <div class="col-1">
                 <a href="#!" class="btn btn-primary" onclick="Pasar_datos()"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
             </div>
+
+
             <div class="col-5" style="height: 500px; overflow-y: auto;">
+                <div class="row">
+                    <div class="col-12">
+                        <select class="form-control" name="destinos_busqueda" id="destinos_busqueda" onclick="buscar_day_by_day($(this).val())">
+                            <option value="0">Escoja un destino</option>
+                            @foreach($destinos as $destino)
+                                <option value="{{$destino->id}}">{{$destino->destino}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-12" id="resultado_busqueda">
+                    </div>
+                </div>
+
                 <div id="lista_itinerarios">
                     @php
                         $pos_itinerario=0;

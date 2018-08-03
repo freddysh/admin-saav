@@ -1068,4 +1068,7 @@ Route::post('admin/book/listar-servicios/localizacion',[
     'uses' => 'ServicesController@listar_servicios_localizacion',
     'as' => 'reservas_localizacion_listar_servicios_path',
 ]);
-
+Route::post('admin/package/buscar-day-by-day/ajax',[
+    'uses' => 'PackageController@buscar_day_by_day_ajax',
+    'as' => 'package_buscar_day_by_day_ajax_path',
+]);
