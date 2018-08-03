@@ -13,71 +13,66 @@
 @stop
 @section('content')
 
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Inventory</li>
-            <li class="active">Day by Day</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Inventory</li>
+            <li class="breadcrumb-item">Day by day</li>
+            <li class="breadcrumb-item active">New</li>
         </ol>
-    </div>
-    <div class="row margin-top-20">
+    </nav>
+    <hr>
+
         <form action="{{route('itinerary_save_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
             <h3 class="">New Day by Day</h3>
-            <div class="row">
-                <div class="col-12">
-                    <div class="row">
+            <div class="row pb-3">
+
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="txt_titulo">Titulo</label>
+                                <label for="txt_titulo" class="font-weight-bold text-secondary">Titulo</label>
                                 <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo">
                             </div>
                         </div>
-                    </div>
-                </div>
+
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="txt_resumen">Resumen</label>
+                        <label for="txt_resumen" class="font-weight-bold text-secondary">Resumen</label>
                         <textarea class="form-control textarea" name="txt_resumen" id="txt_resumen" cols="30" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        <label for="txt_descripcion">Descripcion</label>
+                        <label for="txt_descripcion" class="font-weight-bold text-secondary">Descripcion</label>
                         <textarea class="form-control textarea" name="txt_descripcion" id="txt_descripcion" cols="30" rows="5"></textarea>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="row">
+
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="txt_imagen">Primera imagen</label>
-                                    <input type="file" class="form-control" id="txt_imagen" name="txt_imagen" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,1);">
+                                    <label for="txt_imagen" class="font-weight-bold text-secondary">Primera imagen</label>
+                                    <input type="file" class="form-control form-control-file" id="txt_imagen" name="txt_imagen" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,1);">
                                     <span id="mensaje_file1" class="text-danger text-15"></span>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="txt_imagen">Segunda imagen</label>
-                                    <input type="file" class="form-control" id="txt_imagenB" name="txt_imagenB" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,2);">
+                                    <label for="txt_imagen" class="font-weight-bold text-secondary">Segunda imagen</label>
+                                    <input type="file" class="form-control form-control-file" id="txt_imagenB" name="txt_imagenB" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,2);">
                                     <span id="mensaje_file2" class="text-danger text-15"></span>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="txt_imagen">Tercera imagen</label>
-                                    <input type="file" class="form-control" id="txt_imagenC" name="txt_imagenC" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,3);">
+                                    <label for="txt_imagen" class="font-weight-bold text-secondary">Tercera imagen</label>
+                                    <input type="file" class="form-control form-control-file" id="txt_imagenC" name="txt_imagenC" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,3);">
                                     <span id="mensaje_file3" class="text-danger text-15"></span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="row margin-top-20">
-                <div class="col-md-12">
-                    <h4 class="font-montserrat text-orange-goto"><span class="label bg-orange-goto">2</span> Destinations</h4>
-                    <div class="divider margin-bottom-20"></div>
+            <hr>
+            <div class="row my-2">
+                <div class="col-12">
+                    <h4 class="text-g-yellow">Destinations</h4>
                 </div>
             </div>
             <div class="row d-none">
@@ -93,7 +88,7 @@
                 </div>
                 @endforeach
             </div>
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-lg-8">
                     {{csrf_field()}}
                     <select class="form-control" name="txt_destino" id="txt_destino" onchange="limpiar_caja_servicios()">
@@ -101,27 +96,27 @@
                             <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
                         @endforeach
                     </select>
-                    <div class="row margin-top-5">
+                    <div class="row mt-4">
                         @foreach($categorias as $categoria)
                             <?php
                             $tipoServicio[]=$categoria->nombre;
                             ?>
                         @endforeach
-                        <div class="col-lg-11">
+                        <div class="col-10">
                             <div class="row">
-                                <div class="col-lg-3 no-margin">
-                                    <div class="list-group">
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fa fa-map-o fa-2x text-info" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[1] }}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus fa-2x text-warning" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[2]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users fa-2x text-success" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[3]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fa fa-ticket fa-2x text-warning" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[4]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fa fa-cutlery fa-2x text-danger" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[5]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train fa-2x text-info" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[6]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane fa-2x text-primary" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[7]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[8]}}')"> <i class="fa fa-question fa-2x text-success" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[8]}}</b></a>
+                                <div class="col-3 m-0">
+                                    <div class="list-group text-center">
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fas fa-map fa-2x text-info"></i><b class="small d-block">{{$tipoServicio[1] }}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus fa-2x text-warning"></i><b class="small d-block">{{$tipoServicio[2]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users fa-2x text-success"></i><b class="small d-block">{{$tipoServicio[3]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fas fa-ticket-alt fa-2x text-warning"></i><b class="small d-block">{{$tipoServicio[4]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fas fa-utensils fa-2x text-danger"></i><b class="small d-block">{{$tipoServicio[5]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train fa-2x text-info"></i><b class="small d-block">{{$tipoServicio[6]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane fa-2x text-primary"></i><b class="small d-block">{{$tipoServicio[7]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[8]}}')"> <i class="fa fa-question fa-2x text-success"></i><b class="small d-block">{{$tipoServicio[8]}}</b></a>
                                     </div>
                                 </div>
-                                <div class="col-lg-9">
+                                <div class="col-9">
                                     <div class="panel panel-default">
                                         <div id="list_servicios_grupo" class="panel-body"></div>
                                     </div>
@@ -129,9 +124,9 @@
                             </div>
 
                         </div>
-                        <div class="col-lg-1">
+                        <div class="col">
                             <div class="list-group text-center">
-                                <button type="button" class="btn btn-primary list-group-item  text-center" onclick="escojer_servicio()">
+                                <button type="button" class="btn btn-primary text-center" onclick="escojer_servicio()">
                                     <i class="fa fa-arrow-right  text-center" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -139,11 +134,11 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">SERVICIOS ESCOJIDOS</div>
-                        <div class="panel-body">
+                    <div class="card">
+                        <div class="card-header">SERVICIOS ESCOJIDOS</div>
+                        <div class="card-body">
                             <input type="hidden" id="nroServicios" value="0">
-                            <div id="caja_1" class="row caja_sort height-350">
+                            <div id="caja_1" class="caja_sort ml-0">
                                 {{--<div id="elto_1" class="col-lg-11 elemento_sort">--}}
                                 {{--<div class="row">--}}
                                 {{--<div class="col-lg-1"><span class="text-unset"><i class="fa fa-hand-o-up" aria-hidden="true"></i></span></div>--}}
@@ -153,8 +148,9 @@
                                 {{--</div>--}}
                                 {{--</div>--}}
                             </div>
+                            <hr>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <label for="txt_travel_date">Destino oficial</label>
                                         <select class="form-control" name="txt_destino_foco" id="txt_destino_foco">
@@ -166,7 +162,7 @@
                                         <input type="hidden" name="foco" id="foco" value="0">
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <label for="txt_travel_date">Lugar donde duerme</label>
                                         <select class="form-control" name="txt_destino_duerme" id="txt_destino_duerme">
@@ -184,22 +180,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 text-left text-16 d-none">
-                        <label class="text-green-goto">Total(cost without hotel) $<span id="total_ci_0"></span></label>
-                    </div>
-                    <div class="col-lg-6">
-                        {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-                        <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
-                    </div>
-                </div>
-                {{csrf_field()}}
-                <input type="hidden" name="precio_itinerario" id="precio_itinerario_0" value="0">
             </div>
+            <div class="row my-4">
+                <div class="col-6 text-left text-16 d-none">
+                    <label class="text-green-goto">Total(cost without hotel) $<span id="total_ci_0"></span></label>
+                </div>
+                <div class="col-12 text-center">
+                    {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
+                    <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+                </div>
+            </div>
+            {{csrf_field()}}
+            <input type="hidden" name="precio_itinerario" id="precio_itinerario_0" value="0">
         </form>
         </div>
 
-    </div>
     <script>
 
         $(document).ready(function() {

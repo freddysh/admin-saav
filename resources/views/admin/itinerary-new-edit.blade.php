@@ -16,7 +16,8 @@
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
             <li class="breadcrumb-item">Inventory</li>
-            <li class="breadcrumb-item active">Day by day</li>
+            <li class="breadcrumb-item">Day by day</li>
+            <li class="breadcrumb-item active">Edit</li>
         </ol>
     </nav>
     <hr>
@@ -89,7 +90,7 @@
                     <h4 class="text-g-yellow">Destinations</h4>
                 </div>
             </div>
-            <div class="row hide">
+            <div class="row d-none">
                 {{csrf_field()}}
                 @foreach($destinations as $destino)
                 <div class="col-md-3">
@@ -102,35 +103,35 @@
                 </div>
                 @endforeach
             </div>
-            <div class="row">
-                <div class="col-lg-8">
+            <div class="row mt-3">
+                <div class="col-8">
                     {{csrf_field()}}
                     <select class="form-control" name="txt_destino" id="txt_destino" onchange="limpiar_caja_servicios()">
                         @foreach($destinations as $destino)
                             <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
                         @endforeach
                     </select>
-                    <div class="row margin-top-5">
+                    <div class="row mt-4">
                         @foreach($categorias as $categoria)
                             <?php
                             $tipoServicio[]=$categoria->nombre;
                             ?>
                         @endforeach
-                        <div class="col-lg-11">
+                        <div class="col-10">
                             <div class="row">
-                                <div class="col-lg-3 no-margin">
-                                    <div class="list-group">
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"><i class="fa fa-map-o fa-2x text-info" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[1]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus fa-2x text-warning" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[2]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users fa-2x text-success" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[3]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fa fa-ticket fa-2x text-warning" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[4]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fa fa-cutlery fa-2x text-danger" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[5]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train fa-2x text-info" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[6]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane fa-2x text-primary" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[7]}}</b></a>
-                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[8]}}')"> <i class="fa fa-question fa-2x text-success" aria-hidden="true"></i><b class="text-12">{{$tipoServicio[8]}}</b></a>
+                                <div class="col-3 no-margin">
+                                    <div class="list-group text-center">
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"><i class="fas fa-map fa-2x text-info"></i><b class="small d-block">{{$tipoServicio[1]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus fa-2x text-warning"></i><b class="small d-block">{{$tipoServicio[2]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users fa-2x text-success"></i><b class="small d-block">{{$tipoServicio[3]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fas fa-ticket-alt fa-2x text-warning"></i><b class="small d-block">{{$tipoServicio[4]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fas fa-utensils fa-2x text-danger"></i><b class="small d-block">{{$tipoServicio[5]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train fa-2x text-info"></i><b class="small d-block">{{$tipoServicio[6]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane fa-2x text-primary"></i><b class="small d-block">{{$tipoServicio[7]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[8]}}')"> <i class="fa fa-question fa-2x text-success"></i><b class="small d-block">{{$tipoServicio[8]}}</b></a>
                                     </div>
                                 </div>
-                                <div class="col-lg-9">
+                                <div class="col-9">
                                     <div class="panel panel-default">
                                         <div id="list_servicios_grupo" class="panel-body"></div>
                                     </div>
@@ -138,30 +139,30 @@
                             </div>
 
                         </div>
-                        <div class="col-lg-1">
+                        <div class="col">
                             <div class="list-group text-center">
-                                <button type="button" class="btn btn-primary list-group-item  text-center" onclick="escojer_servicio()">
+                                <button type="button" class="btn btn-primary  text-center" onclick="escojer_servicio()">
                                     <i class="fa fa-arrow-right  text-center" aria-hidden="true"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">SERVICIOS ESCOJIDOS</div>
-                        <div class="panel-body">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">SERVICIOS ESCOJIDOS</div>
+                        <div class="card-body">
                             <input type="hidden" id="nroServicios" value="{{count($itinerarios->itinerario_itinerario_servicios)}}">
-                            <div id="caja_1" class="row caja_sort height-350">
+                            <div id="caja_1" class="caja_sort ml-0">
                                 @php
                                     $array_destinos=[];
                                 @endphp
                                 @foreach($itinerarios->itinerario_itinerario_servicios as $itinerario_itinerario_servicio)
                                 <div id="elto_{{$itinerario_itinerario_servicio->m_servicios_id}}" class="col-lg-11 elemento_sort">
-                                    <div class="row">
-                                        <div class="col-lg-1 text-11 puntero"><span class="text-unset"><i class="fa fa-arrows-alt" aria-hidden="true"></i></span></div>
-                                        <div class="col-lg-1 pos text-10">{{$itinerario_itinerario_servicio->pos}}</div>
-                                        <div class="col-lg-9 text-12">
+                                    <div class="row no-gutters">
+                                        <div class="col-1 small puntero"><span class="text-unset"><i class="fa fa-arrows-alt" aria-hidden="true"></i></span></div>
+                                        <div class="col-1 pos small">{{$itinerario_itinerario_servicio->pos}}</div>
+                                        <div class="col-9 small">
                                             @php
                                                 $servi='';
                                                 $desti_id='';
@@ -190,10 +191,10 @@
                                                 @endif
                                             @endforeach
                                             @if($grupo=='TOURS')
-                                                <i class="fa fa-map-o text-info" aria-hidden="true"></i>
+                                                <i class="fas fa-map text-info" aria-hidden="true"></i>
                                             @elseif($grupo=='MOVILID')
                                                 @if($clase=='BOLETO')
-                                                    <i class="fa fa-ticket text-warning" aria-hidden="true"></i>
+                                                    <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                 @else
                                                     <i class="fa fa-bus text-warning" aria-hidden="true"></i>
                                                 @endif
@@ -202,7 +203,7 @@
                                             @elseif($grupo=='ENTRANCES')
                                                 <i class="fa fa-ticket text-success" aria-hidden="true"></i>
                                             @elseif($grupo=='FOOD')
-                                                <i class="fa fa-cutlery text-danger" aria-hidden="true"></i>
+                                                <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
                                             @elseif($grupo=='TRAINS')
                                                 <i class="fa fa-train text-info" aria-hidden="true"></i>
                                             @elseif($grupo=='FLIGHTS')
@@ -213,15 +214,16 @@
                                             {{$servi}}
                                             <span class="text-warning"> ({{$desti_nombre}})</span>
                                             <input type="hidden" name="servicios_esc[]" value="{{$itinerario_itinerario_servicio->m_servicios_id}}"><input type="hidden" name="destinos_esc[]" value="{{$desti_id}}"></div>
-                                        <div class="col-lg-1 text-13 puntero"><span class="text-danger" onclick="borrar_servicios_esc('{{$itinerario_itinerario_servicio->m_servicios_id}}','{{$servi}}')"><i class="fa fa-trash-o" aria-hidden="true"></i></span></div>
+                                        <div class="col-1 small puntero"><span class="text-danger float-right text-right" onclick="borrar_servicios_esc('{{$itinerario_itinerario_servicio->m_servicios_id}}','{{$servi}}')"><i class="fas fa-trash" aria-hidden="true"></i></span></div>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
+                            <hr>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <label for="txt_travel_date">Destino oficial</label>
+                                        <label for="txt_travel_date" class="font-weight-bold text-secondary">Destino oficial</label>
                                         <select class="form-control" name="txt_destino_foco" id="txt_destino_foco">
                                             <option value="0">Escoja un destino</option>
                                             @foreach($destinations as $destino)
@@ -235,9 +237,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <label for="txt_travel_date">Lugar donde duerme</label>
+                                        <label for="txt_travel_date" class="font-weight-bold text-secondary">Lugar donde duerme</label>
                                         <select class="form-control" name="txt_destino_duerme" id="txt_destino_duerme">
                                             <option value="0">Escoja un destino</option>
                                             <option value="-1" @if($itinerarios->destino_duerme=='-1'){{'selected'}}@endif>NO DUERME</option>
@@ -259,7 +261,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-6 text-left text-16 hide">
+                <div class="col-lg-6 text-left text-16 d-none">
                     <label class="text-green-goto">Total(cost without hotel) $<span id="total_ci_0"></span></label>
                 </div>
                 <div class="col-lg-6">

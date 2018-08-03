@@ -140,15 +140,13 @@
 
                     </div>
                 </div>
-                <input type="hidden" id="desti" value="{{$deti}}">
-                <div class="divider"></div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4 class="font-montserrat text-orange-goto"><span class="label bg-orange-goto">3</span> Itinerary</h4>
-                        <div class="divider margin-bottom-20"></div>
-                    </div>
                 </div>
+                <input type="hidden" id="desti" value="{{$deti}}">
+                <hr>
                 <div class="row">
+                    <div class="col-12 mb-3">
+                        <span class="font-weight-bold rounded-circle py-2 px-3 bg-g-yellow text-white">3</span> <i>itinerary</i>
+                    </div>
                     <div class="col-6">
                         <div class="row">
                         <div class='col-12 box-list-book2'>

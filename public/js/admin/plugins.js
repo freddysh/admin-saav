@@ -4797,9 +4797,9 @@ function escojer_servicio(){
                 iti_temp = '<div id="elto_'+itinerario[2]+'" class="col-lg-11 elemento_sort">'+
                     '<div class="row">'+
 
-                '<div class="col-lg-1 text-11 puntero"><span class="text-unset"><i class="fas fa-arrows-alt" aria-hidden="true"></i></span></div>'+
-                '<div class="col-lg-1 pos text-10">'+total_serv+'</div>'+
-                '<div class="col-lg-9 text-12">';
+                '<div class="col-lg-1 small puntero"><span class="text-unset"><i class="fas fa-arrows-alt" aria-hidden="true"></i></span></div>'+
+                '<div class="col-lg-1 pos small">'+total_serv+'</div>'+
+                '<div class="col-lg-9 small">';
                 if($grupo=='TOURS')
                     iti_temp +='<i class="fas fa-map text-info" aria-hidden="true"></i> ';
                 else if($grupo == 'MOVILID'){
@@ -4816,7 +4816,7 @@ function escojer_servicio(){
                     iti_temp += '<i class= "fas fa-ticket-alt text-success" aria-hidden="true"></i>';
 
                 else if($grupo == 'FOOD')
-                    iti_temp += '<i class = "fa fa-cutlery text-danger" aria-hidden="true"></i>';
+                    iti_temp += '<i class = "fas fa-utensils text-danger" aria-hidden="true"></i>';
                 else if($grupo == 'TRAINS')
                     iti_temp += '<i class = "fa fa-train text-info" aria-hidden="true"></i>';
                 else if($grupo == 'FLIGHTS')
@@ -4825,7 +4825,7 @@ function escojer_servicio(){
                     iti_temp += '<i class = "fa fa-question text-success" aria-hidden="true"></i>';
 
                 iti_temp += itinerario[4]+'<span class="text-warning"> ('+destino_escoj_titulo+')</span><input type="hidden" name="servicios_esc[]" value="'+itinerario[2]+'"><input type="hidden" name="destinos_esc[]" value="'+destino_escoj+'"></div>'+
-            '<div class="col-lg-1 text-13 puntero"><span class="text-danger" onclick="borrar_servicios_esc(\''+itinerario[2]+'\',\''+itinerario[4]+'\')"><i class="fas fa-trash" aria-hidden="true"></i></span></div>'+
+            '<div class="col-lg-1 small puntero"><span class="text-danger float-right text-right" onclick="borrar_servicios_esc(\''+itinerario[2]+'\',\''+itinerario[4]+'\')"><i class="fas fa-trash" aria-hidden="true"></i></span></div>'+
                 '</div>'+
                 '</div>';
 
