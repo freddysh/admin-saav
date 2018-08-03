@@ -12,85 +12,81 @@
     {{--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
 @stop
 @section('content')
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Inventory</li>
-            <li class="active">Day by Day</li>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white m-0">
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Inventory</li>
+            <li class="breadcrumb-item active">Day by day</li>
         </ol>
-    </div>
-    <div class="row margin-top-20">
+    </nav>
+    <hr>
+
         <form action="{{route('call_servicios_edit_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
             <h3 class="">New Day by Day</h3>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-12">
+            <div class="row pb-3">
+
+                        <div class="col-12">
                             <div class="form-group">
-                                <label for="txt_titulo">Titulo</label>
+                                <label for="txt_titulo" class="font-weight-bold text-secondary">Titulo</label>
                                 <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo" value="{{$itinerarios->titulo}}">
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
+
+                <div class="col-6">
                     <div class="form-group">
-                        <label for="txt_resumen">Resumen</label>
+                        <label for="txt_resumen" class="font-weight-bold text-secondary">Resumen</label>
                         <textarea class="form-control textarea" name="txt_resumen" id="txt_resumen" cols="30" rows="5">{{$itinerarios->resumen}}</textarea>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-6">
                     <div class="form-group">
-                        <label for="txt_descripcion">Descripcion</label>
+                        <label for="txt_descripcion" class="font-weight-bold text-secondary">Descripcion</label>
                         <textarea class="form-control textarea" name="txt_descripcion" id="txt_descripcion" cols="30" rows="5">{{$itinerarios->descripcion}}</textarea>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group">
+
                         <div class="col-lg-4">
-                            <label for="txt_imagen">Primera imagen</label>
+                            <label for="txt_imagen" class="font-weight-bold text-secondary">Primera imagen</label>
                             @if (Storage::disk('itinerary')->has($itinerarios->imagen))
                                 <picture>
                                     <img
                                             src="{{route('itinerary_image_path', ['filename' => $itinerarios->imagen])}}"  width="100" height="100">
                                 </picture>
                             @endif
-                            <input type="file" class="form-control" id="txt_imagen" name="txt_imagen" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,11);">
+                            <input type="file" class="form-control form-control-file" id="txt_imagen" name="txt_imagen" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,11);">
                             <span id="mensaje_file11" class="text-danger text-15"></span>
                         </div>
-                        <div class="form-group">
+
                             <div class="col-lg-4">
-                                <label for="txt_imagen">Segunda imagen</label>
+                                <label for="txt_imagen" class="font-weight-bold text-secondary">Segunda imagen</label>
                                 @if (Storage::disk('itinerary')->has($itinerarios->imagenB))
                                     <picture>
                                         <img
                                                 src="{{route('itinerary_image_path', ['filename' => $itinerarios->imagenB])}}"  width="100" height="100">
                                     </picture>
                                 @endif
-                                <input type="file" class="form-control" id="txt_imagenB" name="txt_imagenB" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,22);">
+                                <input type="file" class="form-control form-control-file" id="txt_imagenB" name="txt_imagenB" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,22);">
                                 <span id="mensaje_file22" class="text-danger text-15"></span>
                             </div>
-                        </div>
-                        <div class="form-group">
+
+
                             <div class="col-lg-4">
-                                <label for="txt_imagen">Tercera imagen</label>
+                                <label for="txt_imagen" class="font-weight-bold text-secondary">Tercera imagen</label>
                                 @if (Storage::disk('itinerary')->has($itinerarios->imagenC))
                                     <picture>
                                         <img
                                                 src="{{route('itinerary_image_path', ['filename' => $itinerarios->imagenC])}}"  width="100" height="100">
                                     </picture>
                                 @endif
-                                <input type="file" class="form-control" id="txt_imagenC" name="txt_imagenC" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,33);">
+                                <input type="file" class="form-control form-control-file" id="txt_imagenC" name="txt_imagenC" placeholder="Imagen" size="2048" onchange="ValidarImagen(this,33);">
                                 <span id="mensaje_file33" class="text-danger text-15"></span>
                             </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
-            <div class="row margin-top-20">
-                <div class="col-md-12">
-                    <h4 class="font-montserrat text-orange-goto"><span class="label bg-orange-goto">2</span> Destinations</h4>
-                    <div class="divider margin-bottom-20"></div>
+            <hr>
+            <div class="row my-2">
+                <div class="col-12">
+                    <h4 class="text-g-yellow">Destinations</h4>
                 </div>
             </div>
             <div class="row hide">
@@ -98,9 +94,9 @@
                 @foreach($destinations as $destino)
                 <div class="col-md-3">
                     <div class="checkbox11">
-                        <label class="text-green-goto">
+                        <label class="text-primary">
                             <input class="grupo" type="checkbox" name="destinos[]" value="{{$destino->id}}_{{$destino->destino}}" onchange="filtrar_grupos()">
-                            {{$destino->destino}}
+                            {{ucwords(strtolower($destino->destino))}}
                         </label>
                     </div>
                 </div>
@@ -274,7 +270,7 @@
             {{csrf_field()}}
             <input type="hidden" name="precio_itinerario" id="precio_itinerario_0" value="0">
         </form>
-    </div>
+
     <script>
 
         $(document).ready(function() {
