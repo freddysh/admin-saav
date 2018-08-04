@@ -1184,45 +1184,50 @@
 
                         <div id="precio_2" class="row d-none">
                             <div class="col-md-12">
-                                <b class="font-montserrat text-pink-goto">
-                                    {{--<span class="label bg-orange-goto">1</span>--}}
-                                    Precio 2 estrellas</b>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <b class="font-montserrat text-pink-goto">Precio 2 estrellas</b>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group has-success">
+                                            <input type="number" id="profitt_4" name="profitt_4" class="form-control input-porcent text-right text-13" value="{{$profit_2}}" onchange="calcular_resumen()">
+                                            <b class="input-group-addon input- text-success" id="basic-addon2">%</b>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="table table-condensed font-montserrat">
                                     {{--<caption>table title and/or explanatory text</caption>--}}
                                     <thead>
                                     <tr>
-                                        <th><b class="text-grey-goto-light">Per Person</b></th>
-                                        <th></th>
-                                        <th class="text-right col-md-2"><b class="text-danger text-20">Cost</b></th>
-                                        <th class="text-right col-md-2"><b class="text-success text-20">Profit</b></th>
-                                        <th class="text-right col-md-2"><b class="text-pink-goto text-20">Price</b></th>
+                                        <th class="w-5"><b class="text-grey-goto-light">Per Person</b></th>
+                                        <th class="w-25"></th>
+                                        <th class="w-20 text-right"><b class="text-danger text-20">Cost</b></th>
+                                        <th class="w-20 text-right"><b class="text-success text-20">Profit</b></th>
+                                        <th class="w-20 text-right"><b class="text-pink-goto text-20">Price</b></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
+                                        <td class="w-5">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
                                         </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
+                                        <td class="w-25 text-left">
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t2_a"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t2_a"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t2_a_p"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t2_a_p"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t2_a_v"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t2_a_v"></span>.00</b>
                                         </td>
                                     </tr>
                                     <tr class="d-none">
                                         <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1239,62 +1244,54 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
+                                        <td class="w-5">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
                                         </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
+                                        <td class="w-25 text-left">
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d2_a"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d2_a"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d2_a_p"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d2_a_p"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d2_a_v"></span>.00</b>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                        </td>
-
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s2_a"></span>.00</b>
-                                        </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s2_a_p"></span>.00</b>
-                                        </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s2_a_v"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d2_a_v"></span>.00</b>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="w-5 ">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-25 ">
+                                            <i class="fa fa-bed  text-green-goto" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s2_a"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s2_a_p"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s2_a_v"></span>.00</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-5 ">
 
                                         </td>
-                                        <td>
+                                        <td class="w-25 ">
 
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-20 text-danger"><span id="porc_cost_2">60</span>%</b>
+                                        <td class="w-20  text-right text-13">
+                                            <b class=" text-danger"><span id="porc_cost_4">60</span>%</b>
                                         </td>
-                                        <td class="text-right">
-                                            {{--<div>--}}
-                                            {{--<input type="number" class="form-control text-right" min="0" max="99" step="1">--}}
-                                            {{--</div>--}}
-                                            <div class="input-group has-success">
-                                                <input type="number" id="profitt_2" name="profitt_2" class="form-control input-porcent text-right" value="{{$profit_2}}" onchange="calcular_resumen()">
-                                                <span class="input-group-addon input-" id="basic-addon2">%</span>
-                                            </div>
+                                        <td class="w-20 text-right text-13">
+                                            <b class=" text-danger"><span id="porc_cost_4_copi">{{$profit_2}}</span>%</b>
                                         </td>
-                                        <td class="text-right">
+                                        <td class="w-20 text-right text-13">
                                             <b class="text-20 text-pink-goto">100%</b>
                                         </td>
                                     </tr>
@@ -1304,45 +1301,50 @@
                         </div>
                         <div id="precio_3" class="row d-none">
                             <div class="col-md-12">
-                                <b class="font-montserrat text-pink-goto">
-                                    {{--<span class="label bg-orange-goto">1</span>--}}
-                                    Precio 3 estrellas</b>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <b class="font-montserrat text-pink-goto">Precio 3 estrellas</b>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group has-success">
+                                            <input type="number" id="profitt_3" name="profitt_3" class="form-control input-porcent text-right text-13" value="{{$profit_3}}" onchange="calcular_resumen()">
+                                            <b class="input-group-addon input- text-success" id="basic-addon2">%</b>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="table table-condensed font-montserrat">
                                     {{--<caption>table title and/or explanatory text</caption>--}}
                                     <thead>
                                     <tr>
-                                        <th><b class="text-grey-goto-light">Per Person</b></th>
-                                        <th></th>
-                                        <th class="text-right col-md-2"><b class="text-danger text-20">Cost</b></th>
-                                        <th class="text-right col-md-2"><b class="text-success text-20">Profit</b></th>
-                                        <th class="text-right col-md-2"><b class="text-pink-goto text-20">Price</b></th>
+                                        <th class="w-5"><b class="text-grey-goto-light">Per Person</b></th>
+                                        <th class="w-25"></th>
+                                        <th class="w-20 text-right"><b class="text-danger text-20">Cost</b></th>
+                                        <th class="w-20 text-right"><b class="text-success text-20">Profit</b></th>
+                                        <th class="w-20 text-right"><b class="text-pink-goto text-20">Price</b></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
+                                        <td class="w-5">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
                                         </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
+                                        <td class="w-25 text-left">
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t3_a"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t3_a"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t3_a_p"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t3_a_p"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t3_a_v"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t3_a_v"></span>.00</b>
                                         </td>
                                     </tr>
                                     <tr class="d-none">
                                         <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1359,63 +1361,55 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
+                                        <td class="w-5">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
                                         </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
+                                        <td class="w-25 text-left">
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d3_a"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d3_a"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d3_a_p"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d3_a_p"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d3_a_v"></span>.00</b>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                        </td>
-
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s3_a"></span>.00</b>
-                                        </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s3_a_p"></span>.00</b>
-                                        </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s3_a_v"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d3_a_v"></span>.00</b>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="w-5 ">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-25 ">
+                                            <i class="fa fa-bed  text-green-goto" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s3_a"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s3_a_p"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s3_a_v"></span>.00</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-5 ">
 
                                         </td>
-                                        <td>
+                                        <td class="w-25 ">
 
                                         </td>
-
-                                        <td class="text-right">
-                                            <b class="text-20 text-danger"><span id="porc_cost_3">60</span>%</b>
+                                        <td class="w-20  text-right text-13">
+                                            <b class=" text-danger"><span id="porc_cost_3">60</span>%</b>
                                         </td>
-                                        <td class="text-right">
-                                            {{--<div>--}}
-                                            {{--<input type="number" class="form-control text-right" min="0" max="99" step="1">--}}
-                                            {{--</div>--}}
-                                            <div class="input-group has-success">
-                                                <input type="number" id="profitt_3" name="profitt_3" class="form-control input-porcent text-right" value="{{$profit_3}}" onchange="calcular_resumen()">
-                                                <span class="input-group-addon input-" id="basic-addon2">%</span>
-                                            </div>
+                                        <td class="w-20 text-right text-13">
+                                            <b class=" text-danger"><span id="porc_cost_3_copi">{{$profit_3}}</span>%</b>
                                         </td>
-                                        <td class="text-right">
+                                        <td class="w-20 text-right text-13">
                                             <b class="text-20 text-pink-goto">100%</b>
                                         </td>
                                     </tr>
@@ -1425,45 +1419,50 @@
                         </div>
                         <div id="precio_4" class="row d-none">
                             <div class="col-md-12">
-                                <b class="font-montserrat text-pink-goto">
-                                    {{--<span class="label bg-orange-goto">1</span>--}}
-                                    Precio 4 estrellas</b>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <b class="font-montserrat text-pink-goto">Precio 4 estrellas</b>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group has-success">
+                                            <input type="number" id="profitt_4" name="profitt_4" class="form-control input-porcent text-right text-13" value="{{$profit_4}}" onchange="calcular_resumen()">
+                                            <b class="input-group-addon input- text-success" id="basic-addon2">%</b>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="table table-condensed font-montserrat">
                                     {{--<caption>table title and/or explanatory text</caption>--}}
                                     <thead>
                                     <tr>
-                                        <th><b class="text-grey-goto-light">Per Person</b></th>
-                                        <th></th>
-                                        <th class="text-right col-md-2"><b class="text-danger text-20">Cost</b></th>
-                                        <th class="text-right col-md-2"><b class="text-success text-20">Profit</b></th>
-                                        <th class="text-right col-md-2"><b class="text-pink-goto text-20">Price</b></th>
+                                        <th class="w-5"><b class="text-grey-goto-light">Per Person</b></th>
+                                        <th class="w-25"></th>
+                                        <th class="w-20 text-right"><b class="text-danger text-20">Cost</b></th>
+                                        <th class="w-20 text-right"><b class="text-success text-20">Profit</b></th>
+                                        <th class="w-20 text-right"><b class="text-pink-goto text-20">Price</b></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
+                                        <td class="w-5">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
                                         </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
+                                        <td class="w-25 text-left">
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t4_a"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t4_a"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t4_a_p"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t4_a_p"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_t4_a_v"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t4_a_v"></span>.00</b>
                                         </td>
                                     </tr>
                                     <tr class="d-none">
                                         <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
                                             <i class="fa fa-male fa-2x" aria-hidden="true"></i>
                                         </td>
                                         <td>
@@ -1480,63 +1479,55 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
+                                        <td class="w-5">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
                                         </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
+                                        <td class="w-25 text-left">
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d4_a"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d4_a"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d4_a_p"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d4_a_p"></span>.00</b>
                                         </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_d4_a_v"></span>.00</b>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
-                                        </td>
-                                        <td>
-                                            <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                        </td>
-
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s4_a"></span>.00</b>
-                                        </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s4_a_p"></span>.00</b>
-                                        </td>
-                                        <td class="text-right">
-                                            <b class="text-16">$ <span id="amount_s4_a_v"></span>.00</b>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d4_a_v"></span>.00</b>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td class="w-5 ">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-25 ">
+                                            <i class="fa fa-bed  text-green-goto" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s4_a"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s4_a_p"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s4_a_v"></span>.00</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-5 ">
 
                                         </td>
-                                        <td>
+                                        <td class="w-25 ">
 
                                         </td>
-
-                                        <td class="text-right">
-                                            <b class="text-20 text-danger"><span id="porc_cost_4">60</span>%</b>
+                                        <td class="w-20  text-right text-13">
+                                            <b class=" text-danger"><span id="porc_cost_4">60</span>%</b>
                                         </td>
-                                        <td class="text-right">
-                                            {{--<div>--}}
-                                            {{--<input type="number" class="form-control text-right" min="0" max="99" step="1">--}}
-                                            {{--</div>--}}
-                                            <div class="input-group has-success">
-                                                <input type="number" id="profitt_4" name="profitt_4" class="form-control input-porcent text-right" value="{{$profit_4}}" onchange="calcular_resumen()">
-                                                <span class="input-group-addon input-" id="basic-addon2">%</span>
-                                            </div>
+                                        <td class="w-20 text-right text-13">
+                                            <b class=" text-danger"><span id="porc_cost_4_copi">{{$profit_4}}</span>%</b>
                                         </td>
-                                        <td class="text-right">
+                                        <td class="w-20 text-right text-13">
                                             <b class="text-20 text-pink-goto">100%</b>
                                         </td>
                                     </tr>
@@ -1545,125 +1536,122 @@
                             </div>
                         </div>
                         <div id="precio_5" class="row d-none">
-                        <div class="col-md-12">
-                            <b class="font-montserrat text-pink-goto">
-                                {{--<span class="label bg-orange-goto">1</span>--}}
-                                Precio 5 estrellas</b>
-                            <table class="table table-condensed font-montserrat">
-                                {{--<caption>table title and/or explanatory text</caption>--}}
-                                <thead>
-                                <tr>
-                                    <th><b class="text-grey-goto-light">Per Person</b></th>
-                                    <th></th>
-                                    <th class="text-right col-md-2"><b class="text-danger text-20">Cost</b></th>
-                                    <th class="text-right col-md-2"><b class="text-success text-20">Profit</b></th>
-                                    <th class="text-right col-md-2"><b class="text-pink-goto text-20">Price</b></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                        <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                        <i class="fa fa-male fa-2x" aria-hidden="true"></i>
-                                    </td>
-                                    <td>
-                                        <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                        <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                        <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_t5_a"></span>.00</b>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_t5_a_p"></span>.00</b>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_t5_a_v"></span>.00</b>
-                                    </td>
-                                </tr>
-                                <tr class="d-none">
-                                    <td>
-                                        <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                        <i class="fa fa-male fa-2x" aria-hidden="true"></i>
-                                    </td>
-                                    <td>
-                                        <img src="{{asset('img/icons/matrimonial.png')}}" alt="" width="50">
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_m5_a"></span>.00</b>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_m5_a_p"></span>.00</b>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_m5_a_v"></span>.00</b>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <i class="fa fa-male fa-2x d-none" aria-hidden="true"></i>
-                                        <i class="fa fa-male fa-2x" aria-hidden="true"></i>
-                                    </td>
-                                    <td>
-                                        <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                        <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_d5_a"></span>.00</b>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_d5_a_p"></span>.00</b>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_d5_a_v"></span>.00</b>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <i class="fa fa-male fa-2x" aria-hidden="true"></i>
-                                    </td>
-                                    <td>
-                                        <img src="{{asset('img/icons/single.png')}}" alt="" width="30">
-                                    </td>
-
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_s5_a"></span>.00</b>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_s5_a_p"></span>.00</b>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-16">$ <span id="amount_s5_a_v"></span>.00</b>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-
-                                    </td>
-                                    <td>
-
-                                    </td>
-
-                                    <td class="text-right">
-                                        <b class="text-20 text-danger"><span id="porc_cost_5">60</span>%</b>
-                                    </td>
-                                    <td class="text-right">
-                                        {{--<div>--}}
-                                        {{--<input type="number" class="form-control text-right" min="0" max="99" step="1">--}}
-                                        {{--</div>--}}
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <b class="font-montserrat text-pink-goto">Precio 5 estrellas</b>
+                                    </div>
+                                    <div class="col-2">
                                         <div class="input-group has-success">
-                                            <input type="number" id="profitt_5" name="profitt_5" class="form-control input-porcent text-right" value="{{$profit_5}}" onchange="calcular_resumen()">
-                                            <span class="input-group-addon input-" id="basic-addon2">%</span>
+                                            <input type="number" id="profitt_5" name="profitt_5" class="form-control input-porcent text-right text-13" value="{{$profit_5}}" onchange="calcular_resumen()">
+                                            <b class="input-group-addon input- text-success" id="basic-addon2">%</b>
                                         </div>
-                                    </td>
-                                    <td class="text-right">
-                                        <b class="text-20 text-pink-goto">100%</b>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-condensed font-montserrat">
+                                    {{--<caption>table title and/or explanatory text</caption>--}}
+                                    <thead>
+                                    <tr>
+                                        <th class="w-5"><b class="text-grey-goto-light">Per Person</b></th>
+                                        <th class="w-25"></th>
+                                        <th class="w-20 text-right"><b class="text-danger text-20">Cost</b></th>
+                                        <th class="w-20 text-right"><b class="text-success text-20">Profit</b></th>
+                                        <th class="w-20 text-right"><b class="text-pink-goto text-20">Price</b></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="w-5">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-25 text-left">
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t5_a"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t5_a_p"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_t5_a_v"></span>.00</b>
+                                        </td>
+                                    </tr>
+                                    <tr class="d-none">
+                                        <td>
+                                            <i class="fa fa-male fa-2x" aria-hidden="true"></i>
+                                        </td>
+                                        <td>
+                                            <img src="{{asset('img/icons/matrimonial.png')}}" alt="" width="50">
+                                        </td>
+                                        <td class="text-right">
+                                            <b class="text-16">$ <span id="amount_m5_a"></span>.00</b>
+                                        </td>
+                                        <td class="text-right">
+                                            <b class="text-16">$ <span id="amount_m5_a_p"></span>.00</b>
+                                        </td>
+                                        <td class="text-right">
+                                            <b class="text-16">$ <span id="amount_m5_a_v"></span>.00</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-5">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-25 text-left">
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                            <i class="fa fa-bed text-green-goto" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d5_a"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d5_a_p"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_d5_a_v"></span>.00</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-5 ">
+                                            <i class="fa fa-male" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-25 ">
+                                            <i class="fa fa-bed  text-green-goto" aria-hidden="true"></i>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s5_a"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s5_a_p"></span>.00</b>
+                                        </td>
+                                        <td class="w-20 text-right">
+                                            <b class="text-12">$ <span id="amount_s5_a_v"></span>.00</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-5 ">
+
+                                        </td>
+                                        <td class="w-25 ">
+
+                                        </td>
+                                        <td class="w-20  text-right text-13">
+                                            <b class=" text-danger"><span id="porc_cost_5">60</span>%</b>
+                                        </td>
+                                        <td class="w-20 text-right text-13">
+                                            <b class=" text-danger"><span id="porc_cost_5_copi">{{$profit_5}}</span>%</b>
+                                        </td>
+                                        <td class="w-20 text-right text-13">
+                                            <b class="text-20 text-pink-goto">100%</b>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="row d-none">
                             <div class="col-md-12">

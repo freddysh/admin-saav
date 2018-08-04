@@ -1434,6 +1434,17 @@ function calcular_resumen() {
     $("#porc_cost_4").html(cost_por_4.toFixed(2));
     $("#porc_cost_5").html(cost_por_5.toFixed(2));
 
+    var p_2_copi=$("#profitt_2").val();
+    var p_3_copi=$("#profitt_3").val();
+    var p_4_copi=$("#profitt_4").val();
+    var p_5_copi=$("#profitt_5").val();
+
+    $("#porc_cost_2_copi").html(p_2_copi);
+    $("#porc_cost_3_copi").html(p_3_copi);
+    $("#porc_cost_4_copi").html(p_4_copi);
+    $("#porc_cost_5_copi").html(p_5_copi);
+
+
 
     console.log(utilidad_3);
     var costo_itinerario = $("#totalItinerario").val();
