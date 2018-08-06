@@ -87,7 +87,7 @@
                     @endif
                     <div id="{{$categoria->nombre}}" class="tab-pane fade show {{$activo}}">
                         <div class="row margin-top-10">
-                            <div class="col-lg-5 d-flex">
+                            <div class="@if($categoria->nombre!='HOTELS') {{'col-lg-5'}} @else {{'col-lg-12'}} @endif  d-flex">
                                 <div class="card p-2 w-100">
 
                                     <div class="row">
@@ -158,7 +158,7 @@
                                                     <div class="form-group">
                                                         <label for="txt_codigo" class="text-secondary font-weight-bold">Empresa</label>
                                                         {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
-                                                        <select class="form-control" id="txt_provider_{{$pos}}" name="txt_provider_{{$pos}}" onchange="mostrar_class($('#txt_provider_{{$pos}}').val(),'{{$array_pro}}','{{$categoria->id}}','0',{{$categoria->id}})">
+                                                        <select class="form-control" id="txt_provider_{{$pos}}" name="txt_provider_{{$pos}}" onchange="mostrar_class($('#txt_provider_{{$pos}}').val(),'{{$array_pro}}','{{$categoria->id}}','0',{{$pos}})">
                                                             <option value="0">Escoja una empresa</option>
                                                             @foreach($proveedores->where('grupo','TRAINS') as $provider)
                                                                 <option value="{{$provider->id}}_{{$provider->nombre_comercial}}">{{$provider->nombre_comercial}}</option>
@@ -177,25 +177,25 @@
                                                     </div>
                                                 </div>
                                             @endif
-                                            @if($categoria->nombre=='HOTELS')
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label for="txt_codigo" class="text-secondary font-weight-bold">Location</label>
+                                            {{--@if($categoria->nombre=='HOTELS')--}}
+                                                {{--<div class="col-6">--}}
+                                                    {{--<div class="form-group">--}}
+                                                        {{--<label for="txt_codigo" class="text-secondary font-weight-bold">Location</label>--}}
                                                         {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
-                                                        <select class="form-control" id="txt_localizacion_{{$pos}}" name="txt_localizacion_{{$pos}}">
-                                                            <option value="0">Escoja el destino</option>
-                                                            @foreach($destinations as $destination)
-                                                                @if(!in_array($destination->destino,$destinos_usados))
-                                                                    <option value="{{$destination->destino}}">{{$destination->destino}}</option>
-                                                                @else
-                                                                    <option value="{{$destination->destino}}" disabled="disabled">{{$destination->destino}}</option>
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-                                                        <input type="hidden" name="tipoServicio_{{$pos}}" id="tipoServicio_{{$pos}}" value="{{$categoria->nombre}}">
-                                                    </div>
-                                                </div>
-                                            @endif
+                                                        {{--<select class="form-control" id="txt_localizacion_{{$pos}}" name="txt_localizacion_{{$pos}}">--}}
+                                                            {{--<option value="0">Escoja el destino</option>--}}
+                                                            {{--@foreach($destinations as $destination)--}}
+                                                                {{--@if(!in_array($destination->destino,$destinos_usados))--}}
+                                                                    {{--<option value="{{$destination->destino}}">{{$destination->destino}}</option>--}}
+                                                                {{--@else--}}
+                                                                    {{--<option value="{{$destination->destino}}" disabled="disabled">{{$destination->destino}}</option>--}}
+                                                                {{--@endif--}}
+                                                            {{--@endforeach--}}
+                                                        {{--</select>--}}
+                                                        {{--<input type="hidden" name="tipoServicio_{{$pos}}" id="tipoServicio_{{$pos}}" value="{{$categoria->nombre}}">--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--@endif--}}
                                             @if($categoria->nombre=='MOVILID')
                                                 <div class="col-6">
                                                     <label for="txt_type" class="font-weight-bold text-secondary">Clase</label>
@@ -218,15 +218,15 @@
                                                 </div>
                                             @endif
                                             @if($categoria->nombre=='HOTELS')
-                                                <div class="d-none col-md-12">
+                                                <div class=" col-md-12">
                                                     <table class="table table-responsive table-striped table-condensed">
                                                         <thead>
                                                         <tr>
-                                                            <th class="col-lg-2 text-primary">ACOMODATION</th>
-                                                            <th class="col-lg-2 text-warning text-center text-15">2 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
-                                                            <th class="col-lg-2 text-warning text-center text-15">3 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
-                                                            <th class="col-lg-2 text-warning text-center text-15">4 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
-                                                            <th class="col-lg-2 text-warning text-center text-15">5 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
+                                                            <th class="w-20 text-primary">ACOMODATION</th>
+                                                            <th class="w-20 text-warning text-center text-15">2 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
+                                                            <th class="w-20 text-warning text-center text-15">3 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
+                                                            <th class="w-20 text-warning text-center text-15">4 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
+                                                            <th class="w-20 text-warning text-center text-15">5 <i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i></th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -645,7 +645,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-7 d-flex">
+                            <div class="@if($categoria->nombre!='HOTELS') {{'col-lg-7'}} @else {{'d-none'}} @endif ">
                                 <div class="card p-2 w-100">
                                     <div class="row">
                                         <div class="col">
@@ -657,24 +657,24 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div id="lista_proveedores_{{$categoria->id}}" class="col">
+                                        <div id="lista_proveedores_{{$pos}}_{{$categoria->id}}" class="col">
                                             @if($categoria->nombre!='TRAINS')
                                                 @foreach($proveedores->where('grupo',$categoria->nombre)->where('localizacion','CUSCO') as $proveedor)
 
                                                         <label class="text-primary display-block">
-                                                            <input class="proveedores_{{$categoria->id}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
+                                                            <input class="proveedores_{{$pos}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
                                                             {{ucwords(strtolower($proveedor->nombre_comercial))}}
                                                         </label>
                                                 @endforeach
                                             @endif
                                         </div>
                                         <div class="col-lg-1">
-                                            <a href="#!" class="btn btn-primary sticky-top" onclick="Pasar_pro('0','{{$categoria->id}}',{{$categoria->id}})">
+                                            <a href="#!" class="btn btn-primary sticky-top" onclick="Pasar_pro('0','{{$categoria->id}}',{{$pos}})">
                                                 <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                             </a>
                                         </div>
                                         <div  class="col-lg">
-                                            <div id="lista_costos_{{$categoria->id}}_0_{{$categoria->id}}" class="sticky-top">
+                                            <div id="lista_costos_{{$categoria->id}}_0_{{$pos}}" class="sticky-top">
 
                                             </div>
                                             {{--@if($categoria->nombre=='TRAINS')--}}
@@ -707,8 +707,6 @@
                                 </div>
 
                             </div>
-
-
                         </div>
 
                     </div>

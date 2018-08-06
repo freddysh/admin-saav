@@ -3491,17 +3491,17 @@ function Pasar_pro(id,grupo,idservicio){
         if ($(this).is(':checked')) {
             var proveedor = $(this).val().split('_');
             console.log('proveedor:'+proveedor[1]);
-            if (!existe_proveedor(proveedor[1],id)) {
+            if (!existe_proveedor(proveedor[1],grupo,idservicio)) {
                 var iti_temp1='';
                 console.log('no existe este proveedor');
                 iti_temp1='<div id="fila_'+grupo+'_'+id+'_'+idservicio+'_'+proveedor[0]+'" class="row align-items-center">'+
-                            '<div class="col-5 fila_proveedores_'+id+' text-capitalize"><i class="fas fa-check text-success"></i> '+proveedor[1].toLowerCase()+'</div>'+
+                            '<div class="col-5 text-capitalize"><i class="fas fa-check text-success"></i><span class="fila_proveedores_'+idservicio+'_'+grupo+'">'+proveedor[1].toLowerCase()+'</span> </div>'+
                             '<div class="col">'+
                                 '<input type="hidden" name="pro_id[]" value="'+proveedor[0]+'"></td>'+
                                 '<input type="number" name="pro_val[]" class="form-control form-control-sm my-2" value="0.00" min="0" step="0.01"></td>'+
                             '</div>'+
                             '<div class="col-3">'+
-                                '<button type="button" class="btn btn-danger btn-sm" onclick="eliminar_proveedor('+id+','+grupo+','+idservicio+','+proveedor[0]+',\''+proveedor[1]+'\')">'+
+                                '<button type="button" class="btn btn-danger btn-sm" onclick="eliminar_proveedor('+id+',\''+grupo+'\','+idservicio+','+proveedor[0]+',\''+proveedor[1]+'\')">'+
                                     '<i class="fas fa-trash"></i>'+
 
                                 '</button>'+
@@ -3525,7 +3525,12 @@ function eliminar_proveedor(id1,grupo,idservicio,id,nombre) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes'
     }).then(function () {
+        $('#result_'+idservicio).removeClass('bg-danger');
+        $('#result_'+idservicio).addClass('bg-success');
+        $('#result_'+idservicio).html('Proveedor borrado correctamente');
         $('#fila_'+grupo+'_'+id1+'_'+idservicio+'_'+id).fadeOut( "slow");
+        $('#fila_'+grupo+'_'+id1+'_'+idservicio+'_'+id).remove();
+
     })
 }
 function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
@@ -3538,6 +3543,9 @@ function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes'
     }).then(function () {
+        $('#result_'+id).html('');
+        $('#result_'+id).removeClass('bg-success');
+        $('#result_'+id).removeClass('bg-danger');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -3557,6 +3565,7 @@ function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
                 }
                 else if(data=='2'){
                     // este costo se esta usado en una cotizacion
+                    $('#result_'+id).addClass('bg-danger');
                     $('#result_'+id).html('Este proveedor esta siendo usado en una cotizacion');
                 }
                 console.log(data);
@@ -3567,13 +3576,12 @@ function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
         // $("#fila_"+id).fadeOut( "slow");
     })
 }
-function existe_proveedor(clave,id){
+function existe_proveedor(clave,grupo,servicio_id){
     var existe=false;
-    var fila='.fila_proveedores_'+id;
-    console.log('preparandonos  para buscar');
+    var fila='.fila_proveedores_'+servicio_id+'_'+grupo;
     $(fila).each(function (index1) {
         console.log('recorremos->'+'clave:'+clave+'==$(this).html():'+$(this).html());
-        if(clave==$(this).html()){
+        if((clave.trim()).toLowerCase()==($(this).html().trim()).toLowerCase()){
             existe=true;
         }
     });
@@ -3591,8 +3599,8 @@ function nuevos_proveedores(pos,categoria,grupo) {
     });
     $.ajax({
         type: 'POST',
-        url: '../admin/ventas/service/listar-proveedores',
-        data: 'localizacion='+localizacion+'&grupo='+grupo+'&categoria='+categoria,
+        url: '../../../admin/ventas/service/listar-proveedores',
+        data: 'localizacion='+localizacion+'&grupo='+grupo+'&pos='+pos+'&categoria='+categoria,
         // Mostramos un mensaje con la respuesta de PHP
         success: function(data) {
             console.log(data);
@@ -4497,7 +4505,7 @@ function mostrar_tabla_destino_ruta(grupo,id,pos){
         }
     });
     $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&filtro=Normal', function(data) {
-        $("#tb_datos_"+grupo).html(data);
+            $("#tb_datos_"+grupo).html(data);
 
     }).fail(function (data) {
     });
@@ -4514,8 +4522,9 @@ function mostrar_tabla_destino_ruta_datos(grupo,id,ruta,pos){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-    $.post('../../admin/productos/lista/por-ruta', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&filtro=Movilidad-ruta', function(data) {
-        $("#tb_datos_"+grupo).html(data);
+    // $.post('../../admin/productos/lista/por-ruta', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&filtro=Movilidad-ruta', function(data) {
+    $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&filtro=Movilidad-ruta', function(data) {
+            $("#tb_datos_"+grupo).html(data);
     }).fail(function (data) {
     });
     $.post('../../admin/productos/lista/por-ruta/cargar-tipos', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&grupo='+grupo, function(data) {
@@ -4532,8 +4541,9 @@ function mostrar_tabla_destino_ruta_tipo_datos(grupo,id,ruta,tipo,pos){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-    $.post('../../admin/productos/lista/por-ruta/tipo', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&tipo='+tipo+'&pos='+pos+'&filtro=Movilidad-ruta-tipo', function(data) {
-        $("#tb_datos_"+grupo).html(data);
+    // $.post('../../admin/productos/lista/por-ruta/tipo', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&tipo='+tipo+'&pos='+pos+'&filtro=Movilidad-ruta-tipo', function(data) {
+    $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&tipo='+tipo+'&pos='+pos+'&filtro=Movilidad-ruta-tipo', function(data) {
+            $("#tb_datos_"+grupo).html(data);
     }).fail(function (data) {
     });
 }
@@ -4599,16 +4609,16 @@ function nuevos_proveedores_trains_ruta(pos,categoria,grupo) {
             $('#ruta_llegada_'+pos).html(data);
         }
     })
-    $.ajax({
-        type: 'POST',
-        url: '../../../admin/ventas/service/listar-proveedores',
-        data: 'localizacion='+localizacion+'&grupo='+grupo+'&categoria='+categoria,
-        // Mostramos un mensaje con la respuesta de PHP
-        success: function(data) {
-            console.log(data);
-            $('#lista_proveedores_'+pos+'_'+categoria).html(data);
-        }
-    })
+    // $.ajax({
+    //     type: 'POST',
+    //     url: '../../../admin/ventas/service/listar-proveedores',
+    //     data: 'localizacion='+localizacion+'&grupo='+grupo+'&categoria='+categoria,
+    //     // Mostramos un mensaje con la respuesta de PHP
+    //     success: function(data) {
+    //         console.log(data);
+    //         $('#lista_proveedores_'+pos+'_'+categoria).html(data);
+    //     }
+    // })
 }
 function traer_servicios(itinerario_id,servicios_id,localizacion,grupo) {
     $.ajaxSetup({

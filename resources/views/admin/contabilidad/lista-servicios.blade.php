@@ -90,7 +90,6 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row margin-top-10">
-
                                         <div class="col-5 d-flex">
                                             <div class="card p-2 text-left w-100">
                                                 <div class="row">
@@ -902,7 +901,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col d-flex">
+                                            <div class="col d-flex">
                                             <div class="card p-2 text-left w-100">
                                                 <div class="row">
                                                     <div class="col">
@@ -933,11 +932,13 @@
                                                             </a>
                                                         </div>
                                                         <div class="col-7">
-
                                                             <div id="lista_costos_{{$destino[1]}}_{{$id}}_{{$servicio->id}}">
                                                                 @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion) as $costo)
                                                                     <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
-                                                                        <div class="col-5">{{ucwords(strtolower($costo->proveedor->nombre_comercial))}}</div>
+                                                                        <div class="col-5">
+                                                                            <i class="fas fa-check text-success"></i>
+                                                                        <span class="fila_proveedores_{{$servicio->id}}_{{$destino[1]}}">{{ucwords(strtolower($costo->proveedor->nombre_comercial))}}</span>
+                                                                        </div>
                                                                         <div class="col">
                                                                             <input name="costo_id[]" type="hidden" value="{{$costo->id}}">
                                                                             <input name="costo_val[]" type="number" class="form-control form-control-sm my-2" value="{{$costo->precio_costo}}">
@@ -957,7 +958,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        </div>
                                 </div>
                                 <div class="modal-footer">
                                     {{csrf_field()}}
@@ -1893,7 +1894,6 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="row margin-top-10">
-
                                             <div class="col-lg-5 d-flex">
                                                 <div class="card p-2 w-100">
                                                     <div class="row">
@@ -2659,7 +2659,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="col-lg-7 d-flex">
                                                 <div class="card p-2 w-100">
                                                     <div class="row">
@@ -2673,31 +2672,23 @@
                                                     </div>
                                                     <div class="row">
                                                             <div id="lista_proveedores_{{$servicio->id}}_{{$destino[0]}}" class="col">
-                                                                <p><b class="text-g-green">Proveedores</b></p>
-
                                                                 @if($destino[1]!='TRAINS')
                                                                     @foreach ($proveedores->where('localizacion',$destino[2])->where('grupo',$destino[1]) as $proveedor)
                                                                         <div class="checkbox1">
                                                                             <label class="puntero">
                                                                                 <input class="proveedores_{{$servicio->id}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
-
                                                                                 {{ucwords(strtolower($proveedor->nombre_comercial))}}
-
                                                                             </label>
                                                                         </div>
                                                                     @endforeach
                                                                 @endif
                                                             </div>
-
                                                             <div class="col-1">
-
                                                                 <a href="#!" class="btn btn-primary" onclick="Pasar_pro('{{$categoria_id}}','{{$destino[1]}}','{{$servicio->id}}')">
                                                                     <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
-
                                                             <div class="col-7">
-                                                                <p><b class="text-g-green">Proveedor/Costo</b></p>
                                                                 <div id="lista_costos_{{$destino[1]}}_{{$id}}_{{$servicio->id}}">
                                                                     @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion) as $costo)
                                                                         <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
