@@ -447,7 +447,7 @@ class ServicesController extends Controller
         }
         if($cadena==''){
             $cadena='<div class="alert alert-danger text-center">
-                    <p class="text-16">Upp!!! No hay proveedores para este destino</p>
+                    <p class="text-16">Ups!!! No hay proveedores para este destino</p>
                     <span>Dirijase a <a target="_blank" href="'.route('provider_index_path').'">Providers</a> para ingresar nuevos proveedores</span>
                     </div>';
         }

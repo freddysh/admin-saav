@@ -61,7 +61,7 @@ function Pasar_datos(){
                 var val_p_g=parseFloat(serv[1]);
             });
             var iti_temp='';
-                    iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '" value="' + itinerario[0] + '">' +
+                    iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '">' +
                     '<div class="content-list-book-s">' +
                     '<a href="#!">' +
                     '<strong>' +
@@ -4474,7 +4474,7 @@ function nuevos_proveedores_movilidad_ruta(pos,categoria,grupo) {
     $.ajax({
         type: 'POST',
         url: '../../ventas/service/listar-proveedores',
-        data: 'localizacion='+localizacion+'&grupo='+grupo+'&categoria='+categoria,
+        data: 'localizacion='+localizacion+'&grupo='+grupo+'&categoria='+categoria+'&pos='+pos,
         // Mostramos un mensaje con la respuesta de PHP
         success: function(data) {
             console.log(data);
@@ -4559,7 +4559,7 @@ function nuevos_proveedores_movilidad_ruta_edit(pos,categoria,grupo) {
     $.ajax({
         type: 'POST',
         url: '../admin/ventas/service/listar-proveedores',
-        data: 'localizacion='+localizacion+'&grupo='+grupo+'&categoria='+categoria,
+        data: 'localizacion='+localizacion+'&grupo='+grupo+'&categoria='+categoria+'&pos='+pos,
         // Mostramos un mensaje con la respuesta de PHP
         success: function(data) {
             console.log(data);
@@ -4668,6 +4668,27 @@ function buscar_day_by_day(destino) {
     $.ajax({
         type: 'POST',
         url: '../../admin/package/buscar-day-by-day/ajax',
+        data: 'destino='+destino,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend:
+            function() {
+                $('#resultado_busqueda').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+        success: function(data) {
+            $('#resultado_busqueda').html(data);
+        }
+    })
+}
+function buscar_day_by_day_edit(destino) {
+    console.log('destino:'+destino);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../../../admin/package/buscar-day-by-day/ajax',
         data: 'destino='+destino,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend:
