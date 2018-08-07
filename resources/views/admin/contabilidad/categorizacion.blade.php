@@ -323,7 +323,7 @@
                                 </tbody>
                             </table>
                             <div class="col-lg-12">
-                                <div id="t_ene_c" class="row hide">
+                                <div id="t_ene_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Enero {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[1]}}</b></h3>
                                     <table id="ene_c" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
                                     <thead>
@@ -404,7 +404,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_feb_c" class="row hide">
+                                <div id="t_feb_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Febrero {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[2]}}</b></h3>
                                     <table id="feb_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -484,7 +484,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_mar_c" class="row hide">
+                                <div id="t_mar_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Marzo {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[3]}}</b></h3>
                                     <table id="mar_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -564,7 +564,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_abr_c" class="row hide">
+                                <div id="t_abr_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Abril {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[4]}}</b></h3>
                                     <table id="abr_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -644,7 +644,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_may_c" class="row hide">
+                                <div id="t_may_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Mayo {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[5]}}</b></h3>
                                     <table id="may_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -724,7 +724,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_jun_c" class="row hide">
+                                <div id="t_jun_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Junio {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[6]}}</b></h3>
                                     <table id="jun_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -804,7 +804,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_jul_c" class="row hide">
+                                <div id="t_jul_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Julio {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[7]}}</b></h3>
                                     <table id="jul_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -884,7 +884,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_ago_c" class="row hide">
+                                <div id="t_ago_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Agosto {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[8]}}</b></h3>
                                     <table id="ago_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -964,7 +964,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_set_c" class="row hide">
+                                <div id="t_set_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Septiembre {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[9]}}</b></h3>
                                     <table id="set_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -1044,7 +1044,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_oct_c" class="row hide">
+                                <div id="t_oct_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Octubre {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[10]}}</b></h3>
                                     <table id="oct_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -1124,7 +1124,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_nov_c" class="row hide">
+                                <div id="t_nov_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Noviembre {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[11]}}</b></h3>
                                     <table id="nov_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -1204,7 +1204,7 @@
                                     </tbody>
                                 </table>
                                 </div>
-                                <div id="t_dic_c" class="row hide">
+                                <div id="t_dic_c" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Diciembre {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_c[12]}}</b></h3>
                                     <table id="dic_c" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                     <thead>
@@ -1336,7 +1336,7 @@
                                 </tbody>
                             </table>
                             <div class="col-lg-12">
-                                <div id="t_ene_s" class="row hide">
+                                <div id="t_ene_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Enero {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[1]}}</b></h3>
                                     <table id="ene_s" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
                                         <thead>
@@ -1417,7 +1417,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_feb_s" class="row hide">
+                                <div id="t_feb_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Febrero {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[2]}}</b></h3>
                                     <table id="feb_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -1497,7 +1497,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_mar_s" class="row hide">
+                                <div id="t_mar_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Marzo {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[3]}}</b></h3>
                                     <table id="mar_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -1577,7 +1577,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_abr_s" class="row hide">
+                                <div id="t_abr_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Abril {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[4]}}</b></h3>
                                     <table id="abr_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -1657,7 +1657,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_may_s" class="row hide">
+                                <div id="t_may_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Mayo {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[5]}}</b></h3>
                                     <table id="may_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -1737,7 +1737,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_jun_s" class="row hide">
+                                <div id="t_jun_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Junio {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[6]}}</b></h3>
                                     <table id="jun_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -1817,7 +1817,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_jul_s" class="row hide">
+                                <div id="t_jul_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Julio {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[7]}}</b></h3>
                                     <table id="jul_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -1897,7 +1897,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_ago_s" class="row hide">
+                                <div id="t_ago_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Agosto {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[8]}}</b></h3>
                                     <table id="ago_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -1977,7 +1977,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_set_s" class="row hide">
+                                <div id="t_set_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Septiembre {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[9]}}</b></h3>
                                     <table id="set_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -2057,7 +2057,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_oct_s" class="row hide">
+                                <div id="t_oct_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Octubre {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[10]}}</b></h3>
                                     <table id="oct_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -2137,7 +2137,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_nov_s" class="row hide">
+                                <div id="t_nov_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Noviembre {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[11]}}</b></h3>
                                     <table id="nov_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
@@ -2217,7 +2217,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div id="t_dic_s" class="row hide">
+                                <div id="t_dic_s" class="row d-none">
                                     <h3>Lista de paquetes <span class="text-primary">Diciembre {{$fecha_pqt}}</span> <b class="text-success text-25">$</b><b class="text-success text-25">{{$arra_count_mes_s[12]}}</b></h3>
                                     <table id="dic_s" class="table table-striped table-bordered table-responsive " cellspacing="0" width="100%">
                                         <thead>
