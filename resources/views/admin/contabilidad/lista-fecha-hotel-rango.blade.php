@@ -17,8 +17,8 @@
     @endif
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div class="card card-default">
+                <div class="card-body">
                     <div class="text-right @if($codigos > 0) hide @else show @endif">
                         @foreach($ids as $id)
                             <input type="hidden" id="p_codigos" name="codigos[]" value="{{$id}}">

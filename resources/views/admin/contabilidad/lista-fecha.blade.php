@@ -11,8 +11,8 @@
     {{--<div class="row">--}}
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div class="card card-default">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
 
@@ -37,10 +37,10 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="row">
+            <div class="card card-default">
+                <div class="card-body">
                         <form action="{{route('list_fechas_show_path')}}" method="post">
+                            <div class="row">
                             {{csrf_field()}}
                         <div class="col-lg-9">
 
@@ -168,15 +168,15 @@
                             </table>
                         </div>
                         <div class="col-lg-3">
-                            <div class="panel panel-default">
-                                <div class="panel-body text-center">
+                            <div class="card card-default">
+                                <div class="card-body text-center">
                                     <h2 class="text-40"><sup><small>$usd</small></sup><b id="s_total">Monto</b></h2>
                                     <button class="btn btn-info display-block w-100">Seleccionar</button>
                                 </div>
                             </div>
                         </div>
-                        </form>
                     </div>
+                        </form>
                     {{--<hr>--}}
                 </div>
             </div>
