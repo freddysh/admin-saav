@@ -24,10 +24,10 @@ use Carbon\Carbon;
         </ol>
     </nav>
     <hr>
-    <div class="row">
+    <div class="row my-3">
         <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div class="card w-100">
+                <div class="card-body">
 
                     <ul class="nav nav-tabs nav-justified">
                         <li class="nav-item active"><a data-toggle="tab" href="#home" class="nav-link active rounded-0">HOTELS</a></li>
@@ -45,11 +45,11 @@ use Carbon\Carbon;
                         <div id="home" class="tab-pane fade show active">
                             <div class="row mt-3">
 
-                                <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                <div class="col-12">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
-                                                <div class="col-lg-12 form-inline">
+                                                <div class="col-12 form-inline">
                                                     @php
                                                         $ToDay=new Carbon();
 
@@ -57,14 +57,14 @@ use Carbon\Carbon;
                                                     {{--<form action="{{route('list_fechas_rango_hotel_path')}}" method="post" class="form-inline">--}}
                                                     {{csrf_field()}}
                                                     <div class="form-group">
-                                                        <label for="f_ini">From</label>
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" placeholder="from" name="txt_ini" id="f_ini" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="f_fin">To</label>
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
                                                         <input type="date" class="form-control" placeholder="to" name="txt_fin" id="f_fin" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
-                                                    <button type="button" class="btn btn-default" onclick="buscar_hoteles_pagos_pendientes($('#f_ini').val(),$('#f_fin').val())">Filtrar</button>
+                                                    <button type="button" class="btn btn-default mx-2 mx-2" onclick="buscar_hoteles_pagos_pendientes($('#f_ini').val(),$('#f_fin').val())">Filtrar</button>
                                                     {{--</form>--}}
                                                 </div>
                                             </div><!-- /.row -->
@@ -73,14 +73,14 @@ use Carbon\Carbon;
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12" id="rpt_hotel">
+                            <div class="row my-3">
+                                <div class="col-12" id="rpt_hotel">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h2>Consultas Guardadas(HOTELS)</h2>
@@ -129,7 +129,7 @@ use Carbon\Carbon;
                                                                         <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
                                                                         <button type="submit" class="btn btn-danger">Confirmar</button>
                                                                     </div>
                                                                 </form>
@@ -144,10 +144,10 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu1" class="tab-pane fade">
-                            <div class="row mt-3">
+                            <div class="row mt-3 my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 form-inline">
                                                     @php
@@ -155,14 +155,14 @@ use Carbon\Carbon;
                                                     @endphp
                                                     {{csrf_field()}}
                                                     <div class="form-group">
-                                                        <label for="f_ini">From</label>
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" name="f_ini_TOURS" id="f_ini_TOURS" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="f_fin">To</label>
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
                                                         <input type="date" class="form-control" name="f_fin_TOURS" id="f_fin_TOURS" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
-                                                    <button type="button" class="btn btn-default" onclick="buscar_servicios_pagos_pendientes($('#f_ini_TOURS').val(),$('#f_fin_TOURS').val(),'TOURS')">Filtrar</button>
+                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes($('#f_ini_TOURS').val(),$('#f_fin_TOURS').val(),'TOURS')">Filtrar</button>
                                                 </div>
                                             </div><!-- /.row -->
                                             {{--<hr>--}}
@@ -174,10 +174,10 @@ use Carbon\Carbon;
                                 <div class="col-md-12" id="rpt_TOURS">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h2>Consultas Guardadas(TOURS)</h2>
@@ -227,7 +227,7 @@ use Carbon\Carbon;
                                                                         <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
                                                                         <button type="submit" class="btn btn-danger">Confirmar</button>
                                                                     </div>
                                                                 </form>
@@ -242,10 +242,10 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu2" class="tab-pane fade">
-                            <div class="row mt-3">
+                            <div class="row mt-3 my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 form-inline">
                                                     @php
@@ -253,14 +253,14 @@ use Carbon\Carbon;
                                                     @endphp
                                                     {{csrf_field()}}
                                                     <div class="form-group">
-                                                        <label for="f_ini">From</label>
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" name="f_ini_MOVILID" id="f_ini_MOVILID" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="f_fin">To</label>
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
                                                         <input type="date" class="form-control" name="f_fin_MOVILID" id="f_fin_MOVILID" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
-                                                    <button type="button" class="btn btn-default" onclick="buscar_servicios_pagos_pendientes($('#f_ini_MOVILID').val(),$('#f_fin_MOVILID').val(),'MOVILID')">Filtrar</button>
+                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes($('#f_ini_MOVILID').val(),$('#f_fin_MOVILID').val(),'MOVILID')">Filtrar</button>
                                                 </div>
                                             </div><!-- /.row -->
                                             {{--<hr>--}}
@@ -272,10 +272,10 @@ use Carbon\Carbon;
                                 <div class="col-md-12" id="rpt_MOVILID">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h2>Consultas Guardadas(MOVILID)</h2>
@@ -325,7 +325,7 @@ use Carbon\Carbon;
                                                                         <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
                                                                         <button type="submit" class="btn btn-danger">Confirmar</button>
                                                                     </div>
                                                                 </form>
@@ -340,10 +340,10 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu3" class="tab-pane fade">
-                            <div class="row mt-3">
+                            <div class="row mt-3 my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 form-inline">
                                                     @php
@@ -351,14 +351,14 @@ use Carbon\Carbon;
                                                     @endphp
                                                     {{csrf_field()}}
                                                     <div class="form-group">
-                                                        <label for="f_ini">From</label>
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" name="f_ini_REPRESENT" id="f_ini_REPRESENT" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="f_fin">To</label>
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
                                                         <input type="date" class="form-control" name="f_fin_REPRESENT" id="f_fin_REPRESENT" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
-                                                    <button type="button" class="btn btn-default" onclick="buscar_servicios_pagos_pendientes($('#f_ini_REPRESENT').val(),$('#f_fin_REPRESENT').val(),'REPRESENT')">Filtrar</button>
+                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes($('#f_ini_REPRESENT').val(),$('#f_fin_REPRESENT').val(),'REPRESENT')">Filtrar</button>
                                                 </div>
                                             </div><!-- /.row -->
                                             {{--<hr>--}}
@@ -370,10 +370,10 @@ use Carbon\Carbon;
                                 <div class="col-md-12" id="rpt_REPRESENT">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h2>Consultas Guardadas(REPRESENT)</h2>
@@ -423,7 +423,7 @@ use Carbon\Carbon;
                                                                         <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
                                                                         <button type="submit" class="btn btn-danger">Confirmar</button>
                                                                     </div>
                                                                 </form>
@@ -568,10 +568,10 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu5" class="tab-pane fade">
-                            <div class="row mt-3">
+                            <div class="row mt-3 my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 form-inline">
                                                     @php
@@ -579,14 +579,14 @@ use Carbon\Carbon;
                                                     @endphp
                                                     {{csrf_field()}}
                                                     <div class="form-group">
-                                                        <label for="f_ini">From</label>
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" name="f_ini_FOOD" id="f_ini_FOOD" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="f_fin">To</label>
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
                                                         <input type="date" class="form-control" name="f_fin_FOOD" id="f_fin_FOOD" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
-                                                    <button type="button" class="btn btn-default" onclick="buscar_servicios_pagos_pendientes($('#f_ini_FOOD').val(),$('#f_fin_FOOD').val(),'FOOD')">Filtrar</button>
+                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes($('#f_ini_FOOD').val(),$('#f_fin_FOOD').val(),'FOOD')">Filtrar</button>
                                                 </div>
                                             </div><!-- /.row -->
                                             {{--<hr>--}}
@@ -598,10 +598,10 @@ use Carbon\Carbon;
                                 <div class="col-md-12" id="rpt_FOOD">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h2>Consultas Guardadas(FOOD)</h2>
@@ -651,7 +651,7 @@ use Carbon\Carbon;
                                                                         <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
                                                                         <button type="submit" class="btn btn-danger">Confirmar</button>
                                                                     </div>
                                                                 </form>
@@ -666,10 +666,10 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu6" class="tab-pane fade">
-                            <div class="row mt-3">
+                            <div class="row mt-3 my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 form-inline">
                                                     @php
@@ -677,14 +677,14 @@ use Carbon\Carbon;
                                                     @endphp
                                                     {{csrf_field()}}
                                                     <div class="form-group">
-                                                        <label for="f_ini">From</label>
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" name="f_ini_TRAINS" id="f_ini_TRAINS" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="f_fin">To</label>
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
                                                         <input type="date" class="form-control" name="f_fin_TRAINS" id="f_fin_TRAINS" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
-                                                    <button type="button" class="btn btn-default" onclick="buscar_servicios_pagos_pendientes($('#f_ini_TRAINS').val(),$('#f_fin_TRAINS').val(),'TRAINS')">Filtrar</button>
+                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes($('#f_ini_TRAINS').val(),$('#f_fin_TRAINS').val(),'TRAINS')">Filtrar</button>
                                                 </div>
                                             </div><!-- /.row -->
                                             {{--<hr>--}}
@@ -696,10 +696,10 @@ use Carbon\Carbon;
                                 <div class="col-md-12" id="rpt_TRAINS">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h2>Consultas Guardadas(TRAINS)</h2>
@@ -749,7 +749,7 @@ use Carbon\Carbon;
                                                                         <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
                                                                         <button type="submit" class="btn btn-danger">Confirmar</button>
                                                                     </div>
                                                                 </form>
@@ -764,10 +764,10 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu7" class="tab-pane fade">
-                            <div class="row mt-3">
+                            <div class="row mt-3 my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 form-inline">
                                                     @php
@@ -775,14 +775,14 @@ use Carbon\Carbon;
                                                     @endphp
                                                     {{csrf_field()}}
                                                     <div class="form-group">
-                                                        <label for="f_ini">From</label>
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" name="f_ini_FLIGHTS" id="f_ini_FLIGHTS" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="f_fin">To</label>
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
                                                         <input type="date" class="form-control" name="f_fin_FLIGHTS" id="f_fin_FLIGHTS" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
-                                                    <button type="button" class="btn btn-default" onclick="buscar_servicios_pagos_pendientes($('#f_ini_FLIGHTS').val(),$('#f_fin_FLIGHTS').val(),'FLIGHTS')">Filtrar</button>
+                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes($('#f_ini_FLIGHTS').val(),$('#f_fin_FLIGHTS').val(),'FLIGHTS')">Filtrar</button>
                                                 </div>
                                             </div><!-- /.row -->
                                             {{--<hr>--}}
@@ -794,10 +794,10 @@ use Carbon\Carbon;
                                 <div class="col-md-12" id="rpt_FLIGHTS">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h2>Consultas Guardadas(FLIGHTS)</h2>
@@ -847,7 +847,7 @@ use Carbon\Carbon;
                                                                         <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
                                                                         <button type="submit" class="btn btn-danger">Confirmar</button>
                                                                     </div>
                                                                 </form>
@@ -862,10 +862,10 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu8" class="tab-pane fade">
-                            <div class="row mt-3">
+                            <div class="row mt-3 my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-lg-12 form-inline">
                                                     @php
@@ -873,14 +873,14 @@ use Carbon\Carbon;
                                                     @endphp
                                                     {{csrf_field()}}
                                                     <div class="form-group">
-                                                        <label for="f_ini">From</label>
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" name="f_ini_OTHERS" id="f_ini_OTHERS" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="f_fin">To</label>
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
                                                         <input type="date" class="form-control" name="f_fin_OTHERS" id="f_fin_OTHERS" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
-                                                    <button type="button" class="btn btn-default" onclick="buscar_servicios_pagos_pendientes($('#f_ini_OTHERS').val(),$('#f_fin_OTHERS').val(),'OTHERS')">Filtrar</button>
+                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes($('#f_ini_OTHERS').val(),$('#f_fin_OTHERS').val(),'OTHERS')">Filtrar</button>
                                                 </div>
                                             </div><!-- /.row -->
                                             {{--<hr>--}}
@@ -892,10 +892,10 @@ use Carbon\Carbon;
                                 <div class="col-md-12" id="rpt_OTHERS">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row my-3">
                                 <div class="col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
+                                    <div class="card w-100">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h2>Consultas Guardadas(OTHERS)</h2>
@@ -945,7 +945,7 @@ use Carbon\Carbon;
                                                                         <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
                                                                         <button type="submit" class="btn btn-danger">Confirmar</button>
                                                                     </div>
                                                                 </form>
