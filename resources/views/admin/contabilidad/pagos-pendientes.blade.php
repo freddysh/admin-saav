@@ -975,10 +975,10 @@ use Carbon\Carbon;
             document.getElementById('s_total').innerHTML   = total;
         }
 
-        $(document).ready(function() {
-            $('#lista_liquidaciones').DataTable({
-                "order": [[ 0, "desc" ]]
-            });
-        });
+//        $(document).ready(function() {
+//            $('#lista_liquidaciones').DataTable({
+//                "order": [[ 0, "desc" ]]
+//            });
+//        });
     </script>
 @stop

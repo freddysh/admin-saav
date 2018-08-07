@@ -38,7 +38,6 @@
                                             $arra_prov_total=[];
                                             $arra_fecha_serv=[];
                                             $arra_fecha_venc=[];
-{{--                                            $arra_grupo=[];--}}
                                         @endphp
                                         @foreach($paquetes->itinerario_cotizaciones as $itinerario)
                                             @foreach($itinerario->itinerario_servicios as $servicio)
@@ -171,7 +170,7 @@
                                 <div class="panel-body text-center">
                                     <input type="hidden" name="grupo" value="{{$grupo}}">
                                     <h2 class="text-40"><sup><small>$usd</small></sup><b id="s_total">Monto</b></h2>
-                                    <button class="btn btn-info display-block w-100">Seleccionar</button>
+                                    <button type="submit" class="btn btn-info display-block w-100">Seleccionar</button>
                                 </div>
                             </div>
                         </div>

@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body"
+                <div class="card-body">
                         <form action="{{route('list_fechas_hotel_show_path')}}" method="post">
                             {{csrf_field()}}
                             <div class="row">
@@ -205,7 +205,7 @@
                                     <div class="card w-100">
                                         <div class="card-body text-center">
                                             <h2 class="text-40"><sup><small>$usd</small></sup><b id="s_total">Monto</b></h2>
-                                            <button class="btn btn-info display-block w-100">Seleccionar</button>
+                                            <button type="submit" class="btn btn-info display-block w-100">Seleccionar</button>
                                         </div>
                                     </div>
                                 </div>
