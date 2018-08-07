@@ -1,6 +1,7 @@
 @extends('.layouts.admin.admin')
 @section('archivos-js')
     <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
     <nav aria-label="breadcrumb">
@@ -137,7 +138,7 @@
                     <div class="col-6">
                         <div class=''>
                             <li value="0" class="borar_stetica">
-                                <ol id="Lista_itinerario_g" class='simple_with_animation vertical'>
+                                <ol id="Lista_itinerario_g" class='simple_with_animation caja_sort'>
                                     @php
                                         $iti_precio=0;
                                         $nroItinerario=0;
@@ -207,30 +208,54 @@
                                             $iti_precio+=$itinerario_total;
                                         @endphp
 
-                                        <li class="content-list-book" id="content-list-{{$iti_id}}" value="{{$iti_id}}">
+                                        <li class="content-list-book" id="content-list-{{$iti_id}}">
                                             <div class="content-list-book-s">
-                                                    <small>
+                                                <a href="#!">
+                                                    <strong>
                                                         <input type="hidden" class="servicios_new" name="servicios_new_" value="{{$iti_id}}">
-                                                        <i class="fas fa-user-circle"></i>
+                                                        <img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">
                                                         <input type="hidden" name="itinerarios_1[]" value="{{$itinerario_total}}">
                                                         <input type="hidden" name="itinerarios_2[]" value="{{$itinerario->m_itinerario_id}}">
                                                         <span class="itinerarios_1 d-none">{{$itinerario_total}}</span>
                                                         <span class="txt_itinerarios d-none" name="itinerarios1">{{$iti_id}}</span>
-                                                        <span class="dias_iti_c2 font-weight-bold" id="dias_' + total_Itinerarios + '">Dia {{$itinerario->dias}}:</span>
+                                                        <span class="dias_iti_c2" id="dias_{{$nroItinerario}}">Dia {{$itinerario->dias}}:</span>
                                                         <span id="titulo_{{$itinerario->id}}" class="font-weight-bold">{{$itinerario->titulo}}
-                                                        @if($existextitle==0)
-                                                            <span class="text-info text-12">Se cambio el titulo, <i class="text-primary puntero" onclick="actualizar_titulo('{{$itinerario->id}}','{{$itinerario->m_itinerario_id}}')">Actualizar</i>
+                                                            @if($existextitle==0)
+                                                                <span class="text-info text-12">Se cambio el titulo, <i class="text-primary puntero" onclick="actualizar_titulo('{{$itinerario->id}}','{{$itinerario->m_itinerario_id}}')">Actualizar</i>
                                                             </span>
-                                                        @elseif($existexid==0)
-                                                            <span class="text-danger text-12">Este "Day By day" no existe, cambiar por otro similar</span>
-                                                        @elseif($existexservicios==0)
-                                                            <span class="text-warning text-12">El "Day By day" tuvo cambios en sus servicios, revisar</span>
-                                                        @endif
+                                                            @elseif($existexid==0)
+                                                                <span class="text-danger text-12">Este "Day By day" no existe, cambiar por otro similar</span>
+                                                            @elseif($existexservicios==0)
+                                                                <span class="text-warning text-12">El "Day By day" tuvo cambios en sus servicios, revisar</span>
+                                                            @endif
                                                         </span>
-                                                    </small>
+                                                    </strong>
                                                     <small class="text-primary">
                                                         {{$itinerario_total}} $
                                                     </small>
+                                                </a>
+                                                    {{--<small>--}}
+                                                        {{--<input type="hidden" class="servicios_new" name="servicios_new_" value="{{$iti_id}}">--}}
+                                                        {{--<i class="fas fa-user-circle"></i>--}}
+                                                        {{--<input type="hidden" name="itinerarios_1[]" value="{{$itinerario_total}}">--}}
+                                                        {{--<input type="hidden" name="itinerarios_2[]" value="{{$itinerario->m_itinerario_id}}">--}}
+                                                        {{--<span class="itinerarios_1 d-none">{{$itinerario_total}}</span>--}}
+                                                        {{--<span class="txt_itinerarios d-none" name="itinerarios1">{{$iti_id}}</span>--}}
+                                                        {{--<span class="dias_iti_c2 font-weight-bold" id="dias_' + total_Itinerarios + '">Dia {{$itinerario->dias}}:</span>--}}
+                                                        {{--<span id="titulo_{{$itinerario->id}}" class="font-weight-bold">{{$itinerario->titulo}}--}}
+                                                        {{--@if($existextitle==0)--}}
+                                                            {{--<span class="text-info text-12">Se cambio el titulo, <i class="text-primary puntero" onclick="actualizar_titulo('{{$itinerario->id}}','{{$itinerario->m_itinerario_id}}')">Actualizar</i>--}}
+                                                            {{--</span>--}}
+                                                        {{--@elseif($existexid==0)--}}
+                                                            {{--<span class="text-danger text-12">Este "Day By day" no existe, cambiar por otro similar</span>--}}
+                                                        {{--@elseif($existexservicios==0)--}}
+                                                            {{--<span class="text-warning text-12">El "Day By day" tuvo cambios en sus servicios, revisar</span>--}}
+                                                        {{--@endif--}}
+                                                        {{--</span>--}}
+                                                    {{--</small>--}}
+                                                    {{--<small class="text-primary">--}}
+                                                        {{--{{$itinerario_total}} $--}}
+                                                    {{--</small>--}}
 
                                                 <div class="icon">
                                                      <a class="text-right" href="#!" onclick="eliminar_iti('{{$iti_id}}','{{$itinerario_total}}')"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>
@@ -250,102 +275,15 @@
                     <div class="col-1">
                         <a href="#!" class="btn btn-primary" onclick="Pasar_datos()"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
-                    <div class="col-5" style="height: 500px; overflow-y: auto;">
-                        <div id="lista_itinerarios">
-                            @php
-                                $pos_itinerario=0;
-                                $mostrar_servi='';
-                            @endphp
-                            @foreach($destinos->sortBy('destino') as $destino)
-                                @php
-                                    $mostrar_servi='d-none';
-                                @endphp
-                                @if(in_array($destino->destino,$arra_destinos))
-                                    @php
-                                        $mostrar_servi='';
-                                    @endphp
-                                @endif
-                                <div id="group_destino_{{$destino->id}}" class="{{$mostrar_servi}}">
-                                    <div class="row">
-                                        <b class="font-montserrat text-orange-goto text-20">{{$destino->destino}}</b>
-                                    </div>
-                                    @foreach($itinerarios_d->where('destino', $destino->destino) as $iti)
-                                        @foreach($itinerarios->where('id',$iti->m_itinerario_id) as $itinerario)
-                                            <div id="itinerario{{$itinerario->id}}" class="row mb-2">
-                                                    <div class="input-group">
-                                                        <span class="input-group-prepend">
-                                                            <?php
-                                                            $servicios1='';
-                                                            $precio_iti=0;
-                                                            $destinos_iti='';
-                                                            ?>
-                                                            @foreach($itinerario->itinerario_itinerario_servicios as $servicios)
-                                                                <?php
-                                                                if($servicios->itinerario_servicios_servicio->grupo!='HOTELS'){
-                                                                    if($servicios->itinerario_servicios_servicio->precio_grupo==1){
-                                                                        $precio_iti+=ceil($servicios->itinerario_servicios_servicio->precio_venta/2);
-                                                                        $servicios1.=$servicios->itinerario_servicios_servicio->nombre.'//'.ceil($servicios->itinerario_servicios_servicio->precio_venta/2).'//'.$servicios->itinerario_servicios_servicio->precio_grupo.'*';
-                                                                    }
-                                                                    else{
-                                                                        $precio_iti+=$servicios->itinerario_servicios_servicio->precio_venta;
-                                                                        $servicios1.=$servicios->itinerario_servicios_servicio->nombre.'//'.$servicios->itinerario_servicios_servicio->precio_venta.'//'.$servicios->itinerario_servicios_servicio->precio_grupo.'*';
-
-                                                                    }
-                                                                }
-                                                                ?>
-                                                            @endforeach
-                                                            @foreach($itinerario->destinos as $destino)
-                                                                <?php
-                                                                $destinos_iti.=$destino->destino.'*';
-                                                                ?>
-                                                            @endforeach
-                                                            <?php
-                                                            $destinos_iti=substr($destinos_iti,0,strlen($destinos_iti)-1);
-                                                            $servicios1=substr($servicios1,0,strlen($servicios1)-1);
-                                                            ?>
-                                                                <div class="input-group-text">
-                                                            <input class="itinerario" type="checkbox" aria-label="..." name="itinerarios[]" value="{{$itinerario->id}}_{{$destinos_iti}}_{{$itinerario->titulo}}_a_{{$precio_iti}}_s">
-                                                                    </div>
-                                                        </span>
-                                                        <input type="text" class="form-control" aria-label="..." value="{{$itinerario->titulo}}" readonly>
-                                                        <span class="input-group-append">
-                                                            <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse_{{$itinerario->id}}"><b><sup>$</sup>{{$precio_iti}}</b> <i class="fas fa-angle-down" aria-hidden="true"></i></button>
-                                                        </span>
-                                                    </div>
-                                                    <div class="collapse clearfix" id="collapse_{{$itinerario->id}}">
-                                                        <div class="col-md-12 well margin-top-5">
-                                                            @php $itinerario->descripcion; @endphp
-                                                            <h5><b>Services</b></h5>
-                                                            <table class="table table-condensed table-striped">
-                                                                <thead>
-                                                                    <tr class="bg-grey-goto text-white">
-                                                                        <th colspan="2">Concepts</th>
-                                                                        <th>Prices</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                @foreach($itinerario->itinerario_itinerario_servicios as $servicios)
-                                                                    <tr>
-                                                                        <td>{{$servicios->itinerario_servicios_servicio->nombre}}</td>
-                                                                        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</td>
-                                                                        <td>
-                                                                            @if($servicios->itinerario_servicios_servicio->precio_grupo==1)
-                                                                                {{ceil($servicios->itinerario_servicios_servicio->precio_venta/2)}}
-                                                                            @else
-                                                                                {{$servicios->itinerario_servicios_servicio->precio_venta}}
-                                                                            @endif
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        @endforeach
-                                    @endforeach
-                                </div>
+                    <div class="col-5">
+                        <select class="form-control" name="destinos_busqueda" id="destinos_busqueda" onclick="buscar_day_by_day_edit($(this).val())">
+                            <option value="0">Escoja un destino</option>
+                            @foreach($destinos as $destino)
+                                <option value="{{$destino->id}}">{{$destino->destino}}</option>
                             @endforeach
+                        </select>
+                        <div class="text-center align-middle col-12 margin-top-5" id="resultado_busqueda" style="height: 500px; overflow-y: auto;">
+
                         </div>
                     </div>
                 </div>
@@ -1799,6 +1737,26 @@
     </script>
     <script>
         var adjustment;
+        $('.caja_sort').sortable({
+            connectWith:'.caja_sort',
+            // handle:'.title',
+            // placeholder: ....,
+            tolerance:'intersect',
+            stop:function(){
+                calcular_ancho($(this));
+            },
+        });
+        function calcular_ancho(obj){
+            console.log('se cojio el:'+$(obj).attr('id'));
+            var titles =$(obj).children('.content-list-book').children('.content-list-book-s').children().children().children('.dias_iti_c2');
+            $(titles).each(function(index, element){
+                var elto=$(element).html();
+                console.log('elto:'+elto);
+                var pos=(index+1);
+                $(element).html('Dia '+pos+':');
+            });
+
+        }
         $("ol.simple_with_animation").sortable({
             group: 'simple_with_animation',
             pullPlaceholder: false,

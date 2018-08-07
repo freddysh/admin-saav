@@ -367,8 +367,8 @@
                     var datox=response.split('_');
                     console.log(datox);
 // if(response==1){
-//                            $('#result_'+id).removeClass('text-danger');
-//                            $('#result_'+id).addClass('text-success');
+                        $('#result_'+id).removeClass('bg-danger');
+                        $('#result_'+id).addClass('bg-success');
                         $('#result_'+id).html('Producto guardado Correctamente!');
                         swal(
                             'Genial...',

@@ -388,8 +388,11 @@ class ServicesController extends Controller
 
     public function listarServicios_destino(Request $request)
     {
-        $destino = $request->input('destino');
         $filtro = $request->input('filtro');
+        $destino = $request->input('destino');
+        $ruta = $request->input('ruta');
+        $ruta =explode('-',$ruta);
+        $tipo = $request->input('tipo');
         $id = $request->input('id');
         $destino = explode('_', $destino);
         $sericios = M_Servicio::where('grupo', $destino[1])->where('localizacion', $destino[2])->get();
@@ -397,9 +400,9 @@ class ServicesController extends Controller
         $proveedores=Proveedor::get();
         $costos=M_Producto::get();
         $categoria_id = $id;
-        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','filtro']));
+//        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','filtro']));
+        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','ruta','filtro','tipo']));
     }
-
 
     public function eliminar_servicio_hotel(Request $request)
     {
@@ -426,6 +429,7 @@ class ServicesController extends Controller
     {
         $localizacion= $request->input('localizacion');
         $grupo= $request->input('grupo');
+        $pos= $request->input('pos');
         $categoria= $request->input('categoria');
         $proveedores=null;
         if($grupo!='TRAINS')
@@ -435,16 +439,15 @@ class ServicesController extends Controller
 
         $cadena='';
         foreach ($proveedores as $proveedor){
-            $cadena.='<div class="checkbox1">
-                        <label class="puntero">
-                            <input class="proveedores_'.$categoria.'"  type="checkbox" aria-label="..." name="proveedores_[]" value="'.$proveedor->id.'_'.$proveedor->nombre_comercial.'">
-                            '.$proveedor->nombre_comercial.'
-                        </label>
-                    </div>';
+            $cadena.='<label class="text-primary display-block">
+                        <input class="proveedores_'.$pos.'" type="checkbox" aria-label="..." name="proveedores_[]" value="'.$proveedor->id.'_'.$proveedor->nombre_comercial.'">
+                        '.$proveedor->nombre_comercial.'
+                        </label>';
+
         }
         if($cadena==''){
             $cadena='<div class="alert alert-danger text-center">
-                    <p class="text-16">Upp!!! No hay proveedores para este destino</p>
+                    <p class="text-16">Ups!!! No hay proveedores para este destino</p>
                     <span>Dirijase a <a target="_blank" href="'.route('provider_index_path').'">Providers</a> para ingresar nuevos proveedores</span>
                     </div>';
         }
@@ -1303,21 +1306,7 @@ class ServicesController extends Controller
         return view('admin.contabilidad.lista-ruta-listar',compact(['punto_inicio','grupo','id','pos']));
     }
 
-    public function listarServicios_destino_por_rutas(Request $request)
-    {
-        $filtro=$request->input('filtro');
-        $destino = $request->input('destino');
-        $ruta = $request->input('ruta');
-        $ruta =explode('-',$ruta);
-        $id = $request->input('id');
-        $destino = explode('_', $destino);
-        $sericios = M_Servicio::where('grupo', $destino[1])->where('localizacion', $destino[2])->get();
-        $destinations = M_Destino::get();
-        $proveedores=Proveedor::get();
-        $costos=M_Producto::get();
-        $categoria_id = $id;
-        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','ruta','filtro']));
-    }
+
     public function listarServicios_destino_por_rutas_tipos(Request $request){
         $ruta=explode('_',$request->input('destino'));
         $punto_inicio=$ruta[2];
@@ -1326,22 +1315,7 @@ class ServicesController extends Controller
         $pos=$request->input('pos');
         return view('admin.contabilidad.lista-ruta-tipo-listar',compact(['punto_inicio','grupo','id','pos']));
     }
-    public function listarServicios_destino_rutas_tipos(Request $request)
-    {
-        $filtro=$request->input('filtro');
-        $destino = $request->input('destino');
-        $ruta = $request->input('ruta');
-        $ruta =explode('-',$ruta);
-        $tipo = $request->input('tipo');
-        $id = $request->input('id');
-        $destino = explode('_', $destino);
-        $sericios = M_Servicio::where('grupo', $destino[1])->where('localizacion', $destino[2])->get();
-        $destinations = M_Destino::get();
-        $proveedores=Proveedor::get();
-        $costos=M_Producto::get();
-        $categoria_id = $id;
-        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','ruta','filtro','tipo']));
-    }
+
     public function listar_rutas_train_salida(Request $request){
         $punto_inicio=$request->input('punto_inicio');
         $pos=$request->input('pos');
