@@ -245,7 +245,7 @@
                                                 </td>
 
                                             </tr>
-                                            @foreach($itinerario->itinerario_servicios as $servicios)
+                                            @foreach($itinerario->itinerario_servicios->sortBy('pos') as $servicios)
                                                 <tr>
                                                     <td>
                                                         <div class="row">

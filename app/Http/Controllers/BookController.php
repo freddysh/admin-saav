@@ -645,4 +645,16 @@ class BookController extends Controller
         else
             return 0;
     }
+    function guardar_datos(Request $request){
+        $cotizacion_id=$request->input('cotizacion_id');
+        $id=$request->input('id');
+        $aerolinea=$request->input('txt_aereolinea');
+        $nro_vuelo=$request->input('txt_nro_vuelo');
+        $servicio= ItinerarioServicios::Find($id);
+        $servicio->aerolinea=$aerolinea;
+        $servicio->nro_vuelo=$nro_vuelo;
+        $servicio->save();
+        return redirect()->route('book_show_path',$cotizacion_id);
+    }
+
 }

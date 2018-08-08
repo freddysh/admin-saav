@@ -1072,3 +1072,8 @@ Route::post('admin/package/buscar-day-by-day/ajax',[
     'uses' => 'PackageController@buscar_day_by_day_ajax',
     'as' => 'package_buscar_day_by_day_ajax_path',
 ]);
+Route::post('admin/book/guadar-datos',[
+    'uses' => 'BookController@guardar_datos',
+    'as' => 'guardar_datos_flights_path',
+]);
+

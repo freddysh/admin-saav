@@ -248,7 +248,55 @@
                                                     </td>
                                                     <td class="d-none">{{$grupe}}</td>
                                                     <td class="lefts">
-                                                    <span class="small"><b>{{$servicios->nombre}}</b>
+                                                    <span class="small">
+                                                        <b>{{$servicios->nombre}}</b>
+                                                        @if($grupe=='FLIGHTS')
+                                                            <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
+                                                                <i class="fa fa-plus-circle fa-2x"></i>
+                                                            </a>
+                                                            <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <form action="{{route('guardar_datos_flights_path')}}" method="post">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
+                                                                            </div>
+                                                                            <div class="modal-body clearfix">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
+                                                                                            <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
+                                                                                            <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-12">
+                                                                                    <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                {{csrf_field()}}
+                                                                                <input type="hidden" name="id" value="{{$servicios->id}}">
+                                                                                <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                <button type="submit" class="btn btn-primary">Guardar Datos</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                        @if($grupe=='FLIGHTS')
+                                                            <br>
+                                                            <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
+                                                        @endif
                                                         @if($grupe=='TRAINS')
                                                             <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
                                                         @endif
@@ -754,9 +802,9 @@
                                                     </td>
                                                     <td class="boton" id="estado_proveedor_serv_{{$servicios->id}}">
                                                         @if($servicios->itinerario_proveedor)
-                                                            <i class="fa fa-check fa-2x text-success"></i>
+                                                            <i class="fa fa-check  text-success"></i>
                                                         @else
-                                                            <i class="fas fa-clock fa-2x text-unset"></i>
+                                                            <i class="fas fa-clock text-unset"></i>
                                                         @endif
                                                     </td>
                                                     <td class="text-center">
@@ -1468,9 +1516,9 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">DIA</th>
-                                    <th class="text-center">DATE</th>
-                                    <th class="text-center">HOUR</th>
-                                    <th class="text-center">SERVICE</th>
+                                    <th class="text-center">FECHA</th>
+                                    <th class="text-center">HORA</th>
+                                    <th class="text-center">SERVICIO</th>
                                     <th class="text-center">PROVEEDOR</th>
                                     <th class="text-center">HOTEL</th>
                                     <th class="text-center">OBSERVACIONES</th>
@@ -1557,7 +1605,7 @@
                                                             <table class="table m-0">
                                                                 <tr>
                                                                     <td width="15px">
-                                                                        @if($servicios->servicio->grupo=='FOOD' ||$servicios->servicio->grupo=='MOVILID' || $servicios->servicio->grupo=='REPRESENT' || $servicios->servicio->grupo=='FLIGHT' || $servicios->servicio->grupo=='TOURS' || $servicios->servicio->grupo=='TRAINS')
+                                                                        @if($servicios->servicio->grupo=='FOOD' ||$servicios->servicio->grupo=='MOVILID' || $servicios->servicio->grupo=='REPRESENT' || $servicios->servicio->grupo=='FLIGHTS' || $servicios->servicio->grupo=='TOURS' || $servicios->servicio->grupo=='TRAINS')
                                                                             @if($servicios->servicio->grupo=='TOURS')
                                                                                 <i class="fas fa-map text-info" aria-hidden="true"></i>
                                                                             @endif
@@ -1585,14 +1633,19 @@
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        @if($servicios->servicio->grupo=='FOOD'|| ($servicios->servicio->grupo=='MOVILID' &&$servicios->servicio->clase!='BOLETO') || $servicios->servicio->grupo=='REPRESENT' || $servicios->servicio->grupo=='FLIGHT' || $servicios->servicio->grupo=='TOURS' || $servicios->servicio->grupo=='TRAINS')
+                                                                        @if($servicios->servicio->grupo=='FOOD'|| ($servicios->servicio->grupo=='MOVILID' &&$servicios->servicio->clase!='BOLETO') || $servicios->servicio->grupo=='REPRESENT' || $servicios->servicio->grupo=='TOURS' || $servicios->servicio->grupo=='TRAINS')
                                                                             <b>Nom.:</b> {{$servicios->nombre}} <span class="small text-warning">@if($servicios->servicio->grupo=='REPRESENT') ({{$servicios->servicio->tipoServicio}}) @endif</span>         <!-- para transfer,flight,tours,treins --> <br>
                                                                         @endif
                                                                         @if($servicios->servicio->grupo=='TOURS')
                                                                             <b>Tipo Servicio:</b> {{$servicios->servicio->tipoServicio}}<!-- para tours --> <br>
                                                                         @endif
-                                                                        @if($servicios->servicio->grupo=='FLIGHT' || $servicios->servicio->grupo=='TRAINS')
+                                                                        @if($servicios->servicio->grupo=='TRAINS')
                                                                             <b>Hora:</b> {{$servicios->salida}} {{$servicios->llegada}}<!-- para flights,trains -->
+                                                                        @endif
+                                                                        @if($servicios->servicio->grupo=='FLIGHTS')
+                                                                                <b>Ruta.:</b> {{$servicios->nombre}} <span class="small text-warning"></span>
+                                                                                <br>
+                                                                                {{$servicios->aerolinea}} / {{$servicios->nro_vuelo}}</b>
                                                                         @endif
                                                                     </td>
                                                                 </tr>
