@@ -1088,3 +1088,7 @@ Route::post('admin/book/listar-servicios/localizacion-paso1',[
     'uses' => 'ServicesController@listar_servicios_localizacion_paso1',
     'as' => 'reservas_localizacion_listar_servicios_paso1_path',
 ]);
+Route::get('/admin/quotes/new/step1/nuevo-servicio/{id1}/{id2}/{id3}',[
+    'uses' => 'ServicesController@nuevos_servicios',
+    'as' => 'agregar_servicios_paso1_path',
+]);

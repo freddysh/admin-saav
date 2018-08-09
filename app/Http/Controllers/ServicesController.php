@@ -1370,4 +1370,8 @@ class ServicesController extends Controller
         $destinos=M_Destino::get();
         return view('admin.book.mostrar-servicios-localizacion-paso1',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));
     }
+    public function nuevos_servicios($cliente,$cotizacion_id,$paquete_precio_id)
+    {
+
+    }
 }

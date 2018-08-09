@@ -4,6 +4,11 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
+    @foreach($cotizaciones as $cotizacion)
+        @php
+            $cotizacion_id=$cotizacion->id;
+        @endphp
+    @endforeach
     @if(isset($id_serv))
         @php
             $id_serv=$id_serv;
@@ -73,6 +78,13 @@
         <div class="col-6">
             <div class="row align-items-center">
                 <div class="col-6">
+                    <div class="row">
+                        <div class="col  text-30 text-center">
+                            <a href="{{route('agregar_servicios_paso1_path',[$cliente,$cotizacion_id,$paquete_precio_id])}}" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar servicio</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 d-none">
                     <div class="row">
                         <div class="col caja_paso_activo text-30 text-center">
                             <button class="caja_paso_activo_">1</button>
