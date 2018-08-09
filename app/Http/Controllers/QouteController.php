@@ -7,6 +7,7 @@ use App\Cotizacion;
 use App\CotizacionesCliente;
 use App\CotizacionesPagos;
 use App\Hotel;
+use App\ItinerarioServicios;
 use App\M_Destino;
 use App\M_Itinerario;
 use App\M_ItinerarioDestino;
@@ -171,4 +172,19 @@ class QouteController extends Controller
             'fecha'=>$fecha,
             'web'=>$web]);
     }
+    public function ordenar_servios_db(Request $request)
+    {
+        $lista_servicios=$request->input('array_servicios');
+        $lista_servicios=explode('_',$lista_servicios);
+        $pos=1;
+        foreach ($lista_servicios as $lista_servicios_){
+            $temp_exp=explode('/',$lista_servicios_);
+            $temp=ItinerarioServicios::Find($temp_exp[0]);
+            $temp->pos=$temp_exp[1];
+            $temp->save();
+            $pos++;
+        }
+        return 1;
+    }
+
 }

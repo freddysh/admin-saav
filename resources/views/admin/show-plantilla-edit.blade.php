@@ -5,16 +5,13 @@
 @section('content')
     <div class="row">
         <div class="col">
-
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-white m-0">
-                        <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item" aria-current="page"><a href="/">Qoutes</a></li>
-                        <li class="breadcrumb-item active">clonar</li>
-                    </ol>
-                </nav>
-
-
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-white m-0">
+                    <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="/">Qoutes</a></li>
+                    <li class="breadcrumb-item active">clonar</li>
+                </ol>
+            </nav>
         </div>
     </div>
     <hr>

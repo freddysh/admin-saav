@@ -1,6 +1,7 @@
 @extends('layouts.admin.admin')
 @section('archivos-js')
     <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
     @if(isset($id_serv))
@@ -116,8 +117,8 @@
                                     {{--<div class="col-2 d-none"></div>--}}
                                 </div>
                                 <div class="row caja_detalle">
-                                    <div class="col">
-                                    @foreach($itinerario->itinerario_servicios as $servicios)
+                                    <div class="col caja_sort_{{$itinerario->dias}}">
+                                    @foreach($itinerario->itinerario_servicios->sortBy('pos') as $servicios)
                                         @php
                                             $rango='';
                                             $preciom=0;
@@ -150,7 +151,7 @@
                                             @endphp
                                         @endif
                                         {{--@endif--}}
-                                        <div class="row" id="lista_servicios_{{$servicios->id}}">
+                                        <div class="row card_servicios_{{$itinerario->dias}} card_servicios" id="lista_servicios_{{$servicios->id}}" data-value="{{$servicios->id}}">
                                             <div class="col-7">
                                                 <div class="row">
                                                     <div class="col-10{{$rango}}">
@@ -190,7 +191,7 @@
                                             <div class="col @if($m==0) d-none @endif">$<input type="hidden" class="precio_servicio_m" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                             <div class="col @if($t==0) d-none @endif">$<input type="hidden" class="precio_servicio_t" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                             <div class="col">
-                                                <a class="btn py-0 text-primary" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}">
+                                                <a class="btn py-0 text-primary" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->servicio->grupo}}','edit')">
                                                     <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                                                 </a>
                                                 <!-- Modal -->
@@ -209,69 +210,7 @@
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <div class="box-services-field">
-
-                                                                    @php
-                                                                        $grupo='';
-                                                                        $loca='';
-                                                                    @endphp
-                                                                    @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $servicio)
-                                                                        @php
-                                                                            $grupo=$servicio->grupo;
-                                                                            $loca=$servicio->localizacion;
-                                                                        @endphp
-                                                                    @endforeach
-                                                                    @foreach($m_servicios->where('grupo',$grupo)->where('localizacion',$loca) as $servicio)
-                                                                            {{--{{$cotizacion->nropersonas}}  -  {{$servicio->max_personas}}--}}
-                                                                        @if($servicio->min_personas<=$cotizacion->nropersonas AND $cotizacion->nropersonas <= $servicio->max_personas)
-                                                                                @php
-                                                                                    $precio_simgle=0;
-                                                                                @endphp
-                                                                                @if($servicio->precio_grupo==1)
-                                                                                    @php
-                                                                                        $precio_simgle=round($servicio->precio_venta/$cotizacion->nropersonas,1);
-                                                                                    @endphp
-                                                                                @else
-                                                                                    @php
-                                                                                        $precio_simgle=round($servicio->precio_venta,1);
-                                                                                    @endphp
-                                                                                @endif
-                                                                                <div class="checkbox1">
-                                                                                    <label>
-                                                                                        <input type="radio" name="op_services" id="serv_{{$servicio->id}}" value="{{$servicio->id}}" @if($servicios->codigo == $servicio->codigo) checked @endif>
-                                                                                        {{$servicio->nombre}}<br>
-                                                                                        <span class="padding-left-10 text-primary">
-                                                                                        @if($grupo=='TOURS')
-                                                                                            <i class="fa fa-map-o text-info" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupo=='MOVILID')
-                                                                                            <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                            @if($grupo=='REPRESENT')
-                                                                                                <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                            @endif
-                                                                                            @if($grupo=='ENTRANCES')
-                                                                                                <i class="fa fa-ticket text-warning" aria-hidden="true"></i>
-                                                                                            @endif
-                                                                                            @if($grupo=='FOOD')
-                                                                                                <i class="fa fa-cutlery text-danger" aria-hidden="true"></i>
-                                                                                            @endif
-                                                                                            @if($grupo=='TRAINS')
-                                                                                                <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                            @endif
-                                                                                            @if($grupo=='FLIGHTS')
-                                                                                                <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                            @endif
-                                                                                            @if($grupo=='OTHERS')
-                                                                                                <i class="fa fa-question text-success" aria-hidden="true"></i>
-                                                                                            @endif
-                                                                                            {{$servicio->tipoServicio}}
-                                                                                        </span><b class="text-warning"> | </b><span class="text-green-goto">${{$precio_simgle}}</span><b class="text-warning"> | </b><span class="text-primary">[{{$servicio->min_personas}} - {{$servicio->max_personas}}] person</span>
-                                                                                    </label>
-                                                                                </div>
-                                                                        @endif
-                                                                    @endforeach
-
+                                                                    <div id="list_servicios_grupo_{{$servicios->id}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -460,10 +399,40 @@
                     @if($paquete->id==$paquete_precio_id)
                         @foreach($paquete->itinerario_cotizaciones as $itinerario)
                             CKEDITOR.replace('txt_descr_{{$itinerario->id}}');
+
+                            $('.caja_sort_{{$itinerario->dias}}').sortable({
+                                connectWith:'.caja_sort_{{$itinerario->dias}}',
+                                tolerance:'intersect',
+                                stop:function(){
+                                    ordenar_en_db($(this),{{$itinerario->dias}});
+                                },
+                            });
+                        @endforeach
+                    @endif
+                @endforeach
             @endforeach
-            @endif
-            @endforeach
-            @endforeach
+
+            function ordenar_en_db(obj,dia){
+//                console.log('se cojio el:'+$(obj).attr('id'));
+                var titles =$(obj).children('.card_servicios_'+dia);
+//                console.log($(titles).data('value'));
+                var array_servicios='';
+                $(titles).each(function(index, element){
+                    var elto=$(element).data('value');
+                    array_servicios+=elto+'/'+index+'_';
+                    console.log('elto:'+elto);
+                });
+                array_servicios=array_servicios.substring(0,array_servicios.length-1);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('[name="_token"]').val()
+                    }
+                });
+                $.post('{{route('ordenar_servicios_db_path')}}','array_servicios='+array_servicios, function(data) {
+                    console.log('data'+data);
+                }).fail(function (data) {
+                });
+            }
         } );
     </script>
 @stop

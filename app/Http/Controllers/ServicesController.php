@@ -1347,4 +1347,27 @@ class ServicesController extends Controller
         $destinos=M_Destino::get();
         return view('admin.book.mostrar-servicios-localizacion',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));
     }
+    public function listar_servicios_paso1(Request $request){
+        $itinerario_id=$request->input('itinerario_id');
+        $localizacion=$request->input('localizacion');
+        $destino=M_Destino::find($localizacion);
+        $localizacion=$destino->destino;
+        $grupo=$request->input('grupo');
+        $servicios_id=$request->input('servicios_id');
+        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
+        $destinos=M_Destino::get();
+        $proveedores=Proveedor::where('grupo',$grupo)->get();
+        return view('admin.book.mostrar-servicios-paso1',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','proveedores']));
+    }
+    public function listar_servicios_localizacion_paso1(Request $request){
+        $itinerario_id=$request->input('itinerario_id');
+        $localizacion=$request->input('localizacion');
+        $grupo=$request->input('grupo');
+        $servicios_id=$request->input('servicios_id');
+        $proveedor_id=$request->input('proveedor_id');
+        $clases=ProveedorClases::where('proveedor_id',$proveedor_id)->where('estado','1')->get();
+        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
+        $destinos=M_Destino::get();
+        return view('admin.book.mostrar-servicios-localizacion-paso1',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));
+    }
 }

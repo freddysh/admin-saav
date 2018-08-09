@@ -1076,4 +1076,15 @@ Route::post('admin/book/guadar-datos',[
     'uses' => 'BookController@guardar_datos',
     'as' => 'guardar_datos_flights_path',
 ]);
-
+Route::post('admin/quotes/ordenar-servios-db',[
+    'uses' => 'QouteController@ordenar_servios_db',
+    'as' => 'ordenar_servicios_db_path',
+]);
+Route::post('admin/book/listar-servicios-paso1',[
+    'uses' => 'ServicesController@listar_servicios_paso1',
+    'as' => 'reservas_listar_servicios_paso1_path',
+]);
+Route::post('admin/book/listar-servicios/localizacion-paso1',[
+    'uses' => 'ServicesController@listar_servicios_localizacion_paso1',
+    'as' => 'reservas_localizacion_listar_servicios_paso1_path',
+]);

@@ -1474,6 +1474,17 @@ a[aria-expanded="true"]::before {
   text-align: center;
 }
 
+.card_servicios {
+  border: 1px solid #bfbfbf;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  background: #ffffff;
+}
+
+.card_servicios:hover {
+  cursor: hand;
+}
+
 .caja_items {
   border-bottom: 1px solid #949494;
   margin-bottom: 5px;

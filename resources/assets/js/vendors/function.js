@@ -4700,3 +4700,58 @@ function buscar_day_by_day_edit(destino) {
         }
     })
 }
+function traer_servicios_paso1(itinerario_id,servicios_id,localizacion,grupo,modo) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    // if(modo='nuevo'){
+        $.ajax({
+            type: 'POST',
+            url: '../../../../../book/listar-servicios-paso1',
+            data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
+            // Mostramos un mensaje con la respuesta de PHP
+            success: function(data) {
+                console.log('se recojio datos');
+                $('#list_servicios_grupo_'+servicios_id).html(data);
+            }
+        })
+    // }
+    // else if(modo=='edit'){
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '../../../../../book/listar-servicios-paso1',
+    //         data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
+    //         // Mostramos un mensaje con la respuesta de PHP
+    //         success: function(data) {
+    //             $('#list_servicios_grupo_'+servicios_id).html(data);
+    //         }
+    //     })
+    // }
+}
+function mostrar_servicios_localizacion_paso1(itinerario_id,servicios_id,localizacion,grupo,proveedor_id) {
+    console.log('itinerario_id:'+itinerario_id);
+    console.log('servicios_id:'+servicios_id);
+    console.log('localizacion:'+localizacion);
+    console.log('grupo:'+grupo);
+    console.log('proveedor_id:'+proveedor_id);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../../../../book/listar-servicios/localizacion-paso1',
+        data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id+'&proveedor_id='+proveedor_id,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend:
+            function() {
+                $('#servicio_localizacion_'+servicios_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+        success: function(data) {
+            $('#servicio_localizacion_'+servicios_id).html(data);
+        }
+    })
+}
