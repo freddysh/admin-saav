@@ -1370,8 +1370,11 @@ class ServicesController extends Controller
         $destinos=M_Destino::get();
         return view('admin.book.mostrar-servicios-localizacion-paso1',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));
     }
-    public function nuevos_servicios($cliente,$cotizacion_id,$paquete_precio_id)
+    public function nuevos_servicios($cliente_id,$cotizacion_id,$paquete_precio_id)
     {
-
+        $cliente=Cliente::FindOrFail($cliente_id);
+        $cotizaciones=Cotizacion::where('id',$cotizacion_id)->get();
+        $m_servicios=M_Servicio::get();
+        return view('admin.agregar-servicio-hotel',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id]);
     }
 }
