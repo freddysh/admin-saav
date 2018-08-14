@@ -26,6 +26,9 @@
         <div class="col">
             <a href="{{route('current_quote_page_path', 'gotolatinamerica.com')}}" class="btn btn-block btn-sm text-secondary @if($page == 'gotolatinamerica.com') btn-light text-secondary @endif">gotolatinamerica.com</a>
         </div>
+        <div class="col">
+            <a href="{{route('current_quote_page_path', 'expedia.com')}}" class="btn btn-block btn-sm text-secondary @if($page == 'expedia.com') btn-light text-secondary @endif">expedia.com</a>
+        </div>
     </div>
 
     <div class="row no-gutters">
