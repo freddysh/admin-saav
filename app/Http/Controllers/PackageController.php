@@ -307,7 +307,7 @@ class PackageController extends Controller
         $txta_notinclude=$request->input('txta_notinclude');
         $totalItinerario=$request->input('totalItinerario');
         $itinerarios_=$request->input('itinerarios_2');
-        $txt_sugerencia=$request->input('txt_sugerencia');
+//        $txt_sugerencia=$request->input('txt_sugerencia');
 
         $strellas_2=$request->input('strellas_2');
         $strellas_3=$request->input('strellas_3');
@@ -449,7 +449,7 @@ class PackageController extends Controller
             $p_itinerario->imagenC=$m_itineario->imagenC;
             $p_itinerario->destino_foco=$m_itineario->destino_foco;
             $p_itinerario->destino_duerme=$m_itineario->destino_duerme;
-            $p_itinerario->sugerencia=$txt_sugerencia[$dia];
+            $p_itinerario->sugerencia='';
             $p_itinerario->estado=1;
             $p_itinerario->m_itinerario_id=$m_itineario->id;
             $p_itinerario->p_paquete_id=$paquete->id;
