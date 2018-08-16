@@ -7,8 +7,6 @@
 {{--<script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>--}}
 {{--@stop--}}
 @section('content')
-
-
     <div class="row no-gutters mb-2">
         <div class="col text-center">
             <a href="{{route('current_quote_page_path', 'gotoperu.com')}}" class="btn btn-block btn-sm @if($page == 'gotoperu.com') btn-success @endif">gotoperu.com</a>
@@ -30,10 +28,8 @@
             <a href="{{route('current_quote_page_path', 'expedia.com')}}" class="btn btn-block btn-sm text-secondary @if($page == 'expedia.com') btn-light text-secondary @endif">expedia.com</a>
         </div>
     </div>
-
     <div class="row no-gutters">
         <div class="col">
-
             <div class="box-header-book">
                 <h4 class="no-margin">New
                     <span>
@@ -43,21 +39,12 @@
                 </h4>
             </div>
         </div>
-
         <div class="col">
-
             <div class="box-header-book">
                 <h4 class="no-margin">Proposal Sent<span><b class="label label-warning">#12</b> <small><b>$9542</b></small></span></h4>
             </div>
         </div>
-
-        {{--<div class="box-header-book border-right-0">--}}
-        {{--<h4 class="no-margin">1st Follow Up<span><b class="label label-success">#12</b> <small><b>arrival date:</b> june</small></span></h4>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-
         <div class="col">
-
             <div class="box-header-book border-right-0">
                 <h4 class="no-margin">30%<span><b class="label label-info">#12</b> <small><b>$9542</b></small></span></h4>
             </div>
@@ -80,13 +67,12 @@
             </div>
         </div>
     </div>
-
     <div class="row no-gutters">
         <div class='col box-list-book'>
             <div class="swiper-container swiper-container-current">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-            {{csrf_field()}}
+                        {{csrf_field()}}
                         <li value="0">
                             <ol class='simple_with_animation vertical m-0 p-0'>
                                 @foreach($cotizacion->sortByDesc('created_at') as $cotizacion_)
@@ -118,7 +104,6 @@
                                             @if($precio->personas_s>0)
                                                 @php
                                                     $s=1;
-                                                    $precio_hotel_s+=$precio->precio_s;
                                                     $utilidad_s=intval($precio->utilidad_s);
                                                     $utilidad_por_s=$precio->utilidad_por_s;
                                                 @endphp
@@ -126,7 +111,6 @@
                                             @if($precio->personas_d>0)
                                                 @php
                                                     $d=1;
-                                                    $precio_hotel_d+=$precio->precio_d/2;
                                                     $utilidad_d=intval($precio->utilidad_d);
                                                     $utilidad_por_d=$precio->utilidad_por_d;
                                                 @endphp
@@ -134,7 +118,6 @@
                                             @if($precio->personas_m>0)
                                                 @php
                                                     $m=1;
-                                                    $precio_hotel_m+=$precio->precio_m/2;
                                                     $utilidad_m=intval($precio->utilidad_m);
                                                     $utilidad_por_m=$precio->utilidad_por_m;
                                                 @endphp
@@ -142,7 +125,6 @@
                                             @if($precio->personas_t>0)
                                                 @php
                                                     $t=1;
-                                                    $precio_hotel_t+=$precio->precio_t/3;
                                                     $utilidad_t=intval($precio->utilidad_t);
                                                     $utilidad_por_t=$precio->utilidad_por_t;
                                                 @endphp
@@ -174,7 +156,32 @@
                                                     @endphp
                                                 @endif
                                             @endforeach
+                                            @foreach($itinerario->hotel as $hotel)
+                                                @if($hotel->personas_s>0)
+                                                    @php
+                                                        $precio_hotel_s+=$hotel->precio_s;
 
+                                                    @endphp
+                                                @endif
+                                                @if($hotel->personas_d>0)
+                                                    @php
+                                                        $precio_hotel_d+=$hotel->precio_d/2;
+
+                                                    @endphp
+                                                @endif
+                                                @if($hotel->personas_m>0)
+                                                    @php
+                                                        $precio_hotel_m+=$hotel->precio_m/2;
+
+                                                    @endphp
+                                                @endif
+                                                @if($hotel->personas_t>0)
+                                                    @php
+                                                        $precio_hotel_t+=$hotel->precio_t/3;
+
+                                                    @endphp
+                                                @endif
+                                            @endforeach
                                         @endforeach
                                     @endforeach
                                     @php
@@ -367,7 +374,6 @@
                 </ol>
             </li>
         </div>
-
         <div class='col box-list-book'>
             <li value="90">
                 <ol class='simple_with_animation vertical no-padding'>
@@ -408,7 +414,6 @@
                 </ol>
             </li>
         </div>
-
         <div class='col box-list-book'>
             <li value="100">
                 <ol class='simple_with_animation vertical no-padding'>
@@ -450,9 +455,7 @@
                 </ol>
             </li>
         </div>
-
     </div>
-
     <div class="row">
         <div class="col text-right">
             <div class="btn-save-fixed btn-save-fixed-plus p-3">
@@ -460,131 +463,12 @@
             </div>
         </div>
     </div>
-
     <div class="row">
-        {{--<div class="col-md-4 no-padding box-list-book">--}}
-        {{--<div class="content-list-book">--}}
-        {{--<div class="content-list-book-s">--}}
-        {{--<a href="">--}}
-        {{--<strong>--}}
-        {{--<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">--}}
-        {{--hidalgo X 6: 6 days: 2/25/2018--}}
-        {{--</strong>--}}
-        {{--<small>--}}
-        {{--18987$--}}
-        {{--</small>--}}
-        {{--</a>--}}
-        {{--<div class="icon">--}}
-        {{--<a href=""><i class="fa fa-warning"></i></a>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--<div class="col-md-4 no-padding box-list-book">--}}
 
-        {{--<div class="content-list-book">--}}
-        {{--<div class="content-list-book-s">--}}
-        {{--<a href="">--}}
-        {{--<strong>--}}
-        {{--<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">--}}
-        {{--Hidalgo x2: 8 days: Jan 2018--}}
-        {{--</strong>--}}
-        {{--<small>--}}
-        {{--1800$--}}
-        {{--</small>--}}
-        {{--</a>--}}
-        {{--<div class="icon">--}}
-        {{--<a href="">10%</a>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
 
-        {{--<div class="content-list-book">--}}
-        {{--<div class="content-list-book-s">--}}
-        {{--<a href="">--}}
-        {{--<strong>--}}
-        {{--<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">--}}
-        {{--Hidalgo x2: 8 days: Jan 2018--}}
-        {{--</strong>--}}
-        {{--<small>--}}
-        {{--1800$--}}
-        {{--</small>--}}
-        {{--</a>--}}
-        {{--<div class="icon">--}}
-        {{--<a href="">50%</a>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</div>--}}
 
     </div>
-    {{--<div class="col-md-4 no-padding box-list-book border-right-0">--}}
-    {{--<div class="content-list-book">--}}
-    {{--<div class="content-list-book-s">--}}
-    {{--<a href="">--}}
-    {{--<strong>--}}
-    {{--<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">--}}
-    {{--Hidalgo x2: 8 days: Jan 2018--}}
-    {{--</strong>--}}
-    {{--<small>--}}
-    {{--1800$--}}
-    {{--</small>--}}
-    {{--</a>--}}
-    {{--<div class="icon">--}}
-    {{--<a href="" class="text-success"><i class="fa fa-check"></i></a>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="content-list-book">--}}
-    {{--<div class="content-list-book-s">--}}
-    {{--<a href="">--}}
-    {{--<strong>--}}
-    {{--<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">--}}
-    {{--Hidalgo x2: 8 days: Jan 2018--}}
-    {{--</strong>--}}
-    {{--<small>--}}
-    {{--1800$--}}
-    {{--</small>--}}
-    {{--</a>--}}
-    {{--<div class="icon">--}}
-    {{--<a href="" class="text-success"><i class="fa fa-check"></i></a>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="content-list-book">--}}
-    {{--<div class="content-list-book-s">--}}
-    {{--<a href="">--}}
-    {{--<strong>--}}
-    {{--<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">--}}
-    {{--Hidalgo x2: 8 days: Jan 2018--}}
-    {{--</strong>--}}
-    {{--<small>--}}
-    {{--1800$--}}
-    {{--</small>--}}
-    {{--</a>--}}
-    {{--<div class="icon">--}}
-    {{--<a href="" class="text-success"><i class="fa fa-check"></i></a>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--<div class="content-list-book">--}}
-    {{--<div class="content-list-book-s">--}}
-    {{--<a href="">--}}
-    {{--<strong>--}}
-    {{--<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">--}}
-    {{--Hidalgo x2: 8 days: Jan 2018--}}
-    {{--</strong>--}}
-    {{--<small>--}}
-    {{--1800$--}}
-    {{--</small>--}}
-    {{--</a>--}}
-    {{--<div class="icon">--}}
-    {{--<a href="" class="text-success"><i class="fa fa-check"></i></a>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
     </div>
-
     <script>
         //formilario contac
         function update_p(valor){
