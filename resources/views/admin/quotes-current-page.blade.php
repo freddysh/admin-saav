@@ -118,21 +118,33 @@
                                             @if($precio->personas_s>0)
                                                 @php
                                                     $s=1;
+                                                    $precio_hotel_s+=$precio->precio_s;
+                                                    $utilidad_s=intval($precio->utilidad_s);
+                                                    $utilidad_por_s=$precio->utilidad_por_s;
                                                 @endphp
                                             @endif
                                             @if($precio->personas_d>0)
                                                 @php
                                                     $d=1;
+                                                    $precio_hotel_d+=$precio->precio_d/2;
+                                                    $utilidad_d=intval($precio->utilidad_d);
+                                                    $utilidad_por_d=$precio->utilidad_por_d;
                                                 @endphp
                                             @endif
                                             @if($precio->personas_m>0)
                                                 @php
                                                     $m=1;
+                                                    $precio_hotel_m+=$precio->precio_m/2;
+                                                    $utilidad_m=intval($precio->utilidad_m);
+                                                    $utilidad_por_m=$precio->utilidad_por_m;
                                                 @endphp
                                             @endif
                                             @if($precio->personas_t>0)
                                                 @php
                                                     $t=1;
+                                                    $precio_hotel_t+=$precio->precio_t/3;
+                                                    $utilidad_t=intval($precio->utilidad_t);
+                                                    $utilidad_por_t=$precio->utilidad_por_t;
                                                 @endphp
                                             @endif
                                         @endforeach
@@ -162,36 +174,7 @@
                                                     @endphp
                                                 @endif
                                             @endforeach
-                                            @foreach($itinerario->hotel as $hotel)
-                                                @if($hotel->personas_s>0)
-                                                    @php
-                                                        $precio_hotel_s+=$hotel->precio_s;
-                                                        $utilidad_s=intval($hotel->utilidad_s);
-                                                        $utilidad_por_s=$hotel->utilidad_por_s;
-                                                    @endphp
-                                                @endif
-                                                @if($hotel->personas_d>0)
-                                                    @php
-                                                        $precio_hotel_d+=$hotel->precio_d/2;
-                                                        $utilidad_d=intval($hotel->utilidad_d);
-                                                        $utilidad_por_d=$hotel->utilidad_por_d;
-                                                    @endphp
-                                                @endif
-                                                @if($hotel->personas_m>0)
-                                                    @php
-                                                        $precio_hotel_m+=$hotel->precio_m/2;
-                                                        $utilidad_m=intval($hotel->utilidad_m);
-                                                        $utilidad_por_m=$hotel->utilidad_por_m;
-                                                    @endphp
-                                                @endif
-                                                @if($hotel->personas_t>0)
-                                                    @php
-                                                        $precio_hotel_t+=$hotel->precio_t/3;
-                                                        $utilidad_t=intval($hotel->utilidad_t);
-                                                        $utilidad_por_t=$hotel->utilidad_por_t;
-                                                    @endphp
-                                                @endif
-                                            @endforeach
+
                                         @endforeach
                                     @endforeach
                                     @php
