@@ -21,6 +21,16 @@
                     <div class="col-1">
                         <span class="font-weight-bold rounded-circle py-2 px-3 bg-g-yellow text-white">1</span>
                     </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="txt_pagina" class="text-secondary font-weight-bold">Pagina</label>
+                            <select class="form-control" id="txt_pagina" name="txt_pagina">
+                                <option value="0">Escoja una opcion</option>
+                                <option value="gotoperu.com.pe" @if($itinerary->pagina=='gotoperu.com.pe') {{'selected'}} @endif>gotoperu.com.pe</option>
+                                <option value="expedia.com" @if($itinerary->pagina=='expedia.com') {{'selected'}} @endif>expedia.com</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-1">
                         <div class="form-group">
                             <label for="txt_day" class="text-secondary font-weight-bold">Duracion</label>
@@ -40,7 +50,7 @@
                             <input type="text" class="form-control" id="txt_title" name="txt_title" placeholder="Title"  value="{{$itinerary->titulo}}">
                         </div>
                     </div>
-                    <div class="col-8">
+                    <div class="col-6">
                         <label for="txta_description" class="text-secondary font-weight-bold">Titulo</label>
                         <input type="text" class="form-control" id="txta_description" name="txta_description" placeholder="Descripcion"  value="{{$itinerary->descripcion}}">
                     </div>

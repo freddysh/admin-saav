@@ -1092,3 +1092,7 @@ Route::get('/admin/quotes/new/step1/nuevo-servicio/{id1}/{id2}/{id3}',[
     'uses' => 'ServicesController@nuevos_servicios',
     'as' => 'agregar_servicios_paso1_path',
 ]);
+Route::post('admin/itineraries/listar', [
+    'uses' => 'PackageController@itineraries_listar_pagina',
+    'as' => 'show_itineraries_listar_path'
+]);

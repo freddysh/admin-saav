@@ -4755,3 +4755,23 @@ function mostrar_servicios_localizacion_paso1(itinerario_id,servicios_id,localiz
         }
     })
 }
+function mostrar_pqts(pagina) {
+    console.log('pagina:'+pagina);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../admin/itineraries/listar',
+        data:'pagina='+pagina,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function() {
+                $('#lista_pqts').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data) {
+            $('#lista_pqts').html(data);
+        }
+    })
+}

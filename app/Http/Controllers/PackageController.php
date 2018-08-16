@@ -69,6 +69,7 @@ class PackageController extends Controller
 //        dd('hola');
         $txt_day=strtoupper(($request->input('txt_day')));
         $txt_code=strtoupper(($request->input('txt_codigo')));
+        $txt_pagina=$request->input('txt_pagina');
 //        $txt_title=strtoupper(($request->input('txt_title')));
         $txta_description=$request->input('txta_description');
         $txt_title=strtoupper($txta_description);
@@ -121,6 +122,7 @@ class PackageController extends Controller
         $plantilla_pqt->codigo='GTP'.$txt_day.$numero_con_ceros;
 
         $paquete=new P_Paquete();
+        $paquete->pagina=$txt_pagina;
         $paquete->codigo=$txt_code;
         $paquete->titulo=$txt_title;
         $paquete->duracion=$txt_day;
@@ -296,6 +298,7 @@ class PackageController extends Controller
     {
         $paquete_id=$request->input('paquete_id');
         $txt_day=strtoupper(($request->input('txt_day')));
+        $txt_pagina=$request->input('txt_pagina');
         $txt_code=strtoupper(($request->input('txt_codigo')));
         $txt_title=strtoupper(($request->input('txt_title')));
         $txta_description=$request->input('txta_description');
@@ -341,6 +344,7 @@ class PackageController extends Controller
 //        dd('profit_2:'.$profit_2.',profit_3:'.$profit_3.',profit_4:'.$profit_4.',profit_5:'.$profit_5);
 //        dd($txta_include.'_'.$txta_notinclude);
         $paquete=P_Paquete::FindOrFail($paquete_id);
+        $paquete->pagina=$txt_pagina;
         $paquete->codigo=$txt_code;
         $paquete->titulo=$txt_title;
         $paquete->duracion=$txt_day;
@@ -488,11 +492,14 @@ class PackageController extends Controller
         }
 //        $itineraries=P_Paquete::get();
 //        return view('admin.show-itineraries',['itineraries'=>$itineraries]);
+//        return redirect()->route('show_itineraries_path');
         return redirect()->route('show_itineraries_path');
     }
     public function itinerary_duplicate(Request $request)
     {
 //        $paquete_id=$request->input('paquete_id');
+
+        $txt_pagina=$request->input('txt_pagina');
         $txt_day=strtoupper(($request->input('txt_day')));
         $txt_code=strtoupper(($request->input('txt_codigo')));
         $txt_title=strtoupper(($request->input('txt_title')));
@@ -532,6 +539,7 @@ class PackageController extends Controller
 //        dd('profit_2:'.$profit_2.',profit_3:'.$profit_3.',profit_4:'.$profit_4.',profit_5:'.$profit_5);
 //        dd($txta_include.'_'.$txta_notinclude);
         $paquete=new P_Paquete();
+        $paquete->pagina=$txt_pagina;
         $paquete->codigo=$txt_code;
         $paquete->titulo=$txt_title;
         $paquete->duracion=$txt_day;
@@ -667,9 +675,10 @@ class PackageController extends Controller
             $p_itinerario->precio=$st;
             $p_itinerario->save();
         }
-
-        $itineraries=P_Paquete::get();
-        return view('admin.show-itineraries',['itineraries'=>$itineraries]);
+//        return redirect()->route('show_itineraries_path');
+        return redirect()->route('show_itineraries_path');
+//        $itineraries=P_Paquete::get();
+//        return view('admin.show-itineraries',['itineraries'=>$itineraries]);
     }
     public function delete(Request $request)
     {
@@ -964,5 +973,12 @@ class PackageController extends Controller
             $day_by_days = M_Itinerario::where('destino_foco', $destino)->get();
             return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days'));
         }
+    }
+    public function itineraries_listar_pagina(Request $request)
+    {
+        $pagina = $request->input('pagina');
+//        return $pagina;
+        $itineraries =P_Paquete::where('pagina', $pagina)->get();
+        return view('admin.show-itinearies-pagina', compact('itineraries'));
     }
 }

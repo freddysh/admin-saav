@@ -22,13 +22,23 @@
             <div class="col-1 mb-3">
                 <span class="font-weight-bold rounded-circle py-2 px-3 bg-g-yellow text-white">1</span>
             </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="txt_pagina" class="font-weight-bold text-secondary">Pagina</label>
+                    <select class="form-control" id="txt_pagina" name="txt_pagina" >
+                        <option value="0">Escoja una opcion</option>
+                        <option value="gotoperu.com.pe">gotoperu.com.pe</option>
+                        <option value="gotoperu.com.pe">expedia.com</option>
+                    </select>
+                </div>
+            </div>
             <div class="col-1">
                 <div class="form-group">
                     <label for="txt_day" class="font-weight-bold text-secondary">Duracion</label>
                     <input type="number" class="form-control" id="txt_day" name="txt_day" placeholder="Days" min="0" value="2" onchange="calcular_resumen()">
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-2 d-none">
                 <div class="form-group">
                     <label for="txt_code" class="font-weight-bold text-secondary">Code</label>
                     <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Code" readonly>
@@ -41,9 +51,11 @@
                     <input type="text" class="form-control" id="txt_title" name="txt_title" placeholder="Title">
                 </div>
             </div>
-            <div class="col-8">
-                <label for="txta_description" class="font-weight-bold text-secondary">Titulo</label>
-                <input type="text" class="form-control" id="txta_description" name="txta_description">
+            <div class="col-7">
+                <div class="form-group">
+                    <label for="txta_description" class="font-weight-bold text-secondary">Titulo</label>
+                    <input type="text" class="form-control" id="txta_description" name="txta_description">
+                </div>
             </div>
         </div>
         <div class="row d-none">

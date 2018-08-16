@@ -53,6 +53,16 @@
         <div class="row mt-3">
             <div class="col-2">
                 <div class="form-group">
+                    <label for="txt_pagina" class="text-secondary font-weight-bold">Pagina</label>
+                    <select class="form-control" id="txt_pagina" name="txt_pagina">
+                        <option value="0">Escoja una opcion</option>
+                        <option value="gotoperu.com.pe" @if($itinerary->pagina=='gotoperu.com.pe') {{'selected'}} @endif>gotoperu.com.pe</option>
+                        <option value="expedia.com" @if($itinerary->pagina=='expedia.com') {{'selected'}} @endif>expedia.com</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
                     <label for="txt_code" class="font-weight-bold text-secondary">Code</label>
                     <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Old: {{$itinerary->codigo}}" required>
                 </div>
@@ -69,7 +79,7 @@
                     <input type="text" class="form-control" id="txt_title" name="txt_title"  placeholder="Old: {{$itinerary->titulo}}" required>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-12 d-none">
                 <label for="txta_description" class="font-weight-bold text-secondary">Description</label>
                 <textarea class="form-control" id="txta_description" name="txta_description" rows="3">{{$itinerary->descripcion}}</textarea>
             </div>
