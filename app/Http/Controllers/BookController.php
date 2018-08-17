@@ -52,10 +52,18 @@ class BookController extends Controller
     {
         $fecha_ini=date("Y-m-d");
         $fecha_fin=date("Y-m-d");
-        $liquidaciones=Cotizacion::where('liquidacion',0)->get();
-        $servicios=M_Servicio::where('grupo','ENTRANCES')->get();
-        $servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-        return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi]);
+        $nro_ini=Liquidacion::where('ini','<=',$fecha_ini)->where('fin','>=',$fecha_ini)->count();
+        $nro_fin=Liquidacion::where('fin','<=',$fecha_fin)->where('fin','>=',$fecha_fin)->count();
+        if($nro_ini>0 ||$nro_fin>0){
+            return view('admin.book.crear-liquidacion',['mensaje'=>'1','fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'nro_ini'=>$nro_ini,'nro_fin'=>$nro_fin]);
+        }
+        else{
+            $liquidaciones=Cotizacion::where('liquidacion',0)->get();
+            $servicios=M_Servicio::where('grupo','ENTRANCES')->get();
+            $servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
+            return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0']);
+        }
+
     }
 
     /**
@@ -152,7 +160,12 @@ class BookController extends Controller
         $itinerario1->precio_proveedor=$dato[3];
         $itinerario1->proveedor_id=$dato[2];
         $itinerario1->proveedor_id_nuevo=$itinerario_serv_pro->id;
-
+        $iti_coti=ItinerarioCotizaciones::find($itinerario1->itinerario_cotizaciones_id);
+        $iti_coti->fecha;
+        $liquidacion=Liquidacion::where('ini','<=',$iti_coti->fecha)->where('fin','>=',$iti_coti->fecha)->count();
+        if($liquidacion>0){
+            $itinerario1->liquidacion=1;
+        }
         if($itinerario1->save())
             return 1;
         else
@@ -436,10 +449,17 @@ class BookController extends Controller
     function crear_liquidacion_storage(Request $request){
         $fecha_ini=$request->input('fecha_ini');
         $fecha_fin=$request->input('fecha_fin');
-        $liquidaciones=Cotizacion::get();
-        $servicios=M_Servicio::where('grupo','ENTRANCES')->get();
-        $servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-        return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi]);
+        $nro_ini=Liquidacion::where('ini','<=',$fecha_ini)->where('fin','>=',$fecha_ini)->count();
+        $nro_fin=Liquidacion::where('fin','<=',$fecha_fin)->where('fin','>=',$fecha_fin)->count();
+        if($nro_ini>0 ||$nro_fin>0){
+            return view('admin.book.crear-liquidacion',['mensaje'=>'1','fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'nro_ini'=>$nro_ini,'nro_fin'=>$nro_fin]);
+        }
+        else{
+            $liquidaciones=Cotizacion::get();
+            $servicios=M_Servicio::where('grupo','ENTRANCES')->get();
+            $servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
+            return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0']);
+        }
     }
     function guardar_liquidacion_storage(Request $request){
         $cotis=$request->input('cotis');
