@@ -84,7 +84,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($cotizaciones->where('confirmado_r','ok') as $cotizacion)
+                @foreach($cotizaciones->where('confirmado_r','ok')->sortby('fecha') as $cotizacion)
                     @php
                         $clientes_=array();
                     @endphp
