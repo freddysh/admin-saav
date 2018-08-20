@@ -244,6 +244,7 @@
                                         @if($serv->grupo=='FLIGHTS')
                                             <td>
                                                 <p>{{$serv->nombre}}</p>
+                                                <p>{{$serv->aerolinea}} / {{$serv->nro_vuelo}}</p>
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">

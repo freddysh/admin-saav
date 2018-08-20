@@ -39,7 +39,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($cotizaciones->where('confirmado_r','ok') as $cotizacion)
+                    @foreach($cotizaciones->where('confirmado_r','ok')->sortby('fecha') as $cotizacion)
                         @php
                             $clientes_=array();
                         @endphp
@@ -189,6 +189,7 @@
                                             @if($serv->grupo=='FLIGHTS')
                                                 <td>
                                                     <p>{{$serv->nombre}}</p>
+                                                    <p>{{$serv->aerolinea}} / {{$serv->nro_vuelo}}</p>
                                                     <p class="table-proveedor">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                     @if($servicio->segunda_confirmada==1)
                                                         <img  src="{{asset('img/icons/iconov.png')}}" width="30px" height="30px">

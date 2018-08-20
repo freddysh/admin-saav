@@ -31,13 +31,18 @@
 @if(auth()->guard('admin')->user()->tipo_user=='reservas')
     {{--<li><a class="reservas @if(session()->get('menu')=='reservas'){{'activo'}}@endif" href="{{route('book_path')}}">Reservas</a></li>--}}
     {{--<li><a class="operaciones @if(session()->get('menu')=='operaciones'){{'activo'}}@endif" href="{{route('operaciones_path')}}">Operaciones</a></li>--}}
-
     <li class="nav-item">
-        <a class="nav-link @if(session()->get('menu')=='reservas'){{'activo'}}@endif" href="{{route('book_path')}}">Operaciones</a>
+        <a class=" @if(session()->get('menu')=='reservas'){{'activo nav-link'}}@endif text-secondary" href="{{route('book_path')}}"><i class="fas fa-angle-right"></i> Reservas</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @if(session()->get('menu')=='operaciones'){{'activo'}}@endif" href="{{route('operaciones_path')}}">Reportes</a>
+        <a class=" @if(session()->get('menu')=='operaciones'){{'activo nav-link'}}@endif text-secondary" href="{{route('operaciones_path')}}"><i class="fas fa-angle-right"></i> Operaciones</a>
     </li>
+    {{--<li class="nav-item">--}}
+        {{--<a class="nav-link @if(session()->get('menu')=='reservas'){{'activo'}}@endif" href="{{route('book_path')}}">Operaciones</a>--}}
+    {{--</li>--}}
+    {{--<li class="nav-item">--}}
+        {{--<a class="nav-link @if(session()->get('menu')=='operaciones'){{'activo'}}@endif" href="{{route('operaciones_path')}}">Reportes</a>--}}
+    {{--</li>--}}
 
 @endif
 @if(auth()->guard('admin')->user()->tipo_user=='contabilidad')
