@@ -149,15 +149,12 @@
                                     <th class="d-none">GROUP</th>
                                     <th>SERVICE</th>
                                     <th>DESTINATION</th>
-                                    <th>TYPE</th>
                                     <th>CALCULO</th>
                                     <th>SALES</th>
                                     <th>RESERVED</th>
                                     <th>PROVIDER</th>
                                     <th>VERIFICATION CODE</th>
                                     <th>HOUR</th>
-                                    <th class="d-none">S/P</th>
-                                    <th></th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -250,6 +247,7 @@
                                                     <td class="lefts">
                                                     <span class="small">
                                                         <b>{{$servicios->nombre}}</b>
+                                                        (<span class="small text-primary">{{$tipoServicio}}</span>)
                                                         @if($grupe=='FLIGHTS')
                                                             <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
                                                                 <i class="fa fa-plus-circle fa-2x"></i>
@@ -303,7 +301,6 @@
                                                     </span>
                                                     </td>
                                                     <td><span class="small text-warning">({{$destino}})</span></td>
-                                                    <td><span class="small text-primary">{{$tipoServicio}}</span></td>
                                                     @php
                                                         $mate='$';
                                                         $mate_SALE='$';
@@ -800,7 +797,7 @@
                                                             @endif
                                                         @endif
                                                     </td>
-                                                    <td class="boton" id="estado_proveedor_serv_{{$servicios->id}}">
+                                                    <td class="boton d-none" id="estado_proveedor_serv_{{$servicios->id}}">
                                                         @if($servicios->itinerario_proveedor)
                                                             <i class="fa fa-check  text-success"></i>
                                                         @else
@@ -818,8 +815,15 @@
                                                                 $grupo=$res->grupo;
                                                             @endphp
                                                         @endforeach
-                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}')">
-                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        <button id="confim_{{$servicios->id}}" type="button" class="btn btn-sm" onclick="confirmar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
+                                                            @if($servicios->primera_confirmada==0)
+                                                                <i class="fas fa-unlock"></i>
+                                                            @elseif($servicios->primera_confirmada==1)
+                                                                <i class="fas fa-lock text-success"></i>
+                                                            @endif
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','H')">
+                                                            <i class="fa fa-trash"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_servicio_{{$servicios->id}}" onclick="traer_servicios('{{$itinerario->id}}','{{$servicios->id}}','{{$localizacion}}','{{$grupo}}')">
                                                             <i class="fas fa-exchange-alt" aria-hidden="true"></i>
@@ -867,7 +871,7 @@
                                             @endforeach
                                             {{--{{dd($itinerario->hotel)}}--}}
                                             @foreach($itinerario->hotel as $hotel)
-                                                <tr>
+                                                <tr id="hotel_{{$hotel->id}}">
                                                     <td class="text-center">
                                                         <b>{{$hotel->estrellas}} <i class="fa fa-star text-warning" aria-hidden="true"></i></b>
                                                     </td>
@@ -894,7 +898,7 @@
                                                                 $sumatotal_v+=$hotel->personas_s*$hotel->precio_s;
 
                                                             @endphp
-                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_s}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span>
+                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_s}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
                                                             <br>
                                                         @endif
                                                         @if($hotel->personas_d>0)
@@ -909,7 +913,7 @@
                                                                 $sumatotal_v+=$hotel->personas_d*$hotel->precio_d;
 
                                                             @endphp
-                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_d}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>
+                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_d}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
                                                             <br>
                                                         @endif
                                                         @if($hotel->personas_m>0)
@@ -924,7 +928,7 @@
                                                                 $sumatotal_v+=$hotel->personas_m*$hotel->precio_m;
 
                                                             @endphp
-                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_m}}</b> <span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span>
+                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_m}}</b> <span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
                                                             <br>
                                                         @endif
                                                         @if($hotel->personas_t>0)
@@ -939,15 +943,11 @@
                                                                 $sumatotal_v+=$hotel->personas_t*$hotel->precio_t;
 
                                                             @endphp
-                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_t}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>
+                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_t}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
                                                         @endif
                                                     </td>
                                                     <td>
                                                         <span class="small text-warning">({{$hotel->localizacion}})</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="small text-primary">HOTEL</span>
-
                                                     </td>
                                                     <td class="rights">
                                                         {!! $cadena_total !!}
@@ -1271,12 +1271,24 @@
                                                             </div>
                                                         </form>
                                                     </td>
-                                                    <td class="boton" id="estado_proveedor_serv_hotel_{{$hotel->id}}">
+                                                    <td class="boton d-none" id="estado_proveedor_serv_hotel_{{$hotel->id}}">
                                                         @if($hotel->proveedor)
                                                             <i class="fa fa-check fa-2x text-success"></i>
                                                         @else
                                                             <i class="fas fa-clock fa-2x text-unset"></i>
                                                         @endif
+                                                    </td>
+                                                    <td class="boton">
+                                                        <button id="confim_h_{{$hotel->id}}" type="button" class="btn btn-sm" onclick="confirmar_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
+                                                            @if($hotel->primera_confirmada==0)
+                                                                <i class="fas fa-unlock"></i>
+                                                            @elseif($hotel->primera_confirmada==1)
+                                                                <i class="fas fa-lock text-success"></i>
+                                                            @endif
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach

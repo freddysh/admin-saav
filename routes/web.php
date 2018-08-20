@@ -1096,3 +1096,15 @@ Route::post('admin/itineraries/listar', [
     'uses' => 'PackageController@itineraries_listar_pagina',
     'as' => 'show_itineraries_listar_path'
 ]);
+Route::post('admin/book/servicio/confirmar', [
+    'uses' => 'BookController@confirmar_servicio_reservas',
+    'as' => 'confirmar_reservas_servicio_path',
+]);
+Route::post('admin/book/hotel/confirmar', [
+    'uses' => 'BookController@confirmar_hotel_reservas',
+    'as' => 'confirmar_hotel_servicio_path',
+]);
+Route::post('admin/book/hotel/delete', [
+    'uses' => 'BookController@eliminar_hotel_reservas',
+    'as' => 'eliminar_hotel_servicio_path',
+]);

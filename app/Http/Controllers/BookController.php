@@ -677,4 +677,53 @@ class BookController extends Controller
         return redirect()->route('book_show_path',$cotizacion_id);
     }
 
+    public function confirmar_servicio_reservas(Request $request)
+    {
+        $id = $request->input('id');
+        $servicio =ItinerarioServicios::FindOrFail($id);
+        $cadena='';
+        if ($servicio->primera_confirmada==0) {
+            $servicio->primera_confirmada = 1;
+            $cadena='1_';
+        }else {
+            $servicio->primera_confirmada = 0;
+            $cadena='0_';
+        }
+        if($servicio->save()){
+            $cadena.='1';
+        }
+        else{
+            $cadena.='0';
+        }
+        return $cadena;
+    }
+    public function confirmar_hotel_reservas(Request $request)
+    {
+        $id = $request->input('id');
+        $hotel =PrecioHotelReserva::FindOrFail($id);
+        $cadena='';
+        if ($hotel->primera_confirmada==0) {
+            $hotel->primera_confirmada = 1;
+            $cadena='1_';
+        }else {
+            $hotel->primera_confirmada = 0;
+            $cadena='0_';
+        }
+        if($hotel->save()){
+            $cadena.='1';
+        }
+        else{
+            $cadena.='0';
+        }
+        return $cadena;
+    }
+    public function eliminar_hotel_reservas(Request $request)
+    {
+        $id = $request->input('id');
+        $hotel =PrecioHotelReserva::FindOrFail($id);
+        if($hotel->delete())
+            return 1;
+        else
+            return 0;
+    }
 }

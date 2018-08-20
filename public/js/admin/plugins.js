@@ -4475,7 +4475,7 @@ function buscar_hoteles_pagos_pendientes(ini,fin){
     }).fail(function (data) {
     });
 }
-function eliminar_servicio_reservas(id,servicio) {
+function eliminar_servicio_reservas(id,servicio,tipo) {
     // alert('holaaa');
     swal({
         title: 'MENSAJE DEL SISTEMA',
@@ -4486,25 +4486,46 @@ function eliminar_servicio_reservas(id,servicio) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes'
     }).then(function () {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('[name="_token"]').val()
-            }
-        });
-        $.post('/admin/book/servicio/delete', 'id='+id, function(data){
-            if(data==1){
-                // $("#lista_destinos_"+id).remove();
-                $("#servicio_"+id).fadeOut( "low");
-                swal(
-                    'Mensaje del sistema',
-                    'Se borro els ervicio '+categoria,
-                    'success'
-                )
-            }
-        }).fail(function (data) {
-
-        });
-
+        if(tipo=='S') {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('[name="_token"]').val()
+                }
+            });
+            $.post('/admin/book/servicio/delete', 'id=' + id, function (data) {
+                if (data == 1) {
+                    // $("#lista_destinos_"+id).remove();
+                    $("#servicio_" + id).fadeOut("low");
+                    $("#servicio_" + id).remove();
+                    swal(
+                        'Mensaje del sistema',
+                        'Se borro el servicio',
+                        'success'
+                    )
+                }
+            }).fail(function (data) {
+            });
+        }
+        else{
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('[name="_token"]').val()
+                }
+            });
+            $.post('/admin/book/hotel/delete', 'id=' + id, function (data) {
+                if(data == 1) {
+                    // $("#lista_destinos_"+id).remove();
+                    $("#hotel_" + id).fadeOut("low");
+                    $("#hotel_" + id).remove();
+                    swal(
+                        'Mensaje del sistema',
+                        'Se borro el hotel',
+                        'success'
+                    )
+                }
+            }).fail(function (data) {
+            });
+        }
     })
 }
 function Guardar_observacion_hoja(id) {
@@ -5513,6 +5534,63 @@ function mostrar_pqts(pagina) {
         },
         success: function(data) {
             $('#lista_pqts').html(data);
+        }
+    })
+}
+
+function confirmar_servicio_reservas(id,servicio,tipo) {
+    // alert('holaaa');
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Estas seguro de guardar los cambios para "+servicio+" ?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        if(tipo=='S') {
+            $.post('/admin/book/servicio/confirmar', 'id=' + id, function (data) {
+                var confirm = data.split('_');
+                if (confirm[1] == 1) {
+                    // $("#lista_destinos_"+id).remove();
+                    if (confirm[0] == '1')
+                        $("#confim_" + id).html('<i class="fas fa-lock text-success"></i>');
+                    else if (confirm[0] == '0')
+                        $("#confim_" + id).html('<i class="fas fa-unlock"></i>');
+                    swal(
+                        'Mensaje del sistema',
+                        'Se confirmo el servicio ',
+                        'success'
+                    )
+                }
+            }).fail(function (data) {
+
+            });
+        }
+        else{
+            $.post('/admin/book/hotel/confirmar', 'id=' + id, function (data) {
+                var confirm = data.split('_');
+                if (confirm[1] == 1) {
+                    // $("#lista_destinos_"+id).remove();
+                    if (confirm[0] == '1')
+                        $("#confim_h_" + id).html('<i class="fas fa-lock text-success"></i>');
+                    else if (confirm[0] == '0')
+                        $("#confim_h_" + id).html('<i class="fas fa-unlock"></i>');
+                    swal(
+                        'Mensaje del sistema',
+                        'Se confirmo el hotel ',
+                        'success'
+                    )
+                }
+            }).fail(function (data) {
+
+            });
         }
     })
 }
