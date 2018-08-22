@@ -135,9 +135,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col d-none">
                                     <div class="padding-left-0">
-                                        <select name="empresa_{{$categoria->id}}" id="empresa_{{$categoria->id}}" class="form-control" onchange="mostrar_tabla_empresa('{{$categoria->nombre}}','{{$categoria->id}}',$('#empresa_{{$categoria->id}}').val())">
+                                        {{--<select name="empresa_{{$categoria->id}}" id="empresa_{{$categoria->id}}" class="form-control" onchange="mostrar_tabla_empresa('{{$categoria->nombre}}','{{$categoria->id}}',$('#empresa_{{$categoria->id}}').val())">--}}
+                                        <select name="empresa_{{$categoria->id}}" id="empresa_{{$categoria->id}}" class="form-control" onchange="mostrar_tabla_destino('{{$categoria->nombre}}','{{$categoria->id}}')">
                                             <option value="0">Escoja una empresa</option>
                                             @foreach($proveedores->where('grupo','TRAINS') as $pro)
                                                 <option value="{{$pro->id}}">{{$pro->nombre_comercial}}</option>
@@ -146,8 +147,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col">
+                                <div class="col-4">
                                     <div class="padding-left-0">
+                                        {{--<select name="Destinos_{{$categoria->nombre}}" id="Destinos_{{$categoria->nombre}}" class="form-control" onchange="mostrar_tabla_empresa('{{$categoria->nombre}}','{{$categoria->id}}',$(this).val())">--}}
                                         <select name="Destinos_{{$categoria->nombre}}" id="Destinos_{{$categoria->nombre}}" class="form-control" onchange="mostrar_tabla_destino('{{$categoria->nombre}}','{{$categoria->id}}')">
                                             <option value="0">Escoja la localizacion</option>
                                             @foreach($destinations as $destination)
@@ -351,51 +353,6 @@
                 $('#tb_{{$categoria->nombre}}').DataTable();
             @endforeach
         } );
-        function editar_producto(id){
-            $('#modal_edit_producto_'+id).submit(function() {
-                // Enviamos el formulario usando AJAX
-                var grupo=$('#grupo_'+id).val();
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: new FormData($("#modal_edit_producto_"+id)[0]),
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    // Mostramos un mensaje con la respuesta de PHP
-                    success:  function (response) {
-                    var datox=response.split('_');
-                    console.log(datox);
-// if(response==1){
-                        $('#result_'+id).removeClass('bg-danger');
-                        $('#result_'+id).addClass('bg-success');
-                        $('#result_'+id).html('Producto guardado Correctamente!');
-                        swal(
-                            'Genial...',
-                            'Producto guardado Correctamente!',
-                            'success'
-                        )
-                        if(grupo=='MOVILID')
-                            $('#tipo_'+id).html(datox[0]+' ['+datox[1]+'-'+datox[2]+']');
-                        else
-                            $('#tipo_'+id).html(datox[0]);
 
-                        if(grupo=='TRAINS')
-                            $('#horario_'+id).html(datox[2]);
-                        $('#precio_'+id).html(datox[3]);
-                        $('#nombre_'+id).html(datox[4]);
-
-//                        }
-//                        else{
-//                            $('#result_'+id).removeClass('text-success');
-//                            $('#result_'+id).addClass('text-danger');
-//                            $('#result_'+id).html('Error al guardar la imagen, intentelo de nuevo');
-//                        }
-                    }
-                })
-                // esto es para que no se reenvie el formulario
-                return false;
-            });
-        }
     </script>
 @stop

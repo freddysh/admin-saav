@@ -78,10 +78,11 @@
                 <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_producto{{$servicio->id}}">
                     <i class="fas fa-pencil-alt"></i>
                 </button>
+
                 <div class="modal fade bd-example-modal-lg" id="modal_edit_producto{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
-                            <form action="{{route('service_edit_path')}}" method="post" id="modal_edit_producto_{{$servicio->id}}" enctype="multipart/form-data">
+                            <form id="frm_modal_edit_producto_{{$servicio->id}}" action="{{route('service_edit_path')}}" method="post">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Edit Service</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -97,7 +98,6 @@
                                                     @if($destino[1]!='HOTELS')
                                                         <div class="col-12">
                                                             <div class="row">
-
                                                                 <div class="col-6">
                                                                     <div class="form-group">
                                                                         <label for="txt_codigo" class="text-secondary font-weight-bold">Codigo</label>
@@ -106,46 +106,41 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     @endif
-                                                    @if($destino[1]!='TRAINS')
+                                                    {{--@if($destino[1]!='TRAINS')--}}
+                                                        <div class="col-6">
+                                                            <div class="form-group">
+                                                                @if($destino[1]=='MOVILID')
+                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Punto de inicio</label>
+                                                                    <select class="form-control" id="txt_localizacion_{{$servicio->id}}" name="txt_localizacion_{{$servicio->id}}" onchange="nuevos_proveedores_movilidad_ruta_edit('{{$servicio->id}}','{{$destino[0]}}','{{$destino[1]}}')">
+                                                                        @foreach ($destinations as $destination)
+                                                                            <option value="{{$destination->destino}}"
+                                                                            @if ($servicio->localizacion == $destination->destino)
+                                                                                {{'selected'}}
+                                                                                    @endif
+                                                                            >{{$destination->destino}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                @else
+                                                                    <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+                                                                    <select class="form-control" id="txt_localizacion_{{$servicio->id}}" name="txt_localizacion_{{$servicio->id}}"  onchange="nuevos_proveedores('{{$servicio->id}}','{{$destino[0]}}','{{$destino[1]}}')">
+                                                                        @foreach ($destinations as $destination)
+                                                                            <option value="{{$destination->destino}}"
+                                                                            @if ($servicio->localizacion == $destination->destino)
+                                                                                {{'selected'}}
+                                                                                    @endif
+                                                                            >{{$destination->destino}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                @endif
 
-                                                            <div class="col-6">
-                                                                <div class="form-group">
-                                                                    @if($destino[1]=='MOVILID')
-                                                                        <label for="txt_codigo" class="text-secondary font-weight-bold">Punto de inicio</label>
-                                                                        <select class="form-control" id="txt_localizacion_{{$servicio->id}}" name="txt_localizacion_{{$servicio->id}}" onchange="nuevos_proveedores_movilidad_ruta_edit('{{$servicio->id}}','{{$destino[0]}}','{{$destino[1]}}')">
-                                                                            @foreach ($destinations as $destination)
-                                                                                <option value="{{$destination->destino}}"
-                                                                                @if ($servicio->localizacion == $destination->destino)
-                                                                                    {{'selected'}}
-                                                                                        @endif
-                                                                                >{{$destination->destino}}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    @else
-                                                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
-                                                                        <select class="form-control" id="txt_localizacion_{{$servicio->id}}" name="txt_localizacion_{{$servicio->id}}"  onchange="nuevos_proveedores('{{$servicio->id}}','{{$destino[0]}}','{{$destino[1]}}')">
-                                                                            @foreach ($destinations as $destination)
-                                                                                <option value="{{$destination->destino}}"
-                                                                                @if ($servicio->localizacion == $destination->destino)
-                                                                                    {{'selected'}}
-                                                                                        @endif
-                                                                                >{{$destination->destino}}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    @endif
-
-                                                                    <input type="hidden" name="tipoServicio_{{$servicio->id}}" id="tipoServicio_{{$servicio->id}}" value="{{$destino[1]}}">
-                                                                </div>
+                                                                <input type="hidden" name="tipoServicio_{{$servicio->id}}" id="tipoServicio_{{$servicio->id}}" value="{{$destino[1]}}">
                                                             </div>
-
-
-                                                    @endif
+                                                        </div>
+                                                    {{--@endif--}}
                                                     @if($destino[1]=='TRAINS')
                                                         @php
                                                             $array_pro = '';
-                                                            $proveedores = Proveedor::get();
                                                             $proveedor_id1=0;
                                                         @endphp
                                                         @if($destino[1] == 'TRAINS')
@@ -162,25 +157,21 @@
                                                             @php
                                                                 $array_pro = $array_pro . substr(0, strlen($array_pro) - 1);
                                                             @endphp
-
-
-                                                                <div class="col-6">
-                                                                    <div class="form-group">
-                                                                        <label for="txt_codigo" class="text-secondary font-weight-bold">Empresa</label>
-                                                                        <select class="form-control" id="txt_provider_{{$servicio->id}}" name="txt_provider_{{$servicio->id}}" onchange="mostrar_class($('#txt_provider_{{$servicio->id}}').val(),'{{$array_pro}}','{{$destino[1]}}','{{$servicio->id}}','{{$destino[0]}}')">
-                                                                            <option value="0">Escoja una empresa</option>';
-                                                                            @foreach ($proveedores->where('grupo', 'TRAINS') as $provider)
-                                                                                <option value="{{$provider->id}}_{{$provider->nombre_comercial}}"
-                                                                                @if($proveedor_id1==$provider->id)
-                                                                                    {{' selected '}}
-                                                                                        @endif
-                                                                                >{{$provider->nombre_comercial}}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Empresa</label>
+                                                                    <select class="form-control" id="txt_provider_{{$servicio->id}}" name="txt_provider_{{$servicio->id}}" onchange="mostrar_class($('#txt_provider_{{$servicio->id}}').val(),'{{$array_pro}}','{{$destino[1]}}','{{$id}}','{{$servicio->id}}')">
+                                                                        <option value="0">Escoja una empresa</option>';
+                                                                        @foreach ($proveedores->where('grupo', 'TRAINS') as $provider)
+                                                                            <option value="{{$provider->id}}_{{$provider->nombre_comercial}}"
+                                                                            @if($proveedor_id1==$provider->id)
+                                                                                {{' selected '}}
+                                                                            @endif
+                                                                            >{{$provider->nombre_comercial}}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
-
-
+                                                            </div>
                                                         @endif
                                                         @php
                                                             $vision = 0;
@@ -189,31 +180,27 @@
                                                             @php
                                                                 $vision++;
                                                             @endphp
-
-
-                                                                <div id="proveedor_{{$provider->id}}" class="col-6
-                                                                    @if($proveedor_id1!=$provider->id)
-                                                                    {{' d-none'}}
-                                                                    @endif
-                                                                        ">
-                                                                    <div class="form-group">
-                                                                        <label for="txt_codigo" >Class</label>
-                                                                        <select class="form-control" id="txt_class_{{$servicio->id}}" name = "txt_class_{{$servicio->id}}_{{$provider->id}}">
-                                                                            @foreach ($provider->clases->where('estado', '1') as $provider_clases)
-                                                                                <option value="{{$provider_clases->clase}}"
-                                                                                @if($servicio->tipoServicio==$provider_clases->clase)
-                                                                                    {{' selected '}}
-                                                                                        @endif
-                                                                                >{{$provider_clases->clase}}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
+                                                            <div id="proveedor_{{$provider->id}}" class="col-6
+                                                                @if($proveedor_id1!=$provider->id)
+                                                                {{' d-none'}}
+                                                                @endif
+                                                                    ">
+                                                                <div class="form-group">
+                                                                    <label for="txt_codigo" >Class</label>
+                                                                    <select class="form-control" id="txt_class_{{$servicio->id}}" name = "txt_class_{{$servicio->id}}_{{$provider->id}}">
+                                                                        @foreach ($provider->clases->where('estado', '1') as $provider_clases)
+                                                                            <option value="{{$provider_clases->clase}}"
+                                                                            @if($servicio->tipoServicio==$provider_clases->clase)
+                                                                                {{' selected '}}
+                                                                                    @endif
+                                                                            >{{$provider_clases->clase}}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
-
+                                                            </div>
                                                         @endforeach
                                                     @endif
                                                     @if($destino[1] == 'ENTRANCES')
-
                                                         <div class="col-6">
                                                             <div class="form-group">
                                                                 <label for="txt_type" class="text-secondary font-weight-bold"> Clase</label >
@@ -248,11 +235,9 @@
                                                                 </select >
                                                             </div>
                                                         </div>
-
                                                     @endif
                                                     @if ($destino[1] == 'MOVILID')
-
-                                                            <div class="col-6">
+                                                        <div class="col-6">
                                                                 <div class="form-group">
                                                                     <label for="txt_type" class="text-secondary font-weight-bold"> Clase</label >
                                                                     <select class="form-control" id = "txt_clase_{{$servicio->id}}" name = "txt_clase_{{$servicio->id}}">
@@ -269,28 +254,24 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-
                                                     @endif
-
                                                     @if ($destino[1] == 'TOURS')
-
-                                                            <div class="col-6">
-                                                                <div class="form-group"><label for="txt_type" class="text-secondary font-weight-bold"> Type</label >
-                                                                    <select class="form-control" id = "txt_type_{{$servicio->id}}" name = "txt_type_{{$servicio->id}}" >
-                                                                        <option value = "GROUP"
-                                                                        @if ($servicio->tipoServicio == "GROUP")
-                                                                            {{'selected'}}
-                                                                                @endif
-                                                                        >GROUP </option >
-                                                                        <option value = "PRIVATE"
-                                                                        @if ($servicio->tipoServicio == "PRIVATE")
-                                                                            {{'selected'}}
-                                                                                @endif
-                                                                        >PRIVATE</option >
-                                                                    </select>
-                                                                </div>
+                                                        <div class="col-6">
+                                                            <div class="form-group"><label for="txt_type" class="text-secondary font-weight-bold"> Type</label >
+                                                                <select class="form-control" id = "txt_type_{{$servicio->id}}" name = "txt_type_{{$servicio->id}}" >
+                                                                    <option value = "GROUP"
+                                                                    @if ($servicio->tipoServicio == "GROUP")
+                                                                        {{'selected'}}
+                                                                            @endif
+                                                                    >GROUP </option >
+                                                                    <option value = "PRIVATE"
+                                                                    @if ($servicio->tipoServicio == "PRIVATE")
+                                                                        {{'selected'}}
+                                                                            @endif
+                                                                    >PRIVATE</option >
+                                                                </select>
                                                             </div>
-
+                                                        </div>
                                                     @endif
                                                     @if ($servicio->grupo == 'MOVILID')
                                                         <div class="col-6">
@@ -331,9 +312,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-
                                                     @if ($servicio->grupo == 'REPRESENT')
-
                                                         <div class="col-6">
                                                             <div class="form-group"><label for="txt_type" class="text-secondary font-weight-bold"> Type</label >
 
@@ -352,7 +331,6 @@
                                                         </div>
                                                     @endif
                                                     @if ($servicio->grupo == 'ENTRANCES')
-
                                                         <div class="col-6">
                                                             <div class="form-group"><label for="txt_type" class="text-secondary font-weight-bold"> Type</label >
 
@@ -368,7 +346,6 @@
                                                         </div>
                                                     @endif
                                                     @if ($servicio->grupo == 'FOOD')
-
                                                         <div class="col-6">
                                                             <div class="form-group"><label for="txt_type" class="text-secondary font-weight-bold"> Type</label >
 
@@ -386,9 +363,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-
                                                     @if($servicio->grupo == 'FLIGHTS')
-
                                                         <div class="col-6">
 
                                                             <div class="form-group"><label for="txt_type">Type</label>
@@ -404,7 +379,6 @@
                                                         </div>
                                                     @endif
                                                     @if ($servicio->grupo == 'OTHERS')
-
                                                         <div class="col-6">
 
                                                             <div class="form-group"><label for="txt_type">Type</label>
@@ -412,7 +386,6 @@
                                                             </div>
                                                         </div>
                                                     @endif
-
                                                     <div class="col-12">
                                                         <div class="form-group">
                                                             @if ($servicio->grupo == 'TRAINS')
@@ -426,9 +399,7 @@
                                                             <input type="text" class="form-control" id="txt_product_{{$servicio->id}}" name="txt_product_{{$servicio->id}}" placeholder="Product" value="{{$servicio->nombre}}">
                                                         </div>
                                                     </div>
-
                                                     @if($destino[1]=='MOVILID')
-
                                                         <div class="col-6">
                                                             <div class="form-group">
                                                                 <div id="rutas_{{$servicio->id}}">
@@ -482,7 +453,6 @@
                                                         </div>
                                                     @endif
                                                     @if ($servicio->grupo == 'TRAINS' || $servicio->grupo == 'FLIGHTS')
-
                                                         <div class="col-6">
                                                             <div class="form-group">
                                                                 <label for="txt_price" class="font-weight-bold text-secondary">Ruta de salida</label>
@@ -506,7 +476,6 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-
                                                         <div class="col-6">
                                                             <div class="form-group">
                                                                 <label for="txt_price" class="font-weight-bold text-secondary"> Hora</label >
@@ -536,17 +505,14 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-
                                                         <div class="col-6" >
                                                             <div class="form-group" >
-                                                                <label for="txt_price" class="font-weight-bold text-secondary"> Hora</label >
+                                                                <label for="txt_price" class="font-weight-bold text-secondary"> Hora</label>
 
                                                                 <input type = "text" class="form-control" id = "txt_llegada_{{$servicio->id}}" name = "txt_llegada_{{$servicio->id}}" placeholder="06:30"  value = "{{$servicio->llegada}}" >
                                                             </div>
                                                         </div>
                                                     @endif
-
-
                                                     <div class="col-6">
                                                         <div class="form-group">
                                                             <label for="txt_price" class="text-secondary font-weight-bold">Price</label>
@@ -555,7 +521,6 @@
                                                         </div>
                                                     </div>
                                                     @if ($servicio->grupo == 'MOVILID')
-
                                                         <div class="col-6" >
                                                             <div class="form-group" >
                                                                 <label for="txt_price" class="text-secondary font-weight-bold"> Min Personas </label >
@@ -570,9 +535,7 @@
                                                             </div >
                                                         </div >
                                                     @endif
-
                                                     @if ($servicio->grupo == 'TOURS')
-
                                                         <div class="col-12">
                                                             <div class="row">
                                                                 @if ($servicio->precio_grupo == 1)
@@ -658,7 +621,6 @@
                                                     </div>
                                                     @endif
                                                     @if ($servicio->grupo == 'REPRESENT')
-
                                                     <div class="col-12">
                                                         <div class="row" >
                                                             @if ($servicio->precio_grupo == 1)
@@ -739,7 +701,6 @@
                                                     </div >
                                                     @endif
                                                     @if ($servicio->grupo == 'FOOD')
-
                                                         <div class="col-12" >
                                                             <div class="row" >
                                                                 @if ($servicio->precio_grupo == 1)
@@ -786,20 +747,21 @@
                                                                             <input type = "radio" name = "txt_tipo_grupo_{{$servicio->id}}" value = "Absoluto" checked = "checked" >
                                                                             Precio es absoluto
                                                                         </label >
-                                                                    </div >
+                                                                    </div>
 
                                                                     <div class="col-6" >
                                                                         {{--<label for="txt_price" class="font-weight-bold text-secondary">Tipe price</label><br>--}}
-                                                                        <label class=" text-danger" >
+                                                                        <label class=" text-danger">
                                                                             <input type = "radio" name = "txt_tipo_grupo_{{$servicio->id}}" value = "Individual" >
                                                                             Precio es individual
-                                                                        </label >
+                                                                        </label>
                                                                     </div >
                                                                 @else
 
                                                                     <div class="col-md-6 d-none" >
                                                                         <label for="txt_price">Tipe price</label><br>
-                                                                        <label class=" text-green-goto" >
+                                                                        <label class=" text-green-goto" ></label>
+                                                                    </div>
                                                                     <div class="col-6" >
                                                                         {{--<label for="txt_price" class="font-weight-bold text-secondary">Tipe price</label><br>--}}
                                                                         <label class=" text-danger">
@@ -901,7 +863,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            <div class="col d-flex">
+                                        <div class="col d-flex">
                                             <div class="card p-2 text-left w-100">
                                                 <div class="row">
                                                     <div class="col">
@@ -913,31 +875,50 @@
                                                     </div>
                                                 </div>
                                                 <div class="row align-items-center">
-
-                                                        <div id="lista_proveedores_{{$servicio->id}}_{{$destino[0]}}" class="col">
-                                                            @if($destino[1]!='TRAINS')
-                                                                @foreach ($proveedores->where('localizacion',$destino[2])->where('grupo',$destino[1]) as $proveedor)
-                                                                    <div class="">
-                                                                        <label class="text-primary">
-                                                                            <input class="proveedores_{{$servicio->id}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
-                                                                            {{ucwords(strtolower($proveedor->nombre_comercial))}}
-                                                                        </label>
+                                                    <div id="lista_proveedores_{{$servicio->id}}_{{$destino[0]}}" class="col">
+                                                        @if($destino[1]!='TRAINS')
+                                                            @foreach ($proveedores->where('localizacion',$destino[2])->where('grupo',$destino[1]) as $proveedor)
+                                                                <div class="">
+                                                                    <label class="text-primary">
+                                                                        <input class="proveedores_{{$servicio->id}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
+                                                                        {{ucwords(strtolower($proveedor->nombre_comercial))}}
+                                                                    </label>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <a href="#!" class="btn btn-primary" onclick="Pasar_pro('{{$categoria_id}}','{{$destino[1]}}','{{$servicio->id}}')">
+                                                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <div id="lista_costos_{{$destino[1]}}_{{$id}}_{{$servicio->id}}">
+                                                            @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion) as $costo)
+                                                                <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
+                                                                    <div class="col-5">
+                                                                        <i class="fas fa-check text-success"></i>
+                                                                        <span class="fila_proveedores_{{$servicio->id}}_{{$destino[1]}}">{{ucwords(strtolower($costo->proveedor->nombre_comercial))}}</span>
                                                                     </div>
-                                                                @endforeach
-                                                            @endif
-                                                        </div>
-                                                        <div class="col-1">
-                                                            <a href="#!" class="btn btn-primary" onclick="Pasar_pro('{{$categoria_id}}','{{$destino[1]}}','{{$servicio->id}}')">
-                                                                <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-7">
-                                                            <div id="lista_costos_{{$destino[1]}}_{{$id}}_{{$servicio->id}}">
-                                                                @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion) as $costo)
+                                                                    <div class="col">
+                                                                        <input name="costo_id[]" type="hidden" value="{{$costo->id}}">
+                                                                        <input name="costo_val[]" type="number" class="form-control form-control-sm my-2" value="{{$costo->precio_costo}}">
+                                                                    </div>
+                                                                    <div class="col-3">
+                                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_proveedor_comprobando('{{$servicio->id}}','{{$costo->id}}','{{$costo->proveedor->id}}','{{$costo->proveedor->nombre_comercial}}')">
+                                                                            <i class="fas fa-trash" aria-hidden="true"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                            @php
+                                                                $nro_tresnes=$costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->count();
+                                                            @endphp
+                                                            @if($nro_tresnes>0)
                                                                     <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
                                                                         <div class="col-5">
                                                                             <i class="fas fa-check text-success"></i>
-                                                                        <span class="fila_proveedores_{{$servicio->id}}_{{$destino[1]}}">{{ucwords(strtolower($costo->proveedor->nombre_comercial))}}</span>
+                                                                            <span class="fila_proveedores_{{$servicio->id}}_{{$destino[1]}}">{{ucwords(strtolower($costo->proveedor->nombre_comercial))}}</span>
                                                                         </div>
                                                                         <div class="col">
                                                                             <input name="costo_id[]" type="hidden" value="{{$costo->id}}">
@@ -949,16 +930,13 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                @endforeach
-                                                            </div>
-
-
+                                                            @endif
                                                         </div>
-
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     {{csrf_field()}}
@@ -966,7 +944,7 @@
                                     <input type="hidden" name="posTipo" id="posTipo" value="0">
                                     <input type="hidden" name="grupo_{{$servicio->id}}" id="grupo_{{$servicio->id}}" value="{{$destino[1]}}">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary" onclick="editar_producto('{{$servicio->id}}')">Save changes</button>
+                                    <button type="submit" class="btn btn-primary" onclick="editar_producto1('{{$servicio->id}}')">Save changes</button>
                                 </div>
                                 <div id="result_{{$servicio->id}}" class="bg-success text-15 text-center"></div>
                             </form>
@@ -976,7 +954,6 @@
 
                 <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio('{{$servicio->localizacion}}','{{$servicio->id}}','{{$servicio->nombre}}')">
                     <i class="fa fa-trash"></i>
-
                 </button>
             </td>
         </tr>
@@ -1006,7 +983,7 @@
                     <div class="modal fade bd-example-modal-lg" id="modal_edit_producto{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
-                                <form action="{{route('service_edit_path')}}" method="post" id="modal_edit_producto_{{$servicio->id}}" enctype="multipart/form-data">
+                                <form action="{{route('service_edit_path')}}" method="post" id="frm_modal_edit_producto_{{$servicio->id}}">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Edit Service</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1841,7 +1818,7 @@
                                         <input type="hidden" name="posTipo" id="posTipo" value="0">
                                         <input type="hidden" name="grupo_{{$servicio->id}}" id="grupo_{{$servicio->id}}" value="{{$destino[1]}}">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" onclick="editar_producto('{{$servicio->id}}')">Save changes</button>
+                                        <button type="submit" class="btn btn-primary" onclick="editar_producto1('{{$servicio->id}}')">Save changes</button>
                                     </div>
                                     <div id="result_{{$servicio->id}}" class="bg-success text-15 text-center"></div>
                                 </form>
@@ -1885,7 +1862,7 @@
                     <div class="modal fade bd-example-modal-lg" id="modal_edit_producto{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
-                                <form action="{{route('service_edit_path')}}" method="post" id="modal_edit_producto_{{$servicio->id}}" enctype="multipart/form-data">
+                                <form action="{{route('service_edit_path')}}" method="post" id="frm_modal_edit_producto_{{$servicio->id}}">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Edit Service</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -2719,7 +2696,7 @@
                                         <input type="hidden" name="posTipo" id="posTipo" value="0">
                                         <input type="hidden" name="grupo_{{$servicio->id}}" id="grupo_{{$servicio->id}}" value="{{$destino[1]}}">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" onclick="editar_producto('{{$servicio->id}}')">Save changes</button>
+                                        <button type="submit" class="btn btn-primary" onclick="editar_producto1('{{$servicio->id}}')">Save changes</button>
                                     </div>
                                     <div id="result_{{$servicio->id}}" class="bg-success text-15 text-center"></div>
                                 </form>

@@ -29,5 +29,8 @@ class Proveedor extends Model
     {
         return $this->hasMany(ProveedorClases::class, 'proveedor_id');
     }
-
+    public function destinos_operados()
+    {
+        return $this->hasMany(DestinosOpera::class, 'proveedor_id');
+    }
 }

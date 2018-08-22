@@ -4300,7 +4300,7 @@ function mostrar_class(proveedor_id,array_pro,grupo,id,idservicio) {
     var pos=6;
     if (proveedor_id!='0'){
 
-        $.each(array_prove_train, function (key, value) {
+        $.each(array_prove_train, function (key, value){
             $("#proveedor_" + value).addClass('d-none');
             $("#proveedor_" + value).fadeOut("slow");
         });
@@ -4852,4 +4852,37 @@ function confirmar_servicio_reservas(id,servicio,tipo) {
             });
         }
     })
+}
+function editar_producto(id){
+    var grupo=$('#grupo_'+id).val();
+    $.ajax({
+        type: 'POST',
+        url: $('#frm_modal_edit_producto_'+id).attr('action'),
+        data: $('#frm_modal_edit_producto_'+id).serialize(),
+        // Mostramos un mensaje con la respuesta de PHP
+        success:  function (response) {
+            var datox=response.split('_');
+            console.log(datox);
+            $('#result_'+id).removeClass('bg-danger');
+            $('#result_'+id).addClass('bg-success');
+            $('#result_'+id).html('Producto guardado Correctamente!');
+            swal(
+                'Genial...',
+                'Producto guardado Correctamente!',
+                'success'
+            )
+            if(grupo=='MOVILID')
+                $('#tipo_'+id).html(datox[0]+' ['+datox[1]+'-'+datox[2]+']');
+            else
+                $('#tipo_'+id).html(datox[0]);
+
+            if(grupo=='TRAINS')
+                $('#horario_'+id).html(datox[2]);
+            $('#precio_'+id).html(datox[3]);
+            $('#nombre_'+id).html(datox[4]);
+        }
+    });
+    // esto es para que no se reenvie el formulario
+    return false;
+    // console.log('Se guardo los precios de los trenes');
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DestinosOpera;
 use App\M_Category;
 use App\M_Destino;
 use App\M_Producto;
@@ -136,6 +137,8 @@ class ProveedorController extends Controller
         $nro_grupo=$request->input('posTipo');
         $txt_grupo=$tipoServicio[$nro_grupo];
         $txt_grupo_cod=substr($txt_grupo,0,2);
+        $destinos_opera =$request->input('destinos_opera_'.$nro_grupo);
+//        dd($destinos_opera);
         $txt_localizacion=$request->input('txt_localizacion_'.$nro_grupo);
         $txt_localizacion_cod=substr($txt_localizacion,0,1);
         $txt_categoria=$request->input('txt_categoria_'.$nro_grupo);
@@ -182,6 +185,13 @@ class ProveedorController extends Controller
         if($proveedor->save()){
             $proveedor->codigo=$txt_grupo_cod.$proveedor->id;
             $proveedor->save();
+            foreach ($destinos_opera as $destino_opera){
+               $destino_temp=new DestinosOpera();
+                $destino_temp->proveedor_id=$proveedor->id;
+                $destino_temp->m_destinos_id=$destino_opera;
+                $destino_temp->save();
+            }
+
             $destinations=M_Destino::get();
             $providers=Proveedor::get();
             $categorias=M_Category::get();

@@ -72,106 +72,113 @@
                                     ?>
 
                                     <div id="t_{{$tipoServicio_}}" class="tab-pane fade show {{$in_activo}}">
-
-                                            <div class="row mt-3">
-                                                <div class="col">
-                                                    <div class="card p-2 w-100">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <div class="row">
-                                                                    <div class="col-12">
-                                                                        <div class="row">
-                                                                            <div class="col-3">
-                                                                                <div class="form-group">
-                                                                                    <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
-                                                                                    <?php
-                                                                                    $auto=1;
-                                                                                    if(count($providers)>0)
-                                                                                        $auto=($providers->last()->id)+1;
-                                                                                    ?>
-                                                                                    <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" value="{{substr($tipoServicio_,0,2)}}{{$auto}}" readonly>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col">
-                                                                        <div class="form-group">
-                                                                            <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
-                                                                            <select class="form-control" id="txt_localizacion_{{$in_pos}}" name="txt_localizacion_{{$in_pos}}">
-                                                                                @foreach($destinations as $destination)
-                                                                                    <option value="{{$destination->destino}}">{{$destination->destino}}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    @if($tipoServicio_=='HOTELS')
-                                                                        <div class="col">
+                                        <div class="row mt-3">
+                                            <div class="col">
+                                                <div class="card p-2 w-100">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                        <div class="col-3">
                                                                             <div class="form-group">
-                                                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Category</label>
-                                                                                <select class="form-control" id="txt_categoria_{{$in_pos}}" name="txt_categoria_{{$in_pos}}">
-                                                                                    <option value="2">2 Stars</option>
-                                                                                    <option value="3">3 Stars</option>
-                                                                                    <option value="4">4 Stars</option>
-                                                                                    <option value="5">5 Stars</option>
-                                                                                </select>
+                                                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
+                                                                                <?php
+                                                                                $auto=1;
+                                                                                if(count($providers)>0)
+                                                                                    $auto=($providers->last()->id)+1;
+                                                                                ?>
+                                                                                <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" value="{{substr($tipoServicio_,0,2)}}{{$auto}}" readonly>
                                                                             </div>
                                                                         </div>
-                                                                    @endif
-                                                                    <div class="col">
-                                                                        <div class="form-group">
-                                                                            <label for="txt_codigo" class="font-weight-bold text-secondary">Ruc</label>
-                                                                            <input type="text" class="form-control" id="txt_ruc_{{$in_pos}}" name="txt_ruc_{{$in_pos}}" placeholder="Ruc">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col">
-                                                                        <label for="txt_price" class="text-secondary font-weight-bold">Plazo a pagar en dias</label>
-                                                                        <div class="row">
-                                                                            <div class="col">
-                                                                                <div class="form-group">
-                                                                                    <input type="text" class="form-control" id="txt_plazo_{{$in_pos}}" name="txt_plazo_{{$in_pos}}" min="0" value="0">
+                                                                        <div class="col-9">
+                                                                            <h3 class=" text-center text-primary">Destinos que opera</h3>
+                                                                            <div class="row">
+                                                                            @foreach($destinations as $destination)
+                                                                                <div class="col-3 form-group form-check">
+                                                                                    <input type="checkbox" class="form-check-input" id="destinos_opera_{{$destination->id}}" name="destinos_opera_{{$in_pos}}[]" value="{{$destination->id}}">
+                                                                                    <label class="form-check-label" for="destinos_opera_{{$destination->id}}">{{$destination->destino}}</label>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                <div class="form-group">
-                                                                                    <select class="form-control" id="txt_desci_{{$in_pos}}" name="txt_desci_{{$in_pos}}">
-                                                                                        <option value="antes">Antes</option>
-                                                                                        <option value="despues">Despues</option>
-                                                                                    </select>
-                                                                                </div>
+                                                                            @endforeach
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+                                                                        <select class="form-control" id="txt_localizacion_{{$in_pos}}" name="txt_localizacion_{{$in_pos}}">
+                                                                            @foreach($destinations as $destination)
+                                                                                <option value="{{$destination->destino}}">{{$destination->destino}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                @if($tipoServicio_=='HOTELS')
                                                                     <div class="col">
                                                                         <div class="form-group">
-                                                                            <label for="txt_type" class="text-secondary font-weight-bold">Razon social</label>
-                                                                            <input type="text" class="form-control" id="txt_razon_social_{{$in_pos}}" name="txt_razon_social_{{$in_pos}}" placeholder="Razon social">
+                                                                            <label for="txt_codigo" class="font-weight-bold text-secondary">Category</label>
+                                                                            <select class="form-control" id="txt_categoria_{{$in_pos}}" name="txt_categoria_{{$in_pos}}">
+                                                                                <option value="2">2 Stars</option>
+                                                                                <option value="3">3 Stars</option>
+                                                                                <option value="4">4 Stars</option>
+                                                                                <option value="5">5 Stars</option>
+                                                                            </select>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col">
-                                                                        <div class="form-group">
-                                                                            <label for="txt_type" class="text-secondary font-weight-bold">Nombre comercial</label>
-                                                                            <input type="text" class="form-control" id="txt_nombre_comercial_{{$in_pos}}" name="txt_nombre_comercial_{{$in_pos}}" placeholder="Nombre comercial">
+                                                                @endif
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Ruc</label>
+                                                                        <input type="text" class="form-control" id="txt_ruc_{{$in_pos}}" name="txt_ruc_{{$in_pos}}" placeholder="Ruc">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <label for="txt_price" class="text-secondary font-weight-bold">Plazo a pagar en dias</label>
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <div class="form-group">
+                                                                                <input type="text" class="form-control" id="txt_plazo_{{$in_pos}}" name="txt_plazo_{{$in_pos}}" min="0" value="0">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col">
+                                                                            <div class="form-group">
+                                                                                <select class="form-control" id="txt_desci_{{$in_pos}}" name="txt_desci_{{$in_pos}}">
+                                                                                    <option value="antes">Antes</option>
+                                                                                    <option value="despues">Despues</option>
+                                                                                </select>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col">
-                                                                        <div class="form-group">
-                                                                            <label for="txt_precio" class="font-weight-bold text-secondary">Direccion</label>
-                                                                            <input type="text" class="form-control" id="txt_direccion_{{$in_pos}}" name="txt_direccion_{{$in_pos}}" placeholder="Direccion">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_type" class="text-secondary font-weight-bold">Razon social</label>
+                                                                        <input type="text" class="form-control" id="txt_razon_social_{{$in_pos}}" name="txt_razon_social_{{$in_pos}}" placeholder="Razon social">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_type" class="text-secondary font-weight-bold">Nombre comercial</label>
+                                                                        <input type="text" class="form-control" id="txt_nombre_comercial_{{$in_pos}}" name="txt_nombre_comercial_{{$in_pos}}" placeholder="Nombre comercial">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_precio" class="font-weight-bold text-secondary">Direccion</label>
+                                                                        <input type="text" class="form-control" id="txt_direccion_{{$in_pos}}" name="txt_direccion_{{$in_pos}}" placeholder="Direccion">
 
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </div>
-                                            <div class="row mt-3">
-
+                                        </div>
+                                        <div class="row mt-3">
                                                         <div class="col">
                                                             <div class="card bg-light w-100">
                                                                 <div class="col-lg-12">
@@ -221,7 +228,6 @@
                                                             </div>
                                                         </div>
                                             </div>
-
                                     </div>
                                     <?php
                                         $in_pos++;
