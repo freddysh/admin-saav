@@ -78,7 +78,6 @@
                 <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_producto{{$servicio->id}}">
                     <i class="fas fa-pencil-alt"></i>
                 </button>
-
                 <div class="modal fade bd-example-modal-lg" id="modal_edit_producto{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
@@ -894,7 +893,7 @@
                                                     </div>
                                                     <div class="col-7">
                                                         <div id="lista_costos_{{$destino[1]}}_{{$id}}_{{$servicio->id}}">
-                                                            @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion) as $costo)
+                                                            @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->unique() as $costo)
                                                                 <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
                                                                     <div class="col-5">
                                                                         <i class="fas fa-check text-success"></i>
@@ -914,23 +913,23 @@
                                                             @php
                                                                 $nro_tresnes=$costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->count();
                                                             @endphp
-                                                            @if($nro_tresnes>0)
-                                                                    <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
-                                                                        <div class="col-5">
-                                                                            <i class="fas fa-check text-success"></i>
-                                                                            <span class="fila_proveedores_{{$servicio->id}}_{{$destino[1]}}">{{ucwords(strtolower($costo->proveedor->nombre_comercial))}}</span>
-                                                                        </div>
-                                                                        <div class="col">
-                                                                            <input name="costo_id[]" type="hidden" value="{{$costo->id}}">
-                                                                            <input name="costo_val[]" type="number" class="form-control form-control-sm my-2" value="{{$costo->precio_costo}}">
-                                                                        </div>
-                                                                        <div class="col-3">
-                                                                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_proveedor_comprobando('{{$servicio->id}}','{{$costo->id}}','{{$costo->proveedor->id}}','{{$costo->proveedor->nombre_comercial}}')">
-                                                                                <i class="fas fa-trash" aria-hidden="true"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                            @endif
+                                                            {{--@if($nro_tresnes>0)--}}
+                                                                    {{--<div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">--}}
+                                                                        {{--<div class="col-5">--}}
+                                                                            {{--<i class="fas fa-check text-success"></i>--}}
+                                                                            {{--<span class="fila_proveedores_{{$servicio->id}}_{{$destino[1]}}">{{ucwords(strtolower($costo->proveedor->nombre_comercial))}}</span>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col">--}}
+                                                                            {{--<input name="costo_id[]" type="hidden" value="{{$costo->id}}">--}}
+                                                                            {{--<input name="costo_val[]" type="number" class="form-control form-control-sm my-2" value="{{$costo->precio_costo}}">--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-3">--}}
+                                                                            {{--<button type="button" class="btn btn-danger btn-sm" onclick="eliminar_proveedor_comprobando('{{$servicio->id}}','{{$costo->id}}','{{$costo->proveedor->id}}','{{$costo->proveedor->nombre_comercial}}')">--}}
+                                                                                {{--<i class="fas fa-trash" aria-hidden="true"></i>--}}
+                                                                            {{--</button>--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                            {{--@endif--}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -944,14 +943,13 @@
                                     <input type="hidden" name="posTipo" id="posTipo" value="0">
                                     <input type="hidden" name="grupo_{{$servicio->id}}" id="grupo_{{$servicio->id}}" value="{{$destino[1]}}">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary" onclick="editar_producto1('{{$servicio->id}}')">Save changes</button>
+                                    <button type="button" class="btn btn-primary" onclick="editar_producto('{{$servicio->id}}')">Save changes</button>
                                 </div>
                                 <div id="result_{{$servicio->id}}" class="bg-success text-15 text-center"></div>
                             </form>
                         </div>
                     </div>
                 </div>
-
                 <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio('{{$servicio->localizacion}}','{{$servicio->id}}','{{$servicio->nombre}}')">
                     <i class="fa fa-trash"></i>
                 </button>
@@ -1818,7 +1816,7 @@
                                         <input type="hidden" name="posTipo" id="posTipo" value="0">
                                         <input type="hidden" name="grupo_{{$servicio->id}}" id="grupo_{{$servicio->id}}" value="{{$destino[1]}}">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" onclick="editar_producto1('{{$servicio->id}}')">Save changes</button>
+                                        <button type="button" class="btn btn-primary" onclick="editar_producto('{{$servicio->id}}')">Save changes</button>
                                     </div>
                                     <div id="result_{{$servicio->id}}" class="bg-success text-15 text-center"></div>
                                 </form>
@@ -2696,7 +2694,7 @@
                                         <input type="hidden" name="posTipo" id="posTipo" value="0">
                                         <input type="hidden" name="grupo_{{$servicio->id}}" id="grupo_{{$servicio->id}}" value="{{$destino[1]}}">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" onclick="editar_producto1('{{$servicio->id}}')">Save changes</button>
+                                        <button type="button" class="btn btn-primary" onclick="editar_producto('{{$servicio->id}}')">Save changes</button>
                                     </div>
                                     <div id="result_{{$servicio->id}}" class="bg-success text-15 text-center"></div>
                                 </form>

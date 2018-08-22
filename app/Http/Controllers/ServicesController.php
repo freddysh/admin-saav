@@ -343,6 +343,7 @@ class ServicesController extends Controller
         }
         $pro_id= $request->input('pro_id');
         $pro_val= $request->input('pro_val');
+        $cadena='';
         if($pro_id!='') {
             foreach ($pro_id as $key => $pro_id_) {
                 $proveedor = Proveedor::FindOrFail($pro_id_);
@@ -362,12 +363,14 @@ class ServicesController extends Controller
                 $new_service->m_servicios_id = $destino->id;
                 $new_service->proveedor_id = $proveedor->id;
                 $new_service->save();
+                $cadena.='_'.$pro_id_;
             }
         }
+//        dd($cadena);
 //        return dd($destino);
 //        return json_encode(1);
-//        return $txt_type . '_' . $txt_min_personas . '_' . $txt_max_personas . '_' . $txt_price . '_' . $txt_product;
-        return redirect()->route('service_index_path');
+        return $txt_type . '_' . $txt_min_personas . '_' . $txt_max_personas . '_' . $txt_price . '_' . $txt_product;
+//        return redirect()->route('service_index_path');
     }
 
     public function autocomplete()
