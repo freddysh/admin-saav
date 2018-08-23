@@ -91,17 +91,7 @@
                                                                                 <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" value="{{substr($tipoServicio_,0,2)}}{{$auto}}" readonly>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-9">
-                                                                            <h3 class=" text-center text-primary">Destinos que opera</h3>
-                                                                            <div class="row">
-                                                                            @foreach($destinations as $destination)
-                                                                                <div class="col-3 form-group form-check">
-                                                                                    <input type="checkbox" class="form-check-input" id="destinos_opera_{{$destination->id}}" name="destinos_opera_{{$in_pos}}[]" value="{{$destination->id}}">
-                                                                                    <label class="form-check-label" for="destinos_opera_{{$destination->id}}">{{$destination->destino}}</label>
-                                                                                </div>
-                                                                            @endforeach
-                                                                            </div>
-                                                                        </div>
+
                                                                     </div>
                                                                 </div>
                                                                 <div class="col">
@@ -179,55 +169,73 @@
                                             </div>
                                         </div>
                                         <div class="row mt-3">
-                                                        <div class="col">
-                                                            <div class="card bg-light w-100">
-                                                                <div class="col-lg-12">
-                                                                    <div class="form-group">
-                                                                        <label for="txt_product" class="text-secondary font-weight-bold">Reservas</label>
-                                                                        <input type="text" class="form-control" id="txt_r_telefono_{{$in_pos}}" name="txt_r_telefono_{{$in_pos}}" placeholder="Celular">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12">
-                                                                    <div class="form-group">
-                                                                        {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Reservas</label>--}}
-                                                                        <input type="text" class="form-control" id="txt_r_email_{{$in_pos}}" name="txt_r_email_{{$in_pos}}" placeholder="Email">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                            <div class="col">
+                                                <div class="card bg-light w-100">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="txt_product" class="text-secondary font-weight-bold">Reservas</label>
+                                                            <input type="text" class="form-control" id="txt_r_telefono_{{$in_pos}}" name="txt_r_telefono_{{$in_pos}}" placeholder="Celular">
                                                         </div>
-                                                        <div class="col ">
-                                                            <div class="card bg-light w-100">
-                                                                <div class="col-lg-12">
-                                                                    <div class="form-group">
-                                                                        <label for="txt_product" class="text-secondary font-weight-bold">Contabilidad</label>
-                                                                        <input type="text" class="form-control" id="txt_c_telefono_{{$in_pos}}" name="txt_c_telefono_{{$in_pos}}" placeholder="Celular">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12">
-                                                                    <div class="form-group">
-                                                                        {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Contabilidad</label>--}}
-                                                                        <input type="text" class="form-control" id="txt_c_email_{{$in_pos}}" name="txt_c_email_{{$in_pos}}" placeholder="Email">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Reservas</label>--}}
+                                                            <input type="text" class="form-control" id="txt_r_email_{{$in_pos}}" name="txt_r_email_{{$in_pos}}" placeholder="Email">
                                                         </div>
-                                                        <div class="col ">
-                                                            <div class="card bg-light w-100">
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <label for="txt_product" class="text-secondary font-weight-bold">Operaciones</label>
-                                                                        <input type="text" class="form-control" id="txt_o_telefono_{{$in_pos}}" name="txt_o_telefono_{{$in_pos}}" placeholder="Celular">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        {{--<label for="txt_product">Email Operaciones</label>--}}
-                                                                        <input type="text" class="form-control" id="txt_o_email_{{$in_pos}}" name="txt_o_email_{{$in_pos}}" placeholder="Email">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="col ">
+                                                <div class="card bg-light w-100">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="txt_product" class="text-secondary font-weight-bold">Contabilidad</label>
+                                                            <input type="text" class="form-control" id="txt_c_telefono_{{$in_pos}}" name="txt_c_telefono_{{$in_pos}}" placeholder="Celular">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Contabilidad</label>--}}
+                                                            <input type="text" class="form-control" id="txt_c_email_{{$in_pos}}" name="txt_c_email_{{$in_pos}}" placeholder="Email">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col ">
+                                                <div class="card bg-light w-100">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="txt_product" class="text-secondary font-weight-bold">Operaciones</label>
+                                                            <input type="text" class="form-control" id="txt_o_telefono_{{$in_pos}}" name="txt_o_telefono_{{$in_pos}}" placeholder="Celular">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            {{--<label for="txt_product">Email Operaciones</label>--}}
+                                                            <input type="text" class="form-control" id="txt_o_email_{{$in_pos}}" name="txt_o_email_{{$in_pos}}" placeholder="Email">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3 text-left">
+                                            <div class="col">
+                                                <div class="card p-3 bg-light">
+                                                    <div class="form-group">
+                                                        <label for="txt_codigo" class="text-secondary font-weight-bold">Destinos que opera</label>
+                                                    </div>
+                                                    <div class="row padding-10">
+                                                        @foreach($destinations as $destination)
+                                                            <div class="col-3 form-group form-check">
+                                                                <input type="checkbox" class="form-check-input" id="destinos_opera_{{$in_pos}}_{{$destination->id}}" name="destinos_opera_{{$in_pos}}[]" value="{{$destination->id}}">
+                                                                <label class="form-check-label" for="destinos_opera_{{$in_pos}}_{{$destination->id}}">{{$destination->destino}}</label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <?php
                                         $in_pos++;

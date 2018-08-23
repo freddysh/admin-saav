@@ -2659,6 +2659,7 @@ function enviar_form1(){
         $('#txt_date1').val($('#txt_travel_date').val());
         $('#web1').val($('#web').val());
         $('#txt_destinos1').val(destinos);
+        $('#txt_codigo1').val($('#txt_codigo').val());
 
         if($('#txt_name1').val()==''){
             $('#txt_name1').focus();
@@ -2687,15 +2688,6 @@ function enviar_form1(){
             )
             return false;
         }
-        // if($('#txt_phone1').val()==''){
-        //     $('#txt_phone1').focus();
-        //     swal(
-        //         'Oops...',
-        //         'Ingrese el telefono!',
-        //         'error'
-        //     )
-        //     return false;
-        // }
         if($('#txt_travelers1').val()==0){
             $('#txt_travelers1').focus();
             swal(
@@ -3014,6 +3006,7 @@ function enviar_form2(){
         $('#txt_date1_').val($('#txt_travel_date').val());
         $('#web_').val($('#web').val());
         $('#txt_destinos1_').val(destinos);
+        $('#codigo_').val($('#txt_codigo').val());
         if($('#txt_name1_').val()==''){
             $('#txt_name1_').focus();
             swal(
@@ -3316,6 +3309,7 @@ function escojer_pqt(id) {
 function mostrar_tabla_destino(grupo,id){
     var  destino=$("#Destinos_"+grupo).val();
     console.log('mostrar_tabla_destino:'+destino);
+    $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -4343,6 +4337,9 @@ function nuevos_proveedores(pos,categoria,grupo) {
         url: '../../../admin/ventas/service/listar-proveedores',
         data: 'localizacion='+localizacion+'&grupo='+grupo+'&pos='+pos+'&categoria='+categoria,
         // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#lista_proveedores_'+pos+'_'+categoria).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
         success: function(data) {
             console.log(data);
             $('#lista_proveedores_'+pos+'_'+categoria).html(data);
@@ -5258,7 +5255,7 @@ function nuevos_proveedores_movilidad_ruta(pos,categoria,grupo) {
         }
     })
 }
-function mostrar_tabla_destino_ruta(grupo,id,pos){
+function mostrar_tabla_destino_ruta(grupo,id,pos,xruta,xtipo,consulta){
     var  destino=$("#Destinos_"+grupo).val();
     console.log('mostrar_tabla_destino:'+destino);
     $.ajaxSetup({
@@ -5266,15 +5263,38 @@ function mostrar_tabla_destino_ruta(grupo,id,pos){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-    $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&filtro=Normal', function(data) {
-            $("#tb_datos_"+grupo).html(data);
+    if(consulta=='normal'){
+        $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&filtro=Normal', function(data) {
+                $("#tb_datos_"+grupo).html(data);
 
-    }).fail(function (data) {
-    });
-    $.post('../../admin/productos/lista/rutas', 'destino='+destino+'&id='+id+'&grupo='+grupo+'&pos='+pos, function(data) {
-        $("#mostra_rutas_movilid").html(data);
-    }).fail(function (data) {
-    });
+        }).fail(function (data) {
+        });
+        $.post('../../admin/productos/lista/rutas', 'destino='+destino+'&id='+id+'&grupo='+grupo+'&pos='+pos, function(data) {
+            $("#mostra_rutas_movilid").html(data);
+        }).fail(function (data) {
+        });
+    }
+    else if(consulta=='normal'){
+        $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        // $.post('../../admin/productos/lista/por-ruta', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&filtro=Movilidad-ruta', function(data) {
+        $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&filtro=Movilidad-ruta', function(data) {
+            $("#tb_datos_"+grupo).html(data);
+        }).fail(function (data) {
+        });
+        $.post('../../admin/productos/lista/por-ruta/cargar-tipos', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&grupo='+grupo, function(data) {
+            $("#mostra_tipo_"+grupo).html(data);
+        }).fail(function (data) {
+        });
+    }
+    else if(consulta=='tipo'){
+        $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        // $.post('../../admin/productos/lista/por-ruta/tipo', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&tipo='+tipo+'&pos='+pos+'&filtro=Movilidad-ruta-tipo', function(data) {
+        $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&tipo='+tipo+'&pos='+pos+'&filtro=Movilidad-ruta-tipo', function(data) {
+            $("#tb_datos_"+grupo).html(data);
+        }).fail(function (data) {
+        });
+    }
 }
 function mostrar_tabla_destino_ruta_datos(grupo,id,ruta,pos){
     var  destino=$("#Destinos_"+grupo).val();
@@ -5284,6 +5304,7 @@ function mostrar_tabla_destino_ruta_datos(grupo,id,ruta,pos){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
+    $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
     // $.post('../../admin/productos/lista/por-ruta', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&filtro=Movilidad-ruta', function(data) {
     $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&pos='+pos+'&filtro=Movilidad-ruta', function(data) {
             $("#tb_datos_"+grupo).html(data);
@@ -5303,6 +5324,7 @@ function mostrar_tabla_destino_ruta_tipo_datos(grupo,id,ruta,tipo,pos){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
+    $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
     // $.post('../../admin/productos/lista/por-ruta/tipo', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&tipo='+tipo+'&pos='+pos+'&filtro=Movilidad-ruta-tipo', function(data) {
     $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&ruta='+ruta+'&tipo='+tipo+'&pos='+pos+'&filtro=Movilidad-ruta-tipo', function(data) {
             $("#tb_datos_"+grupo).html(data);
@@ -5322,7 +5344,10 @@ function nuevos_proveedores_movilidad_ruta_edit(pos,categoria,grupo) {
         type: 'POST',
         url: '../admin/ventas/service/listar-proveedores',
         data: 'localizacion='+localizacion+'&grupo='+grupo+'&categoria='+categoria+'&pos='+pos,
-        // Mostramos un mensaje con la respuesta de PHP
+        // Mostramos un mensaje con la respuesta de PHP,
+        beforeSend: function(databf){
+            $('#lista_proveedores_'+pos+'_'+categoria).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
         success: function(data) {
             console.log(data);
             $('#lista_proveedores_'+pos+'_'+categoria).html(data);
@@ -5596,6 +5621,11 @@ function confirmar_servicio_reservas(id,servicio,tipo) {
 }
 function editar_producto(id){
     var grupo=$('#grupo_'+id).val();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
     $.ajax({
         type: 'POST',
         url: $('#frm_modal_edit_producto_'+id).attr('action'),
@@ -5626,4 +5656,20 @@ function editar_producto(id){
     // esto es para que no se reenvie el formulario
     return false;
     // console.log('Se guardo los precios de los trenes');
+}
+function generar_codigo(web){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../generar-codigo',
+        data: 'web='+web,
+        // Mostramos un mensaje con la respuesta de PHP
+        success:  function (response) {
+            $('#txt_codigo').val(response);
+        }
+    });
 }

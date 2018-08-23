@@ -53,12 +53,10 @@
         <div class="card w-100">
             <!-- Default panel contents -->
             <div class="card-header">
-
                 Lista de operaciones de <span class="badge badge-primary">{{fecha_peru($desde)}}</span> a <span class="badge badge-primary">{{fecha_peru($hasta)}}</span>
-
-                    <a href="{{route('imprimir_operaciones_path',[$desde,$hasta])}}" class="btn btn-danger btn-sm">
-                        <i class="fas fa-file-pdf"></i>
-                    </a>
+                <a href="{{route('imprimir_operaciones_path',[$desde,$hasta])}}" class="btn btn-danger btn-sm">
+                    <i class="fas fa-file-pdf"></i>
+                </a>
             </div>
             <!-- Table -->
             <table class="table table-striped table-responsive table-bordered table-hover small">
@@ -245,7 +243,7 @@
                                         @if($serv->grupo=='FLIGHTS')
                                             <td>
                                                 <p>{{$serv->nombre}}</p>
-                                                <p>{{$serv->aerolinea}} / {{$serv->nro_vuelo}}</p>
+                                                <p>{{$servicio->aerolinea}} / {{$servicio->nro_vuelo}}</p>
                                                 <p class="text-primary">{{$prov_rs}}<br>{{$prov_celular}}</p>
                                                 @if($servicio->segunda_confirmada==1)
                                                     <input type="hidden" id="confi2_v_{{$servicio->id}}" value="0">

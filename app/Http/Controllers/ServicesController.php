@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DestinosOpera;
 use App\Hotel;
 use App\ItinerarioServicios;
 use App\M_Category;
@@ -410,8 +411,9 @@ class ServicesController extends Controller
         $proveedores=Proveedor::get();
         $costos=M_Producto::get();
         $categoria_id = $id;
+        $destino_operados=DestinosOpera::get();
 //        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','filtro']));
-        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','ruta','filtro','tipo']));
+        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','ruta','filtro','tipo','destino_operados']));
     }
 
     public function eliminar_servicio_hotel(Request $request)
@@ -433,7 +435,8 @@ class ServicesController extends Controller
         session()->put('menu-lateral', 'Sproducts');
         $proveedores = Proveedor::get();
         $costos = M_Producto::get();
-        return view('admin.database.new_service', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos]);
+        $destino_operados=DestinosOpera::get();
+        return view('admin.database.new_service', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos,'destino_operados'=>$destino_operados]);
     }
     public function listar_proveedores_service(Request $request)
     {
@@ -441,19 +444,17 @@ class ServicesController extends Controller
         $grupo= $request->input('grupo');
         $pos= $request->input('pos');
         $categoria= $request->input('categoria');
-        $proveedores=null;
-        if($grupo!='TRAINS')
-            $proveedores=Proveedor::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
-        else
-            $proveedores=Proveedor::where('grupo',$grupo)->get();
-
+        $proveedores=Proveedor::where('grupo',$grupo)->get();
         $cadena='';
         foreach ($proveedores as $proveedor){
-            $cadena.='<label class="text-primary display-block">
-                        <input class="proveedores_'.$pos.'" type="checkbox" aria-label="..." name="proveedores_[]" value="'.$proveedor->id.'_'.$proveedor->nombre_comercial.'">
-                        '.$proveedor->nombre_comercial.'
+            $destino_id=M_Destino::where('destino',$localizacion)->first();
+            $destino_operado=DestinosOpera::where('proveedor_id',$proveedor->id)->where('m_destinos_id',$destino_id->id)->count();
+            if($destino_operado>0) {
+                $cadena .= '<label class="text-primary display-block">
+                        <input class="proveedores_' . $pos . '" type="checkbox" aria-label="..." name="proveedores_[]" value="' . $proveedor->id . '_' . $proveedor->nombre_comercial . '">
+                        ' . $proveedor->nombre_comercial . '
                         </label>';
-
+            }
         }
         if($cadena==''){
             $cadena='<div class="alert alert-danger text-center">

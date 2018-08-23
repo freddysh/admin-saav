@@ -43,11 +43,11 @@
                     <div class="tab-content">
                         <div id="itinerario" class="tab-pane fade show active">
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-9">
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
-                                            <h2 class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</h2>
+                                            <b class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
                                             <b class="text-warning padding-left-10"> (X{{$cotizacion->nropersonas}})</b>
                                             @for($i=0;$i<$cotizacion->nropersonas;$i++)
                                                 <i class="fa fa-male fa-2x"></i>
@@ -68,6 +68,60 @@
                                             <li role="separator" class="divider"></li>
                                             <li><a href="#"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Add a new aspect</a></li>
                                         </ul>
+                                    </div>
+                                </div>
+                                <div class="col-3 text-right margin-top-10">
+                                    <botton class="btn btn-primary" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_archivos">
+                                        <i class="fas fa-file-alt fa-2x"></i>
+                                    </botton>
+                                    <div class="modal fade" id="myModal_archivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <form action="{{route('guardar_datos_flights_path')}}" method="post" enctype="multipart/form-data">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <div class="modal-body clearfix">
+                                                        <div class="col-md-12 text-left">
+                                                            <div class="col-md-12 caja_current">
+                                                                <div class="form-group">
+                                                                    <label for="txt_aereolinea" class="font-weight-bold text-secondary">Agregar archivo</label>
+                                                                    <input type="file" class="form-control" id="txt_archivo" name="txt_archivo">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 caja_current">
+                                                                <p><b>Listado de archivos subidos</b></p>
+                                                                <div class="row">
+                                                                    <div class="col-3 caja_current">
+                                                                        <div class="image">
+                                                                            imagen 1
+                                                                        </div>
+                                                                        <a href="#!"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                        <a href="#!"><i class="text-danger fas fa-trash-alt"></i></a>
+                                                                    </div>
+                                                                    <div class="col-3 caja_current">
+                                                                        <div class="image">
+                                                                            imagen 1
+                                                                        </div>
+                                                                        <a href="#!"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                        <a href="#!"><i class="text-danger fas fa-trash-alt"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <b id="rpt_book_archivo" class="text-success"></b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        {{csrf_field()}}
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary">Subir archivo</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 @php
@@ -450,7 +504,6 @@
                                                                     <div class="modal-content">
                                                                         <form id="asignar_proveedor_path_{{$servicios->id}}" action="{{route('asignar_proveedor_path')}}" method="post">
                                                                             <div class="modal-header">
-                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                                 <h4 class="modal-title" id="myModalLabel">
                                                                                     @if($grupe=='TOURS')
                                                                                         <i class="fas fa-map text-info" aria-hidden="true"></i>
@@ -476,7 +529,8 @@
                                                                                     @if($grupe=='OTHERS')
                                                                                         <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
                                                                                     @endif
-                                                                                    Lista de proveedores</h4>
+                                                                                    Asignar proveedor</h4>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                             </div>
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
@@ -484,6 +538,13 @@
                                                                                         <b class="text-danger">No tenemos proveedores disponibles!</b>
                                                                                     @elseif($servicios->servicio)
                                                                                         <p class="d-none">{{$productos->where('m_servicios_id',$servicios->m_servicios_id)->count()}} - {{$servicios->m_servicios_id}}</p>
+                                                                                        <div class="row">
+                                                                                            <div class="col-lg-12 bg-green-goto">
+                                                                                                <b class="small text-white">{{$servicios->servicio->nombre}}</b> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->servicio->tipoServicio}}</span> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->servicio->localizacion}}</span>
+                                                                                            </div>
+                                                                                        </div>
                                                                                         @foreach($productos as $producto)
                                                                                             @if($producto->m_servicios_id==$servicios->m_servicios_id)
                                                                                                 @if($producto->precio_grupo==1)
@@ -504,25 +565,21 @@
                                                                                                     @endphp
                                                                                                 @endif
 
-                                                                                                <div class="col-md-6">
+                                                                                                <div class="col-md-12">
                                                                                                     <div class="checkbox11 text-left">
                                                                                                         <div class="row">
-                                                                                                            <div class="col-lg-12 bg-green-goto">
-                                                                                                                <b class="text-grey-goto text-center">{{$producto->nombre}}</b><br>
-                                                                                                                <span class="small text-white">({{$producto->localizacion}})</span>
-                                                                                                                <span class="small text-white">{{$producto->tipo_producto}}</span>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="row">
-                                                                                                            <div class="col-lg-12 bg-orange-goto">
+                                                                                                            <div class="col-lg-12 caja_current">
                                                                                                                 <label class="text-grey-goto">
-                                                                                                                    <p class="text-grey-goto">{{$producto->proveedor->nombre_comercial}}
+                                                                                                                    <p class="text-grey-goto">
+                                                                                                                        <b>{{$producto->proveedor->nombre_comercial}}
                                                                                                                         @if($producto->grupo=='TRAINS')
                                                                                                                             <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
                                                                                                                         @endif
+                                                                                                                        </b>
                                                                                                                     </p>
                                                                                                                     <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
                                                                                                                     <input class="grupo" type="radio" onchange="dato_producto({{$producto->id}})" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}">
+                                                                                                                    <small>$</small>
                                                                                                                     @if($producto->precio_grupo==1)
                                                                                                                         {{$producto->precio_costo*1}}
                                                                                                                         <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*1}}">
@@ -530,7 +587,7 @@
                                                                                                                         {{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}
                                                                                                                         {{--<input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}">--}}
                                                                                                                         <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*$cotizacion->nropersonas}}">
-                                                                                                                    @endif $
+                                                                                                                    @endif
                                                                                                                 </label>
                                                                                                             </div>
                                                                                                         </div>
@@ -563,7 +620,6 @@
                                                                     <div class="modal-content">
                                                                         <form id="asignar_proveedor_path_{{$servicios->id}}" action="{{route('asignar_proveedor_path')}}" method="post">
                                                                             <div class="modal-header">
-                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                                 <h4 class="modal-title" id="myModalLabel">
                                                                                     @if($grupe=='TOURS')
                                                                                         <i class="fas fa-map text-info" aria-hidden="true"></i>
@@ -589,14 +645,22 @@
                                                                                     @if($grupe=='OTHERS')
                                                                                         <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
                                                                                     @endif
-                                                                                    Lista de proveedores</h4>
+                                                                                    Editar proveedor</h4>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
                                                                             </div>
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
                                                                                     @if($productos->where('m_servicios_id',$servicios->m_servicios_id)->count()==0)
                                                                                         <b class="text-danger">No tenemos proveedores disponibles!</b>
                                                                                     @elseif($servicios->servicio)
-
+                                                                                        <div class="row">
+                                                                                            <div class="col-lg-12 bg-green-goto">
+                                                                                                <b class="small text-white">{{$servicios->servicio->nombre}}</b> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->servicio->tipoServicio}}</span> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->servicio->localizacion}}</span>
+                                                                                            </div>
+                                                                                        </div>
                                                                                         @foreach($productos as $producto)
                                                                                             @php
                                                                                                 $valor_chk='';
@@ -624,49 +688,18 @@
                                                                                                         $precio_book=$producto->precio_costo*$cotizacion->nropersonas;
                                                                                                     @endphp
                                                                                                 @endif
-                                                                                                {{--@if(($servicios->precio*$valor) < $producto->precio_costo)--}}
-                                                                                                {{--<div class="col-md-6">--}}
-                                                                                                {{--<div class="checkbox11 text-left bg-info">--}}
-                                                                                                {{--<label class="text-danger">--}}
-                                                                                                {{--<span class="small text-grey-goto">{{$producto->nombre}}</span>--}}
-                                                                                                {{--<span class="small text-warning">{{$producto->localizacion}}</span>--}}
-                                                                                                {{--<span class="small text-primary">{{$producto->tipo_producto}}</span>--}}
-                                                                                                {{--<hr>--}}
-                                                                                                {{--<p class="text-primary" >{{$producto->proveedor->nombre_comercial}}--}}
-                                                                                                {{--@if($producto->grupo=='TRAINS')--}}
-                                                                                                {{--<span class="small text-warning" >[{{$servicios->salida}} - {{$servicios->llegada}}]</span>--}}
-                                                                                                {{--@endif--}}
-                                                                                                {{--</p>--}}
-                                                                                                {{--<input type="hidden" {{$m_servicio->precio_venta}}$) id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">--}}
-                                                                                                {{--<input class="grupo" type="radio" onchange="dato_producto({{$producto->id}})" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}">--}}
-                                                                                                {{--@if($producto->precio_grupo==1)--}}
-                                                                                                {{--{{$producto->precio_costo*1}}--}}
-                                                                                                {{--<input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*1}}">--}}
-                                                                                                {{--@else--}}
-                                                                                                {{--{{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}--}}
-                                                                                                {{--<input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}">--}}
-                                                                                                {{--@endif--}}
-                                                                                                {{--$--}}
-                                                                                                {{--</label>--}}
-                                                                                                {{--</div>--}}
-                                                                                                {{--</div>--}}
-                                                                                                {{--@else--}}
-                                                                                                <div class="col-md-6">
+                                                                                                <div class="col-md-12">
                                                                                                     <div class="checkbox11 text-left">
+
                                                                                                         <div class="row">
-                                                                                                            <div class="col-lg-12 bg-green-goto">
-                                                                                                                <b class="text-grey-goto text-center">{{$producto->nombre}}</b><br>
-                                                                                                                <span class="small text-white">({{$producto->localizacion}})</span>
-                                                                                                                <span class="small text-white">{{$producto->tipo_producto}}</span>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="row">
-                                                                                                            <div class="col-lg-12 bg-orange-goto">
+                                                                                                            <div class="col-lg-12 caja_current">
                                                                                                                 <label class="text-grey-goto">
-                                                                                                                    <p class="text-grey-goto">{{$producto->proveedor->nombre_comercial}}
-                                                                                                                        @if($producto->grupo=='TRAINS')
-                                                                                                                            <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
-                                                                                                                        @endif
+                                                                                                                    <p class="text-grey-goto">
+                                                                                                                       <b>{{$producto->proveedor->nombre_comercial}}
+                                                                                                                            @if($producto->grupo=='TRAINS')
+                                                                                                                                <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
+                                                                                                                            @endif
+                                                                                                                       </b>
                                                                                                                     </p>
                                                                                                                     <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
                                                                                                                     <input class="grupo" type="radio" onchange="dato_producto({{$producto->id}})" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>
@@ -675,7 +708,6 @@
                                                                                                                         <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*1}}">
                                                                                                                     @else
                                                                                                                         {{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}
-                                                                                                                        {{--<input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}">--}}
                                                                                                                         <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*$cotizacion->nropersonas}}">
                                                                                                                     @endif $
                                                                                                                 </label>
@@ -1107,7 +1139,7 @@
                                                         </p>
                                                     </td>
                                                     <td class="boton">
-                                                        <b class=h5 id="book_proveedor_hotel_{{$hotel->id}}">
+                                                        <b class="small" id="book_proveedor_hotel_{{$hotel->id}}">
                                                             @if($hotel->proveedor)
                                                                 {{$hotel->proveedor->nombre_comercial}}
                                                             @endif
@@ -1140,9 +1172,9 @@
                                                                                     @endif
                                                                                     {{--
                                                                                                                                                                     {{--@if($hotel_proveedor_->estrellas==$paquete->estrellas)--}}
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="checkbox11 text-left bg-info">
-                                                                                            <label class="text-primary">
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="checkbox11 text-left caja_current">
+                                                                                            <label>
                                                                                                 <input class="grupo" onchange="dato_producto_hotel({{$hotel_proveedor_->id}})" type="radio" name="precio" value="{{$cotizacion->id}}_{{$hotel->id}}_{{$hotel_proveedor_->proveedor_id}}_{{$hotel_proveedor_->id}}" {!! $valor_class !!}>
                                                                                                 <b>{{$hotel_proveedor_->proveedor->nombre_comercial}} | {{$hotel_proveedor_->estrellas}}<i class="fa fa-star text-warning" aria-hidden="true"></i></b>
                                                                                                 <span class="d-none" id="proveedor_servicio_hotel_{{$hotel_proveedor_->id}}">
@@ -1159,25 +1191,25 @@
                                                                                                 @php
                                                                                                     $s=1;
                                                                                                 @endphp
-                                                                                                <p class="text-green-goto">Single: ${{($hotel_proveedor_->single*$hotel->personas_s)}}</p>
+                                                                                                <p class="text-grey-goto">Single: ${{($hotel_proveedor_->single*$hotel->personas_s)}}</p>
                                                                                             @endif
                                                                                             @if($hotel->personas_d>0)
                                                                                                 @php
                                                                                                     $d=1;
                                                                                                 @endphp
-                                                                                                <p class="text-green-goto">Double: ${{$hotel_proveedor_->doble*$hotel->personas_d}}</p>
+                                                                                                <p class="text-grey-goto">Double: ${{$hotel_proveedor_->doble*$hotel->personas_d}}</p>
                                                                                             @endif
                                                                                             @if($hotel->personas_m>0)
                                                                                                 @php
                                                                                                     $m=1;
                                                                                                 @endphp
-                                                                                                <p class="text-green-goto">Matrimonial: ${{$hotel_proveedor_->matrimonial*$hotel->personas_m}}</p>
+                                                                                                <p class="text-grey-goto">Matrimonial: ${{$hotel_proveedor_->matrimonial*$hotel->personas_m}}</p>
                                                                                             @endif
                                                                                             @if($hotel->personas_t>0)
                                                                                                 @php
                                                                                                     $t=1;
                                                                                                 @endphp
-                                                                                                <p class="text-green-goto">Triple: ${{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
+                                                                                                <p class="text-grey-goto">Triple: ${{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
                                                                                             @endif
                                                                                             <span class="d-none" id="book_price_hotel_{{$hotel_proveedor_->id}}">
                                                                                                 @if($hotel->personas_s>0)
@@ -1379,7 +1411,7 @@
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
-                                            <h2 class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</h2>
+                                            <b class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
                                             <b class="text-warning padding-left-10"> (X{{$cotizacion->nropersonas}})</b>
                                             @for($i=0;$i<$cotizacion->nropersonas;$i++)
                                                 <i class="fa fa-male fa-2x"></i>

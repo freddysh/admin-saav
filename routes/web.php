@@ -1108,3 +1108,7 @@ Route::post('admin/book/hotel/delete', [
     'uses' => 'BookController@eliminar_hotel_reservas',
     'as' => 'eliminar_hotel_servicio_path',
 ]);
+Route::post('admin/quotes/generar-codigo',[
+    'uses' => 'QouteController@generar_codigo',
+    'as' => 'quotes_generar_codigo_path',
+]);

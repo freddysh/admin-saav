@@ -172,7 +172,7 @@
                                 <div class="col">
                                     <div class="">
                                         <label>Localizacion</label>
-                                        <select name="Destinos_{{$categoria->nombre}}" id="Destinos_{{$categoria->nombre}}" class="form-control" onchange="mostrar_tabla_destino_ruta('{{$categoria->nombre}}','{{$categoria->id}}','{{$pos}}')">
+                                        <select name="Destinos_{{$categoria->nombre}}" id="Destinos_{{$categoria->nombre}}" class="form-control" onchange="mostrar_tabla_destino_ruta('{{$categoria->nombre}}','{{$categoria->id}}','{{$pos}}','','','normal')">
                                             <option value="0">Escoja la localizacion</option>
                                             @foreach($destinations as $destination)
                                                 <option value="{{$destination->id}}_{{$categoria->nombre}}_{{$destination->destino}}">{{$destination->destino}}</option>
@@ -182,13 +182,13 @@
                                 </div>
                                 <div class="col" id="mostra_rutas_movilid">
                                     <label>Ruta</label>
-                                    <select class="form-control" id="txt_ruta_{{$pos}}" name="txt_ruta_{{$pos}}" onchange="mostrar_tabla_destino_ruta_datos('{{$categoria->nombre}}','{{$categoria->id}}',$('#txt_ruta_{{$pos}}').val())">
+                                    <select class="form-control" id="txt_ruta_{{$pos}}" name="txt_ruta_{{$pos}}" onchange="mostrar_tabla_destino_ruta('{{$categoria->nombre}}','{{$categoria->id}}','{{$pos}}',$('#txt_ruta_{{$pos}}').val(),'','ruta')">
                                         <option value="ESCOJA UNA RUTA-ESCOJA UNA RUTA">ESCOJA UNA RUTA</option>
                                     </select>
                                 </div>
                                 <div class="col" id="mostra_tipo_{{$categoria->nombre}}">
                                     <label>Tipo</label>
-                                    <select class="form-control" id="txt_tipo_{{$pos}}" name="txt_tipo_{{$pos}}" onchange="mostrar_tabla_destino_ruta_tipo_datos('{{$categoria->nombre}}','{{$categoria->id}}',$('#txt_ruta_{{$pos}}').val())">
+                                    <select class="form-control" id="txt_tipo_{{$pos}}" name="txt_tipo_{{$pos}}" onchange="mostrar_tabla_destino_ruta('{{$categoria->nombre}}','{{$categoria->id}}','{{$pos}}',$('#txt_ruta_{{$pos}}').val(),$('#txt_tipo_{{$pos}}').val(),'tipo')">
                                         <option value="ESCOJA UN TIPO-ESCOJA UN TIPO">ESCOJA EL TIPO</option>
                                     </select>
                                 </div>

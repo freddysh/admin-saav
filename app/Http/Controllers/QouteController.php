@@ -15,6 +15,7 @@ use App\M_Servicio;
 use App\P_Paquete;
 use App\PaqueteCotizaciones;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\Array_;
 
 class QouteController extends Controller
 {
@@ -158,6 +159,8 @@ class QouteController extends Controller
         $days=0;
         $fecha='';
         $web='gotoperu.com';
+        $nro_codigo=Cotizacion::where('web',$web)->count()+1;
+        $codigo='G'.$nro_codigo;
         session()->put('menu-lateral', 'quotes/new');
         return view('admin.quotes-new1',['destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'p_paquete'=>$p_paquete, 'itinerarios_d'=>$itinerarios_d,'hotel'=>$hotel,
             'plan'=>$plan,
@@ -170,7 +173,8 @@ class QouteController extends Controller
             'travelers'=>$travelers,
             'days'=>$days,
             'fecha'=>$fecha,
-            'web'=>$web]);
+            'web'=>$web,
+            'codigo'=>$codigo]);
     }
     public function ordenar_servios_db(Request $request)
     {
@@ -186,5 +190,22 @@ class QouteController extends Controller
         }
         return 1;
     }
+    public function generar_codigo(Request $request)
+    {
+        $precodigo=array(
+            "gotoperu.com"=>"G",
+            "gotoperu.com.pe"=>"GP",
+            "andesviagens.com"=>"AV",
+            "machupicchu-galapagos.com"=>"MP",
+            "gotolatinamerica.com"=>"GL",
+            "expedia.com"=>"E",
+
+        );
+        $web=$request->input('web');
+        $nro_codigo=Cotizacion::where('web',$web)->count()+1;
+        $codigo=$precodigo[$web].$nro_codigo;
+        return $codigo;
+    }
+
 
 }

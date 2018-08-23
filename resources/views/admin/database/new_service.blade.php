@@ -89,7 +89,6 @@
                         <div class="row margin-top-10">
                             <div class="@if($categoria->nombre!='HOTELS') {{'col-lg-5'}} @else {{'col-lg-12'}} @endif  d-flex">
                                 <div class="card p-2 w-100">
-
                                     <div class="row">
                                             @if($categoria->nombre!='HOTELS')
                                                 <div class="col-12">
@@ -659,12 +658,17 @@
                                     <div class="row">
                                         <div id="lista_proveedores_{{$pos}}_{{$categoria->id}}" class="col">
                                             @if($categoria->nombre!='TRAINS')
-                                                @foreach($proveedores->where('grupo',$categoria->nombre)->where('localizacion','CUSCO') as $proveedor)
-
-                                                        <label class="text-primary display-block">
-                                                            <input class="proveedores_{{$pos}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
-                                                            {{ucwords(strtolower($proveedor->nombre_comercial))}}
-                                                        </label>
+                                                @foreach($proveedores->where('grupo',$categoria->nombre) as $proveedor)
+                                                    @php
+                                                       $destino_id=$destinations->where('destino','CUSCO')->first();
+                                                       $destino_operado=$destino_operados->where('proveedor_id',$proveedor->id)->where('m_destinos_id',$destino_id->id)->count();
+                                                    @endphp
+                                                    @if($destino_operado>0)
+                                                    <label class="text-primary display-block">
+                                                        <input class="proveedores_{{$pos}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
+                                                        {{ucwords(strtolower($proveedor->nombre_comercial))}}
+                                                    </label>
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </div>

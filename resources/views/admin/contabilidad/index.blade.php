@@ -27,7 +27,6 @@
     </div>
     <div class="row no-gutters">
         <div class="col-4 box-list-book">
-
             @php
                 $dato_cliente='';
             @endphp
@@ -39,137 +38,303 @@
                         @endphp
                     @endif
                 @endforeach
-                <div class="content-list-book">
-                    <div class="content-list-book-s">
-                        <a href="{{route('contabilidad_show_path', $cotizacion_cat_->id)}}">
-                            <small class="font-weight-bold text-dark">
-                                <i class="fas fa-user-circle"></i>
-                                {{ucwords(strtolower($dato_cliente))}} X{{$cotizacion_cat_->nropersonas}}: {{$cotizacion_cat_->duracion}} days: {{strftime("%d %B, %Y", strtotime(str_replace('-','/', $cotizacion_cat_->fecha)))}}
-                            </small>
-                            <small class="text-primary">
-                                <sup>$</sup>{{$cotizacion_cat_->precioventa}}
-                            </small>
-                        </a>
-                        <div class="icon">
-                            <a href=""><i class="fas fa-exclamation-triangle"></i></a>
-
+                @php
+                    $total=0;
+                    $confirmados=0;
+                @endphp
+                @foreach($cotizacion_cat_->paquete_cotizaciones->where('estado','2') as $pqts)
+                    @foreach($pqts->itinerario_cotizaciones as $itinerarios)
+                        @foreach($itinerarios->itinerario_servicios as $servicios)
+                            @php
+                                $total++;
+                            @endphp
+                            @if($servicios->precio_c>0)
+                                @php
+                                    $confirmados++;
+                                @endphp
+                            @elseif($servicios->precio_c==$servicios->precio_proveedor)
+                                @php
+                                    $confirmados++;
+                                @endphp
+                            @endif
+                        @endforeach
+                        @foreach($itinerarios->hotel as $hotel)
+                            @php
+                                $total++;
+                            @endphp
+                            @if($hotel->personas_s>0)
+                                @if($hotel->precio_s_c>0)
+                                    @php
+                                        $confirmados++;
+                                    @endphp
+                                @elseif($hotel->precio_s_c==$hotel->precio_s_r)
+                                    @php
+                                        $confirmados++;
+                                    @endphp
+                                @endif
+                            @endif
+                            @if($hotel->personas_d>0)
+                                @if($hotel->precio_d_c>0)
+                                    @php
+                                        $confirmados++;
+                                    @endphp
+                                @elseif($hotel->precio_d_c==$hotel->precio_d_r)
+                                    @php
+                                        $confirmados++;
+                                    @endphp
+                                @endif
+                            @endif
+                            @if($hotel->personas_m>0)
+                                @if($hotel->precio_m_c>0)
+                                    @php
+                                        $confirmados++;
+                                    @endphp
+                                @elseif($hotel->precio_m_c==$hotel->precio_m_r)
+                                    @php
+                                        $confirmados++;
+                                    @endphp
+                                @endif
+                            @endif
+                            @if($hotel->personas_t>0)
+                                @if($hotel->precio_t_c>0)
+                                    @php
+                                        $confirmados++;
+                                    @endphp
+                                @elseif($hotel->precio_t_c==$hotel->precio_t_r)
+                                    @php
+                                        $confirmados++;
+                                    @endphp
+                                @endif
+                            @endif
+                        @endforeach
+                    @endforeach
+                @endforeach
+                @if($confirmados==0)
+                    <div class="content-list-book">
+                        <div class="content-list-book-s">
+                            <a href="{{route('contabilidad_show_path', $cotizacion_cat_->id)}}">
+                                <small class="font-weight-bold text-dark">
+                                    <i class="fas fa-user-circle"></i>
+                                    <i class="text-success">{{$cotizacion_cat_->codigo}}</i> | {{ucwords(strtolower($dato_cliente))}} X{{$cotizacion_cat_->nropersonas}}: {{$cotizacion_cat_->duracion}} days: {{strftime("%d %B, %Y", strtotime(str_replace('-','/', $cotizacion_cat_->fecha)))}}
+                                </small>
+                                <small class="text-primary">
+                                    <sup>$</sup>{{$cotizacion_cat_->precioventa}}
+                                </small>
+                            </a>
+                            <div class="icon">
+                                <a href="">Compl. {{$confirmados}} de {{$total}}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endforeach
-
         </div>
         <div class="col-4 box-list-book">
-
-            <div class="content-list-book">
-                <div class="content-list-book-s">
-                    <a href="">
-                        <small class="font-weight-bold text-dark">
-                            <i class="fas fa-user-circle"></i>
-                            Hidalgo x2: 8 days: Jan 2018
-                        </small>
-                        <small class="text-primary">
-                            <sup>$</sup>1800
-                        </small>
-                    </a>
-                    <div class="icon">
-                        <a href="">10%</a>
+            @php
+                $dato_cliente='';
+            @endphp
+            @foreach($cotizacion->sortByDesc('fecha') as $cotizacion_cat_)
+                @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
+                    @if($clientes->estado==1)
+                        @php
+                            $dato_cliente=$clientes->cliente->nombres.' '.$clientes->cliente->apellidos;
+                        @endphp
+                    @endif
+                @endforeach
+                @php
+                    $total=0;
+                    $confirmados=0;
+                @endphp
+                @foreach($cotizacion_cat_->paquete_cotizaciones->where('estado','2') as $pqts)
+                    @foreach($pqts->itinerario_cotizaciones as $itinerarios)
+                        @foreach($itinerarios->itinerario_servicios as $servicios)
+                            @php
+                                $total++;
+                            @endphp
+                            @if($servicios->precio_c>0)
+                                @php
+                                    $confirmados++;
+                                @endphp
+                            @elseif($servicios->precio_c==$servicios->precio_proveedor)
+                                @php
+                                    $confirmados++;
+                                @endphp
+                            @endif
+                        @endforeach
+                            @foreach($itinerarios->hotel as $hotel)
+                                @php
+                                    $total++;
+                                @endphp
+                                @if($hotel->personas_s>0)
+                                    @if($hotel->precio_s_c>0)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @elseif($hotel->precio_s_c==$hotel->precio_s_r)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @endif
+                                @endif
+                                @if($hotel->personas_d>0)
+                                    @if($hotel->precio_d_c>0)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @elseif($hotel->precio_d_c==$hotel->precio_d_r)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @endif
+                                @endif
+                                @if($hotel->personas_m>0)
+                                    @if($hotel->precio_m_c>0)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @elseif($hotel->precio_m_c==$hotel->precio_m_r)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @endif
+                                @endif
+                                @if($hotel->personas_t>0)
+                                    @if($hotel->precio_t_c>0)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @elseif($hotel->precio_t_c==$hotel->precio_t_r)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @endif
+                                @endif
+                            @endforeach
+                    @endforeach
+                @endforeach
+                @if(1<$confirmados &&$confirmados<$total)
+                    <div class="content-list-book">
+                        <div class="content-list-book-s">
+                            <a href="{{route('contabilidad_show_path', $cotizacion_cat_->id)}}">
+                                <small class="font-weight-bold text-dark">
+                                    <i class="fas fa-user-circle"></i>
+                                    <i class="text-success">{{$cotizacion_cat_->codigo}}</i> | {{ucwords(strtolower($dato_cliente))}} X{{$cotizacion_cat_->nropersonas}}: {{$cotizacion_cat_->duracion}} days: {{strftime("%d %B, %Y", strtotime(str_replace('-','/', $cotizacion_cat_->fecha)))}}
+                                </small>
+                                <small class="text-primary">
+                                    <sup>$</sup>{{$cotizacion_cat_->precioventa}}
+                                </small>
+                            </a>
+                            <div class="icon">
+                                <a href="">Compl. {{$confirmados}} de {{$total}}</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="content-list-book">
-                <div class="content-list-book-s">
-                    <a href="">
-
-                        <small class="font-weight-bold text-dark">
-                            <i class="fas fa-user-circle"></i>
-                            Hidalgo x2: 8 days: Jan 2018
-                        </small>
-                        <small class="text-primary">
-                            <sup>$</sup>1800
-
-                        </small>
-                    </a>
-                    <div class="icon">
-                        <a href="">50%</a>
-                    </div>
-                </div>
-            </div>
-
+                @endif
+            @endforeach
         </div>
 
         <div class="col-4 box-list-book border-right-0">
-            <div class="content-list-book">
-                <div class="content-list-book-s">
-                    <a href="">
-                        <small class="font-weight-bold text-dark">
-                            <i class="fas fa-user-circle"></i>
-                            Hidalgo x2: 8 days: Jan 2018
-                        </small>
-                        <small class="text-primary">
-                            <sup>$</sup>1800
-
-                        </small>
-                    </a>
-                    <div class="icon">
-                        <a href="" class="text-success"><i class="fa fa-check"></i></a>
+            @php
+                $dato_cliente='';
+            @endphp
+            @foreach($cotizacion->sortByDesc('fecha') as $cotizacion_cat_)
+                @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
+                    @if($clientes->estado==1)
+                        @php
+                            $dato_cliente=$clientes->cliente->nombres.' '.$clientes->cliente->apellidos;
+                        @endphp
+                    @endif
+                @endforeach
+                @php
+                    $total=0;
+                    $confirmados=0;
+                @endphp
+                @foreach($cotizacion_cat_->paquete_cotizaciones->where('estado','2') as $pqts)
+                    @foreach($pqts->itinerario_cotizaciones as $itinerarios)
+                        @foreach($itinerarios->itinerario_servicios as $servicios)
+                            @php
+                                $total++;
+                            @endphp
+                            @if($servicios->precio_c>0)
+                                @php
+                                    $confirmados++;
+                                @endphp
+                            @elseif($servicios->precio_c==$servicios->precio_proveedor)
+                                @php
+                                    $confirmados++;
+                                @endphp
+                            @endif
+                        @endforeach
+                            @foreach($itinerarios->hotel as $hotel)
+                                @php
+                                    $total++;
+                                @endphp
+                                @if($hotel->personas_s>0)
+                                    @if($hotel->precio_s_c>0)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @elseif($hotel->precio_s_c==$hotel->precio_s_r)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @endif
+                                @endif
+                                @if($hotel->personas_d>0)
+                                    @if($hotel->precio_d_c>0)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @elseif($hotel->precio_d_c==$hotel->precio_d_r)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @endif
+                                @endif
+                                @if($hotel->personas_m>0)
+                                    @if($hotel->precio_m_c>0)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @elseif($hotel->precio_m_c==$hotel->precio_m_r)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @endif
+                                @endif
+                                @if($hotel->personas_t>0)
+                                    @if($hotel->precio_t_c>0)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @elseif($hotel->precio_t_c==$hotel->precio_t_r)
+                                        @php
+                                            $confirmados++;
+                                        @endphp
+                                    @endif
+                                @endif
+                            @endforeach
+                    @endforeach
+                @endforeach
+                @if($confirmados==$total)
+                    <div class="content-list-book">
+                        <div class="content-list-book-s">
+                            <a href="{{route('contabilidad_show_path', $cotizacion_cat_->id)}}">
+                                <small class="font-weight-bold text-dark">
+                                    <i class="fas fa-user-circle"></i>
+                                    <i class="text-success">{{$cotizacion_cat_->codigo}}</i> | {{ucwords(strtolower($dato_cliente))}} X{{$cotizacion_cat_->nropersonas}}: {{$cotizacion_cat_->duracion}} days: {{strftime("%d %B, %Y", strtotime(str_replace('-','/', $cotizacion_cat_->fecha)))}}
+                                </small>
+                                <small class="text-primary">
+                                    <sup>$</sup>{{$cotizacion_cat_->precioventa}}
+                                </small>
+                            </a>
+                            <div class="icon">
+                                <a href="">Compl. {{$confirmados}} de {{$total}}</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="content-list-book">
-                <div class="content-list-book-s">
-                    <a href="">
-
-                        <small class="font-weight-bold text-dark">
-                            <i class="fas fa-user-circle"></i>
-                            Hidalgo x2: 8 days: Jan 2018
-                        </small>
-                        <small class="text-primary">
-                            <sup>$</sup>1800
-
-                        </small>
-                    </a>
-                    <div class="icon">
-                        <a href="" class="text-success"><i class="fa fa-check"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="content-list-book">
-                <div class="content-list-book-s">
-                    <a href="">
-
-                        <small class="font-weight-bold text-dark">
-                            <i class="fas fa-user-circle"></i>
-                            Hidalgo x2: 8 days: Jan 2018
-                        </small>
-                        <small class="text-primary">
-                            <sup>$</sup>1800
-
-                        </small>
-                    </a>
-                    <div class="icon">
-                        <a href="" class="text-success"><i class="fa fa-check"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="content-list-book">
-                <div class="content-list-book-s">
-                    <a href="">
-                        <small class="font-weight-bold text-dark">
-                            <i class="fas fa-user-circle"></i>
-                            Hidalgo x2: 8 days: Jan 2018
-                        </small>
-                        <small class="text-primary">
-                            <sup>$</sup>1800
-
-                        </small>
-                    </a>
-                    <div class="icon">
-                        <a href="" class="text-success"><i class="fa fa-check"></i></a>
-                    </div>
-                </div>
-            </div>
+                @endif
+            @endforeach
         </div>
     </div>
 @stop

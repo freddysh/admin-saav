@@ -221,7 +221,15 @@ class ProveedorController extends Controller
 
         $txt_plazo=$request->input('txt_plazo_');
         $txt_desci=$request->input('txt_desci_');
-
+        $destinos_opera=$request->input('destinos_opera_');
+//dd($destinos_opera);
+        $existe=DestinosOpera::where('proveedor_id',$id)->delete();
+        foreach ($destinos_opera as $destinos_opera_) {
+            $destino_opera = new DestinosOpera();
+            $destino_opera->proveedor_id = $id;
+            $destino_opera->m_destinos_id = $destinos_opera_;
+            $destino_opera->save();
+        }
         $proveedor=Proveedor::findOrFail($id);
         $proveedor->ruc=$txt_ruc;
         $proveedor->razon_social=$txt_razon_social;
@@ -267,7 +275,8 @@ class ProveedorController extends Controller
         $grupo=$request->input('grupo');
         $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->get();
         $destinations=M_Destino::get();
-        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo']));
+        $destinos_opera=DestinosOpera::get();
+        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera']));
     }
     public function call_providers_localizacion_estrellas(Request $request){
         $destino=explode('_',$request->input('destino'));

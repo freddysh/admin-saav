@@ -220,7 +220,7 @@
                                                     @endphp
 
                                                     <small>
-                                                        <b><i class="fas fa-angle-right text-primary"></i> {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                        <b><i class="fas fa-angle-right text-primary"></i><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
                                                     </small>
                                                 @endif
                                             @endforeach
@@ -276,7 +276,7 @@
                                                                 $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                             @endphp
                                                             <small>
-                                                                <b><i class="fas fa-angle-right text-primary"></i> {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                                <b><i class="fas fa-angle-right text-primary"></i> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
                                                             </small>
                                                         @endif
                                                     @endforeach
@@ -343,7 +343,7 @@
                                                                 $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                             @endphp
                                                             <small>
-                                                                <b><i class="fas fa-angle-right text-primary"></i> {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                                <b><i class="fas fa-angle-right text-primary"></i> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
                                                             </small>
                                                         @endif
                                                     @endforeach
@@ -407,7 +407,7 @@
                                                             $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                         @endphp
                                                         <small>
-                                                            <b><i class="fas fa-angle-right text-primary"></i> {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                            <b><i class="fas fa-angle-right text-primary"></i> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
                                                         </small>
                                                     @endif
                                                 @endforeach

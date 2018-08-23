@@ -17,8 +17,9 @@
                     <div class="row align-items-start">
                         <div class="col-4">
                             <div class="form-group">
+                                {{csrf_field()}}
                                 <label for="txt_travel_date" class="font-weight-bold text-secondary">Pagina de origen</label>
-                                <select name="web" id="web" class="form-control">
+                                <select name="web" id="web" class="form-control" onchange="generar_codigo($(this).val())">
                                     <option value="gotoperu.com" @if($web=='gotoperu.com') selected @endif>gotoperu.com</option>
                                     <option value="gotoperu.com.pe" @if($web=='gotoperu.com.pe') selected @endif>gotoperu.com.pe</option>
                                     <option value="andesviagens.com" @if($web=='andesviagens.com') selected @endif>andesviagens.com</option>
@@ -26,6 +27,12 @@
                                     <option value="gotolatinamerica.com" @if($web=='gotolatinamerica.com') selected @endif>gotolatinamerica.com</option>
                                     <option value="expedia.com" @if($web=='expedia.com') selected @endif>expedia.com</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
+                                <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}" readonly>
                             </div>
                         </div>
                     </div>
@@ -787,6 +794,7 @@
                                             <input type="hidden" name="cotizacion_id_" id="cotizacion_id_" value="{{$coti_id}}">
                                             <input type="hidden" name="cliente_id_" id="cliente_id_" value="{{$cliente_id}}">
                                             <input type="hidden" name="web_" id="web_" value="gotoperu.com">
+                                            <input type="hidden" name="codigo_" id="codigo_" value="{{$codigo}}">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -977,7 +985,7 @@
                                                         <input type="hidden" name="cotizacion_id_1" id="cotizacion_id_1" value="{{$coti_id}}">
                                                         <input type="hidden" name="cliente_id_1" id="cliente_id_1" value="{{$cliente_id}}">
                                                         <input type="hidden" name="web1" id="web1" value="gotoperu.com">
-
+                                                        <input type="hidden" name="txt_codigo1" id="txt_codigo1" value="{{$codigo}}">
                                                         <input type="hidden" name="h2_s_" id="h2_s_" value="{{$h2_s}}">
                                                         <input type="hidden" name="h2_d_" id="h2_d_" value="{{$h2_d}}">
                                                         <input type="hidden" name="h2_m_" id="h2_m_" value="{{$h2_m}}">

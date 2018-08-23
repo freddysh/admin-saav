@@ -136,21 +136,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <div class="row mt-3 text-left">
                                                     <div class="col-md-4">
                                                         <div class="card p-3 bg-light">
-                                                                <div class="form-group">
-                                                                    <label for="txt_price" class="text-secondary font-weight-bold">Cel. Reservas</label>
-                                                                    <input type="text" class="form-control" id="txt_r_telefono_" name="txt_r_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->r_telefono;?>">
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label for="txt_price">Email Reservas</label>
-                                                                    <input type="text" class="form-control" id="txt_r_email_" name="txt_r_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->r_email;?>">
-                                                                </div>
-
+                                                            <div class="form-group">
+                                                                <label for="txt_price" class="text-secondary font-weight-bold">Cel. Reservas</label>
+                                                                <input type="text" class="form-control" id="txt_r_telefono_" name="txt_r_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->r_telefono;?>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="txt_price">Email Reservas</label>
+                                                                <input type="text" class="form-control" id="txt_r_email_" name="txt_r_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->r_email;?>">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -170,17 +167,34 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="card p-3 bg-light">
-
-                                                                <div class="form-group">
-                                                                    <label for="txt_price" class="text-secondary font-weight-bold">Cel. Operaciones</label>
-                                                                    <input type="text" class="form-control" id="txt_o_telefono_" name="txt_o_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->o_telefono;?>">
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label for="txt_price">Email Operaciones</label>
-                                                                    <input type="text" class="form-control" id="txt_o_email_" name="txt_o_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->o_email;?>">
-                                                                </div>
-
+                                                            <div class="form-group">
+                                                                <label for="txt_price" class="text-secondary font-weight-bold">Cel. Operaciones</label>
+                                                                <input type="text" class="form-control" id="txt_o_telefono_" name="txt_o_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->o_telefono;?>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="txt_price">Email Operaciones</label>
+                                                                <input type="text" class="form-control" id="txt_o_email_" name="txt_o_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->o_email;?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3 text-left">
+                                                    <div class="col">
+                                                        <div class="card p-3 bg-light">
+                                                            <div class="form-group">
+                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Destinos que opera</label>
+                                                            </div>
+                                                            <div class="row padding-10">
+                                                                @foreach($destinations as $destination)
+                                                                    @php
+                                                                        $nrocoincidencias=$destinos_opera->where('proveedor_id',$provider->id)->where('m_destinos_id',$destination->id)->count();
+                                                                    @endphp
+                                                                    <div class="col-2 form-group form-check">
+                                                                        <input type="checkbox" class="form-check-input" id="destinos_opera_{{$provider->id}}_{{$destination->id}}" name="destinos_opera_[]" value="{{$destination->id}}" @if($nrocoincidencias>0) {{'checked'}} @endif>
+                                                                        <label class="form-check-label" for="destinos_opera_{{$provider->id}}_{{$destination->id}}">{{$destination->destino}}</label>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

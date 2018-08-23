@@ -750,6 +750,7 @@ class PackageCotizacionController extends Controller
     public function nuevo_paquete(Request $request)
     {
         $plan=$request->input('plan1');
+        $txt_codigo=$request->input('txt_codigo1');
         $cotizacion_id=0;
         $cliente_id=0;
         $estrela = $request->input('estrellas_from');
@@ -782,6 +783,7 @@ class PackageCotizacionController extends Controller
             $cotizacion->users_id=auth()->guard('admin')->user()->id;
             $cotizacion->posibilidad =0;
             $cotizacion->web=$request->input('web1');
+            $cotizacion->codigo=$txt_codigo;
             $cotizacion->save();
             $cotizacionGet=Cotizacion::where('id',$cotizacion->id)->get();
             $cotizacion_cliente=new CotizacionesCliente();
@@ -1138,6 +1140,7 @@ class PackageCotizacionController extends Controller
     {
 
         $plan=$request->input('plan');
+        $txt_codigo=$request->input('codigo_');
         $cotizacion_id=0;
         $cliente_id=0;
         $estrela = $request->input('estrellas_from_');
@@ -1188,6 +1191,7 @@ class PackageCotizacionController extends Controller
             $cotizacion_plantilla->users_id = auth()->guard('admin')->user()->id;
             $cotizacion_plantilla->posibilidad =0;
             $cotizacion_plantilla->web=$request->input('web_');
+            $cotizacion_plantilla->codigo=$txt_codigo;
             $cotizacion_plantilla->save();
 
             $cotizacion_cliente = new CotizacionesCliente();
@@ -2208,20 +2212,9 @@ class PackageCotizacionController extends Controller
         $cotizacion_id=$cotis->cotizaciones_id;
         $cotizaciones_clientes=CotizacionesCliente::where('cotizaciones_id',$cotizacion_id)->get();
         $cliente_id=0;
-//        dd($cotizaciones_clientes);
-
         foreach ($cotizaciones_clientes as $cli){
             $cliente_id=$cli->clientes_id;
         }
-//        dd($cotizacion_id);
-//        dd($pqt_id);
-//        dd($cliente_id);
-//      $cliente=Cliente::FindOrFail($cliente_id);
-//      $cotizaciones=Cotizacion::where('id',$cotizacion_id)->get();
-//      $m_servicios=M_Servicio::get();
-//      return view('admin.package-details1',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id]);
-
-
         return redirect()->route('show_step1_editar_path',[$cliente_id,$cotizacion_id,$pqt_id]);
     }
     public function show_step2_post(Request $request)
