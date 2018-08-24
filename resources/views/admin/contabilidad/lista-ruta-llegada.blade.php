@@ -3,13 +3,15 @@
         @if($punto_inicio=='CUSCO')
             <option value="AGUAS CALIENTES">AGUAS CALIENTES</option>
             <option value="OLLANTAYTAMBO">OLLANTAYTAMBO</option>
+            <option value="PUNO">PUNO</option>
         @endif
         @if($punto_inicio=='MACHUPICCHU')
-                <option value="OLLANTAYTAMBO">OLLANTAYTAMBO</option>
-                <option value="POROY">POROY</option>
+            <option value="OLLANTAYTAMBO">OLLANTAYTAMBO</option>
+            <option value="POROY">POROY</option>
+            <option value="CUSCO STATION">CUSCO STATION</option>
         @endif
         @if($punto_inicio=='SACRED VALLEY')
-                <option value="AGUAS CALIENTES">AGUAS CALIENTES</option>
-                <option value="POROY">POROY</option>
+            <option value="AGUAS CALIENTES">AGUAS CALIENTES</option>
+            <option value="POROY">POROY</option>
         @endif
 </select>
