@@ -41,4 +41,8 @@ class Cotizacion extends Model
     {
         return $this->hasMany(CotizacionesCliente::class, 'cotizaciones_id');
     }
+    public function archivos()
+    {
+        return $this->hasMany(CotizacionArchivos::class, 'cotizaciones_id');
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use App\Cotizacion;
+use App\CotizacionArchivos;
 use App\CotizacionesCliente;
 use App\Hotel;
 use App\HotelProveedor;
@@ -24,6 +25,9 @@ use App\Proveedor;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\Response;
 
 class BookController extends Controller
 {
@@ -98,7 +102,8 @@ class BookController extends Controller
         }
         $ItinerarioServiciosAcumPagos=ItinerarioServiciosAcumPago::where('paquete_cotizaciones_id',$pqt_id)->get();
         $ItinerarioHotleesAcumPagos=PrecioHotelReservaPagos::where('paquete_cotizaciones_id',$pqt_id)->get();
-        return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1]);
+        $cotizacion_archivos=CotizacionArchivos::where('cotizaciones_id',$id)->get();
+        return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos]);
     }
 
     /**
@@ -727,26 +732,30 @@ class BookController extends Controller
             return 0;
     }
     public function guardar_archivos(Request $request){
-        $txt_cotizacion_id=strtoupper($request->input('cotizacion_id'));
-        $txt_imagen=$request->file('txt_imagen');
-        $destino=new Cotiza ();
-        $destino->codigo=$txt_codigo;
-        $destino->destino=$txt_destino;
-        $destino->departamento=$txt_departamento;
-        $destino->region=$txt_region;
-        $destino->pais=$txt_pais;
-        $destino->descripcion=$txt_descripcion;
-        $destino->imagen=$txt_imagen;
-        $destino->estado=1;
-        $destino->save();
+        $txt_cotizacion_id=strtoupper($request->input('id'));
+        $txt_imagen=$request->file('txt_archivo');
+        $archivos=new CotizacionArchivos();
+        $archivos->cotizaciones_id=$txt_cotizacion_id;
+        $archivos->save();
         if($txt_imagen){
-            $filename ='destination-'.$destino->id.'.jpg';
-            $destino->imagen=$filename;
-            $destino->save();
-            Storage::disk('destination')->put($filename,  File::get($txt_imagen));
+            $filename ='archivo-'.$archivos->id.'.jpg';
+            $archivos->imagen=$filename;
+            $archivos->nombre=$txt_imagen->getClientOriginalName();
+            $archivos->save();
+            Storage::disk('cotizacion_archivos')->put($filename,  File::get($txt_imagen));
         }
-        $destinos=M_Destino::get();
-        return view('admin.database.destination',['destinos'=>$destinos]);
+        return redirect()->route('book_show_path',$txt_cotizacion_id);
     }
 
+    public function getCotiArchivosImageName($filename){
+        $file = Storage::disk('cotizacion_archivos')->get($filename);
+        return new Response($file, 200);
+    }
+    public function downloadCotiArchivos($archivo){
+//        $file = Storage::disk('cotizacion_archivos')->get($filename);
+//        return new  Response($file, 200);
+//        $ruta=Storage::disk('cotizacion_archivos')->url($filename);
+//        return Storage::disk('cotizacion_archivos')->url($filename);
+        return response()->download($archivo);
+    }
 }

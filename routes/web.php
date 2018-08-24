@@ -1116,3 +1116,15 @@ Route::post('admin/book/guardar-archivos',[
     'uses' => 'BookController@guardar_archivos',
     'as' => 'guardar_archivos_cotizacion_path',
 ]);
+Route::get('storage/cotizacion_archivos/{filename}', [
+    'uses' => 'BookController@getCotiArchivosImageName',
+    'as' => 'cotizacion_archivos_image_path'
+]);
+Route::get('storage/cotizacion_archivos', [
+    'uses' => 'BookController@getCotiArchivosImageName1',
+    'as' => 'cotizacion_archivos_image1_path'
+]);
+Route::get('storage/cotizacion_archivos/download/{archivo}', [
+    'uses' => 'BookController@downloadCotiArchivos',
+    'as' => 'cotizacion_archivos_image_download_path'
+]);

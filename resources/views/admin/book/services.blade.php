@@ -93,20 +93,17 @@
                                                             <div class="col-md-12 caja_current">
                                                                 <p><b>Listado de archivos subidos</b></p>
                                                                 <div class="row">
-                                                                    <div class="col-3 caja_current">
-                                                                        <div class="image">
-                                                                            imagen 1
+                                                                    @foreach($cotizacion_archivos as $cotizacion_archivo)
+                                                                        <div class="col-3 caja_current">
+                                                                            <div class="image">
+                                                                                @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
+                                                                                    <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="100" height="100">
+                                                                                @endif
+                                                                            </div>
+                                                                            <a href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                            <a href="#!"><i class="text-danger fas fa-trash-alt"></i></a>
                                                                         </div>
-                                                                        <a href="#!"><i class="fas fa-cloud-download-alt"></i></a>
-                                                                        <a href="#!"><i class="text-danger fas fa-trash-alt"></i></a>
-                                                                    </div>
-                                                                    <div class="col-3 caja_current">
-                                                                        <div class="image">
-                                                                            imagen 1
-                                                                        </div>
-                                                                        <a href="#!"><i class="fas fa-cloud-download-alt"></i></a>
-                                                                        <a href="#!"><i class="text-danger fas fa-trash-alt"></i></a>
-                                                                    </div>
+                                                                    @endforeach
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -116,6 +113,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         {{csrf_field()}}
+                                                        <input type="hidden" name="id" value="{{$cotizacion->id}}">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                         <button type="submit" class="btn btn-primary">Subir archivo</button>
                                                     </div>
