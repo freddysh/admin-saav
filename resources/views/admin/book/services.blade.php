@@ -77,14 +77,14 @@
                                     <div class="modal fade" id="myModal_archivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
-                                                <form action="{{route('guardar_datos_flights_path')}}" method="post" enctype="multipart/form-data">
+                                                <form action="{{route('guardar_archivos_cotizacion_path')}}" method="post" enctype="multipart/form-data">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                     </div>
                                                     <div class="modal-body clearfix">
                                                         <div class="col-md-12 text-left">
-                                                            <div class="col-md-12 caja_current">
+                                                            <div class="col-md-12 ">
                                                                 <div class="form-group">
                                                                     <label for="txt_aereolinea" class="font-weight-bold text-secondary">Agregar archivo</label>
                                                                     <input type="file" class="form-control" id="txt_archivo" name="txt_archivo">

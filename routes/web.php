@@ -1072,7 +1072,7 @@ Route::post('admin/package/buscar-day-by-day/ajax',[
     'uses' => 'PackageController@buscar_day_by_day_ajax',
     'as' => 'package_buscar_day_by_day_ajax_path',
 ]);
-Route::post('admin/book/guadar-datos',[
+Route::post('admin/book/guardar-datos',[
     'uses' => 'BookController@guardar_datos',
     'as' => 'guardar_datos_flights_path',
 ]);
@@ -1111,4 +1111,8 @@ Route::post('admin/book/hotel/delete', [
 Route::post('admin/quotes/generar-codigo',[
     'uses' => 'QouteController@generar_codigo',
     'as' => 'quotes_generar_codigo_path',
+]);
+Route::post('admin/book/guardar-archivos',[
+    'uses' => 'BookController@guardar_archivos',
+    'as' => 'guardar_archivos_cotizacion_path',
 ]);

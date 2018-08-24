@@ -726,4 +726,27 @@ class BookController extends Controller
         else
             return 0;
     }
+    public function guardar_archivos(Request $request){
+        $txt_cotizacion_id=strtoupper($request->input('cotizacion_id'));
+        $txt_imagen=$request->file('txt_imagen');
+        $destino=new Cotiza ();
+        $destino->codigo=$txt_codigo;
+        $destino->destino=$txt_destino;
+        $destino->departamento=$txt_departamento;
+        $destino->region=$txt_region;
+        $destino->pais=$txt_pais;
+        $destino->descripcion=$txt_descripcion;
+        $destino->imagen=$txt_imagen;
+        $destino->estado=1;
+        $destino->save();
+        if($txt_imagen){
+            $filename ='destination-'.$destino->id.'.jpg';
+            $destino->imagen=$filename;
+            $destino->save();
+            Storage::disk('destination')->put($filename,  File::get($txt_imagen));
+        }
+        $destinos=M_Destino::get();
+        return view('admin.database.destination',['destinos'=>$destinos]);
+    }
+
 }
