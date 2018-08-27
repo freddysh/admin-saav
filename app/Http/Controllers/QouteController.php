@@ -159,6 +159,7 @@ class QouteController extends Controller
         $days=0;
         $fecha='';
         $web='gotoperu.com';
+        $idioma_pasajeros='';
         $nro_codigo=Cotizacion::where('web',$web)->count()+1;
         $codigo='G'.$nro_codigo;
         session()->put('menu-lateral', 'quotes/new');
@@ -174,7 +175,9 @@ class QouteController extends Controller
             'days'=>$days,
             'fecha'=>$fecha,
             'web'=>$web,
-            'codigo'=>$codigo]);
+            'codigo'=>$codigo,
+            'idioma_pasajeros'=>$idioma_pasajeros
+            ]);
     }
     public function ordenar_servios_db(Request $request)
     {

@@ -32,20 +32,36 @@ class OperacionesController extends Controller
     }
     public function Lista_fechas(Request $request)
     {
-        $desde=$request->input('txt_desde');
-        $hasta=$request->input('txt_hasta');
+        $desde = $request->input('txt_desde');
+        $hasta = $request->input('txt_hasta');
 //        dd($desde);
 //        dd($hasta);
 
-        $cotizaciones=Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones'=> function ($query) use ($desde,$hasta) {
+        $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
             $query->whereBetween('fecha', array($desde, $hasta));
         }])
-            ->where('confirmado_r','ok')
+            ->where('confirmado_r', 'ok')
             ->get();
-        $clientes2=Cliente::get();
-        $m_servicios=M_Servicio::get();
-        $proveedores=Proveedor::get();
-        return view('admin.operaciones.operaciones',compact('cotizaciones','desde','hasta','clientes2','m_servicios','proveedores'));
+        $clientes2 = Cliente::get();
+        $m_servicios = M_Servicio::get();
+        $proveedores = Proveedor::get();
+        return view('admin.operaciones.operaciones', compact('cotizaciones', 'desde', 'hasta', 'clientes2', 'm_servicios', 'proveedores'));
+        foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
+            $clientes_ = [];
+            $array_itinerario_hora = [];
+            foreach ($cotizacion->cotizaciones_cliente as $cotizacion_cliente) {
+                foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
+                    $clientes_[] = $cliente->nombres . " " . $cliente->apellidos;
+                }
+            }
+            foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
+                foreach ($pqts->itinerario_cotizaciones->sortby('fecha') as $itinerario) {
+                    foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
+                        $array_itinerario_hora[$itinerario.'_'.$servicio->servicio->grupo.'_'.$servicio->hora_llegada]='';
+                    }
+                }
+            }
+        }
     }
     public function sp($id1,$id,$sp)
     {

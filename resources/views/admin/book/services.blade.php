@@ -47,7 +47,7 @@
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
-                                            <b class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
+                                            <b class="text-info text-30">Cod:{{$cotizacion->codigo}}</b><b class="text-30"> | </b><b class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
                                             <b class="text-warning padding-left-10"> (X{{$cotizacion->nropersonas}})</b>
                                             @for($i=0;$i<$cotizacion->nropersonas;$i++)
                                                 <i class="fa fa-male fa-2x"></i>
@@ -75,7 +75,7 @@
                                         <i class="fas fa-file-alt fa-2x"></i>
                                     </botton>
                                     <div class="modal fade" id="myModal_archivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <form action="{{route('guardar_archivos_cotizacion_path')}}" method="post" enctype="multipart/form-data">
                                                     <div class="modal-header">
@@ -94,14 +94,17 @@
                                                                 <p><b>Listado de archivos subidos</b></p>
                                                                 <div class="row">
                                                                     @foreach($cotizacion_archivos as $cotizacion_archivo)
-                                                                        <div class="col-3 caja_current">
-                                                                            <div class="image">
-                                                                                @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
-                                                                                    <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="100" height="100">
-                                                                                @endif
+                                                                        <div id="arch_{{$cotizacion_archivo->id}}"  class="col-3 caja_imagen ">
+                                                                            <div class="container-enlarge">
+                                                                            @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
+                                                                                <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="120" height="100">
+                                                                            @endif
+                                                                            <span><img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"></span>
                                                                             </div>
-                                                                            <a href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}"><i class="fas fa-cloud-download-alt"></i></a>
-                                                                            <a href="#!"><i class="text-danger fas fa-trash-alt"></i></a>
+                                                                            <div>
+                                                                                <a href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                                <a href="#!" onclick="eliminar_archivo('{{$cotizacion_archivo->id}}')"><i class="text-danger fas fa-trash-alt"></i></a>
+                                                                            </div>
                                                                         </div>
                                                                     @endforeach
                                                                 </div>
@@ -194,6 +197,57 @@
                         </span>
                                 </div>
                             </div>
+                            <table class="table table-bordered table-sm">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">NOMBRES</th>
+                                    <th class="text-center">IDIOMA</th>
+                                    <th class="text-center">NACIONALIDAD</th>
+                                    <th class="text-center">NRO DOC.</th>
+                                    <th class="text-center">GENERO</th>
+                                    <th class="text-center">HOTEL</th>
+                                    <th class="text-center">EDAD</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($cotizacion->cotizaciones_cliente as $coti_cliente)
+                                    @foreach($clientes1->where('id',$coti_cliente->clientes_id) as $cliente)
+                                        <tr>
+                                            <td>{{$cliente->nombres}} {{$cliente->apellidos}}</td>
+                                            <td>{{$cotizacion->idioma_pasajeros}}</td>
+                                            <td>{{$cliente->nacionalidad}}</td>
+                                            <td>{{$cliente->pasaporte}}</td>
+                                            <td>{{$cliente->sexo}}</td>
+                                            <td>
+                                                @foreach($cotizacion->paquete_cotizaciones as $paquete)
+                                                    @if($paquete->estado==2)
+                                                        @if($paquete->paquete_precios->count()==0)
+                                                            CTA PAXS
+                                                        @else
+                                                            @foreach($paquete->paquete_precios as $pqt_precio)
+                                                                @if($pqt_precio->personas_s>0)
+                                                                    <span class="text-warning">SINGLE</span>
+                                                                @endif
+                                                                @if($pqt_precio->personas_d>0)
+                                                                    | <span class="text-warning">DOBLE</span>
+                                                                @endif
+                                                                @if($pqt_precio->personas_m>0)
+                                                                    | <span class="text-warning">MATRIMONIAL</span>
+                                                                @endif
+                                                                @if($pqt_precio->personas_t>0)
+                                                                    | <span class="text-warning">TRIPLE</span>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    @endif
+                                                @endforeach
+                                            </td>
+                                            <td>{{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                                </tbody>
+                            </table>
                             <table class="table table-bordered table-sm table-hover">
                                 <thead>
                                 <tr class="small">
@@ -1509,9 +1563,10 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">NOMBRES</th>
+                                    <th class="text-center">IDIOMA</th>
                                     <th class="text-center">NACIONALIDAD</th>
                                     <th class="text-center">NRO DOC.</th>
-                                    <th class="text-center">SEXO</th>
+                                    <th class="text-center">GENERO</th>
                                     <th class="text-center">HOTEL</th>
                                     <th class="text-center">EDAD</th>
                                 </tr>
@@ -1521,6 +1576,7 @@
                                     @foreach($clientes1->where('id',$coti_cliente->clientes_id) as $cliente)
                                         <tr>
                                             <td>{{$cliente->nombres}} {{$cliente->apellidos}}</td>
+                                            <td>{{$cotizacion->idioma_pasajeros}}</td>
                                             <td>{{$cliente->nacionalidad}}</td>
                                             <td>{{$cliente->pasaporte}}</td>
                                             <td>{{$cliente->sexo}}</td>

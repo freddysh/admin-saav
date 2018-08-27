@@ -96,8 +96,6 @@
                     @endforeach
                     @foreach($cotizacion->paquete_cotizaciones->where('estado','2') as $pqts)
                         @foreach($pqts->itinerario_cotizaciones->sortby('fecha') as $itinerario)
-
-
                             @foreach($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio)
                                 <tr>
                                     <td>{{fecha_peru($itinerario->fecha)}}</td>

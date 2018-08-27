@@ -1919,6 +1919,7 @@ function enviar_form1(){
         $('#web1').val($('#web').val());
         $('#txt_destinos1').val(destinos);
         $('#txt_codigo1').val($('#txt_codigo').val());
+        $('#txt_idioma1').val($('#txt_idioma_pasajeros').val());
 
         if($('#txt_name1').val()==''){
             $('#txt_name1').focus();
@@ -2266,6 +2267,7 @@ function enviar_form2(){
         $('#web_').val($('#web').val());
         $('#txt_destinos1_').val(destinos);
         $('#codigo_').val($('#txt_codigo').val());
+        $('#txt_idioma2').val($('#txt_idioma_pasajeros').val());
         if($('#txt_name1_').val()==''){
             $('#txt_name1_').focus();
             swal(
@@ -4932,3 +4934,31 @@ function generar_codigo(web){
         }
     });
 }
+function eliminar_archivo(id){
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Estas seguro de eliminar la imagen",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.post('../book/eliminar-archivo', 'id='+id, function(data) {
+            if(data==1){
+                $("#arch_"+id).fadeOut( "slow");
+                $("#arch_"+id).remove();
+            }
+        }).fail(function (data) {
+
+        });
+
+    })
+
+}
+

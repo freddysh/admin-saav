@@ -2134,6 +2134,41 @@ a.ui-button:active,
   font-size: 13px;
 }
 
+.caja_imagen {
+  width: 125px;
+  margin: 5px;
+  padding: 0px;
+  text-align: center;
+  border: 1px solid #adadad;
+  background: #f7f7f7;
+  vertical-align: middle;
+}
+
+.container-enlarge {
+  display: inline-block;
+  position: relative;
+  margin: 15px;
+}
+
+.container-enlarge > img {
+  height: auto;
+  max-width: 100%;
+  width: 150px;
+  border-radius: 5px;
+}
+
+.container-enlarge span {
+  position: absolute;
+  top: -9999em;
+  left: -9999em;
+}
+
+.container-enlarge:hover span {
+  top: -250px;
+  left: -75px;
+  width: 300px;
+}
+
 /*!
  * Bootstrap v4.1.1 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors

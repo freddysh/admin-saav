@@ -770,6 +770,7 @@ class PackageCotizacionController extends Controller
             $cotizacion->nropersonas = $request->input('txt_travelers1');
             $cotizacion->duracion = $request->input('txt_days1');
             $cotizacion->fecha = $request->input('txt_date1');
+            $cotizacion->idioma_pasajeros= $request->input('txt_idioma1');
             if($estrela==2)
                 $cotizacion->star_2=2;
             if($estrela==3)
@@ -1177,6 +1178,7 @@ class PackageCotizacionController extends Controller
             $cotizacion_plantilla->nropersonas = $request->input('txt_travelers1_');
             $cotizacion_plantilla->duracion = $request->input('txt_days1_');
             $cotizacion_plantilla->fecha = $request->input('txt_date1_');
+            $cotizacion_plantilla->idioma_pasajeros = $request->input('txt_idioma2');
 
             if ($estrela == 2)
                 $cotizacion_plantilla->star_2 = 2;

@@ -752,10 +752,19 @@ class BookController extends Controller
         return new Response($file, 200);
     }
     public function downloadCotiArchivos($archivo){
-//        $file = Storage::disk('cotizacion_archivos')->get($filename);
-//        return new  Response($file, 200);
-//        $ruta=Storage::disk('cotizacion_archivos')->url($filename);
-//        return Storage::disk('cotizacion_archivos')->url($filename);
-        return response()->download($archivo);
+        $ruta="../storage/app/public/cotizacion_archivos/".$archivo;
+        return response()->download($ruta);
     }
+    public function eliminar_archivo(Request $request){
+        $archivo_id=$request->input('id');
+        $archivo=CotizacionArchivos::find($archivo_id);
+        if($archivo->delete()){
+            Storage::disk('cotizacion_archivos')->delete($archivo->imagen);
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+
 }

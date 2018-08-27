@@ -35,6 +35,17 @@
                                 <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}" readonly>
                             </div>
                         </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="txt_codigo" class="font-weight-bold text-secondary">Idioma</label>
+                                <select class="form-control" id="txt_idioma_pasajeros" name="txt_idioma_pasajeros">
+                                    <option value="SIN IDIOMA">Escoja un idioma</option>
+                                    <option value="INGLES" @if($idioma_pasajeros=='INGLES') {{'selected'}} @endif>INGLES</option>
+                                    <option value="PORTUGUES" @if($idioma_pasajeros=='PORTUGUES') {{'selected'}} @endif>PORTUGUES</option>
+                                    <option value="ESPAÑOL" @if($idioma_pasajeros=='ESPAÑOL') {{'selected'}} @endif>ESPAÑOL</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
@@ -795,6 +806,8 @@
                                             <input type="hidden" name="cliente_id_" id="cliente_id_" value="{{$cliente_id}}">
                                             <input type="hidden" name="web_" id="web_" value="gotoperu.com">
                                             <input type="hidden" name="codigo_" id="codigo_" value="{{$codigo}}">
+                                            <input type="hidden" name="txt_idioma2" id="txt_idioma2" value="{{$idioma_pasajeros}}">
+
                                         </div>
                                     </div>
                                     <div class="row">
@@ -986,6 +999,7 @@
                                                         <input type="hidden" name="cliente_id_1" id="cliente_id_1" value="{{$cliente_id}}">
                                                         <input type="hidden" name="web1" id="web1" value="gotoperu.com">
                                                         <input type="hidden" name="txt_codigo1" id="txt_codigo1" value="{{$codigo}}">
+                                                        <input type="hidden" name="txt_idioma1" id="txt_idioma1" value="{{$idioma_pasajeros}}">
                                                         <input type="hidden" name="h2_s_" id="h2_s_" value="{{$h2_s}}">
                                                         <input type="hidden" name="h2_d_" id="h2_d_" value="{{$h2_d}}">
                                                         <input type="hidden" name="h2_m_" id="h2_m_" value="{{$h2_m}}">
