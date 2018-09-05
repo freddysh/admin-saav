@@ -298,7 +298,7 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
+                                            <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
                                         </div>
                                     </div>
                                     <div class="row no-gutters">
@@ -463,7 +463,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
+                                                    <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small"  target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
                                                 </div>
                                             </div>
                                             <div class="row no-gutters">
@@ -631,7 +631,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
+                                                    <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
                                                 </div>
                                             </div>
                                             <div class="row no-gutters">
@@ -795,7 +795,7 @@
                                                 </div>
                                             </div>
                                             <div class="col">
-                                                <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
+                                                <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
                                             </div>
                                         </div>
                                         <div class="row no-gutters text-left">
