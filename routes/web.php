@@ -1128,3 +1128,15 @@ Route::post('admin/book/eliminar-archivo/', [
     'uses' => 'BookController@eliminar_archivo',
     'as' => 'eliminar_archivo_path'
 ]);
+Route::post('admin/coti/{id_1}/{id_2}', [
+    'uses' => 'BookController@eliminar_archivo',
+    'as' => 'eliminar_archivo_path'
+]);
+Route::post('admin/show-cotizacion/ask_information', [
+    'uses' => 'PackageCotizacionController@ask_information',
+    'as' => 'package_cotizacion_ask_information_path',
+]);
+Route::post('admin/show-cotizacion/ingresar-notas', [
+    'uses' => 'PackageCotizacionController@ingresar_notas',
+    'as' => 'package_cotizacion_notas_path',
+]);

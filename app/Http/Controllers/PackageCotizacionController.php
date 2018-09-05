@@ -29,6 +29,7 @@ use PhpParser\Node\Expr\Array_;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Response;
 use App\Http\Requests;
+use App\Mail\AskInformation;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -2238,5 +2239,25 @@ class PackageCotizacionController extends Controller
         }
 
         return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_precio_id,'imprimir'=>$imprimir]);
+    }
+    public function ask_information(Request $request){
+//        $cliente_estado=$request->input('estado');
+        $cotizacion_id=$request->input('cotizacion_id');
+        $pqt_id=$request->input('pqt_id');
+//        $cliente_id=$request->input('cliente_id');
+        $email=$request->input('r_email');
+        $name=$request->input('r_name');
+        $email_send=Mail::to($email,$name)->send(new AskInformation($cotizacion_id,$pqt_id,$email,$name));
+        return 1;
+    }
+    public function ingresar_notas(Request $request){
+        $cotizacion_id=$request->input('cotizacion_id');
+        $notas=$request->input('r_dir_notas');
+        $coti=Cotizacion::find($cotizacion_id);
+        $coti->notas=$notas;
+        if($coti->save())
+            return 1;
+        else
+            return 0;
     }
 }

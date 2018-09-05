@@ -43,11 +43,11 @@
                     <div class="tab-content">
                         <div id="itinerario" class="tab-pane fade show active">
                             <div class="row">
-                                <div class="col-9">
+                                <div class="col-10">
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
-                                            <b class="text-info text-30">Cod:{{$cotizacion->codigo}}</b><b class="text-30"> | </b><b class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
+                                            <b class="text-info text-20">Cod:{{$cotizacion->codigo}}</b><b class="text-20"> | </b><b class="panel-title pull-left text-20">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
                                             <b class="text-warning padding-left-10"> (X{{$cotizacion->nropersonas}})</b>
                                             @for($i=0;$i<$cotizacion->nropersonas;$i++)
                                                 <i class="fa fa-male fa-2x"></i>
@@ -55,7 +55,7 @@
                                         @endif
                                     @endforeach
                                     <i class="fa fa-check d-none text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Hidalgo esta activo"></i>
-                                    <b class="text-success text-25">@if($cotizacion->categorizado=='C'){{'Con factura'}}@elseif($cotizacion->categorizado=='S'){{'Sin factura'}}@else{{'No esta filtrado'}}@endif</b>
+                                    <b class="text-success text-20">@if($cotizacion->categorizado=='C'){{'Con factura'}}@elseif($cotizacion->categorizado=='S'){{'Sin factura'}}@else{{'No esta filtrado'}}@endif</b>
                                     <div class="dropdown pull-right d-none">
                                         <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                             Opciones
@@ -70,9 +70,85 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-3 text-right margin-top-10">
+                                <div class="col-2 text-right margin-top-10">
+                                    {{--<botton class="btn btn-primary" href="#!" id="pasajeros" data-toggle="modal" data-target="#myModal_pasajeros">--}}
+                                        {{--<i class="fas fa-user-plus fa-2x"></i>--}}
+                                    {{--</botton>--}}
+                                    {{--<div class="modal fade" id="myModal_pasajeros" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--}}
+                                        {{--<div class="modal-dialog modal-lg" role="document">--}}
+                                            {{--<div class="modal-content">--}}
+                                                {{--<form action="{{route('guardar_archivos_cotizacion_path')}}" method="post" enctype="multipart/form-data">--}}
+                                                    {{--<div class="modal-header">--}}
+                                                        {{--<h4 class="modal-title" id="myModalLabel">Agregar pasajero</h4>--}}
+                                                        {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="modal-body clearfix">--}}
+                                                        {{--<div class="col-md-12 text-left">--}}
+                                                            {{--<div class="row">--}}
+                                                                {{--<div class="col-2">--}}
+                                                                    {{--<div class="form-group">--}}
+                                                                        {{--<label for="txt_name" class="font-weight-bold text-secondary">Nro Doc.</label>--}}
+                                                                        {{--<input type="text" class="form-control" id="txt_nro_doc" name="txt_nro_doc" placeholder="Ingrese el doc.">--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="col">--}}
+                                                                    {{--<div class="form-group">--}}
+                                                                        {{--<label for="txt_name" class="font-weight-bold text-secondary">Name</label>--}}
+                                                                        {{--<input type="text" class="form-control" id="txt_name" name="txt_name" placeholder="Ingrese el nombre">--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="col">--}}
+                                                                    {{--<div class="form-group">--}}
+                                                                        {{--<label for="txt_phone" class="font-weight-bold text-secondary">Genero</label>--}}
+                                                                        {{--<select class="form-control" id="txt_genero" name="txt_genero">--}}
+                                                                            {{--<option value="MASCULINO">MASCULINO</option>--}}
+                                                                            {{--<option value="FEMENINO">FEMENINO</option>--}}
+                                                                        {{--</select>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="col">--}}
+                                                                    {{--<div class="form-group">--}}
+                                                                        {{--<label for="txt_phone" class="font-weight-bold text-secondary">Fecha de nacimiento</label>--}}
+                                                                        {{--<input type="date" class="form-control" id="txt_fecha_nacimiento" name="txt_fecha_nacimiento">--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="col">--}}
+                                                                    {{--<div class="form-group">--}}
+                                                                        {{--<label for="txt_email" class="font-weight-bold text-secondary">Email</label>--}}
+                                                                        {{--<input type="email" class="form-control" id="txt_email" name="txt_email" placeholder="Email" value="">--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="col">--}}
+                                                                    {{--<div class="form-group">--}}
+                                                                        {{--<label for="txt_country" class="font-weight-bold text-secondary">Country</label>--}}
+                                                                        {{--<input type="text" class="form-control" id="txt_country" name="txt_country" placeholder="Country" value="">--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+
+                                                                {{--<div class="col">--}}
+                                                                    {{--<div class="form-group">--}}
+                                                                        {{--<label for="txt_phone" class="font-weight-bold text-secondary">Phone</label>--}}
+                                                                        {{--<input type="text" class="form-control" id="txt_phone" name="txt_phone" placeholder="Phone" value="">--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                            {{--</div>--}}
+                                                        {{--</div>--}}
+                                                        {{--<div class="col-md-12">--}}
+                                                            {{--<b id="rpt_book_archivo" class="text-success"></b>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="modal-footer">--}}
+                                                        {{--{{csrf_field()}}--}}
+                                                        {{--<input type="hidden" name="id" value="{{$cotizacion->id}}">--}}
+                                                        {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>--}}
+                                                        {{--<button type="submit" class="btn btn-primary">Subir archivo</button>--}}
+                                                    {{--</div>--}}
+                                                {{--</form>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
                                     <botton class="btn btn-primary" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_archivos">
-                                        <i class="fas fa-file-alt fa-2x"></i>
+                                        <i class="fas fa-file-alt"></i>
                                     </botton>
                                     <div class="modal fade" id="myModal_archivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog modal-lg" role="document">
@@ -96,10 +172,10 @@
                                                                     @foreach($cotizacion_archivos as $cotizacion_archivo)
                                                                         <div id="arch_{{$cotizacion_archivo->id}}"  class="col-3 caja_imagen ">
                                                                             <div class="container-enlarge">
-                                                                            @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
-                                                                                <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="120" height="100">
-                                                                            @endif
-                                                                            <span><img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"></span>
+                                                                                @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
+                                                                                    <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="120" height="100">
+                                                                                @endif
+                                                                                <span><img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"></span>
                                                                             </div>
                                                                             <div>
                                                                                 <a href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
@@ -124,77 +200,90 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                @php
-                                    $nro_servicios_total=0;
-                                    $nro_servicios_reservados=0;
-                                @endphp
-                                @foreach($cotizacion->paquete_cotizaciones as $paquete)
-                                    @if($paquete->estado==2)
-                                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
-                                            @php
-                                                $nro_servicios=0;
-                                            @endphp
-                                            @foreach($itinerario->itinerario_servicios as $servicios)
-                                                @if($servicios->proveedor_id)
-                                                    @if($servicios->proveedor_id>0)
-                                                        @php
-                                                            $nro_servicios_reservados++;
-                                                        @endphp
-                                                    @endif
-                                                @endif
+                                    @php
+                                        $nro_servicios_total=0;
+                                        $nro_servicios_reservados=0;
+                                    @endphp
+                                    @foreach($cotizacion->paquete_cotizaciones as $paquete)
+                                        @if($paquete->estado==2)
+                                            @foreach($paquete->itinerario_cotizaciones as $itinerario)
                                                 @php
-                                                    $nro_servicios_total++;
+                                                    $nro_servicios=0;
                                                 @endphp
-                                            @endforeach
-                                            @foreach($itinerario->hotel as $hotel)
-                                                @if($hotel->proveedor_id)
-                                                    @if($hotel->proveedor_id>0)
-                                                        @php
-                                                            $nro_servicios_reservados++;
-                                                        @endphp
+                                                @foreach($itinerario->itinerario_servicios as $servicios)
+                                                    @if($servicios->proveedor_id)
+                                                        @if($servicios->proveedor_id>0)
+                                                            @php
+                                                                $nro_servicios_reservados++;
+                                                            @endphp
+                                                        @endif
                                                     @endif
-                                                @endif
-                                                @php
-                                                    $nro_servicios_total++;
-                                                @endphp
+                                                    @php
+                                                        $nro_servicios_total++;
+                                                    @endphp
+                                                @endforeach
+                                                @foreach($itinerario->hotel as $hotel)
+                                                    @if($hotel->proveedor_id)
+                                                        @if($hotel->proveedor_id>0)
+                                                            @php
+                                                                $nro_servicios_reservados++;
+                                                            @endphp
+                                                        @endif
+                                                    @endif
+                                                    @php
+                                                        $nro_servicios_total++;
+                                                    @endphp
+                                                @endforeach
                                             @endforeach
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                                @php
-                                    $porc_avance=round($nro_servicios_reservados/$nro_servicios_total,2);
-                                    $porc_avance=$porc_avance*100;
-                                    $colo_progres='progress-bar-danger';
-                                    if(25<$porc_avance&&$porc_avance<=50)
-                                        $colo_progres='progress-bar-warning';
+                                        @endif
+                                    @endforeach
+                                    @php
+                                        $porc_avance=round($nro_servicios_reservados/$nro_servicios_total,2);
+                                        $porc_avance=$porc_avance*100;
+                                        $colo_progres='progress-bar-danger';
+                                        if(25<$porc_avance&&$porc_avance<=50)
+                                            $colo_progres='progress-bar-warning';
 
-                                    if(50<$porc_avance&&$porc_avance<=75)
-                                        $colo_progres='progress-bar-info';
+                                        if(50<$porc_avance&&$porc_avance<=75)
+                                            $colo_progres='progress-bar-info';
 
-                                    if(50<$porc_avance&&$porc_avance<=100)
-                                        $colo_progres='progress-bar-success';
+                                        if(50<$porc_avance&&$porc_avance<=100)
+                                            $colo_progres='progress-bar-success';
 
-                                @endphp
-                                <div class="col-md-12 margin-top-10">
-                                    <input type="hidden" id="nro_servicios_reservados" value="{{$nro_servicios_reservados}}">
-                                    <input type="hidden" id="nro_servicios_total" value="{{$nro_servicios_total}}">
-
-                                    <div class="progress">
-                                        <div id="barra_porc" class="progress-bar {{$colo_progres}} progress-bar-striped active" role="progressbar" aria-valuenow="{{$porc_avance}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porc_avance}}%;min-width: 2em;">
-                                            {{$porc_avance}}%
-                                        </div>
-                                    </div>
+                                    @endphp
+                                    <botton class="btn btn-primary" >
+                                        <span id="barra_porc">{{$porc_avance}}%</span>
+                                    </botton>
                                 </div>
+
+                                {{--<div class="col-md-12 margin-top-10 ">--}}
+                                    {{--<input type="hidden" id="nro_servicios_reservados" value="{{$nro_servicios_reservados}}">--}}
+                                    {{--<input type="hidden" id="nro_servicios_total" value="{{$nro_servicios_total}}">--}}
+
+                                    {{--<div class="progress">--}}
+                                        {{--<div id="barra_porc" class="progress-bar {{$colo_progres}} progress-bar-striped active" role="progressbar" aria-valuenow="{{$porc_avance}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$porc_avance}}%;min-width: 2em;">--}}
+                                            {{--{{$porc_avance}}%--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="col-md-12 d-none">
-                        <span class="pull-left pax-nav">
-                            <b>Travel date: no se</b>
-                        </span>
+                                    <span class="pull-left pax-nav">
+                                        <b>Travel date: no se</b>
+                                    </span>
                                     <span class="pull-right">
-                            {{--<a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-at" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Mention"></i></a>--}}
-                                        {{--<a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Message"></i></a>--}}
                                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-ban" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Ignore"></i></a>
-                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mt-1">
+                                    <div class="alert alert-success" role="alert">
+                                        @if(trim($cotizacion->notas)!='')
+                                            {{$cotizacion->notas}}
+                                        @else
+                                            No hay notas.
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                             <table class="table table-bordered table-sm">

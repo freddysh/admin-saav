@@ -969,7 +969,6 @@
                                 <div class="col margin-top-25">
                                     <div class="row">
                                         <form action="{{route('nuevo_paquete_path')}}" method="post" id="form_nuevo_pqt" name="form_nuevo_pqt" class="w-100 col">
-
                                             <div class="card bg-light mt-3 p-3 sticky-top pt-1 w-100">
                                                 {{--<span  id="estrellas">2 STARS</span>--}}
                                                 <div class="row">
@@ -1035,8 +1034,9 @@
                                                         {{--<div class="col-12 text-right margin-top-5 margin-bottom-5"><button type="submit" class="btn btn-green btn-block" onclick="enviar_form()">GO</button></div>--}}
 
                                                         <p class="h1 text-g-yellow"><sup>$</sup><b id="st_new">0</b></p>
-                                                        <div class="col-lg-12 text-right margin-top-5 margin-bottom-5"><button type="submit" class="btn btn-green btn-block" onclick="enviar_form1()">GO</button></div>
-
+                                                        <div class="col-lg-12 text-right margin-top-5 margin-bottom-5">
+                                                            <button type="submit" class="btn btn-green btn-block" onclick="enviar_form1()">GO</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -5700,6 +5700,63 @@ function eliminar_archivo(id){
         });
 
     })
-
+}
+function enviar_ask_request(pqt_id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type:  'post',
+        url:   $('#ask_request_'+pqt_id).attr('action'),
+        data:  $('#ask_request_'+pqt_id).serialize(),
+        beforeSend:function(res){
+            $('#response_'+pqt_id).html('<i class="fa fa-circle-o-notch fa-spin"></i>Loading');
+        }
+        ,success:  function (response) {
+            console.log('response:'+response);
+            if(response=='1'){
+                $('#response_'+pqt_id).removeClass('text-danger');
+                $('#response_'+pqt_id).addClass('text-success');
+                $('#response_'+pqt_id).html('E-mail send!');
+            }
+            else if(response=='0'){
+                $('#response_'+pqt_id).removeClass('text-success');
+                $('#response_'+pqt_id).addClass('text-danger');
+                $('#response_'+pqt_id).html('Error sending email!');
+            }
+        }
+    });
+}
+function ingresar_notas(pqt_id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type:  'post',
+        url:   $('#ingresar_notas_'+pqt_id).attr('action'),
+        data:  $('#ingresar_notas_'+pqt_id).serialize(),
+        beforeSend:function(res){
+            $('#response_notas_'+pqt_id).removeClass('text-danger');
+            $('#response_notas_'+pqt_id).removeClass('text-success');
+            $('#response_notas_'+pqt_id).html('<i class="fa fa-circle-o-notch fa-spin"></i>Loading');
+        }
+        ,success:  function (response) {
+            console.log('response:'+response);
+            if(response=='1'){
+                $('#response_notas_'+pqt_id).removeClass('text-danger');
+                $('#response_notas_'+pqt_id).addClass('text-success');
+                $('#response_notas_'+pqt_id).html('Notas guardadas');
+            }
+            else if(response=='0'){
+                $('#response_notas_'+pqt_id).removeClass('text-success');
+                $('#response_notas_'+pqt_id).addClass('text-danger');
+                $('#response_notas_'+pqt_id).html('Error al guardar las notas!');
+            }
+        }
+    });
 }
 
