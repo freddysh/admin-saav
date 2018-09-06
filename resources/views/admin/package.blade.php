@@ -157,7 +157,6 @@
                     @endforeach
                 </select>
                 <div class="text-center align-middle col-12 margin-top-5" id="resultado_busqueda" style="height: 500px; overflow-y: auto;">
-
                 </div>
             </div>
         </div>

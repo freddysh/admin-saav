@@ -175,7 +175,7 @@ Route::post('/admin/provider/new', [
     'uses' => 'ProveedorController@store_new',
     'as' => 'provider_new_path',
 ]);
-Route::post('/admin/provider/edit', [
+Route::post('/admin/provider/edit',[
     'uses' => 'ProveedorController@edit',
     'as' => 'provider_edit_path',
 ]);

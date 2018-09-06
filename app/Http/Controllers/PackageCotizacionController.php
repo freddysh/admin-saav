@@ -1205,6 +1205,17 @@ class PackageCotizacionController extends Controller
             $cotizacion_id=$cotizacion_plantilla->id;
             $cliente_id=$cliente->id;
 
+            $nroClientes=$request->input('txt_days1_');
+            for($i=2;$i<=$nroClientes;$i++){
+                $cliente_temp = new Cliente();
+                $cliente_temp->nombres = 'PAX '.$i;
+                $cliente_temp->save();
+                $cotizacion_cliente = new CotizacionesCliente();
+                $cotizacion_cliente->cotizaciones_id = $cotizacion_plantilla->id;
+                $cotizacion_cliente->clientes_id = $cliente_temp->id;
+                $cotizacion_cliente->estado = 0;
+                $cotizacion_cliente->save();
+            }
         }
         else{
             $cotizacion_id=$request->input('cotizacion_id_');

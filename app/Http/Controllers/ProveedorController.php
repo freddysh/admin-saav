@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DestinosOpera;
+use App\EntidadBancaria;
 use App\M_Category;
 use App\M_Destino;
 use App\M_Producto;
@@ -19,7 +20,8 @@ class ProveedorController extends Controller
         $providers=Proveedor::get();
         $categorias=M_Category::get();
         session()->put('menu-lateral', 'Sproviders');
-        return view('admin.database.provider',['destinations'=>$destinations,'providers'=>$providers,'categorias'=>$categorias]);
+        $entidadBancaria=EntidadBancaria::get();
+        return view('admin.database.provider',['destinations'=>$destinations,'providers'=>$providers,'categorias'=>$categorias,'entidadBancaria'=>$entidadBancaria]);
     }
     public function autocomplete()
     {
@@ -96,6 +98,7 @@ class ProveedorController extends Controller
             $txt_c_nombres=strtoupper($request->input('txt_c_nombres'));
             $txt_c_telefono=$request->input('txt_c_telefono');
 
+
 //            echo $txt_grupo.'_'.$txt_grupo_cod.'_'.$txt_localizacion.'_'.$txt_localizacion_cod.'_'.$txt_ruc.'_'.$txt_razon_social.'_'.$txt_direccion.'_'.$txt_telefono.
 //                '_'.$txt_celular.'_'.$txt_email.'_'.$txt_r_nombres.'_'.$txt_r_telefono.'_'.$txt_c_nombres.'_'.$txt_c_telefono;
 
@@ -160,6 +163,11 @@ class ProveedorController extends Controller
         $txt_plazo=$request->input('txt_plazo_'.$nro_grupo);
         $txt_desci=$request->input('txt_desci_'.$nro_grupo);
 
+        $txt_banco_nombre_cta_corriente=$request->input('txt_banco_nombre_cta_corriente_'.$nro_grupo);
+        $txt_banco_nro_cta_corriente=$request->input('txt_banco_nro_cta_corriente_'.$nro_grupo);
+        $txt_banco_nombre_cta_cci=$request->input('txt_banco_nombre_cta_cci_'.$nro_grupo);
+        $txt_banco_nro_cta_cci=$request->input('txt_banco_nro_cta_cci_'.$nro_grupo);
+
 
         $proveedor=new Proveedor();
         $proveedor->categoria=$txt_categoria;
@@ -181,6 +189,11 @@ class ProveedorController extends Controller
         $proveedor->grupo=$txt_grupo;
         $proveedor->plazo=$txt_plazo;
         $proveedor->desci=$txt_desci;
+
+        $proveedor->txt_banco_nombre_cta_corriente=$txt_banco_nombre_cta_corriente;
+        $proveedor->txt_banco_nro_cta_corriente=$txt_banco_nro_cta_corriente;
+        $proveedor->txt_banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
+        $proveedor->txt_banco_nro_cta_cci=$txt_banco_nro_cta_cci;
 
         if($proveedor->save()){
             $proveedor->codigo=$txt_grupo_cod.$proveedor->id;
@@ -222,6 +235,11 @@ class ProveedorController extends Controller
         $txt_plazo=$request->input('txt_plazo_');
         $txt_desci=$request->input('txt_desci_');
         $destinos_opera=$request->input('destinos_opera_');
+
+        $txt_banco_nombre_cta_corriente=$request->input('txt_banco_nombre_cta_corriente_');
+        $txt_banco_nro_cta_corriente=$request->input('txt_banco_nro_cta_corriente_');
+        $txt_banco_nombre_cta_cci=$request->input('txt_banco_nombre_cta_cci_');
+        $txt_banco_nro_cta_cci=$request->input('txt_banco_nro_cta_cci_');
 //dd($destinos_opera);
         $existe=DestinosOpera::where('proveedor_id',$id)->delete();
         foreach ($destinos_opera as $destinos_opera_) {
@@ -247,14 +265,24 @@ class ProveedorController extends Controller
         $proveedor->categoria=$txt_categoria;
         $proveedor->plazo=$txt_plazo;
         $proveedor->desci=$txt_desci;
+
+        $proveedor->banco_nombre_cta_corriente=$txt_banco_nombre_cta_corriente;
+        $proveedor->banco_nro_cta_corriente=$txt_banco_nro_cta_corriente;
+        $proveedor->banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
+        $proveedor->banco_nro_cta_cci=$txt_banco_nro_cta_cci;
+
 //        $proveedor->codigo=$txt_grupo_cod.$proveedor->id;
-        if($proveedor->save()){
-            $proveedor->codigo=$txt_grupo_cod.$id;
-            $destinations=M_Destino::get();
-            $providers=Proveedor::get();
-            $categorias=M_Category::get();
-            return view('admin.database.provider',['destinations'=>$destinations,'providers'=>$providers,'categorias'=>$categorias]);
-        }
+        $proveedor->save();
+        return redirect()->route('provider_index_path');
+//        if($proveedor->save()){
+//            dd('Hola');
+            redirect()->route('provider_index_path');
+//            $proveedor->codigo=$txt_grupo_cod.$id;
+//            $destinations=M_Destino::get();
+//            $providers=Proveedor::get();
+//            $categorias=M_Category::get();
+//            return view('admin.database.provider',['destinations'=>$destinations,'providers'=>$providers,'categorias'=>$categorias]);
+//        }
     }
     public function delete(Request $request){
         $id=$request->input('id');
@@ -276,7 +304,8 @@ class ProveedorController extends Controller
         $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->get();
         $destinations=M_Destino::get();
         $destinos_opera=DestinosOpera::get();
-        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera']));
+        $entidadBancaria=EntidadBancaria::get();
+        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera','entidadBancaria']));
     }
     public function call_providers_localizacion_estrellas(Request $request){
         $destino=explode('_',$request->input('destino'));
@@ -285,6 +314,8 @@ class ProveedorController extends Controller
 
         $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->where('categoria',$estrellas)->get();
         $destinations=M_Destino::get();
-        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo']));
+        $destinos_opera=DestinosOpera::get();
+        $entidadBancaria=EntidadBancaria::get();
+        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera','entidadBancaria']));
     }
 }

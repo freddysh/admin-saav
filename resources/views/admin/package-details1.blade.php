@@ -130,7 +130,36 @@
                             <div class="col-5">
                                 <div class="row bg-g-dark rounded text-white">
                                     <div class="col-7">
-                                        <b>{{ ucwords(strtolower($itinerario->titulo))}}</b>
+                                        <b id="iti_fecha_b_{{$itinerario->id}}" class="badge badge-g-yellow">{{$itinerario->fecha}}</b>
+                                        <b>{{ucwords(strtolower($itinerario->titulo))}}</b>
+                                        <!-- Button trigger modal -->
+                                        <a href="#!" class="text-warning" data-toggle="modal" data-target="#exampleModal_{{$itinerario->id}}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal_{{$itinerario->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Editar fecha</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            {{csrf_field()}}
+                                                            <label for="fecha_{{$itinerario->id}}">Fecha</label>
+                                                            <input type="date" class="form-control" id="fecha_{{$itinerario->id}}" name="iti_fecha" value="{{$itinerario->fecha}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary" onclick="modificar_fecha($('#fecha_{{$itinerario->id}}','{{$itinerario->id}}').val(),)">Guardar cambios</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col @if($s==0) d-none @endif">S</div>
                                     <div class="col @if($d==0) d-none @endif">D</div>

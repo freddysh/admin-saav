@@ -155,35 +155,61 @@
                                             <div class="modal-content">
                                                 <form action="{{route('guardar_archivos_cotizacion_path')}}" method="post" enctype="multipart/form-data">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
+                                                        <h4 class="modal-title" id="myModalLabel">Agregar archivos</h4>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                     </div>
                                                     <div class="modal-body clearfix">
                                                         <div class="col-md-12 text-left">
-                                                            <div class="col-md-12 ">
-                                                                <div class="form-group">
-                                                                    <label for="txt_aereolinea" class="font-weight-bold text-secondary">Agregar archivo</label>
-                                                                    <input type="file" class="form-control" id="txt_archivo" name="txt_archivo">
+                                                            <div class="row">
+                                                                <div class="col-md-9 ">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_archivo" class="font-weight-bold text-secondary">Agregar archivo</label>
+                                                                        <input type="file" class="form-control" id="txt_archivo" name="txt_archivo">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 ">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_archivo" class="font-weight-bold text-secondary">Formatos admitidos</label>
+                                                                    </div>
+                                                                    <i class="text-unset fas fa-image fa-2x"></i>
+                                                                    <i class="text-primary fas fa-file-word fa-2x"></i>
+                                                                    <i class="text-success fas fa-file-excel fa-2x"></i>
+                                                                    <i class="text-danger fas fa-file-pdf fa-2x"></i>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-12 caja_current">
-                                                                <p><b>Listado de archivos subidos</b></p>
-                                                                <div class="row">
-                                                                    @foreach($cotizacion_archivos as $cotizacion_archivo)
-                                                                        <div id="arch_{{$cotizacion_archivo->id}}"  class="col-3 caja_imagen ">
-                                                                            <div class="container-enlarge">
-                                                                                @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
-                                                                                    <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="120" height="100">
-                                                                                @endif
-                                                                                <span><img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"></span>
+                                                            <div class="row">
+                                                                <div class="col-md-12 caja_current">
+                                                                    <p><b>Listado de archivos subidos</b></p>
+                                                                    <div class="row">
+                                                                        @foreach($cotizacion_archivos as $cotizacion_archivo)
+                                                                            <div id="arch_{{$cotizacion_archivo->id}}"  class="col-3 caja_imagen ">
+                                                                                <div class="container-enlarge">
+                                                                                    @if($cotizacion_archivo->extension=='jpg' || $cotizacion_archivo->extension=='png')
+                                                                                        @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
+
+                                                                                            <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="120" height="100">
+                                                                                            <span><img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"></span>
+                                                                                        @endif
+                                                                                    @elseif($cotizacion_archivo->extension=='doc' || $cotizacion_archivo->extension=='docx')
+                                                                                        <i class="text-primary fas fa-file-word fa-3x"></i>
+                                                                                    @elseif($cotizacion_archivo->extension=='xls' || $cotizacion_archivo->extension=='xlsx')
+                                                                                        <i class="text-success fas fa-file-excel fa-3x"></i>
+                                                                                    @elseif($cotizacion_archivo->extension=='pdf' )
+                                                                                        <i class="text-danger fas fa-file-pdf fa-3x"></i>
+                                                                                    @elseif($cotizacion_archivo->extension=='txt' )
+                                                                                        <i class="text-info fas fa-file fa-3x"></i>
+                                                                                    @endif
+                                                                                </div>
+                                                                                <div>
+                                                                                    <p><span class="text-unset">Subido el: {{$cotizacion_archivo->fecha_subida}} {{$cotizacion_archivo->hora_subida}}</span></p>
+                                                                                    <a href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                                    <a href="#!" onclick="eliminar_archivo('{{$cotizacion_archivo->id}}')"><i class="text-danger fas fa-trash-alt"></i></a>
+                                                                                </div>
                                                                             </div>
-                                                                            <div>
-                                                                                <a href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
-                                                                                <a href="#!" onclick="eliminar_archivo('{{$cotizacion_archivo->id}}')"><i class="text-danger fas fa-trash-alt"></i></a>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach
+                                                                        @endforeach
+                                                                    </div>
                                                                 </div>
+
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
@@ -290,23 +316,24 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center">NOMBRES</th>
-                                    <th class="text-center">IDIOMA</th>
                                     <th class="text-center">NACIONALIDAD</th>
-                                    <th class="text-center">NRO DOC.</th>
+                                    <th class="text-center">PASAPORTE</th>
                                     <th class="text-center">GENERO</th>
                                     <th class="text-center">HOTEL</th>
                                     <th class="text-center">EDAD</th>
+                                    <th class="text-center">RESTRICCIONES</th>
+                                    <th class="text-center">IDIOMA</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($cotizacion->cotizaciones_cliente as $coti_cliente)
                                     @foreach($clientes1->where('id',$coti_cliente->clientes_id) as $cliente)
                                         <tr>
-                                            <td>{{$cliente->nombres}} {{$cliente->apellidos}}</td>
-                                            <td>{{$cotizacion->idioma_pasajeros}}</td>
-                                            <td>{{$cliente->nacionalidad}}</td>
-                                            <td>{{$cliente->pasaporte}}</td>
-                                            <td>{{$cliente->sexo}}</td>
+                                            <td>{{strtoupper($cliente->nombres)}} {{strtoupper($cliente->apellidos)}}</td>
+                                            <td>{{strtoupper($cliente->nacionalidad)}}</td>
+                                            <td>{{strtoupper($cliente->pasaporte)}} <span class="badge badge-g-yellow">{{$cliente->expiracion}}</span> </td>
+                                            <td>{{strtoupper($cliente->sexo)}}</td>
                                             <td>
                                                 @foreach($cotizacion->paquete_cotizaciones as $paquete)
                                                     @if($paquete->estado==2)
@@ -332,6 +359,8 @@
                                                 @endforeach
                                             </td>
                                             <td>{{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años</td>
+                                            <td>{{strtoupper($cotizacion->restricciones)}}</td>
+                                            <td>{{strtoupper($cotizacion->idioma_pasajeros)}}</td>
                                         </tr>
                                     @endforeach
                                 @endforeach
@@ -379,7 +408,7 @@
                                                     <div class="row align-items-center">
                                                         <div class="col-auto">
                                                         <b class="px-2"><i class="fas fa-angle-right"></i> Day {{$itinerario->dias}}</b>
-                                                        <b class="badge badge-g-yellow">{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
+                                                        <b class="text-18 badge badge-g-yellow">{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
                                                         <b>{{$itinerario->titulo}}</b>
                                                         </div>
                                                         <div class="col">
@@ -995,7 +1024,7 @@
                                                                 <i class="fas fa-lock text-success"></i>
                                                             @endif
                                                         </button>
-                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','H')">
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_servicio_{{$servicios->id}}" onclick="traer_servicios('{{$itinerario->id}}','{{$servicios->id}}','{{$localizacion}}','{{$grupo}}')">

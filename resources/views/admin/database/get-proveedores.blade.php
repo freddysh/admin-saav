@@ -152,17 +152,15 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="card p-3 bg-light">
+                                                            <div class="form-group">
+                                                                <label for="txt_price" class="text-secondary font-weight-bold">Cel. Contabilidad</label>
+                                                                <input type="text" class="form-control" id="txt_c_telefono_" name="txt_c_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->c_telefono;?>">
+                                                            </div>
 
-                                                                <div class="form-group">
-                                                                    <label for="txt_price" class="text-secondary font-weight-bold">Cel. Contabilidad</label>
-                                                                    <input type="text" class="form-control" id="txt_c_telefono_" name="txt_c_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->c_telefono;?>">
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label for="txt_price">Email Contabilidad</label>
-                                                                    <input type="text" class="form-control" id="txt_c_email_" name="txt_c_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->c_email;?>">
-                                                                </div>
-
+                                                            <div class="form-group">
+                                                                <label for="txt_price">Email Contabilidad</label>
+                                                                <input type="text" class="form-control" id="txt_c_email_" name="txt_c_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->c_email;?>">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -174,6 +172,50 @@
                                                             <div class="form-group">
                                                                 <label for="txt_price">Email Operaciones</label>
                                                                 <input type="text" class="form-control" id="txt_o_email_" name="txt_o_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->o_email;?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col">
+                                                        <div class="card bg-light w-100">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="txt_product" class="text-secondary font-weight-bold">Cta corriente</label>
+                                                                    <select class="form-control" name="txt_banco_nombre_cta_corriente_" id="txt_banco_nombre_cta_corriente_">
+                                                                        <option value="0">Escoja una Entidad Bancaria</option>
+                                                                        @foreach($entidadBancaria as $entidadBancaria_)
+                                                                            <option value="{{$entidadBancaria_->id}}" @if($provider->banco_nombre_cta_corriente==$entidadBancaria_->id){{'selected'}} @endif>{{$entidadBancaria_->nombre}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Reservas</label>--}}
+                                                                    <input type="text" class="form-control" id="txt_banco_nro_cta_corriente_" name="txt_banco_nro_cta_corriente_" placeholder="Numero Cta Corriente" value="{{$provider->banco_nro_cta_corriente}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="card bg-light w-100">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="txt_product" class="text-secondary font-weight-bold">Cta Interbancaria</label>
+                                                                    <select class="form-control" name="txt_banco_nombre_cta_cci_" id="txt_banco_nombre_cta_cci_">
+                                                                        <option value="0">Escoja una Entidad Bancaria</option>
+                                                                        @foreach($entidadBancaria as $entidadBancaria_)
+                                                                            <option value="{{$entidadBancaria_->id}}" @if($provider->banco_nombre_cta_cci==$entidadBancaria_->id){{'selected'}} @endif>{{$entidadBancaria_->nombre}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group">
+                                                                    {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Reservas</label>--}}
+                                                                    <input type="text" class="form-control" id="txt_banco_nro_cta_cci_" name="txt_banco_nro_cta_cci_" placeholder="Numero Cta CCI" value="{{$provider->banco_nro_cta_cci}}">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

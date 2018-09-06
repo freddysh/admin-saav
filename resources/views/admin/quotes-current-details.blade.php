@@ -79,123 +79,195 @@
                 $cotizacion_=$cotizacion1;
                 @endphp
             @endforeach
-
-            @foreach($cotizacion_->paquete_cotizaciones as $paquete)
                 @php
-                    $total=0;
-                    $servicio = 0;
-                    $precio_hotel=0;
-                    $precio_profit=0;
+                    $s=0;
+                    $d=0;
+                    $m=0;
+                    $t=0;
+                    $nroPersonas=0;
+                    $nro_dias=0;
+                    $precio_iti=0;
+                    $precio_hotel_s=0;
+                    $precio_hotel_d=0;
+                    $precio_hotel_m=0;
+                    $precio_hotel_t=0;
+                    $cotizacion_id='';
+                    $utilidad_s=0;
+                    $utilidad_por_s=0;
+                    $utilidad_d=0;
+                    $utilidad_por_d=0;
+                    $utilidad_m=0;
+                    $utilidad_por_m=0;
+                    $utilidad_t=0;
+                    $utilidad_por_t=0;
                 @endphp
-                @foreach($paquete->itinerario_cotizaciones as $paquete_itinerario)
-                    @foreach($paquete_itinerario->itinerario_servicios as $orden_cotizaciones)
-                        @if($orden_cotizaciones->precio_grupo==1)
-                            @php
-                                $servicio += $orden_cotizaciones->precio;
-                            @endphp
-                        @else
-                            @php
-                                $servicio += ($orden_cotizaciones->precio*$cotizacion_->nropersonas);
-                            @endphp
-                        @endif
-                    @endforeach
-                    @foreach($paquete_itinerario->hotel as $hotel)
-                        @if($hotel->personas_s>0)
-                            @php
-                                $precio_hotel+=$hotel->personas_s*$hotel->precio_s;
-                                $precio_profit=$hotel->utilidad_s;
-                            @endphp
-                        @endif
-                        @if($hotel->personas_d>0)
-                            @php
-                                $precio_hotel+=$hotel->personas_d*$hotel->precio_d;
-                                $precio_profit=$hotel->utilidad_s;
-                            @endphp
-                        @endif
-                        @if($hotel->personas_m>0)
-                            @php
-                                $precio_hotel+=$hotel->personas_m*$hotel->precio_m;
-                            @endphp
-                        @endif
-                        @if($hotel->personas_t>0)
-                            @php
-                                $precio_hotel+=$hotel->personas_t*$hotel->precio_t;
-                            @endphp
-                        @endif
-                    @endforeach
-                @endforeach
-                @if($cotizacion_->estado==2)
-                    @if($paquete->estado==2)
-                        @php
-                            $sumatotal=0;
-                            $total_utilidad_s=0;
-                            $total_utilidad_d=0;
-                            $total_utilidad_m=0;
-                            $total_utilidad_t=0;
-                        @endphp
-                        @foreach($paquete->paquete_precios as $precio_paquete2)
 
-                            @if($precio_paquete2->estado == 2)
-                                @if($precio_paquete2->personas_s > 0)
-                                    @php
-                                        $precio_s = (($precio_paquete2->precio_s)* ($precio_paquete2->personas_s)*1) * ($paquete->duracion - 1);
-                                        $total_costo = $precio_s + $total;
-                                        $total_utilidad_s = $total_costo + ($total_costo * (($precio_paquete2->utilidad)/100));
-                                    @endphp
-                                @else
-                                    @php
-                                        $precio_s = 0;
-                                        $total_utilidad_s=0;
-                                    @endphp
-                                @endif
-                                @if($precio_paquete2->personas_d > 0)
-                                    @php
-                                        $precio_d = ceil(($precio_paquete2->precio_d)* ($precio_paquete2->personas_d)*2) * ($paquete->duracion - 1);
-                                        $total_costo = $precio_d + $total;
-                                        $total_utilidad_d = $total_costo + ($total_costo * (($precio_paquete2->utilidad)/100));
-                                    @endphp
-                                @else
-                                    @php
-                                        $precio_d = 0;
-                                        $total_utilidad_d=0;
-                                    @endphp
-                                @endif
-                                @if($precio_paquete2->personas_m > 0)
-                                    @php
-                                        $precio_m = ceil(($precio_paquete2->precio_d)* ($precio_paquete2->personas_m)*2) * ($paquete->duracion - 1);
-                                        $total_costo = $precio_m + $total;
-                                        $total_utilidad_m = $total_costo + ($total_costo * (($precio_paquete2->utilidad)/100));
-                                    @endphp
-                                @else
-                                    @php
-                                        $precio_m = 0;
-                                        $total_utilidad_m=0;
-                                    @endphp
-                                @endif
-                                @if($precio_paquete2->personas_t > 0)
-                                    @php
-                                        $precio_t = ceil(($precio_paquete2->precio_t)* ($precio_paquete2->personas_t)*3) * ($paquete->duracion - 1);
-                                        $total_costo = $precio_t + $total;
-                                        $total_utilidad_t = $total_costo + ($total_costo * (($precio_paquete2->utilidad)/100));
-                                    @endphp
-                                @else
-                                    @php
-                                        $precio_t = 0;
-                                        $total_utilidad_t=0;
-                                    @endphp
-                                @endif
+                @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                    @foreach($paquete->paquete_precios as $precio)
+                        @if($precio->personas_s>0)
+                            @php
+                                $s=1;
+                                $utilidad_s=intval($precio->utilidad_s);
+                                $utilidad_por_s=$precio->utilidad_por_s;
+                            @endphp
+                        @endif
+                        @if($precio->personas_d>0)
+                            @php
+                                $d=1;
+                                $utilidad_d=intval($precio->utilidad_d);
+                                $utilidad_por_d=$precio->utilidad_por_d;
+                            @endphp
+                        @endif
+                        @if($precio->personas_m>0)
+                            @php
+                                $m=1;
+                                $utilidad_m=intval($precio->utilidad_m);
+                                $utilidad_por_m=$precio->utilidad_por_m;
+                            @endphp
+                        @endif
+                        @if($precio->personas_t>0)
+                            @php
+                                $t=1;
+                                $utilidad_t=intval($precio->utilidad_t);
+                                $utilidad_por_t=$precio->utilidad_por_t;
+                            @endphp
+                        @endif
+                    @endforeach
+                    @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                        @php
+                            $rango='';
+                        @endphp
+                        @foreach($itinerario->itinerario_servicios as $servicios)
+                            @php
+                                $preciom=0;
+                            @endphp
+                            @if($servicios->min_personas<= $cotizacion_->nropersonas&&$cotizacion_->nropersonas <=$servicios->max_personas)
+                            @else
+                                @php
+                                    $rango=' ';
+                                @endphp
+                            @endif
+                            @if($servicios->precio_grupo==1)
+                                @php
+                                    $precio_iti+=round($servicios->precio/$cotizacion_->nropersonas,1);
+                                    $preciom=round($servicios->precio/$cotizacion_->nropersonas,1);
+                                @endphp
+                            @else
+                                @php
+                                    $precio_iti+=round($servicios->precio,1);
+                                    $preciom=round($servicios->precio,1);
+                                @endphp
                             @endif
                         @endforeach
-                        @php
-                            $sumatotal=$total_utilidad_s+$total_utilidad_d+$total_utilidad_m+$total_utilidad_t;
-                        @endphp
+                        @foreach($itinerario->hotel as $hotel)
+                            @if($hotel->personas_s>0)
+                                @php
+                                    $precio_hotel_s+=$hotel->precio_s;
 
+                                @endphp
+                            @endif
+                            @if($hotel->personas_d>0)
+                                @php
+                                    $precio_hotel_d+=$hotel->precio_d/2;
+
+                                @endphp
+                            @endif
+                            @if($hotel->personas_m>0)
+                                @php
+                                    $precio_hotel_m+=$hotel->precio_m/2;
+
+                                @endphp
+                            @endif
+                            @if($hotel->personas_t>0)
+                                @php
+                                    $precio_hotel_t+=$hotel->precio_t/3;
+
+                                @endphp
+                            @endif
+                        @endforeach
+                    @endforeach
+                @endforeach
+                @php
+                    $precio_hotel_s+=$precio_iti;
+                    $precio_hotel_d+=$precio_iti;
+                    $precio_hotel_m+=$precio_iti;
+                    $precio_hotel_t+=$precio_iti;
+                @endphp
+                @php
+                    $valor=0;
+                @endphp
+                @if($s!=0)
+                    @php
+                        $valor+=round($precio_hotel_s+$utilidad_s,2);
+                    @endphp
+                @endif
+                @if($d!=0)
+                    @php
+                        $valor+=round($precio_hotel_d+$utilidad_d,2);
+                    @endphp
+                @endif
+                @if($m!=0)
+                    @php
+                        $valor+=round($precio_hotel_m+$utilidad_m,2);
+                    @endphp
+                @endif
+                @if($t!=0)
+                    @php
+                        $valor+=round($precio_hotel_t+$utilidad_t,2);
+                    @endphp
+                @endif
+            @foreach($cotizacion_->paquete_cotizaciones as $paquete)
+                {{--@php--}}
+                    {{--$total=0;--}}
+                    {{--$servicio = 0;--}}
+                    {{--$precio_hotel=0;--}}
+                    {{--$precio_profit=0;--}}
+                {{--@endphp--}}
+                {{--@foreach($paquete->itinerario_cotizaciones as $paquete_itinerario)--}}
+                    {{--@foreach($paquete_itinerario->itinerario_servicios as $orden_cotizaciones)--}}
+                        {{--@if($orden_cotizaciones->precio_grupo==1)--}}
+                            {{--@php--}}
+                                {{--$servicio += $orden_cotizaciones->precio;--}}
+                            {{--@endphp--}}
+                        {{--@else--}}
+                            {{--@php--}}
+                                {{--$servicio += ($orden_cotizaciones->precio*$cotizacion_->nropersonas);--}}
+                            {{--@endphp--}}
+                        {{--@endif--}}
+                    {{--@endforeach--}}
+                    {{--@foreach($paquete_itinerario->hotel as $hotel)--}}
+                        {{--@if($hotel->personas_s>0)--}}
+                            {{--@php--}}
+                                {{--$precio_hotel+=$hotel->personas_s*$hotel->precio_s;--}}
+                                {{--$precio_profit=$hotel->utilidad_s;--}}
+                            {{--@endphp--}}
+                        {{--@endif--}}
+                        {{--@if($hotel->personas_d>0)--}}
+                            {{--@php--}}
+                                {{--$precio_hotel+=$hotel->personas_d*$hotel->precio_d;--}}
+                                {{--$precio_profit=$hotel->utilidad_s;--}}
+                            {{--@endphp--}}
+                        {{--@endif--}}
+                        {{--@if($hotel->personas_m>0)--}}
+                            {{--@php--}}
+                                {{--$precio_hotel+=$hotel->personas_m*$hotel->precio_m;--}}
+                            {{--@endphp--}}
+                        {{--@endif--}}
+                        {{--@if($hotel->personas_t>0)--}}
+                            {{--@php--}}
+                                {{--$precio_hotel+=$hotel->personas_t*$hotel->precio_t;--}}
+                            {{--@endphp--}}
+                        {{--@endif--}}
+                    {{--@endforeach--}}
+                {{--@endforeach--}}
+                @if($cotizacion_->estado==2)
+                    @if($paquete->estado==2)
                         <div class="col-md-3 margin-top-10">
                             <div class="card">
                                 <div class="">
                                     <div class="card-header text-center">
                                         <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
-                                        <small class="display-block text-primary"><sup>$</sup>1500</small>
+                                        <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
                                     </div>
                                 </div>
                                 <div class="card-body py-2">
@@ -249,7 +321,7 @@
                                     </div>
                                     <div class="row no-gutters">
                                         <div class="col">
-                                            <a class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
+                                            <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
                                                 <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
                                             </a>
                                             <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -303,7 +375,7 @@
                                     </div>
                                     <div class="row no-gutters">
                                         <div class="col">
-                                            <a class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
+                                            <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
                                                 <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
                                             </a>
                                             <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -345,7 +417,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     @elseif($paquete->estado==1)
@@ -354,7 +425,7 @@
                                     <div class="">
                                         <div class="card-header text-center">
                                             <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
-                                            <small class="display-block text-primary"><sup>$</sup>1500</small>
+                                            <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
                                         </div>
                                         <div class="card-body py-2">
                                             <div class="row">
@@ -414,7 +485,7 @@
                                             </div>
                                             <div class="row no-gutters">
                                                 <div class="col">
-                                                    <a class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
+                                                    <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
                                                         <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
                                                     </a>
                                                     <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -468,7 +539,7 @@
                                             </div>
                                             <div class="row no-gutters">
                                                 <div class="col">
-                                                    <a class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
+                                                    <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
                                                         <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
                                                     </a>
                                                     <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -513,7 +584,6 @@
                                     </div>
                                 </div>
                             </div>
-
                     @endif
                 @else
                     @if($paquete->estado==2)
@@ -522,7 +592,7 @@
                                     <div class="">
                                         <div class="card-header text-center">
                                             <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
-                                            <small class="display-block text-primary"><sup>$</sup>1500</small>
+                                            <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
                                         </div>
                                         <div class="card-body py-2">
                                             <div class="row">
@@ -582,7 +652,7 @@
                                             </div>
                                             <div class="row no-gutters">
                                                 <div class="col">
-                                                    <a class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
+                                                    <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
                                                         <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
                                                     </a>
                                                     <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -636,7 +706,7 @@
                                             </div>
                                             <div class="row no-gutters">
                                                 <div class="col">
-                                                    <a class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
+                                                    <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
                                                         <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
                                                     </a>
                                                     <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -687,7 +757,7 @@
                                 <div class="">
                                     <div class="card-header text-center">
                                         <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
-                                        <small class="display-block text-primary"><sup>$</sup>1500</small>
+                                        <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
                                     </div>
                                     <div class="card-body py-2">
                                         <div class="row">
@@ -746,7 +816,7 @@
                                         </div>
                                         <div class="row no-gutters">
                                             <div class="col">
-                                                <a class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
+                                                <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
                                                     <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
                                                 </a>
                                                 <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -800,7 +870,7 @@
                                         </div>
                                         <div class="row no-gutters text-left">
                                             <div class="col">
-                                                <a class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
+                                                <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
                                                     <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
                                                 </a>
                                                 <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

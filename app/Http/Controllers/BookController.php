@@ -738,9 +738,33 @@ class BookController extends Controller
         $archivos->cotizaciones_id=$txt_cotizacion_id;
         $archivos->save();
         if($txt_imagen){
-            $filename ='archivo-'.$archivos->id.'.jpg';
+            $data=Carbon::now()->subHour(5);
+            $dia=$data->day;
+            $mes=$data->month;
+            $anio=$data->year;
+            $hora=$data->hour;
+            $minuto=$data->minute;
+            $segundo=$data->second;
+
+            if($dia<=9)
+                $dia='0'.$dia;
+            if($mes<=9)
+                $mes='0'.$mes;
+            if($hora<=9)
+                $hora='0'.$hora;
+            if($minuto<=9)
+                $minuto='0'.$minuto;
+            if($segundo<=9)
+                $segundo='0'.$segundo;
+
+
+//            $data->addHour(5);
+            $filename ='archivo-'.$archivos->id.'.'.$txt_imagen->getClientOriginalExtension();
             $archivos->imagen=$filename;
-            $archivos->nombre=$txt_imagen->getClientOriginalName();
+            $archivos->extension=$txt_imagen->getClientOriginalExtension();
+//            $archivos->nombre=$txt_imagen->getClientOriginalName();
+            $archivos->fecha_subida=$dia.'-'.$mes.'-'.$anio;
+            $archivos->hora_subida=$hora.':'.$minuto.':'.$segundo;
             $archivos->save();
             Storage::disk('cotizacion_archivos')->put($filename,  File::get($txt_imagen));
         }

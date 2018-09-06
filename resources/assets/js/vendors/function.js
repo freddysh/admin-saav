@@ -1673,7 +1673,7 @@ function Pasar_datos1(){
     Itis_precio=parseFloat($('#totalItinerario').val());
     total_Itinerarios_camino2=$('#nroItinerario').val();
     var itinerario='';
-    $("input[name='itinerarios']").each(function (index){
+    $("input[class='itinerario']").each(function (index){
         if($(this).is(':checked')){
             itinerario=$(this).val().split('_');
             if(!existe(itinerario[0])) {
@@ -1681,24 +1681,25 @@ function Pasar_datos1(){
                 var precio_grupo = 0;
                 Itis_precio += parseFloat(itinerario[4]);
                 console.log('Precios:' + Itis_precio);
+                var servicios=itinerario[5].split('*');
                 $.each(servicios, function (key, value) {
                     var serv = value.split('//');
                     var val_p_g = parseFloat(serv[1]);
                 });
                 var servicios = itinerario[5].split('*');
                 var iti_temp = '';
-
-                iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '" value="' + itinerario[0] + '">' +
+                iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '">' +
+                // iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '" value="' + itinerario[0] + '">' +
                     '<div class="content-list-book-s">' +
                     '<a href="#!">' +
                     '<strong>' +
+                    // '<input type="hidden" class="servicios_new" name="servicios_new_'+itinerario[0]+'" value="' + itinerario[0] + '">' +
                     '<input type="hidden" class="servicios_new" name="servicios_new_" value="' + itinerario[0] + '">' +
                     '<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">' +
-                    // '<input type="hidden" name="itinerarios_1[]" value="' + itinerario[5] + '">' +
+                    '<input type="hidden" name="itinerarios_1[]" value="' + itinerario[5] + '">' +
                     '<input type="hidden" name="itinerarios_2[]" value="' + itinerario[0] + '">' +
                     '<span class="itinerarios_1 d-none">' + itinerario[5] + '</span>' +
                     '<span class="txt_itinerarios d-none" name="itinerarios1">' + itinerario[0] + '</span>' +
-
                     '<b class="dias_iti_c2" id="dias_' + total_Itinerarios_camino2 + '">Dia ' + total_Itinerarios_camino2 + ':</b> ' + itinerario[2] +
                     '</strong>' +
                     '<small>' +
@@ -1919,8 +1920,18 @@ function enviar_form1(){
         $('#web1').val($('#web').val());
         $('#txt_destinos1').val(destinos);
         $('#txt_codigo1').val($('#txt_codigo').val());
-        $('#txt_idioma1').val($('#txt_idioma_pasajeros').val());
-
+        if($('#txt_idioma_pasajeros').val()!='SIN IDIOMA') {
+            $('#txt_idioma1').val($('#txt_idioma_pasajeros').val());
+        }
+        if($('#txt_idioma1').val()==''){
+            $('#txt_idioma1').focus();
+            swal(
+                'Oops...',
+                'Ingrese el idioma!',
+                'error'
+            )
+            return false;
+        }
         if($('#txt_name1').val()==''){
             $('#txt_name1').focus();
             swal(
@@ -2267,7 +2278,18 @@ function enviar_form2(){
         $('#web_').val($('#web').val());
         $('#txt_destinos1_').val(destinos);
         $('#codigo_').val($('#txt_codigo').val());
-        $('#txt_idioma2').val($('#txt_idioma_pasajeros').val());
+        if($('#txt_idioma_pasajeros').val()!='SIN IDIOMA') {
+            $('#txt_idioma2').val($('#txt_idioma_pasajeros').val());
+        }
+        if($('#txt_idioma2').val()==''){
+            $('#txt_idioma2').focus();
+            swal(
+                'Oops...',
+                'Ingrese el idioma!',
+                'error'
+            )
+            return false;
+        }
         if($('#txt_name1_').val()==''){
             $('#txt_name1_').focus();
             swal(
@@ -4228,7 +4250,6 @@ function mostrar_proveedores(destino,grupo){
     });
     $.post('/admin/provider/filtro/localizacion', 'destino='+destino+'&grupo='+grupo, function(data) {
         $("#caja_listado_proveedores_"+grupo).html(data);
-
     }).fail(function (data) {
 
     });
@@ -5018,4 +5039,44 @@ function ingresar_notas(pqt_id){
         }
     });
 }
-
+function buscar_day_by_day_quotes(destino) {
+    console.log('destino:'+destino);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../../admin/package/buscar-day-by-day/ajax',
+        data: 'destino='+destino,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend:
+            function() {
+                $('#resultado_busqueda').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+        success: function(data) {
+            $('#resultado_busqueda').html(data);
+        }
+    })
+}
+function  modificar_fecha(fecha,iti_id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../../admin/package/buscar-day-by-day/ajax',
+        data: 'fecha='+fecha+'&id='+iti_id,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend:
+            function() {
+                $('#resultado_busqueda').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+        success: function(data) {
+            $('#resultado_busqueda').html(data);
+        }
+    })
+}

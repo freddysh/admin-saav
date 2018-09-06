@@ -218,6 +218,50 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row mt-3">
+                                            <div class="col">
+                                                <div class="card bg-light w-100">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="txt_product" class="text-secondary font-weight-bold">Cta corriente</label>
+                                                            <select class="form-control" name="txt_banco_nombre_cta_corriente_{{$in_pos}}" id="txt_banco_nombre_cta_corriente_{{$in_pos}}">
+                                                                <option value="0">Escoja una Entidad Bancaria</option>
+                                                                @foreach($entidadBancaria as $entidadBancaria_)
+                                                                    <option value="{{$entidadBancaria_->id}}">{{$entidadBancaria_->nombre}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Reservas</label>--}}
+                                                            <input type="text" class="form-control" id="txt_banco_nro_cta_corriente_{{$in_pos}}" name="txt_banco_nro_cta_corriente_{{$in_pos}}" placeholder="Numero Cta Corriente">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="card bg-light w-100">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label for="txt_product" class="text-secondary font-weight-bold">Cta Interbancaria</label>
+                                                            <select class="form-control" name="txt_banco_nombre_cta_cci_{{$in_pos}}" id="txt_banco_nombre_cta_cci_{{$in_pos}}">
+                                                                <option value="0">Escoja una Entidad Bancaria</option>
+                                                                @foreach($entidadBancaria as $entidadBancaria_)
+                                                                    <option value="{{$entidadBancaria_->id}}">{{$entidadBancaria_->nombre}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Reservas</label>--}}
+                                                            <input type="text" class="form-control" id="txt_banco_nro_cta_cci_{{$in_pos}}" name="txt_banco_nro_cta_cci_{{$in_pos}}" placeholder="Numero Cta CCI">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row mt-3 text-left">
                                             <div class="col">
                                                 <div class="card p-3 bg-light">
