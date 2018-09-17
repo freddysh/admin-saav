@@ -344,7 +344,7 @@
 
                             <div id="itinerario_" class="bg-g-dark text-white p-2 rounded small mb-2">
                                 <div class="row">
-                                    <div class="col-10">
+                                    <div class="col-7">
                                         <div class="row">
                                             <div class="col-12">
                                                 @foreach($itinerario->itinerario_destinos as $destino)
@@ -392,7 +392,7 @@
 
                 <div class="col-12">
                     <div class="row text-right">
-                        <div class="col-9 text-left">
+                        <div class="col-7 text-left">
                             <b class="">PRICE PER PERSON</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
@@ -411,7 +411,7 @@
                         {{--</div>--}}
                     </div>
                     <div class="row text-right">
-                        <div class="col-9 text-left">
+                        <div class="col-7 text-left">
                             <b class="text-g-yellow">COST</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
@@ -430,7 +430,7 @@
                         {{--</div>--}}
                     </div>
                     <div class="row text-right">
-                        <div class="col-9 text-left">
+                        <div class="col-7 text-left">
                             <b class="text-secondary">PROFIT</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
@@ -478,7 +478,7 @@
                             @endphp
                         @endif
 
-                        <div class="col-9">
+                        <div class="col-7">
                             <b class="text-g-yellow text-15">SALES</b>
                         </div>
                         <div class="col @if($s==0) d-none @endif">

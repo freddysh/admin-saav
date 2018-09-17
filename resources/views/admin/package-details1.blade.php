@@ -4,6 +4,12 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
+    @php
+        function fecha_peru($fecha1){
+        $f1=explode('-',$fecha1);
+        return $f1[2].'-'.$f1[1].'-'.$f1[0];
+        }
+    @endphp
     @foreach($cotizaciones as $cotizacion)
         @php
             $cotizacion_id=$cotizacion->id;
@@ -130,7 +136,7 @@
                             <div class="col-5">
                                 <div class="row bg-g-dark rounded text-white">
                                     <div class="col-7">
-                                        <b id="iti_fecha_b_{{$itinerario->id}}" class="badge badge-g-yellow">{{$itinerario->fecha}}</b>
+                                        <b id="iti_fecha_b_{{$itinerario->id}}" class="badge badge-g-yellow">{{fecha_peru($itinerario->fecha)}}</b>
                                         <b>{{ucwords(strtolower($itinerario->titulo))}}</b>
                                         <!-- Button trigger modal -->
                                         <a href="#!" class="text-warning" data-toggle="modal" data-target="#exampleModal_{{$itinerario->id}}">
@@ -148,14 +154,20 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            {{csrf_field()}}
-                                                            <label for="fecha_{{$itinerario->id}}">Fecha</label>
+                                                            <label for="fecha_{{$itinerario->id}}">Ingrese la nueva fecha</label>
                                                             <input type="date" class="form-control" id="fecha_{{$itinerario->id}}" name="iti_fecha" value="{{$itinerario->fecha}}">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <span id="rp_cambio_fecha_{{$itinerario->id}}"></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
+                                                        {{csrf_field()}}
+
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary" onclick="modificar_fecha($('#fecha_{{$itinerario->id}}','{{$itinerario->id}}').val(),)">Guardar cambios</button>
+                                                        <button type="button" class="btn btn-primary" onclick="modificar_fecha($('#fecha_{{$itinerario->id}}').val(),'{{$itinerario->id}}','n')">Guardar cambios</button>
                                                     </div>
                                                 </div>
                                             </div>

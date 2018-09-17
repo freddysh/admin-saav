@@ -5080,25 +5080,61 @@ function buscar_day_by_day_quotes(destino) {
         }
     })
 }
-function  modificar_fecha(fecha,iti_id){
+function  modificar_fecha(fecha,iti_id,tipo){
+    console.log('fecha:'+fecha+',iti_id:'+iti_id);
+    $('#rp_cambio_fecha_'+iti_id).removeClass('text-danger');
+    $('#rp_cambio_fecha_'+iti_id).removeClass('text-success');
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-    $.ajax({
-        type: 'POST',
-        url: '../../../admin/package/buscar-day-by-day/ajax',
-        data: 'fecha='+fecha+'&id='+iti_id,
-        // Mostramos un mensaje con la respuesta de PHP
-        beforeSend:
-            function() {
-                $('#resultado_busqueda').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+    if(tipo=='s') {
+        $.ajax({
+            type: 'POST',
+            url: '../../../../../quotes/new/step1/cambiar-fecha/ajax',
+            data: 'fecha=' + fecha + '&iti_id=' + iti_id,
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend: function () {
+                $('#rp_cambio_fecha_' + iti_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
             },
-        success: function(data) {
-            $('#resultado_busqueda').html(data);
-        }
-    })
+            success: function (data) {
+                if (data == '1') {
+                    var fecha1 = fecha.split('-');
+                    $('#iti_fecha_b_' + iti_id).html(fecha1[2] + '-' + fecha1[1] + '-' + fecha1[0]);
+                    $('#rp_cambio_fecha_' + iti_id).addClass('text-success');
+                    $('#rp_cambio_fecha_' + iti_id).html('Fecha cambiada correctamente');
+                }
+                else {
+                    $('#rp_cambio_fecha_' + iti_id).addClass('text-danger');
+                }
+            }
+        })
+    }
+    else{
+        $.ajax({
+            type: 'POST',
+            url: '../../../../../quotes/new/step1/cambiar-fecha/ajax',
+            data: 'fecha='+fecha+'&iti_id='+iti_id,
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend:
+                function() {
+                    $('#rp_cambio_fecha_'+iti_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+                },
+            success: function(data){
+                if(data=='1'){
+                    var fecha1=fecha.split('-');
+                    $('#iti_fecha_b_'+iti_id).html(fecha1[2]+'-'+fecha1[1]+'-'+fecha1[0]);
+                    $('#rp_cambio_fecha_'+iti_id).addClass('text-success');
+                    $('#rp_cambio_fecha_'+iti_id).html('Fecha cambiada correctamente');
+                }
+                else{
+                    $('#rp_cambio_fecha_'+iti_id).addClass('text-danger');
+                }
+            }
+        })
+    }
 }
 function  mostrar_banco_proveedor(cta_goto,paquete_cotizaciones_id,proveedor_id){
     $.ajaxSetup({

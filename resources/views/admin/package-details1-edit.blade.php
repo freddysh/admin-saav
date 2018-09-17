@@ -4,6 +4,12 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
+    @php
+        function fecha_peru($fecha1){
+        $f1=explode('-',$fecha1);
+        return $f1[2].'-'.$f1[1].'-'.$f1[0];
+        }
+    @endphp
     @if(isset($id_serv))
         @php
             $id_serv=$id_serv;
@@ -35,7 +41,7 @@
                 $t=0;
             @endphp
             @foreach($cotizaciones as $cotizacion)
-                <p class="text-18">Web:<b class="text-info">{{$cotizacion->web}}</b> | Codigo:<b class="text-info">{{$cotizacion->codigo}}</b></p>
+                <p class="text-18">Web:<b class="text-info">{{$cotizacion->web}}</b> | Codigo:<b class="text-info">{{$cotizacion->codigo}}</b> | Idioma:<b class="text-info">{{$cotizacion->idioma_pasajeros}}</b></p>
                 <b class="text-g-yellow h2">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} STARS:</b>
                 @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
                     @foreach($paquete->paquete_precios as $precio)
@@ -108,7 +114,42 @@
                             <div class="col-5">
                                 <div class="row bg-g-dark rounded text-white">
                                     <div class="col-7">
+                                        <b id="iti_fecha_b_{{$itinerario->id}}" class="badge badge-g-yellow">{{fecha_peru($itinerario->fecha)}}</b>
                                         <b>{{ ucwords(strtolower($itinerario->titulo))}}</b>
+                                        <!-- Button trigger modal -->
+                                        <a href="#!" class="text-warning" data-toggle="modal" data-target="#exampleModal_{{$itinerario->id}}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal_{{$itinerario->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Editar fecha</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="fecha_{{$itinerario->id}}">Ingrese la nueva fecha</label>
+                                                            <input type="date" class="form-control" id="fecha_{{$itinerario->id}}" name="iti_fecha" value="{{$itinerario->fecha}}">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <span id="rp_cambio_fecha_{{$itinerario->id}}"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        {{csrf_field()}}
+
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary" onclick="modificar_fecha($('#fecha_{{$itinerario->id}}').val(),'{{$itinerario->id}}','e')">Guardar cambios</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col @if($s==0) d-none @endif">S</div>
                                     <div class="col @if($d==0) d-none @endif">D</div>

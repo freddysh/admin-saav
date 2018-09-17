@@ -1148,4 +1148,7 @@ Route::get('admin/contabilidad/pagos/pendientes/consulta/{id}/pdf', [
     'uses' => 'ContabilidadController@consulta_h_pdf',
     'as' => 'descargar_consulta_h_path',
 ]);
-
+Route::post('admin/quotes/new/step1/cambiar-fecha/ajax',[
+    'uses' => 'QouteController@cambiar_fecha',
+    'as' => 'quotes_cambiar_fecha_ajax_path',
+]);

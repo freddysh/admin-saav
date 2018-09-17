@@ -7,6 +7,7 @@ use App\Cotizacion;
 use App\CotizacionesCliente;
 use App\CotizacionesPagos;
 use App\Hotel;
+use App\ItinerarioCotizaciones;
 use App\ItinerarioServicios;
 use App\M_Destino;
 use App\M_Itinerario;
@@ -208,6 +209,17 @@ class QouteController extends Controller
         $nro_codigo=Cotizacion::where('web',$web)->count()+1;
         $codigo=$precodigo[$web].$nro_codigo;
         return $codigo;
+    }
+    public function cambiar_fecha(Request $request)
+    {
+        $iti_id=$request->input('iti_id');
+        $fecha=$request->input('fecha');
+        $iti=ItinerarioCotizaciones::FindOrFail($iti_id);
+        $iti->fecha=$fecha;
+        if($iti->save())
+            return '1';
+        else
+            return '0';
     }
 
 
