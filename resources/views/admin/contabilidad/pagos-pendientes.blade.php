@@ -4,6 +4,13 @@ use Carbon\Carbon;
     $fecha=explode('-',$fecha);
     return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
     }
+    function fecha_peru1($fecha_){
+        $f1=explode(' ',$fecha_);
+        $hora=$f1[1];
+        $f2=explode('-',$f1[0]);
+        $fecha1=$f2[2].'-'.$f2[1].'-'.$f2[0];
+        return $fecha1.' a las '.$hora;
+    }
 @endphp
 @extends('layouts.admin.contabilidad')
 @section('archivos-css')
@@ -102,39 +109,21 @@ use Carbon\Carbon;
                                             </div>
                                             <div class="row">
                                                 @foreach($consulta as $consultas)
-                                                    <div class="col-md-2 text-center">
+                                                    <div id="c_h_{{$consultas->id}}" class="col-md-2 text-center">
                                                         <form action="{{route('list_fechas_show_path')}}" method="post">
                                                             {{csrf_field()}}
                                                             <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <span class="font-weight-bold text-18">{{strftime("%A %d de %B de %Y - %H:%M:%S", strtotime(str_replace('-','/', $consultas->updated_at)))}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
                                                             </a>
-                                                            <a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_h_path',$consultas->id)}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
                                                         </form>
-                                                    </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="eliminar_{{$consultas->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                        <div class="modal-dialog modal-sm" role="document">
-                                                            <div class="modal-content">
-                                                                {{--<div class="modal-header">--}}
-                                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                                {{--<h4 class="modal-title" id="myModalLabel">Modal title</h4>--}}
-                                                                {{--</div>--}}
-                                                                <form action="{{route('consulta_delete_path', $consultas->id)}}" method="post">
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="_method" value="delete">
-                                                                    <div class="modal-body">
-                                                                        <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="submit" class="btn btn-danger">Confirmar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -965,6 +954,34 @@ use Carbon\Carbon;
         </div>
     </div>
     <script>
+        function eliminar_consulta(id) {
+            // alert('holaaa');
+            swal({
+                title: 'MENSAJE DEL SISTEMA',
+                text: "La consulta se eliminara permanentemente.",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then(function () {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('[name="_token"]').val()
+                    }
+                });
+                $.post('{{route('consulta_delete_path')}}', 'id='+id, function(data) {
+//                $.post('/admin/destination/delete', 'id='+id, function(data) {
+                    if(data==1){
+                        // $("#lista_destinos_"+id).remove();
+                        $("#c_h_"+id).remove();
+                    }
+                }).fail(function (data) {
+
+                });
+
+            })
+        }
         var total=0;
         function sumar(valor) {
             total += valor;

@@ -469,7 +469,7 @@
                                                     </td>
                                                     <td class="d-none">{{$grupe}}</td>
                                                     <td class="lefts">
-                                                    <span class="small">
+                                                        <span class="small">
                                                         <b>{{$servicios->nombre}}</b>
                                                         (<span class="small text-primary">{{$tipoServicio}}</span>)
                                                         @if($grupe=='FLIGHTS')
@@ -1017,20 +1017,21 @@
                                                                 $grupo=$res->grupo;
                                                             @endphp
                                                         @endforeach
-                                                        <button id="confim_{{$servicios->id}}" type="button" class="btn btn-sm" onclick="confirmar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
-                                                            @if($servicios->primera_confirmada==0)
-                                                                <i class="fas fa-unlock"></i>
-                                                            @elseif($servicios->primera_confirmada==1)
-                                                                <i class="fas fa-lock text-success"></i>
-                                                            @endif
-                                                        </button>
-                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_servicio_{{$servicios->id}}" onclick="traer_servicios('{{$itinerario->id}}','{{$servicios->id}}','{{$localizacion}}','{{$grupo}}')">
-                                                            <i class="fas fa-exchange-alt" aria-hidden="true"></i>
-                                                        </button>
-
+                                                        <div class="btn-group">
+                                                            <button id="confim_{{$servicios->id}}" type="button" class="btn btn-sm" onclick="confirmar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
+                                                                @if($servicios->primera_confirmada==0)
+                                                                    <i class="fas fa-unlock"></i>
+                                                                @elseif($servicios->primera_confirmada==1)
+                                                                    <i class="fas fa-lock text-success"></i>
+                                                                @endif
+                                                            </button>
+                                                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_servicio_{{$servicios->id}}" onclick="traer_servicios('{{$itinerario->id}}','{{$servicios->id}}','{{$localizacion}}','{{$grupo}}')">
+                                                                <i class="fas fa-exchange-alt" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
                                                         <!-- Modal -->
                                                         <div class="modal fade bd-example-modal-lg" id="modal_servicio_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg" role="document">

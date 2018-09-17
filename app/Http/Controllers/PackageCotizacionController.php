@@ -752,6 +752,7 @@ class PackageCotizacionController extends Controller
     {
         $plan=$request->input('plan1');
         $txt_codigo=$request->input('txt_codigo1');
+        $notas = $request->input('notas1');
         $cotizacion_id=0;
         $cliente_id=0;
         $estrela = $request->input('estrellas_from');
@@ -786,6 +787,8 @@ class PackageCotizacionController extends Controller
             $cotizacion->posibilidad =0;
             $cotizacion->web=$request->input('web1');
             $cotizacion->codigo=$txt_codigo;
+            $cotizacion->notas=$notas;
+
             $cotizacion->save();
             $cotizacionGet=Cotizacion::where('id',$cotizacion->id)->get();
             $cotizacion_cliente=new CotizacionesCliente();
@@ -1145,6 +1148,7 @@ class PackageCotizacionController extends Controller
         $txt_codigo=$request->input('codigo_');
         $cotizacion_id=0;
         $cliente_id=0;
+        $notas = $request->input('notas_');
         $estrela = $request->input('estrellas_from_');
         $date = date_create($request->input('txt_date1_'));
         $fecha = date_format($date, 'jS F Y');
@@ -1195,6 +1199,7 @@ class PackageCotizacionController extends Controller
             $cotizacion_plantilla->posibilidad =0;
             $cotizacion_plantilla->web=$request->input('web_');
             $cotizacion_plantilla->codigo=$txt_codigo;
+            $cotizacion_plantilla->notas=$notas;
             $cotizacion_plantilla->save();
 
             $cotizacion_cliente = new CotizacionesCliente();

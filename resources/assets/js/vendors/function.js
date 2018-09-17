@@ -1920,6 +1920,16 @@ function enviar_form1(){
         $('#web1').val($('#web').val());
         $('#txt_destinos1').val(destinos);
         $('#txt_codigo1').val($('#txt_codigo').val());
+        $('#notas1').val($('#txt_notas').val());
+        if($('#notas1').val().trim()=='') {
+            $('#notas1').focus();
+            swal(
+                'Oops...',
+                'Ingrese alguna nota',
+                'error'
+            )
+            return false;
+        }
         if($('#txt_idioma_pasajeros').val()!='SIN IDIOMA') {
             $('#txt_idioma1').val($('#txt_idioma_pasajeros').val());
         }
@@ -2278,6 +2288,16 @@ function enviar_form2(){
         $('#web_').val($('#web').val());
         $('#txt_destinos1_').val(destinos);
         $('#codigo_').val($('#txt_codigo').val());
+        $('#notas_').val($('#txt_notas').val());
+        if($('#notas_').val().trim()==''){
+            $('#notas_').focus();
+            swal(
+                'Oops...',
+                'Ingrese alguna nota',
+                'error'
+            )
+            return false;
+        }
         if($('#txt_idioma_pasajeros').val()!='SIN IDIOMA') {
             $('#txt_idioma2').val($('#txt_idioma_pasajeros').val());
         }
@@ -5077,6 +5097,26 @@ function  modificar_fecha(fecha,iti_id){
             },
         success: function(data) {
             $('#resultado_busqueda').html(data);
+        }
+    })
+}
+function  mostrar_banco_proveedor(cta_goto,paquete_cotizaciones_id,proveedor_id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../../listar/proveedores/ajax',
+        data: 'cta_goto='+cta_goto+'&paquete_cotizaciones_id='+paquete_cotizaciones_id+'&proveedor_id='+proveedor_id,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend:
+            function() {
+                $('#cb_cci_'+paquete_cotizaciones_id+'_'+proveedor_id).html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+        success: function(data) {
+            $('#cb_cci_'+paquete_cotizaciones_id+'_'+proveedor_id).html(data);
         }
     })
 }

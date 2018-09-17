@@ -7,6 +7,8 @@ use App\ConsultaPago;
 use App\ConsultaPagoHotel;
 use App\Cotizacion;
 use App\CotizacionesCliente;
+use App\CuentasGoto;
+use App\EntidadBancaria;
 use App\HotelProveedor;
 use App\ItinerarioCotizaciones;
 use App\ItinerarioServicioProveedor;
@@ -87,19 +89,30 @@ class ContabilidadController extends Controller
             $codigos = $_POST['txt_codigos'];
         }
         $servicios = ItinerarioServicios::with('itinerario_servicio_proveedor')->get();
+//        dd($servicios);
         $consulta = ConsultaPagoHotel::where('id', $codigos)->get();
+//        dd($consulta);
         $pagos=PrecioHotelReservaPagos::get();
-        return view('admin.contabilidad.lista-pagos-hoteles',compact(['ids','codigos','consulta','pagos']));
+//        dd($pagos);
+        $cuentas_goto=CuentasGoto::get();
+        $entidad_bancaria=EntidadBancaria::get();
+        return view('admin.contabilidad.lista-pagos-hoteles',compact(['ids','codigos','consulta','pagos','cuentas_goto','entidad_bancaria']));
     }
 
-    public function consulta_delete($id)
+    public function consulta_delete(Request $request)
     {
-        $consulta = ConsultaPago::findOrFail($id);
-        $consulta->delete();
+        $consulta =ConsultaPagoHotel::FindOrFail($request->input('id'));
+        if($consulta->delete())
+            return '1';
+        else
+            return '0';
+//        $consulta = ConsultaPago::findOrFail($id);
+//        $consulta->delete();
+//        return redirect()->route('rango_fecha_path');
 
-        Session::flash('message', 'La consulta fue eliminada satisfactoriamente');
+//        Session::flash('message', 'La consulta fue eliminada satisfactoriamente');
 
-        return redirect()->route('rango_fecha_path');
+//        return redirect()->route('rango_fecha_path');
     }
 
     public function pagar_consulta()
@@ -614,15 +627,58 @@ class ContabilidadController extends Controller
         return new Response($file, 200);
     }
 
-    public function consulta_hotel_save()
+    public function consulta_hotel_save(Request $request)
     {
-        $cod = $_POST['txt_codigos'];
+        $cod = $request->input('codigos');
+        $cod1='';
+        $tamano=count($cod);
+        for($i=0;$i<$tamano;$i++){
+            $cod1.=$cod[$i].',';
+        }
+        $cod1=substr($cod1,0,strlen($cod1)-1);
+        $pagar_con = $request->input('pagar_con');
+//        dd($pagar_con);
+        $pagar_con1='';
+        $tamano=count($pagar_con);
+        for($i=0;$i<$tamano;$i++){
+            $pagar_con1.=$pagar_con[$i].',';
+        }
+        $pagar_con1=substr($pagar_con1,0,strlen($pagar_con1)-1);
+//dd($pagar_con1);
+        $medio_pago =$request->input('medio_pago');
+        $medio_pago1='';
+        $tamano=count($medio_pago);
+        for($i=0;$i<$tamano;$i++){
+            $medio_pago1.=$medio_pago[$i].',';
+        }
+        $medio_pago1=substr($medio_pago1,0,strlen($medio_pago1)-1);
+
+        $cta_cliente =$request->input('cta_cliente');
+        $cta_cliente1='';
+        $tamano=count($cta_cliente);
+        for($i=0;$i<$tamano;$i++){
+            $cta_cliente1.=$cta_cliente[$i].'+.+';
+        }
+        $cta_cliente1=substr($cta_cliente1,0,strlen($cta_cliente1)-1);
+
+        $a_pagar = $request->input('a_pagar');
+        $a_pagar1='';
+        $tamano=count($a_pagar);
+        for($i=0;$i<$tamano;$i++){
+            $a_pagar1.=$a_pagar[$i].',';
+        }
+        $a_pagar1=substr($a_pagar1,0,strlen($a_pagar1)-1);
 
         $consulta = new ConsultaPagoHotel();
-        $consulta->codigos = $cod;
+        $consulta->codigos = $cod1;
+        $consulta->pagar_con= $pagar_con1;
+        $consulta->medio_pago = $medio_pago1;
+        $consulta->cta_cliente = $cta_cliente1;
+        $consulta->a_pagar=$a_pagar1;
         $consulta->save();
 
-        return 'ok';
+        return redirect()->route('pagos_pendientes_rango_fecha_path');
+//        return 'ok';
     }
 
     public function pagar_consulta_hotel()
@@ -739,7 +795,10 @@ class ContabilidadController extends Controller
         }
         $pagos=PrecioHotelReservaPagos::get();
         $consulta = ConsultaPago::where('id', $codigos)->get();
-        return view('admin.contabilidad.lista-pagos-hoteles',compact(['ids','codigos','consulta','pagos']));
+        $cuentas_goto=CuentasGoto::get();
+        $entidad_bancaria=EntidadBancaria::get();
+
+        return view('admin.contabilidad.lista-pagos-hoteles',compact(['ids','codigos','consulta','pagos','cuentas_goto','entidad_bancaria']));
     }
 
     public function servicios_guardar(Request $request)
@@ -1668,4 +1727,69 @@ class ContabilidadController extends Controller
         $pagos=ItinerarioServiciosAcumPago::get();
         return view('admin.contabilidad.lista-pagos-servicios',compact(['ids','codigos','consulta','pagos','grupo']));
     }
+    public function pagar_a_banco(Request $request)
+    {
+        $cta_goto=explode('_',$request->input('cta_goto'));
+        $paquete_cotizaciones_id=$request->input('paquete_cotizaciones_id');
+        $proveedor_id=$request->input('proveedor_id');
+        $proveedor=Proveedor::Find($proveedor_id);
+        $msj='';
+        if($proveedor->banco_nombre_cta_corriente>0){
+            if($cta_goto[1]==$proveedor->banco_nombre_cta_corriente){
+                $banco=EntidadBancaria::Find($proveedor->banco_nombre_cta_corriente);
+                $msj='<input form="frm_guardar" type="text" class="form-control" name="cta_cliente[]" id="cta_'.$paquete_cotizaciones_id.'_'.$proveedor_id.'" value="'.$banco->nombre.', Cta: '.$proveedor->banco_nro_cta_corriente.'">';
+//                $msj='Cta: '.$proveedor->banco_nro_cta_corriente.'<input type="text" class="form-control" name="cta_cliente[]" id="cta_'.$paquete_cotizaciones_id.'_'.$proveedor_id.'_[]" value="'.$proveedor->banco_nro_cta_corriente.'">';
+            }
+            elseif($proveedor->banco_nombre_cta_cci>0){
+                $banco=EntidadBancaria::Find($proveedor->banco_nombre_cta_cci);
+                $msj='<input form="frm_guardar" type="text" class="form-control" name="cta_cliente[]" id="cta_'.$paquete_cotizaciones_id.'_'.$proveedor_id.'" value="'.$banco->nombre.', CCI: '.$proveedor->banco_nro_cta_cci.'">';
+//                $msj='CCI: '.$proveedor->banco_nro_cta_cci.'<input type="text" class="form-control" name="cta_cliente[]" id="cta_'.$paquete_cotizaciones_id.'_'.$proveedor_id.'_[]" value="'.$proveedor->banco_nro_cta_cci.'">';
+            }
+            else{
+                $msj='El proverdor no tiene CCI';
+            }
+        }
+        else{
+            $msj='El proverdor no tiene Cta corriente';
+        }
+        return $msj;
+    }
+    public function consulta_h_pdf($id)
+    {
+        $ids = 0;
+        if (isset($_POST['chk_id'])) {
+            $ids = $_POST['chk_id'];
+        }
+//        $codigos = 0;
+//        if (isset($_POST['txt_codigos'])) {
+            $codigos =$id;
+//        }
+        $servicios = ItinerarioServicios::with('itinerario_servicio_proveedor')->get();
+        $consulta = ConsultaPagoHotel::where('id', $codigos)->get();
+        $pagos=PrecioHotelReservaPagos::get();
+        $cuentas_goto=CuentasGoto::get();
+        $entidad_bancaria=EntidadBancaria::get();
+//        return view('admin.contabilidad.lista-pagos-hoteles-pdf',compact(['ids','codigos','consulta','pagos','cuentas_goto','entidad_bancaria']));
+
+        $pdf = \PDF::loadView('admin.contabilidad.lista-pagos-hoteles-pdf',compact(['ids','codigos','consulta','pagos','cuentas_goto','entidad_bancaria']))->setPaper('a4','landscape')->setWarnings(true);
+        return $pdf->download('Consulta_'.$id.'.pdf');
+
+
+
+//        $paquetes = PaqueteCotizaciones::with('paquete_precios')->get()->where('id', $id);
+//        foreach ($paquetes as $paquetes2){
+//            $paquete = PaqueteCotizaciones::with('paquete_precios')->get()->where('id', $id);
+//            $cotizacion = Cotizacion::where('id',$paquetes2->cotizaciones_id)->get();
+//            $cotizacion1='';
+//            foreach ($cotizacion as $cotizacion_){
+//                $cotizacion1=$cotizacion_;
+//            }
+//            $ee=CotizacionesCliente::with('cliente')->get();
+////            dd($ee);
+//            $pdf = \PDF::loadView('admin.contabilidad.pdf-consulta', ['paquete'=>$paquete, 'cotizacion'=>$cotizacion])->setPaper('a4')->setWarnings(true);
+//            return $pdf->download($cotizacion1->nombre.'.pdf');
+//            \File::delete('pdf/proposals_'.$id.'.pdf');
+//        }
+    }
+
 }

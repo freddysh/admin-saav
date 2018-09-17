@@ -80,6 +80,12 @@
                                 <input type="text" class="form-control" id="txt_phone" name="txt_phone" placeholder="Phone" value="{{$telefono}}">
                             </div>
                         </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="txt_notas" class="font-weight-bold text-secondary">Notas</label>
+                                <textarea  class="form-control" name="txt_notas" id="txt_notas" cols="30" rows="10"></textarea>
+                            </div>
+                        </div>
 
                     </div>
                     <hr>
@@ -813,6 +819,7 @@
                                             <input type="hidden" name="cliente_id_" id="cliente_id_" value="{{$cliente_id}}">
                                             <input type="hidden" name="web_" id="web_" value="gotoperu.com">
                                             <input type="hidden" name="codigo_" id="codigo_" value="{{$codigo}}">
+                                            <input type="hidden" name="notas_" id="notas_" value="">
                                             <input type="hidden" name="txt_idioma2" id="txt_idioma2" value="{{$idioma_pasajeros}}">
 
                                         </div>
@@ -880,6 +887,7 @@
                                                         <input type="hidden" name="cliente_id_1" id="cliente_id_1" value="{{$cliente_id}}">
                                                         <input type="hidden" name="web1" id="web1" value="gotoperu.com">
                                                         <input type="hidden" name="txt_codigo1" id="txt_codigo1" value="{{$codigo}}">
+                                                        <input type="hidden" name="notas1" id="notas1" value="">
                                                         <input type="hidden" name="txt_idioma1" id="txt_idioma1" value="{{$idioma_pasajeros}}">
                                                         <input type="hidden" name="h2_s_" id="h2_s_" value="{{$h2_s}}">
                                                         <input type="hidden" name="h2_d_" id="h2_d_" value="{{$h2_d}}">

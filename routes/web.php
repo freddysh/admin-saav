@@ -448,7 +448,7 @@ Route::post('/admin/contabilidad/listar/consulta', [
     'as' => 'consulta_save_path',
 ]);
 
-Route::delete('/admin/contabilidad/listar/consulta/delete/{id}', [
+Route::post('/admin/contabilidad/listar/consulta/delete', [
     'uses' => 'ContabilidadController@consulta_delete',
     'as' => 'consulta_delete_path',
 ])->where('id', '[0-9]+');
@@ -1140,3 +1140,12 @@ Route::post('admin/show-cotizacion/ingresar-notas', [
     'uses' => 'PackageCotizacionController@ingresar_notas',
     'as' => 'package_cotizacion_notas_path',
 ]);
+Route::post('admin/contabilidad/listar/proveedores/ajax', [
+    'uses' => 'ContabilidadController@pagar_a_banco',
+    'as' => 'contabilidad_listar_provedores_path',
+]);
+Route::get('admin/contabilidad/pagos/pendientes/consulta/{id}/pdf', [
+    'uses' => 'ContabilidadController@consulta_h_pdf',
+    'as' => 'descargar_consulta_h_path',
+]);
+
