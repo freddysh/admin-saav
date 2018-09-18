@@ -886,7 +886,7 @@ Route::post('/admin/contabilidad/confirmar-precio-c-hotel',[
     'uses' => 'ContabilidadController@precio_c_hotel_add',
     'as' => 'precio_c_hotel_add_path',
 ]);
-Route::get('admin/contabilidad/pagos/pendientes', [
+Route::get('admin/contabilidad/pagos/pendientes/{grupo}', [
     'uses' => 'ContabilidadController@pagos_pendientes',
     'as' => 'pagos_pendientes_rango_fecha_path',
 ]);
@@ -1151,4 +1151,12 @@ Route::get('admin/contabilidad/pagos/pendientes/consulta/{id}/pdf', [
 Route::post('admin/quotes/new/step1/cambiar-fecha/ajax',[
     'uses' => 'QouteController@cambiar_fecha',
     'as' => 'quotes_cambiar_fecha_ajax_path',
+]);
+Route::post('admin/contabilidad/listar/fechas/show/serv', [
+    'uses' => 'ContabilidadController@list_fechas_show_serv',
+    'as' => 'list_fechas_show_serv_path',
+]);
+Route::get('admin/contabilidad/pagos/pendientes/serv/consulta/{id}/{grupo}/pdf', [
+    'uses' => 'ContabilidadController@consulta_s_pdf',
+    'as' => 'descargar_consulta_s_path',
 ]);

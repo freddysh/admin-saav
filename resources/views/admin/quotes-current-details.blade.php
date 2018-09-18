@@ -217,717 +217,169 @@
                     @endphp
                 @endif
             @foreach($cotizacion_->paquete_cotizaciones as $paquete)
-                {{--@php--}}
-                    {{--$total=0;--}}
-                    {{--$servicio = 0;--}}
-                    {{--$precio_hotel=0;--}}
-                    {{--$precio_profit=0;--}}
-                {{--@endphp--}}
-                {{--@foreach($paquete->itinerario_cotizaciones as $paquete_itinerario)--}}
-                    {{--@foreach($paquete_itinerario->itinerario_servicios as $orden_cotizaciones)--}}
-                        {{--@if($orden_cotizaciones->precio_grupo==1)--}}
-                            {{--@php--}}
-                                {{--$servicio += $orden_cotizaciones->precio;--}}
-                            {{--@endphp--}}
-                        {{--@else--}}
-                            {{--@php--}}
-                                {{--$servicio += ($orden_cotizaciones->precio*$cotizacion_->nropersonas);--}}
-                            {{--@endphp--}}
-                        {{--@endif--}}
-                    {{--@endforeach--}}
-                    {{--@foreach($paquete_itinerario->hotel as $hotel)--}}
-                        {{--@if($hotel->personas_s>0)--}}
-                            {{--@php--}}
-                                {{--$precio_hotel+=$hotel->personas_s*$hotel->precio_s;--}}
-                                {{--$precio_profit=$hotel->utilidad_s;--}}
-                            {{--@endphp--}}
-                        {{--@endif--}}
-                        {{--@if($hotel->personas_d>0)--}}
-                            {{--@php--}}
-                                {{--$precio_hotel+=$hotel->personas_d*$hotel->precio_d;--}}
-                                {{--$precio_profit=$hotel->utilidad_s;--}}
-                            {{--@endphp--}}
-                        {{--@endif--}}
-                        {{--@if($hotel->personas_m>0)--}}
-                            {{--@php--}}
-                                {{--$precio_hotel+=$hotel->personas_m*$hotel->precio_m;--}}
-                            {{--@endphp--}}
-                        {{--@endif--}}
-                        {{--@if($hotel->personas_t>0)--}}
-                            {{--@php--}}
-                                {{--$precio_hotel+=$hotel->personas_t*$hotel->precio_t;--}}
-                            {{--@endphp--}}
-                        {{--@endif--}}
-                    {{--@endforeach--}}
-                {{--@endforeach--}}
-                @if($cotizacion_->estado==2)
-                    @if($paquete->estado==2)
-                        <div class="col-md-3 margin-top-10">
-                            <div class="card">
-                                <div class="">
-                                    <div class="card-header text-center">
-                                        <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
-                                        <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
+                    <div class="col-md-3 margin-top-10">
+                        <div class="card">
+                            <div class="">
+                                <div class="card-header text-center">
+                                    <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
+                                    <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
+                                </div>
+                            </div>
+                            <div class="card-body py-2">
+                                <div class="row">
+                                    <div class="col text-right">
+                                        <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
+                                        <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
+                                        <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
                                     </div>
                                 </div>
-                                <div class="card-body py-2">
-                                    <div class="row">
-                                        <div class="col text-right">
-                                            <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
-                                            <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
-                                            <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
-                                        </div>
-                                    </div>
 
-                                    <div class="row">
-                                        <div class="col">
-                                            @php
-                                                $date = date_create($cotizacion_->fecha);
-                                                $fecha=date_format($date, 'jS F Y');
-                                                $titulo='';
-                                                $name='';
-                                                $email='';
-                                            @endphp
-                                            @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                                @if($cliente_coti->estado=='1')
-                                                    @php
-                                                        $name=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos;
-                                                        $email=$cliente_coti->cliente->email;
-                                                        $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                                    @endphp
-                                                    <small>
-                                                        <b><i class="fas fa-angle-right text-primary"></i><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
-                                                    </small>
-                                                @endif
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer p-2">
-                                    <div class="row no-gutters">
-                                        <div class="col">
-                                            <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
-                                        </div>
-                                        <div class="col">
-                                            @if($paquete->estado==2)
-                                                <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
-                                                {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                            @else
-                                                <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-secondary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
-                                                {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
+                                <div class="row">
+                                    <div class="col">
+                                        @php
+                                            $date = date_create($cotizacion_->fecha);
+                                            $fecha=date_format($date, 'jS F Y');
+                                            $titulo='';
+                                            $name='';
+                                            $email='';
+                                        @endphp
+                                        @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
+                                            @if($cliente_coti->estado=='1')
+                                                @php
+                                                    $name=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos;
+                                                    $email=$cliente_coti->cliente->email;
+                                                    $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                @endphp
+                                                <small>
+                                                    <b><i class="fas fa-angle-right text-primary"></i><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                                </small>
                                             @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer p-2">
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
+                                    </div>
+                                    <div class="col">
+                                        @if($paquete->estado==2)
+                                            <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-success small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
+                                            {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
+                                        @else
+                                            <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
+                                            {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
+                                        @endif
 
-                                        </div>
                                     </div>
-                                    <div class="row no-gutters">
-                                        <div class="col">
-                                            <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
-                                                <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
-                                            </a>
-                                            <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <form id="ask_request_{{$paquete->id}}" action="{{route('package_cotizacion_ask_information_path')}}" method="post">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">Request Information</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="col-auto">
-                                                                    <div class="input-group mb-2">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">Name</div>
-                                                                        </div>
-                                                                        <input type="text" class="form-control" id="r_name" name="r_name" value="{{$name}}">
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <a id="pedir_datos_{{$paquete->id}}" href="#!" class="@if($paquete->pedir_datos>0) {{'text-succcess'}} @else {{'text-primary'}}@endif small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
+                                            <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
+                                        </a>
+                                        <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <form id="ask_request_{{$paquete->id}}" action="{{route('package_cotizacion_ask_information_path')}}" method="post">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Request Information</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="col-auto">
+                                                                <div class="input-group mb-2">
+                                                                    <div class="input-group-prepend">
+                                                                        <div class="input-group-text">Name</div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <div class="input-group mb-2">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">Email</div>
-                                                                        </div>
-                                                                        <input type="text" class="form-control" id="r_email" name="r_email" value="{{$email}}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <b id="response_{{$paquete->id}}" class="text-22"></b>
+                                                                    <input type="text" class="form-control" id="r_name" name="r_name" value="{{$name}}">
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                {{--<input type="hidden" name="estado" value="0">--}}
-                                                                <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                                <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-                                                                {{--<input type="hidden" name="cliente_id" value="{{$cotizacion_cliente->cliente->id}}">--}}
-                                                                {{csrf_field()}}
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary" onclick="enviar_ask_request('{{$paquete->id}}')">Send</button>
+                                                            <div class="col-auto">
+                                                                <div class="input-group mb-2">
+                                                                    <div class="input-group-prepend">
+                                                                        <div class="input-group-text">Email</div>
+                                                                    </div>
+                                                                    <input type="text" class="form-control" id="r_email" name="r_email" value="{{$email}}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <b id="response_{{$paquete->id}}" class="text-22"></b>
                                                             </div>
                                                         </div>
-                                                    </form>
-                                                </div>
+                                                        <div class="modal-footer">
+                                                            {{--<input type="hidden" name="estado" value="0">--}}
+                                                            <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
+                                                            <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
+{{--                                                            <input type="hidden" id="pedir_datos_{{$paquete->id}}" name="pedir_datos" value="@if($paquete->pedir_datos>0){{'0'}}@else{{'1'}}@endif">--}}
+                                                            {{csrf_field()}}
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-primary" onclick="enviar_ask_request('{{$paquete->id}}')">Send</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
-                                        </div>
-                                        <div class="col">
-                                            <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
                                         </div>
                                     </div>
-                                    <div class="row no-gutters">
-                                        <div class="col">
-                                            <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
-                                                <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
-                                            </a>
-                                            <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <form id="ingresar_notas_{{$paquete->id}}" action="{{route('package_cotizacion_notas_path')}}" method="post">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">Agregar notas</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="col-auto">
-                                                                    <div class="input-group mb-2">
-                                                                        <div class="input-group-prepend">
-                                                                            <div class="input-group-text">Notas</div>
-                                                                        </div>
-                                                                        <textarea class="form-control" id="r_dir_notas" name="r_dir_notas" cols="30" rows="10">{{$cotizacion_->notas}}</textarea>
+                                    <div class="col">
+                                        <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
+                                    </div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col">
+                                        <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
+                                            <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
+                                        </a>
+                                        <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <form id="ingresar_notas_{{$paquete->id}}" action="{{route('package_cotizacion_notas_path')}}" method="post">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Agregar notas</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="col-auto">
+                                                                <div class="input-group mb-2">
+                                                                    <div class="input-group-prepend">
+                                                                        <div class="input-group-text">Notas</div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <b id="response_notas_{{$paquete->id}}" class="text-22"></b>
+                                                                    <textarea class="form-control" id="r_dir_notas" name="r_dir_notas" cols="30" rows="10">{{$cotizacion_->notas}}</textarea>
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                                <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-                                                                {{csrf_field()}}
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary" onclick="ingresar_notas('{{$paquete->id}}')">Guardar</button>
+                                                            <div class="col-auto">
+                                                                <b id="response_notas_{{$paquete->id}}" class="text-22"></b>
                                                             </div>
                                                         </div>
-                                                    </form>
-                                                </div>
+                                                        <div class="modal-footer">
+                                                            <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
+                                                            <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
+                                                            {{csrf_field()}}
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-primary" onclick="ingresar_notas('{{$paquete->id}}')">Guardar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="col">
-                                        </div>
+                                    </div>
+                                    <div class="col">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @elseif($paquete->estado==1)
-                            <div class="col-3 margin-top-10">
-                                <div class="card">
-                                    <div class="">
-                                        <div class="card-header text-center">
-                                            <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
-                                            <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
-                                        </div>
-                                        <div class="card-body py-2">
-                                            <div class="row">
-                                                <div class="col text-right">
-                                                    <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
-                                                    <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
-                                                    <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    @php
-                                                        $date = date_create($cotizacion_->fecha);
-                                                        $fecha=date_format($date, 'jS F Y');
-                                                        $titulo='';
-                                                        $name='';
-                                                        $email='';
-                                                    @endphp
-                                                    @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                                        @if($cliente_coti->estado=='1')
-                                                            @php
-                                                                $name=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos;
-                                                                $email=$cliente_coti->cliente->email;
-                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                                            @endphp
-                                                            <small>
-                                                                <b><i class="fas fa-angle-right text-primary"></i> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
-                                                            </small>
-                                                        @endif
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer p-2">
-                                            <div class="row no-gutters">
-                                                {{--<div class="col-lg-11 btn-link_">--}}
-                                                {{--<a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>--}}
-                                                {{--</div>--}}
-                                                {{--<div class="col-lg-11 btn-link_">--}}
-                                                {{--<a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/--}}
-                                                {{--<a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>--}}
-                                                {{--</div>--}}
-                                                <div class="col">
-                                                    <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
-                                                </div>
-                                                <div class="col">
-                                                    @if($paquete->estado==2)
-                                                        <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
-                                                        {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                    @else
-                                                        <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-secondary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
-                                                        {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                    @endif
-
-                                                </div>
-
-                                            </div>
-                                            <div class="row no-gutters">
-                                                <div class="col">
-                                                    <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
-                                                        <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
-                                                    </a>
-                                                    <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <form id="ask_request_{{$paquete->id}}" action="{{route('package_cotizacion_ask_information_path')}}" method="post">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Request Information</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="col-auto">
-                                                                            <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
-                                                                                    <div class="input-group-text">Name</div>
-                                                                                </div>
-                                                                                <input type="text" class="form-control" id="r_name" name="r_name" value="{{$name}}">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-auto">
-                                                                            <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
-                                                                                    <div class="input-group-text">Email</div>
-                                                                                </div>
-                                                                                <input type="text" class="form-control" id="r_email" name="r_email" value="{{$email}}">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-auto">
-                                                                            <b id="response_{{$paquete->id}}" class="text-22"></b>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        {{--<input type="hidden" name="estado" value="0">--}}
-                                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                                        <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-                                                                        {{--<input type="hidden" name="cliente_id" value="{{$cotizacion_cliente->cliente->id}}">--}}
-                                                                        {{csrf_field()}}
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn btn-primary" onclick="enviar_ask_request('{{$paquete->id}}')">Send</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small"  target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
-                                                </div>
-                                            </div>
-                                            <div class="row no-gutters">
-                                                <div class="col">
-                                                    <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
-                                                        <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
-                                                    </a>
-                                                    <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <form id="ingresar_notas_{{$paquete->id}}" action="{{route('package_cotizacion_notas_path')}}" method="post">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Agregar notas</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="col-auto">
-                                                                            <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
-                                                                                    <div class="input-group-text">Notas</div>
-                                                                                </div>
-                                                                                <textarea class="form-control" id="r_dir_notas" name="r_dir_notas" cols="30" rows="10">{{$cotizacion_->notas}}</textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-auto">
-                                                                            <b id="response_notas_{{$paquete->id}}" class="text-22"></b>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                                        <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-                                                                        {{csrf_field()}}
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn btn-primary" onclick="ingresar_notas('{{$paquete->id}}')">Guardar</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    @endif
-                @else
-                    @if($paquete->estado==2)
-                            <div class="col-3 margin-top-10">
-                                <div class="card">
-                                    <div class="">
-                                        <div class="card-header text-center">
-                                            <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
-                                            <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
-                                        </div>
-                                        <div class="card-body py-2">
-                                            <div class="row">
-                                                <div class="col text-right">
-                                                    <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
-                                                    <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
-                                                    <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">
-                                                    @php
-                                                        $date = date_create($cotizacion_->fecha);
-                                                        $fecha=date_format($date, 'jS F Y');
-                                                        $titulo='';
-                                                        $name='';
-                                                        $email='';
-                                                    @endphp
-                                                    @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                                        @if($cliente_coti->estado=='1')
-                                                            @php
-                                                                $name=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos;
-                                                                $email=$cliente_coti->cliente->email;
-                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                                            @endphp
-                                                            <small>
-                                                                <b><i class="fas fa-angle-right text-primary"></i> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
-                                                            </small>
-                                                        @endif
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer p-2">
-                                            <div class="row no-gutters">
-                                                {{--<div class="col-lg-11 btn-link_">--}}
-                                                {{--<a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>--}}
-                                                {{--</div>--}}
-                                                {{--<div class="col-lg-11 btn-link_">--}}
-                                                {{--<a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/--}}
-                                                {{--<a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>--}}
-                                                {{--</div>--}}
-                                                <div class="col">
-                                                    <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
-                                                </div>
-                                                <div class="col">
-                                                    @if($paquete->estado==2)
-                                                        <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
-                                                        {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                    @else
-                                                        <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-secondary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
-                                                        {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                    @endif
-
-                                                </div>
-
-                                            </div>
-                                            <div class="row no-gutters">
-                                                <div class="col">
-                                                    <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
-                                                        <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
-                                                    </a>
-                                                    <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <form id="ask_request_{{$paquete->id}}" action="{{route('package_cotizacion_ask_information_path')}}" method="post">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Request Information</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="col-auto">
-                                                                            <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
-                                                                                    <div class="input-group-text">Name</div>
-                                                                                </div>
-                                                                                <input type="text" class="form-control" id="r_name" name="r_name" value="{{$name}}">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-auto">
-                                                                            <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
-                                                                                    <div class="input-group-text">Email</div>
-                                                                                </div>
-                                                                                <input type="text" class="form-control" id="r_email" name="r_email" value="{{$email}}">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-auto">
-                                                                            <b id="response_{{$paquete->id}}" class="text-22"></b>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        {{--<input type="hidden" name="estado" value="0">--}}
-                                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                                        <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-                                                                        {{--<input type="hidden" name="cliente_id" value="{{$cotizacion_cliente->cliente->id}}">--}}
-                                                                        {{csrf_field()}}
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn btn-primary" onclick="enviar_ask_request('{{$paquete->id}}')">Send</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
-                                                </div>
-                                            </div>
-                                            <div class="row no-gutters">
-                                                <div class="col">
-                                                    <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
-                                                        <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
-                                                    </a>
-                                                    <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <form id="ingresar_notas_{{$paquete->id}}" action="{{route('package_cotizacion_notas_path')}}" method="post">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Agregar notas</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <div class="col-auto">
-                                                                            <div class="input-group mb-2">
-                                                                                <div class="input-group-prepend">
-                                                                                    <div class="input-group-text">Notas</div>
-                                                                                </div>
-                                                                                <textarea class="form-control" id="r_dir_notas" name="r_dir_notas" cols="30" rows="10">{{$cotizacion_->notas}}</textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-auto">
-                                                                            <b id="response_notas_{{$paquete->id}}" class="text-22"></b>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                                        <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-                                                                        {{csrf_field()}}
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn btn-primary" onclick="ingresar_notas('{{$paquete->id}}')">Guardar</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                    @elseif($paquete->estado==1)
-                            <div class="col-3 margin-top-10">
-                                <div class="card">
-                                <div class="">
-                                    <div class="card-header text-center">
-                                        <p class="m-0 font-weight-bold h4">PLAN {{$planes[$pos_plan]}}</p>
-                                        <small class="display-block text-primary"><sup>$</sup>{{$valor}}</small>
-                                    </div>
-                                    <div class="card-body py-2">
-                                        <div class="row">
-                                            <div class="col text-right">
-                                                <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
-                                                <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
-                                                <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                @php
-                                                    $date = date_create($cotizacion_->fecha);
-                                                    $fecha=date_format($date, 'jS F Y');
-                                                    $titulo='';
-                                                    $name='';
-                                                    $email='';
-                                                @endphp
-                                                @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                                    @if($cliente_coti->estado=='1')
-                                                        @php
-                                                            $name=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos;
-                                                            $email=$cliente_coti->cliente->email;
-                                                            $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                                        @endphp
-                                                        <small>
-                                                            <b><i class="fas fa-angle-right text-primary"></i> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}{{$cliente_coti->cliente->apellidos}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
-                                                        </small>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer p-2">
-                                        <div class="row no-gutters">
-                                            {{--<div class="col-lg-11 btn-link_">--}}
-                                                {{--<a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}"><b><i class="fa fa-edit" aria-hidden="true"></i> EDITAR</b></a>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="col-lg-11 btn-link_">--}}
-                                                {{--<a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}"><b><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</b></a>/--}}
-                                                {{--<a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}"><b><i class="fa fa-link" aria-hidden="true"></i> LINK</b></a>--}}
-                                            {{--</div>--}}
-                                            <div class="col">
-                                                <a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a>
-                                            </div>
-                                            <div class="col">
-                                                @if($paquete->estado==2)
-                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
-                                                    {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                @else
-                                                    <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-secondary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
-                                                    {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                        <div class="row no-gutters">
-                                            <div class="col">
-                                                <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
-                                                    <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
-                                                </a>
-                                                <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <form id="ask_request_{{$paquete->id}}" action="{{route('package_cotizacion_ask_information_path')}}" method="post">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLongTitle">Request Information</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="col-auto">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">Name</div>
-                                                                            </div>
-                                                                            <input type="text" class="form-control" id="r_name" name="r_name" value="{{$name}}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-auto">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">Email</div>
-                                                                            </div>
-                                                                            <input type="text" class="form-control" id="r_email" name="r_email" value="{{$email}}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-auto">
-                                                                        <b id="response_{{$paquete->id}}" class="text-22"></b>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    {{--<input type="hidden" name="estado" value="0">--}}
-                                                                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                                    <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-                                                                    {{--<input type="hidden" name="cliente_id" value="{{$cotizacion_cliente->cliente->id}}">--}}
-                                                                    {{csrf_field()}}
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    <button type="button" class="btn btn-primary" onclick="enviar_ask_request('{{$paquete->id}}')">Send</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
-                                            </div>
-                                        </div>
-                                        <div class="row no-gutters text-left">
-                                            <div class="col">
-                                                <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
-                                                    <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
-                                                </a>
-                                                <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <form id="ingresar_notas_{{$paquete->id}}" action="{{route('package_cotizacion_notas_path')}}" method="post">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLongTitle">Agregar notas</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <div class="col-auto">
-                                                                        <div class="input-group mb-2">
-                                                                            <div class="input-group-prepend">
-                                                                                <div class="input-group-text">Notas</div>
-                                                                            </div>
-                                                                            <textarea class="form-control" id="r_dir_notas" name="r_dir_notas" cols="30" rows="10">{{$cotizacion_->notas}}</textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-auto">
-                                                                        <b id="response_notas_{{$paquete->id}}" class="text-22"></b>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                                    <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-                                                                    {{csrf_field()}}
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    <button type="button" class="btn btn-primary" onclick="ingresar_notas('{{$paquete->id}}')">Guardar</button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                    @endif
-                @endif
-
-
+                    </div>
                     @php
                         $servicio = 0;
                         $st_precio=0;
                     @endphp
                     @foreach($paquete->itinerario_cotizaciones as $paquete_itinerario)
                         @foreach($paquete_itinerario->itinerario_servicios as $orden_cotizaciones)
-                            {{--@if($orden_cotizaciones->precio_grupo==1)--}}
-                                {{--$st_precio+=$orden_cotizaciones->precio;--}}
-                            {{--@endif--}}
                             @php
                                 $total = $orden_cotizaciones->precio + $servicio;
                                 $servicio = $total;
@@ -1204,11 +656,9 @@
                         </div>
                     </div>
                 </div>
-
                     <?php
                     $pos_plan++;
                     ?>
-                {{--@endif--}}
             @endforeach
 
 

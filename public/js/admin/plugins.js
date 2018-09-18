@@ -5237,15 +5237,16 @@ function actualizar_fecha_h(servicio_id,fecha,proveedor_id,pqt_id) {
     }).fail(function (data) {
     });
 }
-function buscar_servicios_pagos_pendientes(ini,fin,servicio){
-    console.log('ini:'+ini+' - fin:'+fin+' - servicio:'+servicio);
+function buscar_servicios_pagos_pendientes(ini,fin,servicio) {
+    console.log('ini:' + ini + ' - fin:' + fin + ' - servicio:' + servicio);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-    $.post('/admin/contabilidad/pagos/servicios/pendientes/filtrar', 'ini='+ini+'&fin='+fin+'&grupo='+servicio, function (data) {
-        $('#rpt_'+servicio).html(data);
+
+    $.post('/admin/contabilidad/pagos/servicios/pendientes/filtrar', 'ini=' + ini + '&fin=' + fin + '&grupo=' + servicio, function (data) {
+        $('#rpt_' + servicio).html(data);
 
     }).fail(function (data) {
     });
@@ -5743,6 +5744,7 @@ function eliminar_archivo(id){
     })
 }
 function enviar_ask_request(pqt_id){
+    // var pedir_datos=$('#pedir_datos_hidden'+pqt_id).val();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5761,6 +5763,13 @@ function enviar_ask_request(pqt_id){
                 $('#response_'+pqt_id).removeClass('text-danger');
                 $('#response_'+pqt_id).addClass('text-success');
                 $('#response_'+pqt_id).html('E-mail send!');
+                $('#pedir_datos_'+pqt_id).removeClass('text-primary');
+                $('#pedir_datos_'+pqt_id).addClass('text-success');
+                // if(pedir_datos>0)
+                //     $('#pedir_datos_hidden_'+pqt_id).val('1');
+                // else
+                //     $('#pedir_datos_hidden_'+pqt_id).val('0');
+
             }
             else if(response=='0'){
                 $('#response_'+pqt_id).removeClass('text-success');
@@ -5877,7 +5886,7 @@ function  modificar_fecha(fecha,iti_id,tipo){
         })
     }
 }
-function  mostrar_banco_proveedor(cta_goto,paquete_cotizaciones_id,proveedor_id){
+function  mostrar_banco_proveedor(cta_goto,paquete_cotizaciones_id,proveedor_id,grupo){
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5886,7 +5895,7 @@ function  mostrar_banco_proveedor(cta_goto,paquete_cotizaciones_id,proveedor_id)
     $.ajax({
         type: 'POST',
         url: '../../../listar/proveedores/ajax',
-        data: 'cta_goto='+cta_goto+'&paquete_cotizaciones_id='+paquete_cotizaciones_id+'&proveedor_id='+proveedor_id,
+        data: 'cta_goto='+cta_goto+'&paquete_cotizaciones_id='+paquete_cotizaciones_id+'&proveedor_id='+proveedor_id+'&grupo='+grupo,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend:
             function() {
@@ -5896,4 +5905,11 @@ function  mostrar_banco_proveedor(cta_goto,paquete_cotizaciones_id,proveedor_id)
             $('#cb_cci_'+paquete_cotizaciones_id+'_'+proveedor_id).html(data);
         }
     })
+}
+
+function validarSiNumero(numero){
+    let flat=true;
+    // if (!/^[0-9]+([.][0-9]{1,2})?$/.test(numero))
+    //     flat=false;
+    return flat;
 }

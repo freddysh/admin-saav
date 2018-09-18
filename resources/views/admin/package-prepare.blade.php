@@ -341,7 +341,6 @@
                                 $pre_t=$precio+$precio_hotel_t;
                                 $prem_t+=$pre_t;
                             @endphp
-
                             <div id="itinerario_" class="bg-g-dark text-white p-2 rounded small mb-2">
                                 <div class="row">
                                     <div class="col-7">

@@ -2263,6 +2263,9 @@ class PackageCotizacionController extends Controller
 //        $cliente_id=$request->input('cliente_id');
         $email=$request->input('r_email');
         $name=$request->input('r_name');
+        $pqt=PaqueteCotizaciones::Find($pqt_id);
+        $pqt->pedir_datos=1;
+        $pqt->save();
         $email_send=Mail::to($email,$name)->send(new AskInformation($cotizacion_id,$pqt_id,$email,$name));
         return 1;
     }

@@ -40,11 +40,11 @@
 
     @if(session()->get('menu')=='contabilidad')
             <li><b class="">Operaciones</b></li>
-            <li><a href="{{route('pagos_pendientes_rango_fecha_path')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Pagos pendientes</a></li>
+            <li><a href="{{route('pagos_pendientes_rango_fecha_path','HOTELS')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Pagos pendientes</a></li>
             <li><a href="#!"><i class="fa fa-angle-right" aria-hidden="true"></i> Pagados</a></li>
 
             <li><b class="">Administrativo</b></li>
-            <li><a href="{{route('pagos_pendientes_rango_fecha_path')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Planillas</a></li>
+            <li><a href="{{route('pagos_pendientes_rango_fecha_path','HOTELS')}}"><i class="fa fa-angle-right" aria-hidden="true"></i> Planillas</a></li>
             <li><a href="#!"><i class="fa fa-angle-right" aria-hidden="true"></i> Servicios</a></li>
 
             <li class=""><b>Database</b></li>

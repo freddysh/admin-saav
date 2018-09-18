@@ -17,8 +17,7 @@
                                     <table class="table table-condensed table-bordered margin-top-20 table-hover">
                                         <thead>
                                         <tr>
-                                            <th></th>
-                                            <th class="text-18 text-grey-goto text-center">Cotización</th>
+                                            <th class="text-18 text-grey-goto text-center" colspan="2">Cotización</th>
                                             <th class="text-18 text-grey-goto text-center">Proveedor</th>
                                             <th class="text-18 text-grey-goto text-center">Fecha de Servicio</th>
                                             <th class="text-18 text-grey-goto text-center">Fecha a Pagar</th>
@@ -171,13 +170,15 @@
                                                                 $proveedor=ucwords(strtolower($proveedor->nombre_comercial));
                                                             @endphp
                                                         @endforeach
-                                                        <td class="text-center">
-                                                            <input type="checkbox"  onclick="if (this.checked) sumar({{$arra_prov_total_-$pagado}}); else restar({{$arra_prov_total_-$pagado}})" name="chk_id[]" value="{{$paquetes->id}}(_){{$key}}(_){{$arra_prov_total_}}(_){{$pagado}}(_){{$titulo}}(_){{$proveedor}}(_){{$arra_fecha_serv[$key]}}(_){{$arra_fecha_venc[$key]}}">
+                                                        <td class="text-left" colspan="2">
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input type="checkbox" class="form-check-input" onclick="if (this.checked) sumar({{$arra_prov_total_-$pagado}}); else restar({{$arra_prov_total_-$pagado}})" name="chk_id[]" value="{{$paquetes->id}}(_){{$key}}(_){{$arra_prov_total_}}(_){{$pagado}}(_){{$titulo}}(_){{$proveedor}}(_){{$arra_fecha_serv[$key]}}(_){{$arra_fecha_venc[$key]}}">
+                                                                    <b class="text-primary">{{$titulo}} <span class="text-warning">x</span> {{$cotizaciones->nropersonas}} <span class="text-warning">(</span>{{$cotizaciones->duracion}} dias<span class="text-warning">)</span></b>
+                                                            </label>
+                                                            </div>
                                                         </td>
-                                                        <td>
-
-                                                            <b class="text-primary">{{$titulo}} <span class="text-warning">x</span> {{$cotizaciones->nropersonas}} <span class="text-warning">(</span>{{$cotizaciones->duracion}} dias<span class="text-warning">)</span></b>                                                          </td>
-                                                        <td>
+                                                         <td>
                                                             <b>{{$proveedor}}</b>
                                                         </td>
                                                         <td class="text-right"><b>{{fecha_peru($arra_fecha_serv[$key])}}</b></td>

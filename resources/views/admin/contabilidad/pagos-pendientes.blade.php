@@ -35,21 +35,20 @@ use Carbon\Carbon;
         <div class="col-lg-12">
             <div class="card w-100">
                 <div class="card-body">
-
                     <ul class="nav nav-tabs nav-justified">
-                        <li class="nav-item active"><a data-toggle="tab" href="#home" class="nav-link active rounded-0">HOTELS</a></li>
-                        <li class="nav-item"><a data-toggle="tab" href="#menu1" class="nav-link rounded-0">TOURS</a></li>
-                        <li class="nav-item"><a data-toggle="tab" href="#menu2" class="nav-link rounded-0">MOVILID</a></li>
-                        <li class="nav-item"><a data-toggle="tab" href="#menu3" class="nav-link rounded-0">REPRESENT</a></li>
-                        <li class="nav-item"><a data-toggle="tab" href="#menu4" class="nav-link rounded-0">ENTRANCES</a></li>
-                        <li class="nav-item"><a data-toggle="tab" href="#menu5" class="nav-link rounded-0">FOOD</a></li>
-                        <li class="nav-item"><a data-toggle="tab" href="#menu6" class="nav-link rounded-0">TRAINS</a></li>
-                        <li class="nav-item"><a data-toggle="tab" href="#menu7" class="nav-link rounded-0">FLIGHTS</a></li>
-                        <li class="nav-item"><a data-toggle="tab" href="#menu8" class="nav-link rounded-0">OTHERS</a></li>
+                        <li class="nav-item @if($grupo=='HOTELS'){{'active'}}@endif"><a data-toggle="tab" href="#home" class="nav-link @if($grupo=='HOTELS'){{'active'}}@endif rounded-0">HOTELS</a></li>
+                        <li class="nav-item @if($grupo=='TOURS'){{'active'}}@endif"><a data-toggle="tab" href="#menu1" class="nav-link @if($grupo=='TOURS'){{'active'}}@endif rounded-0">TOURS</a></li>
+                        <li class="nav-item @if($grupo=='MOVILID'){{'active'}}@endif"><a data-toggle="tab" href="#menu2" class="nav-link @if($grupo=='MOVILID'){{'active'}}@endif rounded-0">MOVILID</a></li>
+                        <li class="nav-item @if($grupo=='REPRESENT'){{'active'}}@endif"><a data-toggle="tab" href="#menu3" class="nav-link @if($grupo=='REPRESENT'){{'active'}}@endif rounded-0">REPRESENT</a></li>
+                        <li class="nav-item @if($grupo=='ENTRANCES'){{'active'}}@endif"><a data-toggle="tab" href="#menu4" class="nav-link @if($grupo=='ENTRANCES'){{'active'}}@endif rounded-0">ENTRANCES</a></li>
+                        <li class="nav-item @if($grupo=='FOOD'){{'active'}}@endif"><a data-toggle="tab" href="#menu5" class="nav-link @if($grupo=='FOOD'){{'active'}}@endif rounded-0">FOOD</a></li>
+                        <li class="nav-item @if($grupo=='TRAINS'){{'active'}}@endif"><a data-toggle="tab" href="#menu6" class="nav-link @if($grupo=='TRAINS'){{'active'}}@endif rounded-0">TRAINS</a></li>
+                        <li class="nav-item @if($grupo=='FLIGHTS'){{'active'}}@endif"><a data-toggle="tab" href="#menu7" class="nav-link @if($grupo=='FLIGHTS'){{'active'}}@endif rounded-0">FLIGHTS</a></li>
+                        <li class="nav-item @if($grupo=='OTHERS'){{'active'}}@endif"><a data-toggle="tab" href="#menu8" class="nav-link @if($grupo=='OTHERS'){{'active'}}@endif rounded-0">OTHERS</a></li>
                     </ul>
 
                     <div class="tab-content">
-                        <div id="home" class="tab-pane fade show active">
+                        <div id="home" class="tab-pane fade @if($grupo=='HOTELS'){{'show active'}}@endif">
                             <div class="row mt-3">
 
                                 <div class="col-12">
@@ -104,7 +103,6 @@ use Carbon\Carbon;
                                                             {{Session::get('message')}}
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -121,7 +119,7 @@ use Carbon\Carbon;
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
                                                                 <a href="{{route('descargar_consulta_h_path',$consultas->id)}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
-                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','h')"><i class="fa fa-trash fa-2x"></i></a>
                                                             </p>
                                                         </form>
                                                     </div>
@@ -132,7 +130,7 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                         </div>
-                        <div id="menu1" class="tab-pane fade">
+                        <div id="menu1" class="tab-pane fade @if($grupo=='TOURS'){{'show active'}}@endif">
                             <div class="row mt-3 my-3">
                                 <div class="col-md-12">
                                     <div class="card w-100">
@@ -183,45 +181,26 @@ use Carbon\Carbon;
                                                             {{Session::get('message')}}
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($consulta_serv->where('nombre','TOURS') as $consultas)
-                                                    <div class="col-md-2 text-center">
-                                                        <form action="{{route('list_fechas_serv_show_path')}}" method="post">
+                                                @foreach($consulta_serv->where('grupo','TOURS') as $consultas)
+                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
                                                             {{csrf_field()}}
+                                                            <input type="hidden" name="grupo" value="TOURS">
                                                             <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
-                                                            <input type="hidden" name="grupo" value="{{$consultas->nombre}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <span class="font-weight-bold text-18">{{strftime("%A %d de %B de %Y - %H:%M:%S", strtotime(str_replace('-','/', $consultas->updated_at)))}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
                                                             </a>
-                                                            <a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'TOURS'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
                                                         </form>
-                                                    </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="eliminar_{{$consultas->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                        <div class="modal-dialog modal-sm" role="document">
-                                                            <div class="modal-content">
-                                                                {{--<div class="modal-header">--}}
-                                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                                {{--<h4 class="modal-title" id="myModalLabel">Modal title</h4>--}}
-                                                                {{--</div>--}}
-                                                                <form action="{{route('consulta_delete_path', $consultas->id)}}" method="post">
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="_method" value="delete">
-                                                                    <div class="modal-body">
-                                                                        <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="submit" class="btn btn-danger">Confirmar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -230,7 +209,7 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                         </div>
-                        <div id="menu2" class="tab-pane fade">
+                        <div id="menu2" class="tab-pane fade @if($grupo=='MOVILID'){{'show active'}}@endif">
                             <div class="row mt-3 my-3">
                                 <div class="col-md-12">
                                     <div class="card w-100">
@@ -281,54 +260,36 @@ use Carbon\Carbon;
                                                             {{Session::get('message')}}
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($consulta_serv->where('nombre','MOVILID') as $consultas)
-                                                    <div class="col-md-2 text-center">
-                                                        <form action="{{route('list_fechas_serv_show_path')}}" method="post">
+                                                @foreach($consulta_serv->where('grupo','MOVILID') as $consultas)
+                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
                                                             {{csrf_field()}}
+                                                            <input type="hidden" name="grupo" value="MOVILID">
                                                             <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
-                                                            <input type="hidden" name="grupo" value="{{$consultas->nombre}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <span class="font-weight-bold text-18">{{strftime("%A %d de %B de %Y - %H:%M:%S", strtotime(str_replace('-','/', $consultas->updated_at)))}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
                                                             </a>
-                                                            <a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'MOVILID'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
                                                         </form>
-                                                    </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="eliminar_{{$consultas->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                        <div class="modal-dialog modal-sm" role="document">
-                                                            <div class="modal-content">
-                                                                {{--<div class="modal-header">--}}
-                                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                                {{--<h4 class="modal-title" id="myModalLabel">Modal title</h4>--}}
-                                                                {{--</div>--}}
-                                                                <form action="{{route('consulta_delete_path', $consultas->id)}}" method="post">
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="_method" value="delete">
-                                                                    <div class="modal-body">
-                                                                        <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="submit" class="btn btn-danger">Confirmar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 @endforeach
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="menu3" class="tab-pane fade">
+                        <div id="menu3" class="tab-pane fade @if($grupo=='REPRESENT'){{'show active'}}@endif">
                             <div class="row mt-3 my-3">
                                 <div class="col-md-12">
                                     <div class="card w-100">
@@ -379,45 +340,26 @@ use Carbon\Carbon;
                                                             {{Session::get('message')}}
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($consulta_serv->where('nombre','REPRESENT') as $consultas)
-                                                    <div class="col-md-2 text-center">
-                                                        <form action="{{route('list_fechas_serv_show_path')}}" method="post">
+                                                @foreach($consulta_serv->where('grupo','REPRESENT') as $consultas)
+                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
                                                             {{csrf_field()}}
+                                                            <input type="hidden" name="grupo" value="REPRESENT">
                                                             <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
-                                                            <input type="hidden" name="grupo" value="{{$consultas->nombre}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <span class="font-weight-bold text-18">{{strftime("%A %d de %B de %Y - %H:%M:%S", strtotime(str_replace('-','/', $consultas->updated_at)))}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
                                                             </a>
-                                                            <a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'REPRESENT'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
                                                         </form>
-                                                    </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="eliminar_{{$consultas->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                        <div class="modal-dialog modal-sm" role="document">
-                                                            <div class="modal-content">
-                                                                {{--<div class="modal-header">--}}
-                                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                                {{--<h4 class="modal-title" id="myModalLabel">Modal title</h4>--}}
-                                                                {{--</div>--}}
-                                                                <form action="{{route('consulta_delete_path', $consultas->id)}}" method="post">
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="_method" value="delete">
-                                                                    <div class="modal-body">
-                                                                        <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="submit" class="btn btn-danger">Confirmar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -426,7 +368,7 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                         </div>
-                        <div id="menu4" class="tab-pane fade">
+                        <div id="menu4" class="tab-pane fade @if($grupo=='ENTRANCES'){{'show active'}}@endif">
                             <div class="row mt-3">
                                 <div class="col-lg-12">
                                     <table id="lista_liquidaciones"  class="table table-bordered table-striped table-responsive table-hover">
@@ -556,7 +498,7 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                         </div>
-                        <div id="menu5" class="tab-pane fade">
+                        <div id="menu5" class="tab-pane fade @if($grupo=='FOOD'){{'show active'}}@endif">
                             <div class="row mt-3 my-3">
                                 <div class="col-md-12">
                                     <div class="card w-100">
@@ -607,45 +549,26 @@ use Carbon\Carbon;
                                                             {{Session::get('message')}}
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($consulta_serv->where('nombre','FOOD') as $consultas)
-                                                    <div class="col-md-2 text-center">
-                                                        <form action="{{route('list_fechas_serv_show_path')}}" method="post">
+                                                @foreach($consulta_serv->where('grupo','FOOD') as $consultas)
+                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
                                                             {{csrf_field()}}
+                                                            <input type="hidden" name="grupo" value="FOOD">
                                                             <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
-                                                            <input type="hidden" name="grupo" value="{{$consultas->nombre}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <span class="font-weight-bold text-18">{{strftime("%A %d de %B de %Y - %H:%M:%S", strtotime(str_replace('-','/', $consultas->updated_at)))}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
                                                             </a>
-                                                            <a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'FOOD'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
                                                         </form>
-                                                    </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="eliminar_{{$consultas->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                        <div class="modal-dialog modal-sm" role="document">
-                                                            <div class="modal-content">
-                                                                {{--<div class="modal-header">--}}
-                                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                                {{--<h4 class="modal-title" id="myModalLabel">Modal title</h4>--}}
-                                                                {{--</div>--}}
-                                                                <form action="{{route('consulta_delete_path', $consultas->id)}}" method="post">
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="_method" value="delete">
-                                                                    <div class="modal-body">
-                                                                        <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="submit" class="btn btn-danger">Confirmar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -654,7 +577,7 @@ use Carbon\Carbon;
                                 </div>
                             </div>
                         </div>
-                        <div id="menu6" class="tab-pane fade">
+                        <div id="menu6" class="tab-pane fade @if($grupo=='TRAINS'){{'show active'}}@endif">
                             <div class="row mt-3 my-3">
                                 <div class="col-md-12">
                                     <div class="card w-100">
@@ -705,54 +628,36 @@ use Carbon\Carbon;
                                                             {{Session::get('message')}}
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($consulta_serv->where('nombre','TRAINS') as $consultas)
-                                                    <div class="col-md-2 text-center">
-                                                        <form action="{{route('list_fechas_serv_show_path')}}" method="post">
+                                                @foreach($consulta_serv->where('grupo','TRAINS') as $consultas)
+                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
                                                             {{csrf_field()}}
+                                                            <input type="hidden" name="grupo" value="TRAINS">
                                                             <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
-                                                            <input type="hidden" name="grupo" value="{{$consultas->nombre}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <span class="font-weight-bold text-18">{{strftime("%A %d de %B de %Y - %H:%M:%S", strtotime(str_replace('-','/', $consultas->updated_at)))}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
                                                             </a>
-                                                            <a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'TRAINS'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
                                                         </form>
                                                     </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="eliminar_{{$consultas->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                        <div class="modal-dialog modal-sm" role="document">
-                                                            <div class="modal-content">
-                                                                {{--<div class="modal-header">--}}
-                                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                                {{--<h4 class="modal-title" id="myModalLabel">Modal title</h4>--}}
-                                                                {{--</div>--}}
-                                                                <form action="{{route('consulta_delete_path', $consultas->id)}}" method="post">
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="_method" value="delete">
-                                                                    <div class="modal-body">
-                                                                        <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="submit" class="btn btn-danger">Confirmar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 @endforeach
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="menu7" class="tab-pane fade">
+                        <div id="menu7" class="tab-pane fade @if($grupo=='FLIGHTS'){{'show active'}}@endif">
                             <div class="row mt-3 my-3">
                                 <div class="col-md-12">
                                     <div class="card w-100">
@@ -803,54 +708,36 @@ use Carbon\Carbon;
                                                             {{Session::get('message')}}
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($consulta_serv->where('nombre','FLIGHTS') as $consultas)
-                                                    <div class="col-md-2 text-center">
-                                                        <form action="{{route('list_fechas_serv_show_path')}}" method="post">
+                                                @foreach($consulta_serv->where('grupo','FLIGHTS') as $consultas)
+                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
                                                             {{csrf_field()}}
+                                                            <input type="hidden" name="grupo" value="FLIGHTS">
                                                             <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
-                                                            <input type="hidden" name="grupo" value="{{$consultas->nombre}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <span class="font-weight-bold text-18">{{strftime("%A %d de %B de %Y - %H:%M:%S", strtotime(str_replace('-','/', $consultas->updated_at)))}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
                                                             </a>
-                                                            <a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'FLIGHTS'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
                                                         </form>
                                                     </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="eliminar_{{$consultas->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                        <div class="modal-dialog modal-sm" role="document">
-                                                            <div class="modal-content">
-                                                                {{--<div class="modal-header">--}}
-                                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                                {{--<h4 class="modal-title" id="myModalLabel">Modal title</h4>--}}
-                                                                {{--</div>--}}
-                                                                <form action="{{route('consulta_delete_path', $consultas->id)}}" method="post">
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="_method" value="delete">
-                                                                    <div class="modal-body">
-                                                                        <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="submit" class="btn btn-danger">Confirmar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 @endforeach
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="menu8" class="tab-pane fade">
+                        <div id="menu8" class="tab-pane fade @if($grupo=='OTHERS'){{'show active'}}@endif">
                             <div class="row mt-3 my-3">
                                 <div class="col-md-12">
                                     <div class="card w-100">
@@ -901,45 +788,26 @@ use Carbon\Carbon;
                                                             {{Session::get('message')}}
                                                         </div>
                                                     @endif
-
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($consulta_serv->where('nombre','OTHERS') as $consultas)
-                                                    <div class="col-md-2 text-center">
-                                                        <form action="{{route('list_fechas_serv_show_path')}}" method="post">
+                                                @foreach($consulta_serv->where('grupo','OTHERS') as $consultas)
+                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
                                                             {{csrf_field()}}
+                                                            <input type="hidden" name="grupo" value="OTHERS">
                                                             <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
-                                                            <input type="hidden" name="grupo" value="{{$consultas->nombre}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <span class="font-weight-bold text-18">{{strftime("%A %d de %B de %Y - %H:%M:%S", strtotime(str_replace('-','/', $consultas->updated_at)))}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
                                                             </a>
-                                                            <a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'OTHERS'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
                                                         </form>
-                                                    </div>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="eliminar_{{$consultas->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                        <div class="modal-dialog modal-sm" role="document">
-                                                            <div class="modal-content">
-                                                                {{--<div class="modal-header">--}}
-                                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                                {{--<h4 class="modal-title" id="myModalLabel">Modal title</h4>--}}
-                                                                {{--</div>--}}
-                                                                <form action="{{route('consulta_delete_path', $consultas->id)}}" method="post">
-                                                                    {{csrf_field()}}
-                                                                    <input type="hidden" name="_method" value="delete">
-                                                                    <div class="modal-body">
-                                                                        <p class="text-grey-goto text-18"><b><i class="fa fa-exclamation-triangle fa-pull-left fa-2x text-danger" aria-hidden="true"></i> La consulta se eliminara permanentemente.</b></p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default mx-2" data-dismiss="modal">Cancelar</button>
-                                                                        <button type="submit" class="btn btn-danger">Confirmar</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -954,7 +822,7 @@ use Carbon\Carbon;
         </div>
     </div>
     <script>
-        function eliminar_consulta(id) {
+        function eliminar_consulta(id,tipo) {
             // alert('holaaa');
             swal({
                 title: 'MENSAJE DEL SISTEMA',
@@ -970,11 +838,11 @@ use Carbon\Carbon;
                         'X-CSRF-TOKEN': $('[name="_token"]').val()
                     }
                 });
-                $.post('{{route('consulta_delete_path')}}', 'id='+id, function(data) {
+                $.post('{{route('consulta_delete_path')}}', 'id='+id+'&tipo='+tipo, function(data) {
 //                $.post('/admin/destination/delete', 'id='+id, function(data) {
                     if(data==1){
                         // $("#lista_destinos_"+id).remove();
-                        $("#c_h_"+id).remove();
+                        $("#c_"+tipo+"_"+id).remove();
                     }
                 }).fail(function (data) {
 

@@ -15,19 +15,19 @@
             <li class="active">Entrances</li>
         </ol>
     </div>
-    <div class="panel panel-default">
-        <div class="panel-body">
+    <div class="card w-100">
+        <div class="card-body">
             {{--<form action="{{route('guardar_liquidacion_reservas_path')}}" method="post">--}}
             <div class="col-lg-12">
                 <h4 class="text-unset">LIQUIDACION DESDE: <span class="text-green-goto">{{fecha_peru($fecha_ini)}}</span> - HASTA: <span class="text-green-goto">{{fecha_peru($fecha_fin)}}</span></h4>
                 <hr>
             </div>
-            <ul class="nav nav-tabs">
-                <li @if($tipo_cheque=='C')class="active" @endif><a data-toggle="tab" href="#confactura">CON FACTURA</a></li>
-                <li @if($tipo_cheque=='S')class="active" @endif><a data-toggle="tab" href="#sinfactura">SIN FACTURA</a></li>
+            <ul class="nav nav-tabs nav-justified">
+                <li class="nav-item @if($tipo_cheque=='C'){{'active'}}@endif"><a data-toggle="tab" href="#confactura" class="nav-link rounded-0 @if($tipo_cheque=='C'){{'active show'}}@endif">CON FACTURA</a></li>
+                <li class="nav-item @if($tipo_cheque=='S'){{'active'}}@endif" ><a data-toggle="tab" href="#sinfactura" class="nav-link rounded-0 @if($tipo_cheque=='S'){{'active show'}}@endif">SIN FACTURA</a></li>
             </ul>
             <div class="tab-content">
-                <div id="confactura" class="tab-pane fade @if($tipo_cheque=='C') in active @endif">
+                <div id="confactura" class="tab-pane fade @if($tipo_cheque=='C') active show @endif">
                     <div class="col-lg-12">
                         <h4>LIQUIDACION DE BOLETOS TURISTICOS</h4>
                         <table  class="table table-bordered table-striped table-responsive table-hover">
@@ -61,19 +61,19 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}"  @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}"  @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}</td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -84,14 +84,14 @@
                                                             $total_BTG+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -152,20 +152,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -176,14 +176,14 @@
                                                             $total_CAT+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -243,20 +243,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -267,14 +267,14 @@
                                                             $total_KORI+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -334,20 +334,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -358,14 +358,14 @@
                                                             $total_MAPI+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -425,20 +425,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -449,14 +449,14 @@
                                                             $total_OTROS+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -516,20 +516,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -540,14 +540,14 @@
                                                             $total_BUSES+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -613,7 +613,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="sinfactura" class="tab-pane fade @if($tipo_cheque=='S') in active @endif">
+                <div id="sinfactura" class="tab-pane fade @if($tipo_cheque=='S') active show @endif">
                     <div class="col-lg-12">
                         <h4>LIQUIDACION DE BOLETOS TURISTICOS</h4>
                         <table  class="table table-bordered table-striped table-responsive table-hover">
@@ -647,19 +647,19 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}"  @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}"  @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}</td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -670,14 +670,14 @@
                                                             $total_BTG+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -738,20 +738,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -762,14 +762,14 @@
                                                             $total_CAT+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -829,20 +829,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -853,14 +853,14 @@
                                                             $total_KORI+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -920,20 +920,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -944,14 +944,14 @@
                                                             $total_MAPI+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -1011,20 +1011,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -1035,14 +1035,14 @@
                                                             $total_OTROS+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
@@ -1102,20 +1102,20 @@
                                                     @endphp
                                                 @endif
                                                 <tr>
-                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="fecha_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         <input type="hidden" name="servicio_liquidacion[]" value="{{$itinerario_servicio->id}}">
                                                         {{fecha_peru($itinerario_cotizacion->fecha)}}
                                                     </td>
-                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$servicio->clase}}</td>
-                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$itinerario_servicio->nombre}}</td>
-                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>{{$liquidacion->nropersonas}}</td>
-                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="clase_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$servicio->clase}}</td>
+                                                    <td id="servicio_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$itinerario_servicio->nombre}}</td>
+                                                    <td id="ad_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>{{$liquidacion->nropersonas}}</td>
+                                                    <td id="pax_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @foreach($liquidacion->cotizaciones_cliente as $cotizaciones_cliente)
                                                             {{$cotizaciones_cliente->cliente->nombres}} x {{$liquidacion->nropersonas}}
                                                         @endforeach
                                                     </td>
-                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
-                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="ads_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>${{$itinerario_servicio->precio_proveedor/$liquidacion->nropersonas}}</td>
+                                                    <td id="total_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         ${{$itinerario_servicio->precio_proveedor}}
                                                         @if($itinerario_servicio->precio_proveedor==0 || $itinerario_servicio->precio_proveedor=='')
                                                             @php
@@ -1126,14 +1126,14 @@
                                                             $total_BUSES+=$itinerario_servicio->precio_proveedor;
                                                         @endphp
                                                     </td>
-                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="categoria_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($liquidacion->categorizado=='S')
                                                             {{'Sin factura'}}
                                                         @elseif($liquidacion->categorizado=='C')
                                                             {{'Con factura'}}
                                                         @endif
                                                     </td>
-                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="bg-success"  @else class="bg-danger" @endif>
+                                                    <td id="estado_{{$itinerario_servicio->id}}" @if($itinerario_servicio->liquidacion==2) class="alert alert-success"  @else class="alert alert-danger" @endif>
                                                         @if($itinerario_servicio->liquidacion==1)
                                                             <button id="btn_pagar_{{$itinerario_servicio->id}}" class="btn btn-primary" onclick="pagar_entrada('{{$itinerario_servicio->id}}','{{$itinerario_servicio->precio_proveedor}}')">Pagar</button>
                                                             <i id="check_{{$itinerario_servicio->id}}" class="fa fa-check-square-o text-success fa-2x hide"></i>
