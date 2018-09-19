@@ -57,7 +57,8 @@ class OperacionesController extends Controller
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
                 foreach ($pqts->itinerario_cotizaciones->sortby('fecha') as $itinerario) {
                     foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
-                        $array_itinerario_hora[$itinerario.'_'.$servicio->servicio->grupo.'_'.$servicio->hora_llegada]='';
+//                        $array_itinerario_hora[$itinerario->id.'_'.$servicio->servicio->grupo.'_'.$servicio->hora_llegada]='';
+                        $array_itinerario_hora[$itinerario->id.'_'.$servicio->servicio->grupo.'_'.$servicio->hora_llegada]='';
                     }
                 }
             }

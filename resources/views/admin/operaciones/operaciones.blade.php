@@ -96,18 +96,21 @@
                     @endforeach
                     @foreach($cotizacion->paquete_cotizaciones->where('estado','2') as $pqts)
                         @foreach($pqts->itinerario_cotizaciones->sortby('fecha') as $itinerario)
+                            @php
+                                $pre_hora='';
+                            @endphp
+                            <tr>
+                                <td>{{fecha_peru($itinerario->fecha)}}</td>
+                                <td>{{$cotizacion->nropersonas}}</td>
+                                <td>
+                                    @foreach($clientes_ as $cli)
+                                    {{$cli}}</br>
+                                    @endforeach
+                                </td>
+                                <td>{{$cotizacion->web}}</td>
+                                <td>{{$servicio->s_p}}</td>
+                                <td>{{$cotizacion->idioma_pasajeros}}</td>
                             @foreach($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio)
-                                <tr>
-                                    <td>{{fecha_peru($itinerario->fecha)}}</td>
-                                    <td>{{$cotizacion->nropersonas}}</td>
-                                    <td>
-                                        @foreach($clientes_ as $cli)
-                                        {{$cli}}</br>
-                                        @endforeach
-                                    </td>
-                                    <td>{{$cotizacion->web}}</td>
-                                    <td>{{$servicio->s_p}}</td>
-                                    <td>{{$cotizacion->idioma_pasajeros}}</td>
                                 @php
                                     $serv_txt='';
                                     $valor='';
@@ -117,17 +120,21 @@
                                         $serv_txt=$serv->localizacion;
                                     @endphp
                                     <td>{{$serv_txt}}</td>
-                                    <td><b class="text-success">{{$servicio->hora_llegada}}</b></td>
-                                    @php
-                                        $prov_rs='';
-                                        $prov_celular='';
-                                    @endphp
-                                    @foreach($proveedores->where('id',$servicio->proveedor_id) as $prov)
+                                    @if($pre_hora!=$servicio->hora_llegada)
                                         @php
-                                            $prov_rs=$prov->razon_social;
-                                            $prov_celular=$prov->celular;
+                                            $pre_hora=$servicio->hora_llegada;
                                         @endphp
-                                    @endforeach
+                                        <td><b class="text-success">{{$servicio->hora_llegada}}</b></td>
+                                        @php
+                                            $prov_rs='';
+                                            $prov_celular='';
+                                        @endphp
+                                        @foreach($proveedores->where('id',$servicio->proveedor_id) as $prov)
+                                            @php
+                                                $prov_rs=$prov->razon_social;
+                                                $prov_celular=$prov->celular;
+                                            @endphp
+                                        @endforeach
                                         @if($serv->grupo=='TOURS')
                                             <td>
                                                 <p>{{$serv->nombre}}</p>
@@ -143,7 +150,6 @@
                                         @else
                                             <td></td>
                                         @endif
-
                                         @if($serv->grupo=='REPRESENT' && $serv->tipoServicio=='TRANSFER')
                                             <td>
                                                 <p>{{$serv->nombre}}</p>
@@ -298,10 +304,10 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        @endif
                                 @endforeach
-                                </tr>
                             @endforeach
-
+                            </tr>
                         @endforeach
                     @endforeach
                 @endforeach
