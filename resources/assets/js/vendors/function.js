@@ -2894,7 +2894,7 @@ function Enviar_hora_reserva(id) {
                 else{
                     swal(
                         'MENSAJE DEL SISTEMA',
-                        'Error al guardar la hora',
+                        'Error, la hora no tiene el formato correcto "hh:mm"',
                         'warning'
                     )
                 }
@@ -2926,7 +2926,7 @@ function Enviar_hora_reserva_hotel(id) {
                 else{
                     swal(
                         'MENSAJE DEL SISTEMA',
-                        'Error al guardar la hora',
+                        'Error, la hora no tiene el formato correcto "hh:mm"',
                         'warning'
                     )
                 }

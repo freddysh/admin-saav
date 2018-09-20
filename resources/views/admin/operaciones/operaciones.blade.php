@@ -99,18 +99,18 @@
                             @php
                                 $pre_hora='';
                             @endphp
-                            <tr>
-                                <td>{{fecha_peru($itinerario->fecha)}}</td>
-                                <td>{{$cotizacion->nropersonas}}</td>
-                                <td>
-                                    @foreach($clientes_ as $cli)
-                                    {{$cli}}</br>
-                                    @endforeach
-                                </td>
-                                <td>{{$cotizacion->web}}</td>
-                                <td>{{$servicio->s_p}}</td>
-                                <td>{{$cotizacion->idioma_pasajeros}}</td>
                             @foreach($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio)
+                                <tr>
+                                    <td>{{fecha_peru($itinerario->fecha)}}</td>
+                                    <td>{{$cotizacion->nropersonas}}</td>
+                                    <td>
+                                        @foreach($clientes_ as $cli)
+                                        {{$cli}}</br>
+                                        @endforeach
+                                    </td>
+                                    <td>{{$cotizacion->web}}</td>
+                                    <td>{{$servicio->s_p}}</td>
+                                    <td>{{$cotizacion->idioma_pasajeros}}</td>
                                 @php
                                     $serv_txt='';
                                     $valor='';
@@ -120,21 +120,17 @@
                                         $serv_txt=$serv->localizacion;
                                     @endphp
                                     <td>{{$serv_txt}}</td>
-                                    @if($pre_hora!=$servicio->hora_llegada)
+                                    <td><b class="text-success">{{$servicio->hora_llegada}}</b></td>
+                                    @php
+                                        $prov_rs='';
+                                        $prov_celular='';
+                                    @endphp
+                                    @foreach($proveedores->where('id',$servicio->proveedor_id) as $prov)
                                         @php
-                                            $pre_hora=$servicio->hora_llegada;
+                                            $prov_rs=$prov->razon_social;
+                                            $prov_celular=$prov->celular;
                                         @endphp
-                                        <td><b class="text-success">{{$servicio->hora_llegada}}</b></td>
-                                        @php
-                                            $prov_rs='';
-                                            $prov_celular='';
-                                        @endphp
-                                        @foreach($proveedores->where('id',$servicio->proveedor_id) as $prov)
-                                            @php
-                                                $prov_rs=$prov->razon_social;
-                                                $prov_celular=$prov->celular;
-                                            @endphp
-                                        @endforeach
+                                    @endforeach
                                         @if($serv->grupo=='TOURS')
                                             <td>
                                                 <p>{{$serv->nombre}}</p>
@@ -304,10 +300,10 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        @endif
                                 @endforeach
+                                </tr>
                             @endforeach
-                            </tr>
+
                         @endforeach
                     @endforeach
                 @endforeach

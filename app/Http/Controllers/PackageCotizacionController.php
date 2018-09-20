@@ -2028,12 +2028,21 @@ class PackageCotizacionController extends Controller
         $coti_id=$request->input('coti_id');
         $id=$request->input('id');
         $codigo=$request->input('hora_'.$id);
-        $servicio=ItinerarioServicios::FindOrFail($id);
-        $servicio->hora_llegada=$codigo;
-        if($servicio->save())
-            return 1;
-        else
+        $regexFecha = '/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/';
+        if (!preg_match($regexFecha, $codigo, $matchFecha)){
             return 0;
+        }
+        else{
+            if(strlen($codigo)==4){
+                $codigo='0'.$codigo;
+            }
+            $servicio=ItinerarioServicios::FindOrFail($id);
+            $servicio->hora_llegada=$codigo;
+            if($servicio->save())
+                return 1;
+            else
+                return 0;
+        }
 //        return redirect()->route('book_show_path',$coti_id);
     }
     public function add_cod_hotel_verif(Request $request)
@@ -2041,13 +2050,23 @@ class PackageCotizacionController extends Controller
         $coti_id=$request->input('coti_id');
         $id=$request->input('id');
         $codigo=$request->input('code_'.$id);
-        $hotel=PrecioHotelReserva::FindOrFail($id);
-        $hotel->codigo_verificacion=$codigo;
-
-        if($hotel->save())
-            return 1;
-        else
+        $regexFecha = '/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/';
+        if (!preg_match($regexFecha, $codigo, $matchFecha)){
             return 0;
+        }
+        else{
+            if(strlen($codigo)==4){
+                $codigo='0'.$codigo;
+            }
+            $hotel=PrecioHotelReserva::FindOrFail($id);
+            $hotel->codigo_verificacion=$codigo;
+
+            if($hotel->save())
+                return 1;
+            else
+                return 0;
+        }
+
 //        return redirect()->route('book_show_path',$coti_id);
 
     }
