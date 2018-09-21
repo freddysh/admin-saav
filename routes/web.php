@@ -1160,3 +1160,7 @@ Route::get('admin/contabilidad/pagos/pendientes/serv/consulta/{id}/{grupo}/pdf',
     'uses' => 'ContabilidadController@consulta_s_pdf',
     'as' => 'descargar_consulta_s_path',
 ]);
+Route::post('admin/reservas/notas/guardar', [
+    'uses' => 'BookController@guardar_notas',
+    'as' => 'reservas_guadar_notas_path',
+]);

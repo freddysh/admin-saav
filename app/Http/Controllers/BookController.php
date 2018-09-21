@@ -790,5 +790,18 @@ class BookController extends Controller
             return 0;
         }
     }
+    public function guardar_notas(Request $request){
+        $id=$request->input('id');
+        $nota=$request->input('txt_nota');
+        $iti=ItinerarioCotizaciones::find($id);
+        $iti->notas=$nota;
+        if($iti->save()){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+
 
 }

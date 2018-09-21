@@ -5913,3 +5913,29 @@ function validarSiNumero(numero){
     //     flat=false;
     return flat;
 }
+function guardar_nota(id) {
+    console.log('nueva nota');
+
+        // Enviamos el formulario usando AJAX
+        $.ajax({
+            type: 'POST',
+            url: $('#guardar_notas_'+id).attr('action'),
+            data: $('#guardar_notas_'+id).serialize(),
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend: function(data1){
+                $('#rpt_nota_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+            success: function(data){
+                if(data==1){
+                    $('#rpt_nota_'+id).removeClass('text-danger');
+                    $('#rpt_nota_'+id).addClass('text-success');
+                    $('#rpt_nota_'+id).html('Nota guardada correctamente');
+                }
+                else{
+                    $('#rpt_nota_'+id).removeClass('text-success');
+                    $('#rpt_nota_'+id).addClass('text-danger');
+                    $('#rpt_nota_'+id).html('Error, no se pudo guardar la nota');
+                }
+            }
+        });
+}

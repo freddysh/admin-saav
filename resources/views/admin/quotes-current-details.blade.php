@@ -230,7 +230,7 @@
                                     <div class="col text-right">
                                         <a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a>
                                         <a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a>
-                                        <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.travel/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
+                                        <a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.com.pe/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a>
                                     </div>
                                 </div>
 
@@ -281,46 +281,46 @@
                                         </a>
                                         <div class="modal fade" id="Modal_pedir_info_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
-                                                <form id="ask_request_{{$paquete->id}}" action="{{route('package_cotizacion_ask_information_path')}}" method="post">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLongTitle">Request Information</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="col-auto">
-                                                                <div class="input-group mb-2">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text">Name</div>
-                                                                    </div>
-                                                                    <input type="text" class="form-control" id="r_name" name="r_name" value="{{$name}}">
+                                                <div class="modal-content">
+                                                    <form id="ask_request_{{$paquete->id}}" action="{{route('package_cotizacion_ask_information_path')}}" method="post">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Request Information</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="col-auto">
+                                                            <div class="input-group mb-2">
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">Name</div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <div class="input-group mb-2">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text">Email</div>
-                                                                    </div>
-                                                                    <input type="text" class="form-control" id="r_email" name="r_email" value="{{$email}}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <b id="response_{{$paquete->id}}" class="text-22"></b>
+                                                                <input type="text" class="form-control" id="r_name" name="r_name" value="{{$name}}">
                                                             </div>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            {{--<input type="hidden" name="estado" value="0">--}}
-                                                            <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
-                                                            <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
-{{--                                                            <input type="hidden" id="pedir_datos_{{$paquete->id}}" name="pedir_datos" value="@if($paquete->pedir_datos>0){{'0'}}@else{{'1'}}@endif">--}}
-                                                            {{csrf_field()}}
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary" onclick="enviar_ask_request('{{$paquete->id}}')">Send</button>
+                                                        <div class="col-auto">
+                                                            <div class="input-group mb-2">
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">Email</div>
+                                                                </div>
+                                                                <input type="text" class="form-control" id="r_email" name="r_email" value="{{$email}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <b id="response_{{$paquete->id}}" class="text-22"></b>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                    <div class="modal-footer">
+                                                        {{--<input type="hidden" name="estado" value="0">--}}
+                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
+                                                        <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
+{{--                                                            <input type="hidden" id="pedir_datos_{{$paquete->id}}" name="pedir_datos" value="@if($paquete->pedir_datos>0){{'0'}}@else{{'1'}}@endif">--}}
+                                                        {{csrf_field()}}
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary" onclick="enviar_ask_request('{{$paquete->id}}')">Send</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -334,7 +334,7 @@
                                             <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas
                                         </a>
                                         <div class="modal fade" id="Modal_notas_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-dialog modal-lg" role="document">
                                                 <form id="ingresar_notas_{{$paquete->id}}" action="{{route('package_cotizacion_notas_path')}}" method="post">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -347,7 +347,7 @@
                                                             <div class="col-auto">
                                                                 <div class="input-group mb-2">
                                                                     <div class="input-group-prepend">
-                                                                        <div class="input-group-text">Notas</div>
+                                                                        <div class="input-group-text">Notas Generales</div>
                                                                     </div>
                                                                     <textarea class="form-control" id="r_dir_notas" name="r_dir_notas" cols="30" rows="10">{{$cotizacion_->notas}}</textarea>
                                                                 </div>

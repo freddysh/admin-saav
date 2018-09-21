@@ -14,6 +14,8 @@ use App\M_Category;
 use App\M_Destino;
 use App\M_Itinerario;
 use App\M_Servicio;
+use App\Mail\ContabilidadEmail;
+use App\Mail\ReservasEmail;
 use App\P_Itinerario;
 use App\P_ItinerarioDestino;
 use App\P_ItinerarioServicios;
@@ -23,6 +25,7 @@ use App\PaqueteCotizaciones;
 use App\PaquetePrecio;
 use App\PrecioHotelReserva;
 
+use App\User;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 use PhpParser\Node\Expr\Array_;
@@ -733,6 +736,25 @@ class PackageCotizacionController extends Controller
 //        return redirect()->route('contabilidad_path',$fecha);
 //return 1;
 
+        $usuario=auth()->guard('admin')->user();
+        $email=$usuario->email;
+//        $email='fredy1432@gmail.com';
+        $name=$usuario->name;
+        $array_emails=[];
+        $emails=User::where('tipo_user','reservas')->get();
+        foreach($emails as $emails_){
+            $array_emails[]=array('email'=>$emails_->email,'name'=>$emails_->name);
+        }
+        $array_emails[]=array('email'=>$email,'name'=>$name);
+        $anio=explode('-',$cotizacion->fecha);
+        $coti_datos='';
+        foreach($cotizacion->cotizaciones_cliente as $clientes){
+            if($clientes->estado==1){
+                $coti_datos='Cod:'.$cotizacion->codigo.' | '.$clientes->cliente->nombres.' '.$clientes->cliente->apellidos.' x '.$cotizacion->nropersonas.' '.date_format(date_create($cotizacion->fecha), ' l jS F Y').'(X'.$cotizacion->nropersonas.')';
+            }
+        }
+        $email_send=Mail::to($email,$name)->send(new ReservasEmail($coti_datos,$anio[0],$array_emails,$email,$name));
+
         if($cotizacion->save())
             return 1;
         else
@@ -804,6 +826,17 @@ class PackageCotizacionController extends Controller
             $cliente_id=$request->input('cliente_id_1');
         }
 
+        for($i=2;$i<=$request->input('txt_travelers1');$i++){
+            $cliente_temp = new Cliente();
+            $cliente_temp->nombres = 'Traveler '.$i;
+            $cliente_temp->estado=1;
+            $cliente_temp->save();
+            $cotizacion_cliente=new CotizacionesCliente();
+            $cotizacion_cliente->cotizaciones_id=$cotizacion_id;
+            $cotizacion_cliente->clientes_id=$cliente_temp->id;
+            $cotizacion_cliente->estado=0;
+            $cotizacion_cliente->save();
+        }
         $txt_day=$request->input('txt_days1');
         $txt_code=strtoupper('GTP-'.$txt_day.'00');
         $txt_title=strtoupper('New package');
@@ -1210,24 +1243,24 @@ class PackageCotizacionController extends Controller
             $cotizacion_id=$cotizacion_plantilla->id;
             $cliente_id=$cliente->id;
 
-            $nroClientes=$request->input('txt_days1_');
-            for($i=2;$i<=$nroClientes;$i++){
-                $cliente_temp = new Cliente();
-                $cliente_temp->nombres = 'PAX '.$i;
-                $cliente_temp->save();
-                $cotizacion_cliente = new CotizacionesCliente();
-                $cotizacion_cliente->cotizaciones_id = $cotizacion_plantilla->id;
-                $cotizacion_cliente->clientes_id = $cliente_temp->id;
-                $cotizacion_cliente->estado = 0;
-                $cotizacion_cliente->save();
-            }
+
         }
         else{
             $cotizacion_id=$request->input('cotizacion_id_');
             $cliente_id=$request->input('cliente_id_');
 
         }
-
+        for($i=2;$i<=$request->input('txt_travelers1_');$i++){
+            $cliente_temp = new Cliente();
+            $cliente_temp->nombres = 'Traveler '.$i;
+            $cliente_temp->estado=1;
+            $cliente_temp->save();
+            $cotizacion_cliente=new CotizacionesCliente();
+            $cotizacion_cliente->cotizaciones_id=$cotizacion_id;
+            $cotizacion_cliente->clientes_id=$cliente_temp->id;
+            $cotizacion_cliente->estado=0;
+            $cotizacion_cliente->save();
+        }
         $p_paquete_id=$request->input('pqt_id');
         $p_paquete=P_Paquete::where('id',$p_paquete_id)->get();
 //        dd($p_paquete);
@@ -2008,6 +2041,24 @@ class PackageCotizacionController extends Controller
         $pqt=PaqueteCotizaciones::FindOrFail($id);
         $pqt->estado=2;
         $pqt->save();
+        $usuario=auth()->guard('admin')->user();
+        $email=$usuario->email;
+//        $email='fredy1432@gmail.com';
+        $name=$usuario->name;
+        $array_emails=[];
+        $emails=User::where('tipo_user','contabilidad')->get();
+        foreach($emails as $emails_){
+            $array_emails[]=array('email'=>$emails_->email,'name'=>$emails_->name);
+        }
+        $array_emails[]=array('email'=>$email,'name'=>$name);
+        $anio=explode('-',$coti->fecha);
+        $coti_datos='';
+        foreach($coti->cotizaciones_cliente as $clientes){
+            if($clientes->estado==1){
+                $coti_datos='Cod:'.$coti->codigo.' | '.$clientes->cliente->nombres.' '.$clientes->cliente->apellidos.' x '.$coti->nropersonas.' '.date_format(date_create($coti->fecha), ' l jS F Y').'(X'.$coti->nropersonas.')';
+            }
+        }
+        $email_send=Mail::to($email,$name)->send(new ContabilidadEmail($coti_datos,$anio[0],$array_emails,$email,$name));
         return redirect()->route('cotizacion_id_show_path',$coti->id);
     }
     public function add_cod_verif(Request $request)

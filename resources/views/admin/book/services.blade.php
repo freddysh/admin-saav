@@ -406,12 +406,44 @@
                                                 {{--<td rowspan="{{$nro_servicios}}"><b class="text-primary">Day {{$itinerario->dias}}</b></td>--}}
                                                 <td class="bg-g-dark text-white" colspan="12">
                                                     <div class="row align-items-center">
-                                                        <div class="col-auto">
+                                                        <div class="col-10">
                                                         <b class="px-2"><i class="fas fa-angle-right"></i> Day {{$itinerario->dias}}</b>
                                                         <b class="text-18 badge badge-g-yellow">{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
                                                         <b>{{$itinerario->titulo}}</b>
                                                         </div>
-                                                        <div class="col">
+                                                        <div class="col-1">
+                                                            <!-- Large modal -->
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg_{{$itinerario->id}}"><i class="fa fa-plus"></i> Notas </button>
+                                                            <div class="modal fade bd-example-modal-lg_{{$itinerario->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg">
+                                                                    <form id="guardar_notas_{{$itinerario->id}}" action="{{route('reservas_guadar_notas_path')}}" method="post">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title text-primary" >Notas para el dia {{$itinerario->dias}}</h5>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <form>
+                                                                                    <div class="form-group">
+                                                                                        <label for="message-text" class="col-form-label text-grey-goto">Notas:</label>
+                                                                                        <textarea class="form-control" name="txt_nota" rows="10">{{$itinerario->notas}}</textarea>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                       <span id="rpt_nota_{{$itinerario->id}}"></span>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                {{csrf_field()}}
+                                                                                <input type="hidden" name="id" value="{{$itinerario->id}}">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                <button type="button" class="btn btn-primary" onclick="guardar_nota('{{$itinerario->id}}')">Guardar nota</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-1">
                                                             <a href="{{route('servicios_add_path',[$cotizacion->id,$itinerario->id,$itinerario->dias])}}"  class="btn btn-link float-right">
                                                                 <i class="fa fa-plus"></i> Servicio
                                                             </a>
