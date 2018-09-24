@@ -53,7 +53,25 @@
                 <tbody>
                 @foreach($day_by_day->itinerario_itinerario_servicios as $servicios)
                     <tr>
-                        <td>{{$servicios->itinerario_servicios_servicio->nombre}}</td>
+                        <td>
+                            @if($servicios->itinerario_servicios_servicio->grupo=='TOURS')
+                                <i class="fas fa-map text-info"></i>
+                            @elseif($servicios->itinerario_servicios_servicio->grupo=='MOVILID')
+                                <i class="fas fa-bus text-info"></i>
+                            @elseif($servicios->itinerario_servicios_servicio->grupo=='REPRESENT')
+                                <i class="fas fa-users text-info"></i>
+                            @elseif($servicios->itinerario_servicios_servicio->grupo=='ENTRANCES')
+                                <i class="fas fa-ticket text-info"></i>
+                            @elseif($servicios->itinerario_servicios_servicio->grupo=='FOOD')
+                                <i class="fas fa-utensils text-info"></i>
+                            @elseif($servicios->itinerario_servicios_servicio->grupo=='TRAINS')
+                                <i class="fas fa-train text-info"></i>
+                            @elseif($servicios->itinerario_servicios_servicio->grupo=='FLIGHTS')
+                                <i class="fas fa-plane text-info"></i>
+                            @elseif($servicios->itinerario_servicios_servicio->grupo=='OTHERS')
+                                <i class="fas fa-question text-info"></i>
+                            @endif
+                            {{$servicios->itinerario_servicios_servicio->nombre}}</td>
                         <td>
                             @if($servicios->itinerario_servicios_servicio->precio_grupo==1)
                                 {{round($servicios->itinerario_servicios_servicio->precio_venta/2,2)}}

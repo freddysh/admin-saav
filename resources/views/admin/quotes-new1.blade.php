@@ -83,7 +83,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="txt_notas" class="font-weight-bold text-secondary">Notas</label>
-                                <textarea  class="form-control" name="txt_notas" id="txt_notas" cols="30" rows="10"></textarea>
+                                <textarea  class="form-control" name="txt_notas" id="txt_notas" cols="30" rows="5"></textarea>
                             </div>
                         </div>
 
@@ -848,7 +848,7 @@
                                             <option value="{{$destino->id}}">{{$destino->destino}}</option>
                                         @endforeach
                                     </select>
-                                    <div class="text-center align-middle col-12 margin-top-5" id="resultado_busqueda" style="height: 500px; overflow-y: auto;">
+                                    <div class="text-left align-middle col-12 margin-top-5" id="resultado_busqueda" style="height: 500px; overflow-y: auto;">
                                     </div>
                                 </div>
                                 <div class="col-1 margin-top-40">

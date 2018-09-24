@@ -23,8 +23,9 @@
                 <label for="txt_pagina" class="font-weight-bold text-secondary">filtrar por pagina</label>
                 <select class="form-control" id="txt_pagina" name="txt_pagina" onchange="mostrar_pqts($('#txt_pagina').val())">
                     <option value="0">Escoja una opcion</option>
-                    <option value="gotoperu.com.pe">gotoperu.com.pe</option>
-                    <option value="expedia.com">expedia.com</option>
+                    <option value="gotoperu.com">gotoperu.com</option>
+                    <option value="expedia.com">expedia</option>
+                    <option value="viator.com">viator</option>
                 </select>
             </div>
         </div>
