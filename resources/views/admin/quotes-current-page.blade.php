@@ -12,11 +12,11 @@
         z-index: 2000;
         }
 
-        ol.example li.placeholder {
+        ol.caja_sort li.placeholder {
         position: relative;
         /** More li styles **/
         }
-        ol.example li.placeholder:before {
+        ol.caja_sort li.placeholder:before {
         position: absolute;
         /** Define arrowhead **/
         }
