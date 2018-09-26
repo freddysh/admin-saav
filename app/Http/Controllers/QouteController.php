@@ -221,6 +221,62 @@ class QouteController extends Controller
         else
             return '0';
     }
+    public function leads(Request $request)
+    {
+        $page=$request->input('page');
+        $mes=$request->input('mes');
+        $anio=$request->input('anio');
+        $user_name=auth()->guard('admin')->user()->name;
+        $user_tipo=auth()->guard('admin')->user()->tipo_user;
+        if($user_tipo=='ventas')
+            $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('posibilidad','100')->get();
+        else
+        $cotizacion=Cotizacion::where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('posibilidad','100')->get();
 
 
+        session()->put('menu-lateral', 'quotes/current');
+        return view('admin.quotes-sales-page-mes',['cotizacion'=>$cotizacion, 'page'=>$page,'mes'=>$mes,'anio'=>$anio,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
+
+    }
+    public function expedia()
+    {
+//        $destinos=M_Destino::get();
+//        $itinerarios=M_Itinerario::get();
+//        $itinerarios_d=M_ItinerarioDestino::get();
+//        $m_servicios=M_Servicio::get();
+//        $p_paquete=P_Paquete::get();
+//        $hotel=Hotel::get();
+////        dd($servicios);
+//        $plan=0;
+//        $id=0;
+//        $cliente_id=0;
+//        $nombres='';
+//        $nacionalidad='';
+//        $email='';
+//        $telefono='';
+//        $travelers=0;
+//        $days=0;
+//        $fecha='';
+//        $web='gotoperu.com';
+//        $idioma_pasajeros='';
+//        $nro_codigo=Cotizacion::where('web',$web)->count()+1;
+//        $codigo='G'.$nro_codigo;
+//        session()->put('menu-lateral', 'quotes/new');
+//        return view('admin.quotes-new1',['destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'p_paquete'=>$p_paquete, 'itinerarios_d'=>$itinerarios_d,'hotel'=>$hotel,
+//            'plan'=>$plan,
+//            'coti_id'=>$id,
+//            'cliente_id'=>$cliente_id,
+//            'nombres'=>$nombres,
+//            'nacionalidad'=>$nacionalidad,
+//            'email'=>$email,
+//            'telefono'=>$telefono,
+//            'travelers'=>$travelers,
+//            'days'=>$days,
+//            'fecha'=>$fecha,
+//            'web'=>$web,
+//            'codigo'=>$codigo,
+//            'idioma_pasajeros'=>$idioma_pasajeros
+//        ]);
+        return view('expedia-import');
+    }
 }

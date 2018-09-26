@@ -121,6 +121,9 @@ class PackageController extends Controller
         $plantilla_pqt= new P_Paquete();
         $plantilla_pqt->codigo='GTP'.$txt_day.$numero_con_ceros;
 
+        if($txt_pagina!='expedia.com')
+            $txt_code='GTP'.$txt_day.$numero_con_ceros;
+
         $paquete=new P_Paquete();
         $paquete->pagina=$txt_pagina;
         $paquete->codigo=$txt_code;
@@ -903,22 +906,26 @@ class PackageController extends Controller
 
     public function generar_codigo_plantilla(Request $request){
         $duracion=$request->input('duracion');
-        $plantillas= P_Paquete::where('duracion',$duracion)->get();
-        $nro=count($plantillas);
+        $tipo_plantilla=$request->input('tipo_plantilla');
+        $pagina=$request->input('pagina');
+        $codigo='';
+        if($pagina=='gotoperu.com') {
+            $plantillas = P_Paquete::where('duracion', $duracion)->where('pagina', $pagina)->get();
+            $nro = count($plantillas);
 //        return $nro;
-        $numero_con_ceros = '';
-        if($nro>0) {
-            $diferencia = 4 - strlen($nro);
+            $numero_con_ceros = '';
+            if ($nro > 0) {
+                $diferencia = 4 - strlen($nro);
 
-            for ($i = 0; $i < $diferencia; $i++) {
-                $numero_con_ceros .= 0;
-            }
+                for ($i = 0; $i < $diferencia; $i++) {
+                    $numero_con_ceros .= 0;
+                }
 
-            $numero_con_ceros .= $nro+1;
+                $numero_con_ceros .= $nro + 1;
+            } else
+                $numero_con_ceros = '0001';
+            $codigo = 'GTP' . $duracion . $numero_con_ceros;
         }
-        else
-            $numero_con_ceros ='0001';
-        $codigo='GTP'.$duracion.$numero_con_ceros;
         return $codigo;
     }
     /**

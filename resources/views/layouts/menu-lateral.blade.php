@@ -5,10 +5,12 @@
         </li>
         <li>
             <a href="{{route('current_quote_page_path', 'gotoperu.com')}}">Leads</a>
-
         </li>
         <li>
-            <a href="#">Sales</a>
+            <a href="{{route('current_quote_page_expedia_path', 'expedia.com')}}">Expedia</a>
+        </li>
+        <li>
+            <a href="{{route('sales_quote_page_path', 'gotoperu.com')}}">Sales</a>
         </li>
         {{--menu lateral para ventas--}}
         {{--<div class="menu-titulo text-center"><a href="!#"  class="link text-grey-goto">QUOTES</a></div>--}}

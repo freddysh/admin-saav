@@ -228,7 +228,10 @@ Route::get('admin/quotes/new/profile',[
     'uses' => 'QouteController@nuevo1',
     'as' => 'quotes_new1_path',
 ]);
-
+Route::get('admin/quotes/expedia/new/profile',[
+    'uses' => 'QouteController@expedia',
+    'as' => 'quotes_new1_expedia_path',
+]);
 Route::post('/admin/quotes/store', [
     'uses' => 'PackageCotizacionController@store',
     'as' => 'package_cotizacion_save_path',
@@ -257,7 +260,14 @@ Route::get('/admin/current-quote/{page}', [
     'uses' => 'PackageCotizacionController@current_cotizacion_page',
     'as' => 'current_quote_page_path',
 ]);
-
+Route::get('/admin/current-quote/expedia/{page}', [
+    'uses' => 'PackageCotizacionController@current_cotizacion_page_expedia',
+    'as' => 'current_quote_page_expedia_path',
+]);
+Route::get('/admin/sales-quote/{page}', [
+    'uses' => 'PackageCotizacionController@sales_cotizacion_page',
+    'as' => 'sales_quote_page_path',
+]);
 
 //
 
@@ -1163,4 +1173,8 @@ Route::get('admin/contabilidad/pagos/pendientes/serv/consulta/{id}/{grupo}/pdf',
 Route::post('admin/reservas/notas/guardar', [
     'uses' => 'BookController@guardar_notas',
     'as' => 'reservas_guadar_notas_path',
+]);
+Route::post('admin/current-quote/leads', [
+    'uses' => 'QouteController@leads',
+    'as' => 'qoute_leads_path',
 ]);

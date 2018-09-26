@@ -3,22 +3,22 @@
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
     <style>
         body.dragging, body.dragging * {
-            cursor: move !important;
+        cursor: move !important;
         }
 
         .dragged {
-            position: absolute;
-            opacity: 0.5;
-            z-index: 2000;
+        position: absolute;
+        opacity: 0.5;
+        z-index: 2000;
         }
 
         ol.caja_sort li.placeholder {
-            position: relative;
-            /** More li styles **/
+        position: relative;
+        /** More li styles **/
         }
         ol.caja_sort li.placeholder:before {
-            position: absolute;
-            /** Define arrowhead **/
+        position: absolute;
+        /** Define arrowhead **/
         }
     </style>
 @stop
@@ -29,63 +29,8 @@
 @section('content')
     <div class="row no-gutters mb-2">
         <div class="col text-center">
-            <a href="{{route('current_quote_page_path', 'gotoperu.com')}}" class="btn btn-block btn-sm @if($page == 'gotoperu.com') btn-success @else btn-light text-secondary  @endif">gotoperu.com</a>
-            @if($page == 'gotoperu.com') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
-        </div>
-        <div class="col text-center">
-            <a href="{{route('current_quote_page_path', 'gotoperu.com.pe')}}" class="btn btn-block btn-sm @if($page == 'gotoperu.com.pe') btn-success @else  btn-light text-secondary @endif">gotoperu.com.pe</a>
-            @if($page == 'gotoperu.com.pe') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
-        </div>
-        <div class="col text-center">
-            <a href="{{route('current_quote_page_path', 'andesviagens.com')}}" class="btn btn-block btn-sm @if($page == 'andesviagens.com') btn-success @else  btn-light text-secondary @endif">andesviagens.com</a>
-            @if($page == 'andesviagens.com') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
-        </div>
-        <div class="col text-center">
-            <a href="{{route('current_quote_page_path', 'machupicchu-galapagos.com')}}" class="btn btn-block btn-sm @if($page == 'machupicchu-galapagos.com') btn-success @else  btn-light text-secondary @endif">machupicchu-galapagos.com</a>
-            @if($page == 'machupicchu-galapagos.com') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
-        </div>
-        <div class="col text-center">
-            <a href="{{route('current_quote_page_path', 'gotolatinamerica.com')}}" class="btn btn-block btn-sm @if($page == 'gotolatinamerica.com') btn-success @else  btn-light text-secondary @endif">gotolatinamerica.com</a>
-            @if($page == 'gotolatinamerica.com') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
-        </div>
-        <div class="col text-center">
-            <a href="{{route('current_quote_page_path', 'expedia.com')}}" class="btn btn-block btn-sm @if($page == 'expedia.com') btn-success @else  btn-light text-secondary @endif">expedia.com</a>
+            <a href="#!" class="btn btn-block btn-sm @if($page == 'expedia.com') btn-success @else  btn-light text-secondary @endif">expedia.com</a>
             @if($page == 'expedia.com') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
-        </div>
-    </div>
-    <div class="row bg-warning py-1 d-none">
-        <div class="col-1 text-right">
-            <span class="text-25">
-                <b>Filtrar</b>
-            </span>
-        </div>
-        @php
-            $mes=date('m');
-            $anio=date('Y');
-        @endphp
-        <div class="col-1 text-right">
-            <span class="text-25">
-                <input name="anio" id="anio" class="form-control" type="text" value="{{$anio}}">
-            </span>
-        </div>
-        <div class="col-2 text-left">
-            <span class="text-25">
-
-                <select name="mes" id="" class="form-control" onchange="mostrarleads('{{$page}}',$(this).val(),$('#anio').val())">
-                    <option value="01" @if($mes=='01'){{'selected'}}@endif>ENERO</option>
-                    <option value="02" @if($mes=='02'){{'selected'}}@endif>FEBRERO</option>
-                    <option value="03" @if($mes=='03'){{'selected'}}@endif>MARZO</option>
-                    <option value="04" @if($mes=='04'){{'selected'}}@endif>ABRIL</option>
-                    <option value="05" @if($mes=='05'){{'selected'}}@endif>MAYO</option>
-                    <option value="06" @if($mes=='06'){{'selected'}}@endif>JUNIO</option>
-                    <option value="07" @if($mes=='07'){{'selected'}}@endif>JULIO</option>
-                    <option value="08" @if($mes=='08'){{'selected'}}@endif>AGOSTO</option>
-                    <option value="09" @if($mes=='09'){{'selected'}}@endif>SEPTIEMBRE</option>
-                    <option value="10" @if($mes=='10'){{'selected'}}@endif>OCTUBRE</option>
-                    <option value="11" @if($mes=='11'){{'selected'}}@endif>NOVIEMBRE</option>
-                    <option value="12" @if($mes=='12'){{'selected'}}@endif>DICIEMBRE</option>
-                </select>
-            </span>
         </div>
     </div>
     <div class="row">
@@ -1241,7 +1186,7 @@
     <div class="row">
         <div class="col text-right">
             <div class="btn-save-fixed btn-save-fixed-plus p-3">
-                <a href="{{route("quotes_new1_path")}}" class="p-3 bg-danger rounded-circle text-white" data-toggle="tooltip" data-placement="top" title="" data-original-title="Create New Plan"><i class="fas fa-plus"></i></a>
+                <a href="{{route("quotes_new1_expedia_path")}}" class="p-3 bg-danger rounded-circle text-white" data-toggle="tooltip" data-placement="top" title="" data-original-title="Create New Plan"><i class="fas fa-plus"></i></a>
             </div>
         </div>
     </div>

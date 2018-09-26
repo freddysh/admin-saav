@@ -24,23 +24,24 @@
                     <div class="col-2">
                         <div class="form-group">
                             <label for="txt_pagina" class="text-secondary font-weight-bold">Pagina</label>
-                            <select class="form-control" id="txt_pagina" name="txt_pagina">
+                            <select class="form-control" id="txt_pagina" name="txt_pagina" onchange="mostrar_codigo_($(this).val())">
                                 <option value="0">Escoja una opcion</option>
-                                <option value="gotoperu.com.pe" @if($itinerary->pagina=='gotoperu.com.pe') {{'selected'}} @endif>gotoperu.com.pe</option>
+                                <option value="gotoperu.com" @if($itinerary->pagina=='gotoperu.com') {{'selected'}} @endif>gotoperu.com</option>
                                 <option value="expedia.com" @if($itinerary->pagina=='expedia.com') {{'selected'}} @endif>expedia.com</option>
+                                <option value="viator.com" @if($itinerary->pagina=='viator.com') {{'selected'}} @endif>viator.com</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-1">
                         <div class="form-group">
                             <label for="txt_day" class="text-secondary font-weight-bold">Duracion</label>
-                            <input type="number" class="form-control" id="txt_day" name="txt_day" placeholder="Days" min="0" onchange="calcular_resumen_edit()"  value="{{$itinerary->duracion}}" readonly="">
+                            <input type="number" class="form-control" id="txt_day" name="txt_day" placeholder="Days" min="0" onchange="calcular_resumen_edit()"  value="{{$itinerary->duracion}}" >
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-2 @if($itinerary->pagina!='expedia.com') d-none @endif" id="txt_codigo_">
                         <div class="form-group">
                             <label for="txt_code" class="text-secondary font-weight-bold">Code</label>
-                            <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Code" value="{{$itinerary->codigo}}" readonly>
+                            <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Code" value="{{$itinerary->codigo}}">
                         </div>
                     </div>
 
@@ -50,7 +51,7 @@
                             <input type="text" class="form-control" id="txt_title" name="txt_title" placeholder="Title"  value="{{$itinerary->titulo}}">
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-5">
                         <label for="txta_description" class="text-secondary font-weight-bold">Titulo</label>
                         <input type="text" class="form-control" id="txta_description" name="txta_description" placeholder="Descripcion"  value="{{$itinerary->descripcion}}">
                     </div>
@@ -1790,6 +1791,14 @@
     </script>
     <script>
         var adjustment;
+        function mostrar_codigo_(page){
+            if(page=='expedia.com')
+                $('#txt_codigo_').removeClass('d-none');
+            else
+                $('#txt_codigo_').addClass('d-none');
+
+        }
+
         $('.caja_sort').sortable({
             connectWith:'.caja_sort',
             // handle:'.title',

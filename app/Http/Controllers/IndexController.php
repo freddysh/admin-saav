@@ -16,10 +16,15 @@ class IndexController extends Controller
     //
     public function index()
     {
+        $user_name=auth()->guard('admin')->user()->name;
+        $user_tipo=auth()->guard('admin')->user()->tipo_user;
         session()->put('menu', 'ventas');
         $page='gotoperu.com';
-        $cotizacion=Cotizacion::where('web', $page)->get();
-        return view('admin.index',['cotizacion'=>$cotizacion, 'page'=>$page]);
+        if($user_tipo=='ventas')
+            $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->get();
+        else
+            $cotizacion=Cotizacion::where('web', $page)->get();
+        return view('admin.index',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
     }
 
     public function inicio()

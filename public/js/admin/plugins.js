@@ -1627,7 +1627,7 @@ function calcular_resumen() {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
             }
         });
-        $.post('/admin/package/gererar-codigo', 'duracion='+dias_1 , function (data) {
+        $.post('/admin/package/gererar-codigo', 'duracion='+dias_1+'&tipo_plantilla=si&pagina='+$('#txt_pagina').val() , function (data) {
             $('#txt_codigo').val(data);
         }).fail(function (data) {
         });
@@ -5938,4 +5938,24 @@ function guardar_nota(id) {
                 }
             }
         });
+}
+function mostrarleads(page,mes,anio){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "../current-quote/leads",
+        data: 'page='+page+'&mes='+mes+'&anio='+anio,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#leads').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#leads').html(data);
+
+        }
+    });
 }
