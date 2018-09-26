@@ -17,6 +17,7 @@ use App\P_Paquete;
 use App\PaqueteCotizaciones;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\Array_;
+use Excel;
 
 class QouteController extends Controller
 {
@@ -240,43 +241,23 @@ class QouteController extends Controller
     }
     public function expedia()
     {
-//        $destinos=M_Destino::get();
-//        $itinerarios=M_Itinerario::get();
-//        $itinerarios_d=M_ItinerarioDestino::get();
-//        $m_servicios=M_Servicio::get();
-//        $p_paquete=P_Paquete::get();
-//        $hotel=Hotel::get();
-////        dd($servicios);
-//        $plan=0;
-//        $id=0;
-//        $cliente_id=0;
-//        $nombres='';
-//        $nacionalidad='';
-//        $email='';
-//        $telefono='';
-//        $travelers=0;
-//        $days=0;
-//        $fecha='';
-//        $web='gotoperu.com';
-//        $idioma_pasajeros='';
-//        $nro_codigo=Cotizacion::where('web',$web)->count()+1;
-//        $codigo='G'.$nro_codigo;
-//        session()->put('menu-lateral', 'quotes/new');
-//        return view('admin.quotes-new1',['destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'p_paquete'=>$p_paquete, 'itinerarios_d'=>$itinerarios_d,'hotel'=>$hotel,
-//            'plan'=>$plan,
-//            'coti_id'=>$id,
-//            'cliente_id'=>$cliente_id,
-//            'nombres'=>$nombres,
-//            'nacionalidad'=>$nacionalidad,
-//            'email'=>$email,
-//            'telefono'=>$telefono,
-//            'travelers'=>$travelers,
-//            'days'=>$days,
-//            'fecha'=>$fecha,
-//            'web'=>$web,
-//            'codigo'=>$codigo,
-//            'idioma_pasajeros'=>$idioma_pasajeros
-//        ]);
-        return view('expedia-import');
+
+        return view('admin.expedia.expedia-import');
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'import_file' => 'required'
+        ]);
+        $path = $request->file('import_file')->getRealPath();
+//        dd($path);
+        $data = Excel::load($path,function($reader){})->get();
+
+//        if($data->count()){
+//            foreach ($data as $key => $value) {
+//                $arr[] = ['title' => $value->nombre, 'description' => $value->description];
+//            }
+//        }
+//        return 'Terminado[name:'.$nombre.',email:'.$email;
     }
 }

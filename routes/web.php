@@ -1178,3 +1178,7 @@ Route::post('admin/current-quote/leads', [
     'uses' => 'QouteController@leads',
     'as' => 'qoute_leads_path',
 ]);
+Route::post('admin/quotes/expedia/new/profile/import', [
+    'uses' => 'QouteController@import',
+    'as' => 'expedia_import_path',
+]);
