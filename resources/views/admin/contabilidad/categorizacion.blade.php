@@ -1,3 +1,9 @@
+@php
+    function fecha_peru($fecha){
+        $fecha=explode('-',$fecha);
+        return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
+    }
+@endphp
 @extends('layouts.admin.contabilidad')
 @section('archivos-css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
@@ -19,8 +25,12 @@
             <table class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
                 @php
                     $dato_cliente='';
+
                 @endphp
-                @foreach($cotizacion as $cotizacion_)
+                @foreach($cotizacion->where('estado','2') as $cotizacion_)
+                    @php
+                        $total=0;
+                    @endphp
                     @foreach($cotizacion_->cotizaciones_cliente as $clientes)
                         @if($clientes->estado==1)
                             @php
@@ -31,7 +41,198 @@
                         {{csrf_field()}}
                         <tr id="lista_venta_{{$cotizacion_->id}}">
                             <td class="col-lg-10">
-                                <span class="badge">New: {{date_format(date_create($cotizacion_->updated_at), 'Y-m-d H:i:s')}} </span> {{$dato_cliente}} x {{$cotizacion_->nropersonas}} {{date_format(date_create($cotizacion_->fecha), 'l jS F Y')}}
+                                <div id="detalle_{{$cotizacion_->id}}"  class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Detalle de la venta</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                @foreach($cotizacion_->paquete_cotizaciones->where('estado','2') as $paquete)
+                                                    <table>
+                                                        <th>
+                                                            <td colspan="2">SERVICE</td>
+                                                            <td>CALCULO</td>
+                                                            <td>SALES</td>
+                                                        </th>
+                                                        @foreach($paquete->itinerario_cotizaciones as $itinerarios)
+                                                            <tr>
+                                                                <td colspan="5" class="bg-grey-goto">
+                                                                    <b class="text-white">Day {{$itinerarios->dias}}</b>
+                                                                    <span class="badge badge-g-yellow text-15">{{fecha_peru($itinerarios->fecha)}}</span>
+                                                                    <b class="text-white">{{$itinerarios->titulo}}</b>
+                                                                </td>
+                                                            </tr>
+                                                            @foreach($itinerarios->itinerario_servicios as $servicios)
+                                                                <tr>
+                                                                    <td>
+                                                                        @if($servicios->servicio->grupo=='TOURS')
+                                                                            <i class="fas fa-map text-info"></i>
+                                                                        @elseif($servicios->servicio->grupo=='MOVILID')
+                                                                            <i class="fas fa-bus text-warning"></i>
+                                                                        @elseif($servicios->servicio->grupo=='REPRESENT')
+                                                                            <i class="fas fa-users text-success"></i>
+                                                                        @elseif($servicios->servicio->grupo=='ENTRANCES')
+                                                                            <i class="fas fa-ticket-alt text-warning"></i>
+                                                                        @elseif($servicios->servicio->grupo=='FOOD')
+                                                                            <i class="fas fa-bus text-danger"></i>
+                                                                        @elseif($servicios->servicio->grupo=='TRAINS')
+                                                                            <i class="fas fa-train text-info"></i>
+                                                                        @elseif($servicios->servicio->grupo=='FLIGHT')
+                                                                            <i class="fas fa-plain text-primary"></i>
+                                                                        @elseif($servicios->servicio->grupo=='OTHERS')
+                                                                            <i class="fas fa-question text-success"></i>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>{{$servicios->servicio->nombre}} (<span class="text-primary">{{$servicios->servicio->tipoServicio}}</span>)</td>
+                                                                    <td><span class="text-warning">{{$servicios->servicio->localizacion}}</span></td>
+                                                                    <td>
+                                                                        @if($servicios->servicio->precio_grupo=='1')
+                                                                            {{round($servicios->precio/$cotizacion_->nropersonas,2)}}<sub>$</sub> <b>x</b> {{$cotizacion_->nropersonas}} <i class="fas fa-male text-primary"></i>
+                                                                        @elseif($servicios->servicio->precio_grupo=='0')
+                                                                            {{$servicios->precio}}<sub>$</sub> <b>x</b> {{$cotizacion_->nropersonas}} <i class="fas fa-male text-primary"></i>
+                                                                        @else
+                                                                            -
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($servicios->servicio->precio_grupo=='1')
+                                                                            {{$servicios->precio}}
+                                                                            @php $total+=$servicios->precio; @endphp
+                                                                        @elseif($servicios->servicio->precio_grupo=='0')
+                                                                            {{$servicios->precio*$cotizacion_->nropersonas}}
+                                                                            @php $total+=$servicios->precio*$cotizacion_->nropersonas; @endphp
+                                                                        @else
+                                                                            -
+                                                                        @endif
+                                                                        <sub>$</sub>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            @foreach($itinerarios->hotel as $hotel)
+                                                                <tr>
+                                                                    <td>{{$hotel->estrellas}} <i class="fa fa-star text-warning" aria-hidden="true"></i></td>
+                                                                    <td>
+                                                                        @if($hotel->personas_s>0)
+                                                                            <p><b>{{$hotel->personas_s}}</b><i class="fa fa-bed"></i></p>
+                                                                        @endif
+                                                                        @if($hotel->personas_d>0)
+                                                                            <p><b>{{$hotel->personas_d}}</b><i class="fa fa-bed"></i> <i class="fa fa-bed"></i></p>
+                                                                        @endif
+                                                                        @if($hotel->personas_m>0)
+                                                                            <p><b>{{$hotel->personas_m}}</b><i class="fa fa-bed"></i> <i class="fa fa-bed"></i></p>
+                                                                        @endif
+                                                                        @if($hotel->personas_t>0)
+                                                                            <p><b>{{$hotel->personas_t}}</b><i class="fa fa-bed"></i> <i class="fa fa-bed"></i> <i class="fa fa-bed"></i></p>
+                                                                        @endif
+                                                                    <td><span class="text-warning">{{$hotel->localizacion}}</span></td>
+                                                                    <td>
+                                                                        @if($hotel->personas_s>0)
+                                                                            <p>${{$hotel->precio_s}} x {{$hotel->personas_s}}</p>
+                                                                        @endif
+                                                                        @if($hotel->personas_d>0)
+                                                                            <p>${{$hotel->precio_d}} x {{$hotel->personas_d}}</p>
+                                                                        @endif
+                                                                        @if($hotel->personas_m>0)
+                                                                            <p>${{$hotel->precio_m}} x {{$hotel->personas_m}}</p>
+                                                                        @endif
+                                                                        @if($hotel->personas_t>0)
+                                                                            <p>${{$hotel->precio_t}} x {{$hotel->personas_t}}</p>
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($hotel->personas_s>0)
+                                                                            @php
+                                                                                $total+=$hotel->precio_s*$hotel->personas_s;
+                                                                            @endphp
+                                                                            <p>${{$hotel->precio_s*$hotel->personas_s}}</p>
+                                                                        @endif
+                                                                        @if($hotel->personas_d>0)
+                                                                            @php
+                                                                                $total+=$hotel->precio_d*$hotel->personas_d;
+                                                                            @endphp
+                                                                            <p>${{$hotel->precio_d*$hotel->personas_d}}</p>
+                                                                        @endif
+                                                                        @if($hotel->personas_m>0)
+                                                                            @php
+                                                                                $total+=$hotel->precio_m*$hotel->personas_m;
+                                                                            @endphp
+                                                                            <p>${{$hotel->precio_m*$hotel->personas_m}}</p>
+                                                                        @endif
+                                                                        @if($hotel->personas_t>0)
+                                                                            @php
+                                                                                $total+=$hotel->precio_t*$hotel->personas_t;
+                                                                            @endphp
+                                                                            <p>${{$hotel->precio_t*$hotel->personas_t}}</p>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endforeach
+                                                        @php
+                                                            $profit=0;
+                                                        @endphp
+                                                        @foreach($paquete->paquete_precios as $pqt_precio)
+                                                            @if($pqt_precio->personas_s>0)
+                                                                @php
+                                                                    $total+=$pqt_precio->utilidad_s;
+                                                                    $profit+=$pqt_precio->utilidad_s;
+                                                                @endphp
+                                                            @endif
+                                                            @if($pqt_precio->personas_d>0)
+                                                                @php
+                                                                    $total+=$pqt_precio->utilidad_d;
+                                                                    $profit+=$pqt_precio->utilidad_d;
+                                                                @endphp
+                                                            @endif
+                                                            @if($pqt_precio->personas_m>0)
+                                                                @php
+                                                                    $total+=$pqt_precio->utilidad_m;
+                                                                    $profit+=$pqt_precio->utilidad_m;
+                                                                @endphp
+                                                            @endif
+                                                            @if($pqt_precio->personas_t>0)
+                                                                @php
+                                                                    $total+=$pqt_precio->utilidad_t;
+                                                                    $profit+=$pqt_precio->utilidad_t;
+                                                                @endphp
+                                                            @endif
+                                                        @endforeach
+                                                        <tr>
+                                                            <td colspan="4"><b>COST</b></td>
+                                                            <td class="text-right">
+                                                                <b>{{$total-$profit}}<sub>$</sub></b>
+                                                            </td>
+                                                        </tr><tr>
+                                                            <td colspan="4"><b>PROFIT</b></td>
+                                                            <td class="text-right">
+                                                                <b>{{$profit}}<sub>$</sub></b>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="4"><b>TOTAL x {{$cotizacion_->nropersonas}} <i class="fas fa-male text-primary"></i></b></td>
+                                                            <td class="text-right">
+                                                                <b>{{$total}}<sub>$</sub></b>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                @endforeach
+                                            </div>
+                                            <div class="modal-footer d-none">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Send message</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="badge badge-g-dark">Venta cerrada: {{fecha_peru($cotizacion_->fecha_venta)}}</span> {{$dato_cliente}} x {{$cotizacion_->nropersonas}} {{date_format(date_create($cotizacion_->fecha), 'l jS F Y')}}
+                                <b class="badge badge-g-green">Total: {{$total}}<sub>$</sub></b>
+                            <!-- Large modal -->
+                                <a href="#!" class="text-primary" data-toggle="modal" data-target="#detalle_{{$cotizacion_->id}}"><i class="fas fa-eye"></i></a>
                             </td>
                             <td class="col-lg-2 text-right">
                                 <button type="button" class="btn btn-primary" onclick="categorizar('{{$cotizacion_->id}}','C')">C</button>

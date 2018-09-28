@@ -887,6 +887,7 @@ function calcular_resumen() {
             }
         });
         $.post('/admin/package/gererar-codigo', 'duracion='+dias_1+'&tipo_plantilla=si&pagina='+$('#txt_pagina').val() , function (data) {
+            if(data!='')
             $('#txt_codigo').val(data);
         }).fail(function (data) {
         });

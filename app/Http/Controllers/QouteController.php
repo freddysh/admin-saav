@@ -16,8 +16,9 @@ use App\M_Servicio;
 use App\P_Paquete;
 use App\PaqueteCotizaciones;
 use Illuminate\Http\Request;
+//use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Expr\Array_;
-use Excel;
 
 class QouteController extends Controller
 {
@@ -80,7 +81,7 @@ class QouteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\ Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -246,18 +247,108 @@ class QouteController extends Controller
     }
     public function import(Request $request)
     {
+        set_time_limit ( 0 );
         $request->validate([
             'import_file' => 'required'
         ]);
         $path = $request->file('import_file')->getRealPath();
 //        dd($path);
         $data = Excel::load($path,function($reader){})->get();
+        $arr=[];
+        if($data->count()){
+            $totaltravelers='';
+            $codigo='';
+            $transactiondatetime='';
+            $originalBookingDate='';
+            $titulo='';
+            $notas='';
+            $nombres='';
+            $telefono='';
+            $email='';
+            $total=0;
+            $cost=0;
+            $profit=0;
+            $fecha_llegada='';
+            foreach ($data as $key => $value) {
+                $totaltravelers=$value->totaltravelers;
+                $codigo=$value->code;
+                $transactiondatetime=$value->transactiondatetime;
+                $originalBookingDate=$value->originalbookingdate;
+                $titulo=$value->activitytitle.'['.$value->offertitle.']';
+                $nombres=$value->leadtraveler;
+                $telefono=$value->travelerphone;
+                $email=$value->traveleremail;
+                $total=round($value->netamount,2);
+                $cost=round($value->netcost,2);
+                $profit=round($value->profit,2);
+                $fecha_llegada=$value->destinationarrivaldate;
+                $notas='Tickettype:'.$value->tickettype.'<br>'.
+                    'DestinationDepartureFlightDate:'.$value->destinationdepartureflightdate.'<br>'.
+                    'PickupLocation:'.$value->pickuplocation.'<br>'.
+                    'DropoffLocation:'.$value->dropofflocation.'<br>'.
+                    'DestinationArrivalFlightNumber:'.$value->destinationarrivalflightnumber.'<br>'.
+                    'DestinationArrivalFlightTime:'.$value->destinationarrivalflighttime.'<br>'.
+                    'DestinationDepartureFlightNumber:'.$value->destinationdepartureflightnumber.'<br>'.
+                    'DestinationDepartureFlightTime:'.$value->destinationdepartureflighttime.'<br>'.
+                    'Journey:'.$value->journey;
 
-//        if($data->count()){
-//            foreach ($data as $key => $value) {
-//                $arr[] = ['title' => $value->nombre, 'description' => $value->description];
-//            }
-//        }
-//        return 'Terminado[name:'.$nombre.',email:'.$email;
+                if(
+                    trim($totaltravelers)!=''&&
+                    trim($codigo)!=''&&
+                    trim($transactiondatetime)!=''&&
+                    trim($originalBookingDate)!=''&&
+                    trim($titulo)!=''&&
+                    trim($nombres)!=''&&
+                    trim($telefono)!=''&&
+                    trim($email)!=''&&
+                    trim($total)!=''&&
+                    trim($cost)!=''&&
+                    trim($profit)!=''&&
+                    trim($fecha_llegada)!=''){
+
+                    $coti=new Cotizacion();
+                    $coti->save();
+                    for($i=1;$i<=$totaltravelers;$i++){
+                        $cli_temp=new Cliente();
+                        $cli_temp->nombres=$nombres;
+                        $cli_temp->telefono=$telefono;
+                        $cli_temp->email=$email;
+                        $cli_temp->estado=1;
+                        $cli_temp->save();
+
+                        $coti_cliente=new CotizacionesCliente();
+                        $coti_cliente->cotizaciones_id=$coti->id;
+                        $coti_cliente->clientes_id=$cli_temp->id;
+                        if($i==1) {
+                            $coti_cliente->estado = 1;
+                        }
+                        else{
+                            $coti_cliente->estado = 0;
+                        }
+                        $coti_cliente->save();
+                    }
+                    $coti->codigo='';
+                    $coti->nropersonas=$totaltravelers;
+                    $coti->duracion='';
+                    $coti->precioventa='';
+                    $coti->fecha=$fecha_llegada;
+                    $coti->posibilidad=100;
+                    $coti->estado=1;
+                    $coti->fecha_venta=$transactiondatetime;
+                    $coti->users_id==auth()->guard('admin')->user()->id;
+                    
+                    $coti->precioventa=$transactiondatetime;
+                    $coti->fecha_venta=$transactiondatetime;
+                    $coti->fecha_venta=$transactiondatetime;
+                    $coti->fecha_venta=$transactiondatetime;
+                    $coti->fecha_venta=$transactiondatetime;
+                    $coti->fecha_venta=$transactiondatetime;
+                    $coti->fecha_venta=$transactiondatetime;
+
+                    $arr[] = ['$codigo'=>$codigo,'$transactiondatetime' => $transactiondatetime,'$originalBookingDate' => $originalBookingDate,'$titulo' => $titulo, '$nombres' => $nombres, '$telefono' => $telefono, '$email' => $email, '$total' => $total, '$cost' => $cost, '$profit' => $profit, '$fecha_llegada' => $fecha_llegada, '$notas' => $notas];
+                }
+            }
+        }
+        return $arr;
     }
 }

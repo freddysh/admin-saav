@@ -69,6 +69,7 @@ class PackageController extends Controller
 //        dd('hola');
         $txt_day=strtoupper(($request->input('txt_day')));
         $txt_code=strtoupper(($request->input('txt_codigo')));
+//        dd('$txt_code:'.$txt_code);
         $txt_pagina=$request->input('txt_pagina');
 //        $txt_title=strtoupper(($request->input('txt_title')));
         $txta_description=$request->input('txta_description');
