@@ -2822,7 +2822,7 @@ function poner_dias() {
 function variar_profit(acom) {
     var valor=parseFloat($('#cost_'+acom).html());
     var pro=parseFloat($('#pro_'+acom).val());
-    var sale=Math.round(valor+pro);
+    var sale=Math.round(valor+pro,2);
     $('#sale_'+acom).val(sale);
     var profit_por=Math.round((pro/sale)*100,2);
     $('#porc_'+acom).html(profit_por);
@@ -2831,16 +2831,20 @@ function variar_profit(acom) {
     var sale_d=parseFloat($('#sale_d').val());
     var sale_m=parseFloat($('#sale_m').val());
     var sale_t=parseFloat($('#sale_t').val());
+    var sale_sh=parseFloat($('#sale_sh').val());
 
-    $('#total_profit').html(sale_s+sale_d+sale_m+sale_t);
+    $('#total_profit').html(sale_s+sale_d+sale_m+sale_t+sale_sh);
     var pro_s=parseFloat($('#pro_s').val());
     var pro_d=parseFloat($('#pro_d').val());
     var pro_m=parseFloat($('#pro_m').val());
     var pro_t=parseFloat($('#pro_t').val());
+    var pro_sh=parseFloat($('#pro_sh').val());
+
     var uti_por_s=0;
     var uti_por_d=0;
     var uti_por_m=0;
     var uti_por_t=0;
+    var uti_por_sh=0;
     if(sale_s!=0)
         uti_por_d=Math.round((pro_s/sale_s)*100,0);
     if(sale_d!=0)
@@ -2850,6 +2854,9 @@ function variar_profit(acom) {
     if(sale_t!=0)
     var uti_por_t=Math.round((pro_t/sale_t)*100,0);
 
+    if(sale_s && sale_d && sale_m && sale_t){
+        var uti_por_sh=Math.round((pro_sh/sale_sh)*100,0);
+    }
     console.log('uti_por_s:'+uti_por_s);
     console.log('uti_por_d:'+uti_por_d);
     console.log('uti_por_m:'+uti_por_m);
@@ -2859,7 +2866,7 @@ function variar_profit(acom) {
     $('#profit_por_d').val(uti_por_d);
     $('#profit_por_m').val(uti_por_m);
     $('#profit_por_t').val(uti_por_t);
-
+    $('#profit_por_sh').val(uti_por_sh);
 }
 function variar_sales(acom){
 
@@ -3236,6 +3243,7 @@ function calcularPrecio(){
     var total_serv_s=0;
     var total_serv_d=0;
     var total_serv_t=0;
+    var total_serv_sh=0;
     console.log('precio_servicio_s:');
     $("input[class='precio_servicio_s']").each(function (index) {
         total_serv_s+=parseFloat($(this).val());
@@ -3263,14 +3271,18 @@ function calcularPrecio(){
         total_serv_t+=parseFloat($(this).val());
         console.log('precio_servicio_t:'+$(this).val());
     });
+    $("input[class='precio_servicio_sh']").each(function (index) {
+        total_serv_sh+=parseFloat($(this).val());
+        console.log('precio_servicio_t:'+$(this).val());
+    });
     total_serv_s=total_serv_s.toFixed(2);
     total_serv_d=total_serv_d.toFixed(2);
     total_serv_t=total_serv_t.toFixed(2);
-
-    console.log('total_serv_t:'+total_serv_t);
+    total_serv_sh=total_serv_sh.toFixed(2);
     $("#cost_s").html(total_serv_s);
     $("#cost_d").html(total_serv_d);
     $("#cost_t").html(total_serv_t);
+    $("#cost_sh").html(total_serv_sh);
 }
 
 function sumar_servicios_itinerario(pqt_pos){

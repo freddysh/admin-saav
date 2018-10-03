@@ -37,7 +37,7 @@
     @endforeach
         <div class="row align-items-center">
         <div class="col-6">
-            <h3>{{$cliente}} {{$cliente}}</h3>
+            <h3>{{$cliente}}</h3>
             @php
                 $s=0;
                 $d=0;
@@ -79,6 +79,7 @@
                             @endif
                         </b>
                     @endforeach
+                    @if($s==0&&$d==0&&$m==0&&$t==0)<b class="text-secondary h2"> SIN HOTEL</b>@endif
                 @endforeach
             @endforeach
         </div>
@@ -227,16 +228,19 @@
                 @php
                     $nroPersonas=0;
                     $nro_dias=0;
+                    $pre_sh=0;
                     $pre_s=0;
                     $pre_d=0;
                     $pre_m=0;
                     $pre_t=0;
 
                     $cotizacion_id='';
+                    $utilidad=0;
                     $utilidad_s=0;
                     $utilidad_d=0;
                     $utilidad_m=0;
                     $utilidad_t=0;
+                    $prem_sh=0;
                     $prem_s=0;
                     $prem_d=0;
                     $prem_m=0;
@@ -270,6 +274,11 @@
                                 @endphp
                             @endif
                         @endforeach
+                        @if($s==0&&$d==0&&$m==0&&$t==0)
+                            @php
+                                $utilidad=$paquete->utilidad;
+                            @endphp
+                        @endif
                         @php
                             $pos=0;
                         @endphp
@@ -340,6 +349,8 @@
 
                                 $pre_t=$precio+$precio_hotel_t;
                                 $prem_t+=$pre_t;
+                                $pre_sh=$precio;
+                                $prem_sh+=$pre_sh;
                             @endphp
                             <div id="itinerario_" class="bg-g-dark text-white p-2 rounded small mb-2">
                                 <div class="row">
@@ -368,6 +379,9 @@
                                             </div>
                                             <div class="col @if($t==0) d-none @endif">
                                                 <b><sup>$</sup> {{round($pre_t,0)}}</b>
+                                            </div>
+                                            <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_sh,0)}}</b>
                                             </div>
                                         </div>
                                     </div>
@@ -407,6 +421,9 @@
                             <div class="col @if($t==0) d-none @endif">
                                 <b class="text-secondary">T</b>
                             </div>
+                            <div class="col @if($s==0&&$s==0&&$m==0&&$t==0) @else d-none @endif">
+                                <b class="text-secondary">SIN HOTEL</b>
+                            </div>
                         {{--</div>--}}
                     </div>
                     <div class="row text-right">
@@ -425,6 +442,9 @@
                             </div>
                             <div class="col @if($t==0) d-none @endif">
                                 <b class="text-secondary"><sup>$</sup><span name="cost_t" id="cost_t">{{ceil($prem_t)}}</span></b>
+                            </div>
+                            <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_sh" id="cost_sh">{{ceil($prem_sh)}}</span></b>
                             </div>
                         {{--</div>--}}
                     </div>
@@ -449,6 +469,10 @@
                                 <input class="form-control text-right" type="text" name="pro_t" id="pro_t" value="{{$utilidad_t}}" onchange="variar_profit('t')">
                                 <b class="text-secondary"><span id="porc_t">{{$utilidad_por_t}}</span>%</b>
                             </div>
+                            <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">
+                                <input class="form-control text-right" type="text" name="pro_sh" id="pro_sh" value="{{$utilidad}}" onchange="variar_profit('sh')">
+                                <b class="text-secondary"><span id="porc_sh">{{round(($utilidad*100)/($prem_sh),2)}}</span>%</b>
+                            </div>
                         {{--</div>--}}
                     </div>
                     <hr>
@@ -456,26 +480,34 @@
                         @php
                             $valor=0;
                         @endphp
-                        @if($s!=0)
+                        @if($s==0&&$d==0&&$m==0&&$t==0)
                             @php
-                            $valor+=round($prem_s+$utilidad_s,2);
+                                $valor+=round($prem_sh+$utilidad,2);
                             @endphp
+                        @else
+                            @if($s!=0)
+                                @php
+                                    $valor+=round($prem_s+$utilidad_s,2);
+                                @endphp
+                            @endif
+                            @if($d!=0)
+                                @php
+                                    $valor+=round($prem_d+$utilidad_d,2);
+                                @endphp
+                            @endif
+                            @if($m!=0)
+                                @php
+                                    $valor+=round($prem_m+$utilidad_m,2);
+                                @endphp
+                            @endif
+                            @if($t!=0)
+                                @php
+                                    $valor+=round($prem_t+$utilidad_t,2);
+                                @endphp
+                            @endif
+
                         @endif
-                        @if($d!=0)
-                            @php
-                                $valor+=round($prem_d+$utilidad_d,2);
-                            @endphp
-                        @endif
-                        @if($m!=0)
-                            @php
-                                $valor+=round($prem_m+$utilidad_m,2);
-                            @endphp
-                        @endif
-                        @if($t!=0)
-                            @php
-                                $valor+=round($prem_t+$utilidad_t,2);
-                            @endphp
-                        @endif
+
 
                         <div class="col-7">
                             <b class="text-g-yellow text-15">SALES</b>
@@ -492,12 +524,15 @@
                         <div class="col @if($t==0) d-none @endif">
                             <input class="form-control text-right" type="text" name="sale_t" id="sale_t" value="@if($t!=0){{round(ceil($prem_t)+$utilidad_t,2)}}@else{{0}}@endif" onchange="variar_sales('t')">
                         </div>
+                        <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_sh" id="sale_sh" value="@if($s==0&&$d==0&&$m==0&&$t==0){{round(ceil($prem_sh)+$utilidad,2)}}@else{{0}}@endif" onchange="variar_sales('sh')">
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col">
                             <div class="alert alert-primary  clearfix">
                                 <b class="h5 float-left">TOTAL SALE </b>
-                                <span id="total_profit" class="float-right"><sup>$</sup>{{ceil($valor)}}</span>
+                                <span id="total_profit" class="float-right"><sup>$</sup>{{round($valor,2)}}</span>
                             </div>
                         </div>
                     </div>
@@ -511,7 +546,8 @@
                             <input type="hidden" name="profit_por_m" id="profit_por_m" value="40">
                             <input type="hidden" name="cotizacion_id" value="{{$cotizacion_id1}}">
                             <input type="hidden" name="profit_por_t" id="profit_por_t" value="40">
-
+                            <input type="hidden" name="profit_por_sh" id="profit_por_sh" value="40">
+                            <input type="hidden" name="profit_sh" id="profit_sh" value="{{$utilidad}}">
                             {{csrf_field()}}
                             @if($imprimir=='no')
                                 <button class="btn btn-g-yellow" type="submit" name="create" value="create">GUARDAR {{$plan[$pos_plan]}}</button>

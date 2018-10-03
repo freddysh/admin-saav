@@ -21,7 +21,7 @@ class ProveedorController extends Controller
         $categorias=M_Category::get();
         session()->put('menu-lateral', 'Sproviders');
         $entidadBancaria=EntidadBancaria::get();
-        return view('admin.database.provider',['destinations'=>$destinations,'providers'=>$providers,'categorias'=>$categorias,'entidadBancaria'=>$entidadBancaria]);
+        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria'));
     }
     public function autocomplete()
     {
@@ -190,10 +190,10 @@ class ProveedorController extends Controller
         $proveedor->plazo=$txt_plazo;
         $proveedor->desci=$txt_desci;
 
-        $proveedor->txt_banco_nombre_cta_corriente=$txt_banco_nombre_cta_corriente;
-        $proveedor->txt_banco_nro_cta_corriente=$txt_banco_nro_cta_corriente;
-        $proveedor->txt_banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
-        $proveedor->txt_banco_nro_cta_cci=$txt_banco_nro_cta_cci;
+        $proveedor->banco_nombre_cta_corriente=$txt_banco_nombre_cta_corriente;
+        $proveedor->banco_nro_cta_corriente=$txt_banco_nro_cta_corriente;
+        $proveedor->banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
+        $proveedor->banco_nro_cta_cci=$txt_banco_nro_cta_cci;
 
         if($proveedor->save()){
             $proveedor->codigo=$txt_grupo_cod.$proveedor->id;
@@ -208,7 +208,8 @@ class ProveedorController extends Controller
             $destinations=M_Destino::get();
             $providers=Proveedor::get();
             $categorias=M_Category::get();
-            return view('admin.database.provider',['destinations'=>$destinations,'providers'=>$providers,'categorias'=>$categorias]);
+            $entidadBancaria=EntidadBancaria::get();
+            return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria'));
         }
     }
     public function edit(Request $request){

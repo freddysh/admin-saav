@@ -1636,6 +1636,8 @@ class PackageCotizacionController extends Controller
 
         $paquete=PaqueteCotizaciones::FindOrFail($paquete_id);
         $paquete->titulo=$txt_titulo;
+        if($paquete_precio_id!='0')
+            $paquete->utilidad=$request->input('profit_sh');
         $paquete->descripcion=$descripcion;
         $paquete->incluye=$incluye;
         $paquete->noincluye=$no_incluye;
@@ -1643,18 +1645,19 @@ class PackageCotizacionController extends Controller
         $paquete->proceso_complete=2;
         $paquete->save();
 
-        $paquete_precio=PaquetePrecio::FindOrFail($paquete_precio_id);
-        $paquete_precio->utilidad_s=$pro_s;
-        $paquete_precio->utilidad_d=$pro_d;
-        $paquete_precio->utilidad_m=$pro_m;
-        $paquete_precio->utilidad_t=$pro_t;
+        if($paquete_precio_id!='0') {
+            $paquete_precio = PaquetePrecio::FindOrFail($paquete_precio_id);
+            $paquete_precio->utilidad_s = $pro_s;
+            $paquete_precio->utilidad_d = $pro_d;
+            $paquete_precio->utilidad_m = $pro_m;
+            $paquete_precio->utilidad_t = $pro_t;
 
-        $paquete_precio->utilidad_por_s=$profit_por_s;
-        $paquete_precio->utilidad_por_d=$profit_por_d;
-        $paquete_precio->utilidad_por_m=$profit_por_m;
-        $paquete_precio->utilidad_por_t=$profit_por_t;
-        $paquete_precio->save();
-
+            $paquete_precio->utilidad_por_s = $profit_por_s;
+            $paquete_precio->utilidad_por_d = $profit_por_d;
+            $paquete_precio->utilidad_por_m = $profit_por_m;
+            $paquete_precio->utilidad_por_t = $profit_por_t;
+            $paquete_precio->save();
+        }
         $itinerarios=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$paquete_id)->get();
         foreach ($itinerarios as $itinerario){
             foreach ($itinerario->hotel as $hotel){
@@ -1704,6 +1707,7 @@ class PackageCotizacionController extends Controller
 
                 $plantilla_pqt= new P_Paquete();
                 $plantilla_pqt->codigo='GTP'.$ogiginal_pqt->duracion.$numero_con_ceros;
+                $plantilla_pqt->pagina=$cotizacion->web;
                 $plantilla_pqt->titulo=$plantilla_pqt->titulo;
                 $plantilla_pqt->duracion=$ogiginal_pqt->duracion;
                 $plantilla_pqt->precio_venta=$ogiginal_pqt->precioventa;
@@ -2314,7 +2318,7 @@ class PackageCotizacionController extends Controller
     {
         $cotis=PaqueteCotizaciones::FindOrFail($pqt_id);
         $cotizacion_id=$cotis->cotizaciones_id;
-        $cotizaciones_clientes=CotizacionesCliente::where('cotizaciones_id',$cotizacion_id)->get();
+        $cotizaciones_clientes=CotizacionesCliente::where('cotizaciones_id',$cotizacion_id)->where('estado','1')->get();
         $cliente_id=0;
         foreach ($cotizaciones_clientes as $cli){
             $cliente_id=$cli->clientes_id;

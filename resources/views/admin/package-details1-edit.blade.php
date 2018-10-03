@@ -72,6 +72,11 @@
                             @endif
                         </b>
                     @endforeach
+                    @if($s==0&&$d==0&&$m==0&&$t==0)
+                        <b class="text-secondary h2">
+                            Sin Hotel
+                        </b>
+                    @endif
                 @endforeach
             @endforeach
         </div>
@@ -96,6 +101,7 @@
     $precio_hotel_m=0;
     $precio_hotel_t=0;
     $cotizacion_id='';
+    $utilidad=0;
     @endphp
         @foreach($cotizaciones as $cotizacion)
             @php
@@ -104,6 +110,7 @@
             @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
                 @if($paquete->id==$paquete_precio_id)
                     @php
+                        $utilidad=$paquete->utilidad;
                         $itis='';
                     @endphp
                     @foreach($paquete->itinerario_cotizaciones as $itinerario)
@@ -155,6 +162,8 @@
                                     <div class="col @if($d==0) d-none @endif">D</div>
                                     <div class="col @if($m==0) d-none @endif">M</div>
                                     <div class="col @if($t==0) d-none @endif">T</div>
+                                    @if($s==0&&$d==0&&$m==0&&$t==0)<div class="col">SIN HOTEL</div>@endif
+
                                     {{--<div class="col-2 d-none"></div>--}}
                                 </div>
                                 <div class="row caja_detalle">
@@ -231,6 +240,7 @@
                                             <div class="col @if($d==0) d-none @endif">$<input type="hidden" class="precio_servicio_d" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                             <div class="col @if($m==0) d-none @endif">$<input type="hidden" class="precio_servicio_m" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                             <div class="col @if($t==0) d-none @endif">$<input type="hidden" class="precio_servicio_t" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
+                                            <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">$<input type="hidden" class="precio_servicio_sh" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                             <div class="col">
                                                 <a class="btn py-0 text-primary" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->servicio->grupo}}','edit')">
                                                     <i class="fas fa-pencil-alt" aria-hidden="true"></i>
@@ -402,11 +412,12 @@
         <div class="row">
             <div class="col">
                 <div class="row bg-g-dark text-white rounded py-2">
-                        <div class="col-lg-8"><b>COST</b></div>
-                        <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s)}}</span></b></div>
-                        <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d)}}</span></b></div>
-                        <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m)}}</span></b></div>
-                        <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t)}}</span></b></div>
+                    <div class="col-lg-8"><b>COST</b></div>
+                    <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s)}}</span></b></div>
+                    <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d)}}</span></b></div>
+                    <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m)}}</span></b></div>
+                    <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t)}}</span></b></div>
+                    <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{ceil($precio_iti)}}</span></b></div>
                 </div>
                 <div class="row">
                     <div class="col text-right">PRICE PER PERSON</div>

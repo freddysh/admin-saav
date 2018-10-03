@@ -227,25 +227,33 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_s+$utilidad_s,2);
-                                    @endphp
-                                @endif
-                                @if($d!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_d+$utilidad_d,2);
-                                    @endphp
-                                @endif
-                                @if($m!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_m+$utilidad_m,2);
-                                    @endphp
-                                @endif
-                                @if($t!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_t+$utilidad_t,2);
-                                    @endphp
+                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                    @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                        @php
+                                            $valor=$precio_iti+$paquete->utilidad;
+                                        @endphp
+                                    @endforeach
+                                @else
+                                    @if($s!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_s+$utilidad_s,2);
+                                        @endphp
+                                    @endif
+                                    @if($d!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_d+$utilidad_d,2);
+                                        @endphp
+                                    @endif
+                                    @if($m!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_m+$utilidad_m,2);
+                                        @endphp
+                                    @endif
+                                    @if($t!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_t+$utilidad_t,2);
+                                        @endphp
+                                    @endif
                                 @endif
                                 @if($cotizacion_->posibilidad=="0")
                                     <?php
@@ -411,25 +419,33 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_s+$utilidad_s,2);
-                                    @endphp
-                                @endif
-                                @if($d!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_d+$utilidad_d,2);
-                                    @endphp
-                                @endif
-                                @if($m!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_m+$utilidad_m,2);
-                                    @endphp
-                                @endif
-                                @if($t!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_t+$utilidad_t,2);
-                                    @endphp
+                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                    @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                        @php
+                                            $valor=$precio_iti+$paquete->utilidad;
+                                        @endphp
+                                    @endforeach
+                                @else
+                                    @if($s!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_s+$utilidad_s,2);
+                                        @endphp
+                                    @endif
+                                    @if($d!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_d+$utilidad_d,2);
+                                        @endphp
+                                    @endif
+                                    @if($m!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_m+$utilidad_m,2);
+                                        @endphp
+                                    @endif
+                                    @if($t!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_t+$utilidad_t,2);
+                                        @endphp
+                                    @endif
                                 @endif
                                 @if($cotizacion_->posibilidad=="1")
                                     <?php
@@ -593,25 +609,33 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_s+$utilidad_s,2);
-                                    @endphp
-                                @endif
-                                @if($d!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_d+$utilidad_d,2);
-                                    @endphp
-                                @endif
-                                @if($m!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_m+$utilidad_m,2);
-                                    @endphp
-                                @endif
-                                @if($t!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_t+$utilidad_t,2);
-                                    @endphp
+                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                    @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                        @php
+                                            $valor=$precio_iti+$paquete->utilidad;
+                                        @endphp
+                                    @endforeach
+                                @else
+                                    @if($s!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_s+$utilidad_s,2);
+                                        @endphp
+                                    @endif
+                                    @if($d!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_d+$utilidad_d,2);
+                                        @endphp
+                                    @endif
+                                    @if($m!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_m+$utilidad_m,2);
+                                        @endphp
+                                    @endif
+                                    @if($t!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_t+$utilidad_t,2);
+                                        @endphp
+                                    @endif
                                 @endif
                                 @if($cotizacion_->posibilidad=="30")
                                     <?php
@@ -775,25 +799,33 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_s+$utilidad_s,2);
-                                    @endphp
-                                @endif
-                                @if($d!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_d+$utilidad_d,2);
-                                    @endphp
-                                @endif
-                                @if($m!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_m+$utilidad_m,2);
-                                    @endphp
-                                @endif
-                                @if($t!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_t+$utilidad_t,2);
-                                    @endphp
+                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                    @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                        @php
+                                            $valor=$precio_iti+$paquete->utilidad;
+                                        @endphp
+                                    @endforeach
+                                @else
+                                    @if($s!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_s+$utilidad_s,2);
+                                        @endphp
+                                    @endif
+                                    @if($d!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_d+$utilidad_d,2);
+                                        @endphp
+                                    @endif
+                                    @if($m!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_m+$utilidad_m,2);
+                                        @endphp
+                                    @endif
+                                    @if($t!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_t+$utilidad_t,2);
+                                        @endphp
+                                    @endif
                                 @endif
                                 @if($cotizacion_->posibilidad=="60")
                                     <?php
@@ -957,25 +989,33 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_s+$utilidad_s,2);
-                                    @endphp
-                                @endif
-                                @if($d!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_d+$utilidad_d,2);
-                                    @endphp
-                                @endif
-                                @if($m!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_m+$utilidad_m,2);
-                                    @endphp
-                                @endif
-                                @if($t!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_t+$utilidad_t,2);
-                                    @endphp
+                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                    @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                        @php
+                                            $valor=$precio_iti+$paquete->utilidad;
+                                        @endphp
+                                    @endforeach
+                                @else
+                                    @if($s!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_s+$utilidad_s,2);
+                                        @endphp
+                                    @endif
+                                    @if($d!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_d+$utilidad_d,2);
+                                        @endphp
+                                    @endif
+                                    @if($m!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_m+$utilidad_m,2);
+                                        @endphp
+                                    @endif
+                                    @if($t!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_t+$utilidad_t,2);
+                                        @endphp
+                                    @endif
                                 @endif
                                 @if($cotizacion_->posibilidad=="90")
                                     <?php
@@ -1139,26 +1179,35 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_s+$utilidad_s,2);
-                                    @endphp
+                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                    @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                        @php
+                                            $valor=$precio_iti+$paquete->utilidad;
+                                        @endphp
+                                    @endforeach
+                                @else
+                                    @if($s!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_s+$utilidad_s,2);
+                                        @endphp
+                                    @endif
+                                    @if($d!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_d+$utilidad_d,2);
+                                        @endphp
+                                    @endif
+                                    @if($m!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_m+$utilidad_m,2);
+                                        @endphp
+                                    @endif
+                                    @if($t!=0)
+                                        @php
+                                            $valor+=round($precio_hotel_t+$utilidad_t,2);
+                                        @endphp
+                                    @endif
                                 @endif
-                                @if($d!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_d+$utilidad_d,2);
-                                    @endphp
-                                @endif
-                                @if($m!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_m+$utilidad_m,2);
-                                    @endphp
-                                @endif
-                                @if($t!=0)
-                                    @php
-                                        $valor+=round($precio_hotel_t+$utilidad_t,2);
-                                    @endphp
-                                @endif
+
                                 @if($cotizacion_->posibilidad=="100")
                                     <?php
                                     $date = date_create($cotizacion_->fecha);
