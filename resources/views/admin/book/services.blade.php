@@ -959,11 +959,11 @@
                                                         @php
                                                             $mostrar='';
                                                         @endphp
-                                                        @if($grupe=='ENTRANCES' || ($grupe=='MOVILID' && $clase=='BOLETO'))
-                                                            @php
-                                                                $mostrar='d-none';
-                                                            @endphp
-                                                        @endif
+                                                        {{--@if($grupe=='ENTRANCES' || ($grupe=='MOVILID' && $clase=='BOLETO'))--}}
+                                                            {{--@php--}}
+                                                                {{--$mostrar='d-none';--}}
+                                                            {{--@endphp--}}
+                                                        {{--@endif--}}
                                                         <form id="add_cod_verif_path_{{$servicios->id}}" class="form-inline" action="{{route('add_cod_verif_path')}}" method="post">
                                                             <div class="row margin-left-0">
                                                                 {{csrf_field()}}
