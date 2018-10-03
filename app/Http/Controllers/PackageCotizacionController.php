@@ -1298,6 +1298,7 @@ class PackageCotizacionController extends Controller
         $strellas_5=0;
         $txt_title='';
         $precioCosto=0;
+        $utilidad=0;
         $amount_s2=0;
         $amount_d2=0;
         $amount_t2=0;
@@ -1365,7 +1366,7 @@ class PackageCotizacionController extends Controller
         $paquete->descripcion=$txta_description;
         $paquete->incluye=$txta_include;
         $paquete->noincluye=$txta_notinclude;
-        $paquete->utilidad=40;
+        $paquete->utilidad=$utilidad;
         $paquete->estado=0;
         $paquete->preciocosto=$precioCosto;
         $paquete->cotizaciones_id=$cotizacion_id;

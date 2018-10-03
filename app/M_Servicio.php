@@ -18,8 +18,12 @@ class M_Servicio extends Model
     {
         return $this->hasMany(M_Producto::class, 'm_servicios_id');
     }
-    public function servicio_proveedor()
+//    public function servicio_proveedor()
+//    {
+//        return $this->hasMany(ItinerarioServicios::class, 'm_servicios_id');
+//    }
+    public function itinerario_servicios()
     {
-        return $this->hasMany(ItinerarioServicios::class, 'm_servicios_id');
+        return $this->belongsTo(ItinerarioServicios::class, 'm_servicios_id');
     }
 }

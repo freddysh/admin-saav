@@ -384,7 +384,7 @@ Route::get('admin/package/{id}/pdf', [
     'uses' => 'PackageController@pdf',
     'as' => 'package_pdf_path',
 ]);
-Route::get('admin/contabilidad/{id}', [
+Route::get('admin/contabilidad/{anio}', [
     'uses' => 'PackageCotizacionController@contabilidad',
     'as' => 'contabilidad_path',
 ]);

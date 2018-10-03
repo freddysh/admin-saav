@@ -22,7 +22,7 @@ class ItinerarioServicios extends Model
     }
     public function servicio()
     {
-        return $this->belongsTo(M_Servicio::class, 'm_servicios_id');
+        return $this->hasMany(M_Servicio::class, 'm_servicios_id');
     }
     public function pagos()
     {
