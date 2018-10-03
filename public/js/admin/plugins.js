@@ -829,6 +829,7 @@ function Pasar_datos(){
     });
     $('#totalItinerario').val(Itis_precio);
     $('#totalItinerario_front').html(Itis_precio);
+    $('#totalItinerario_venta').val(Itis_precio);
     $('#nroItinerario').val(total_Itinerarios);
     calcular_resumen();
 }
@@ -1633,6 +1634,30 @@ function calcular_resumen() {
         }).fail(function (data) {
         });
     }
+    console.log('dias_1:'+dias_1);
+    if(dias_1==1){
+        $('#resumen_2_dia').addClass('d-none');
+        $('#resumen_1_dia').removeClass('d-none');
+        calcular_total_1_dia();
+    }
+    else if(dias_1>1){
+        $('#resumen_2_dia').removeClass('d-none');
+        $('#resumen_1_dia').addClass('d-none');
+    }
+}
+function round_2_d(num){
+    return Math.round(num * 100) / 100;
+}
+function calcular_total_1_dia(){
+    var costo=round_2_d($('#totalItinerario').val());
+    var txt_utilidad=round_2_d($('#txt_utilidad').val());
+    var total_venta=round_2_d(costo+txt_utilidad);
+    $('#totalItinerario_venta').val(total_venta);
+}
+function calcular_total_1_dia_tventa(){
+    var total=round_2_d($('#totalItinerario_venta').val());
+    var iti=round_2_d($('#totalItinerario').val());
+    $('#txt_utilidad').val(round_2_d(total-iti));
 }
 function filtrar_estrellas(){
     if( $('#strellas_2').prop('checked') ) {

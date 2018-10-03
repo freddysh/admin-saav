@@ -8,15 +8,21 @@ use App\CotizacionesCliente;
 use App\CotizacionesPagos;
 use App\Hotel;
 use App\ItinerarioCotizaciones;
+use App\ItinerarioDestinos;
 use App\ItinerarioServicios;
 use App\M_Destino;
 use App\M_Itinerario;
 use App\M_ItinerarioDestino;
 use App\M_Servicio;
 use App\P_Paquete;
+use App\P_PaquetePrecio;
 use App\PaqueteCotizaciones;
+use App\PaquetePrecio;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 //use Maatwebsite\Excel\Excel;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Expr\Array_;
 
@@ -248,12 +254,121 @@ class QouteController extends Controller
     public function import(Request $request)
     {
         set_time_limit ( 0 );
-        $request->validate([
-            'import_file' => 'required'
-        ]);
-        $path = $request->file('import_file')->getRealPath();
+//        $request->validate([
+//            'import_file' => 'required'
+//        ]);
+        $validator = \Validator::make(
+            [
+                'file'      => $request->file('import_file'),
+                'extension' => strtolower($request->file('import_file')->getClientOriginalExtension()),
+            ],
+            [
+                'file'          => 'required',
+                'extension'      => 'required|in:csv,xlsx,xls',
+            ]
+        );
+        if($validator->fails()){
+            session()->flash('msg', '<div class="alert alert-danger" role="alert">Suba un archivo Excel</div>');
+            return redirect()->back();
+        }
+        else {
+            $path = $request->file('import_file')->getRealPath();
 //        dd($path);
-        $data = Excel::load($path,function($reader){})->get();
+            $data = Excel::load($path, function ($reader) {
+            })->get();
+            $arr = [];
+            if ($data->count()) {
+                //guardamos el archivo excel
+                $filename = 'archivo.' . $request->file('import_file')->getClientOriginalExtension();
+                Storage::disk('archivos_excel')->put($filename, File::get($request->file('import_file')));
+
+                $totaltravelers = '';
+                $codigo = '';
+                $transactiondatetime = '';
+                $originalBookingDate = '';
+                $titulo = '';
+                $notas = '';
+                $nombres = '';
+                $telefono = '';
+                $email = '';
+                $total = 0;
+                $idioma = '';
+                $cost = 0;
+                $profit = 0;
+                $fecha_llegada = '';
+                $estrellas = '';
+                $notas1= '';
+
+                foreach ($data as $key => $value) {
+                    $totaltravelers = $value->travelers;
+                    $codigo = $value->offerid;
+                    $transactiondatetime = $value->transactiondatetime;
+//                $originalBookingDate=$value->originalbookingdate;
+                    $titulo = $value->activitytitle . '[' . $value->offertitle . ']';
+                    $idioma = $value->language;
+                    $nombres = $value->leadtraveler;
+                    $telefono = $value->travelerphone;
+                    $email = $value->traveleremail;
+                    $total = round($value->netamount, 2);
+//                $cost=round($value->netcost,2);// calculado
+//                $profit=round($value->profit,2);// calculado
+                    $fecha_llegada = $value->destinationarrivaldate;
+                    $notas1= $value->notas;
+                    $notas = 'Tickettype:<i>' . $value->tickettype . '</i><br>' .
+                        'DestinationDepartureFlightDate:<i>' . $value->destinationdepartureflightdate . '</i><br>' .
+                        'PickupLocation:<i>' . $value->pickuplocation . '</i><br>' .
+                        'DropoffLocation:<i>' . $value->dropofflocation . '</i><br>' .
+                        'DestinationArrivalFlightNumber:<i>' . $value->destinationarrivalflightnumber . '</i><br>' .
+                        'DestinationArrivalFlightTime:<i>' . $value->destinationarrivalflighttime . '</i><br>' .
+                        'DestinationDepartureFlightNumber:<i>' . $value->destinationdepartureflightnumber . '</i><br>' .
+                        'DestinationDepartureFlightTime:<i>' . $value->destinationdepartureflighttime . '</i><br>' .
+                        'Journey:<i>' . $value->journey . '</i>';
+
+                    if (
+                        trim($totaltravelers) != '' &&
+                        trim($codigo) != '' &&
+                        trim($transactiondatetime) != '' &&
+                        trim($titulo) != '' &&
+                        trim($idioma) != '' &&
+                        trim($nombres) != '' &&
+                        trim($telefono) != '' &&
+                        trim($email) != '' &&
+                        trim($total) != '' &&
+                        trim($fecha_llegada) != ''
+                    ) {
+                        $ppaquete = P_Paquete::where('codigo', $codigo)->first();
+                        if(count($ppaquete)) {
+                            if ($ppaquete->duracion > 1) {
+                                $estrellas = 'No necesita';
+                                $estrellas = $value->stars;
+                                if ($estrellas == '') {
+                                    $estrellas = '<b class="text-danger">Falta</b>';
+                                }
+                            } else {
+                                $estrellas = 'No necesita';
+                            }
+                            $codigo='<b class="text-success">'.$codigo.'</b>';
+                        }
+                        else{
+                            $codigo='<b class="text-danger">'.$codigo.'<br>No existe</b>';
+                        }
+
+                        $arr[] = ['totaltravelers' => $totaltravelers, 'codigo' => $codigo, 'estrellas' => $estrellas, 'transactiondatetime' => $transactiondatetime, 'originalBookingDate' => $originalBookingDate, 'titulo' => $titulo, 'idioma' => $idioma, 'nombres' => $nombres, 'telefono' => $telefono, 'email' => $email, 'total' => $total, 'cost' => $cost, 'profit' => $profit, 'fecha_llegada' => $fecha_llegada, 'notas' => $notas1];
+                    }
+                }
+            }
+//        return redirect()->back()->withInput($request->input())->with('arr',$arr);
+//        return $arr;
+            return view('admin.expedia.expedia-import-vista-previa', compact('arr', 'filename'));
+        }
+    }
+    public function expedia_save(Request $request)
+    {
+        set_time_limit ( 0 );
+        $archivo=$request->input('import_file');
+        $ruta="../storage/app/public/archivos_excel/".$archivo;
+
+        $data = Excel::load($ruta,function($reader){})->get();
         $arr=[];
         if($data->count()){
             $totaltravelers='';
@@ -266,89 +381,301 @@ class QouteController extends Controller
             $telefono='';
             $email='';
             $total=0;
+            $idioma='';
             $cost=0;
             $profit=0;
             $fecha_llegada='';
+            $estrellas='';
+            $notas1='';
             foreach ($data as $key => $value) {
-                $totaltravelers=$value->totaltravelers;
-                $codigo=$value->code;
+                $totaltravelers=$value->travelers;
+                $codigo=$value->offerid;
                 $transactiondatetime=$value->transactiondatetime;
-                $originalBookingDate=$value->originalbookingdate;
+//                $originalBookingDate=$value->originalbookingdate;
                 $titulo=$value->activitytitle.'['.$value->offertitle.']';
+                $idioma=$value->language;
                 $nombres=$value->leadtraveler;
                 $telefono=$value->travelerphone;
                 $email=$value->traveleremail;
                 $total=round($value->netamount,2);
-                $cost=round($value->netcost,2);
-                $profit=round($value->profit,2);
+//                $cost=round($value->netcost,2);// calculado
+//                $profit=round($value->profit,2);// calculado
                 $fecha_llegada=$value->destinationarrivaldate;
-                $notas='Tickettype:'.$value->tickettype.'<br>'.
-                    'DestinationDepartureFlightDate:'.$value->destinationdepartureflightdate.'<br>'.
-                    'PickupLocation:'.$value->pickuplocation.'<br>'.
-                    'DropoffLocation:'.$value->dropofflocation.'<br>'.
-                    'DestinationArrivalFlightNumber:'.$value->destinationarrivalflightnumber.'<br>'.
-                    'DestinationArrivalFlightTime:'.$value->destinationarrivalflighttime.'<br>'.
-                    'DestinationDepartureFlightNumber:'.$value->destinationdepartureflightnumber.'<br>'.
-                    'DestinationDepartureFlightTime:'.$value->destinationdepartureflighttime.'<br>'.
-                    'Journey:'.$value->journey;
+                $notas1=$value->notas;
+                $notas='Tickettype:<i>'.$value->tickettype.'</i><br>'.
+                    'DestinationDepartureFlightDate:<i>'.$value->destinationdepartureflightdate.'</i><br>'.
+                    'PickupLocation:<i>'.$value->pickuplocation.'</i><br>'.
+                    'DropoffLocation:<i>'.$value->dropofflocation.'</i><br>'.
+                    'DestinationArrivalFlightNumber:<i>'.$value->destinationarrivalflightnumber.'</i><br>'.
+                    'DestinationArrivalFlightTime:<i>'.$value->destinationarrivalflighttime.'</i><br>'.
+                    'DestinationDepartureFlightNumber:<i>'.$value->destinationdepartureflightnumber.'</i><br>'.
+                    'DestinationDepartureFlightTime:<i>'.$value->destinationdepartureflighttime.'</i><br>'.
+                    'Journey:<i>'.$value->journey.'</i>';
 
                 if(
                     trim($totaltravelers)!=''&&
                     trim($codigo)!=''&&
                     trim($transactiondatetime)!=''&&
-                    trim($originalBookingDate)!=''&&
                     trim($titulo)!=''&&
+                    trim($idioma)!=''&&
                     trim($nombres)!=''&&
                     trim($telefono)!=''&&
                     trim($email)!=''&&
                     trim($total)!=''&&
-                    trim($cost)!=''&&
-                    trim($profit)!=''&&
-                    trim($fecha_llegada)!=''){
+                    trim($fecha_llegada)!='') {
+                    $ppaquete = P_Paquete::where('codigo', $codigo)->first();
+                    if (count($ppaquete) > 0) {
+                        if ($ppaquete->duracion > 1) {
+                            $estrellas = 'No necesita';
+                            $estrellas = $value->stars;
+                            if ($estrellas == '') {
+                                $estrellas = '<b class="text-danger">Falta</b>';
+                            }
+                        } else
+                            $estrellas = 'No necesita';
 
-                    $coti=new Cotizacion();
-                    $coti->save();
-                    for($i=1;$i<=$totaltravelers;$i++){
-                        $cli_temp=new Cliente();
-                        $cli_temp->nombres=$nombres;
-                        $cli_temp->telefono=$telefono;
-                        $cli_temp->email=$email;
-                        $cli_temp->estado=1;
-                        $cli_temp->save();
+                        if ($ppaquete->duracion > 1)
+                            $estrellas = $value->stars;
 
-                        $coti_cliente=new CotizacionesCliente();
-                        $coti_cliente->cotizaciones_id=$coti->id;
-                        $coti_cliente->clientes_id=$cli_temp->id;
-                        if($i==1) {
-                            $coti_cliente->estado = 1;
+                        // buscamos el paquete para crear la cotizacion
+                        $ppaquete = P_Paquete::where('codigo', $codigo)->first();
+                        $coti = new Cotizacion();
+                        $coti->codigo = $codigo;
+                        $coti->nropersonas = $totaltravelers;
+                        $coti->duracion = $ppaquete->duracion;
+                        $coti->precioventa = $ppaquete->precio_venta;
+                        $coti->fecha = $fecha_llegada;
+                        $coti->posibilidad = 100;
+                        $coti->estado = 1;
+                        $coti->fecha_venta = $transactiondatetime;
+                        $coti->users_id = auth()->guard('admin')->user()->id;
+                        $coti->categorizado = 'N';
+                        $coti->web = 'expedia.com';
+                        $coti->idioma_pasajeros = $idioma;
+                        $coti->notas = $notas1;
+                        $coti->save();
+//                    //-- creamos los campos para los pasajeros
+                        for ($i = 1; $i <= $totaltravelers; $i++) {
+                            $cli_temp = new Cliente();
+                            if ($i == 1) {
+                                $cli_temp->nombres = $nombres;
+                                $cli_temp->telefono = $telefono;
+                                $cli_temp->email = $email;
+                            } else {
+                                $cli_temp->nombres = 'Traveler ' . $i;
+                                $cli_temp->telefono = '';
+                                $cli_temp->email = '';
+                            }
+                            $cli_temp->estado = 1;
+                            $cli_temp->save();
+
+                            $coti_cliente = new CotizacionesCliente();
+                            $coti_cliente->cotizaciones_id = $coti->id;
+                            $coti_cliente->clientes_id = $cli_temp->id;
+                            if ($i == 1) {
+                                $coti_cliente->estado = 1;
+                            } else {
+                                $coti_cliente->estado = 0;
+                            }
+                            $coti_cliente->save();
                         }
-                        else{
-                            $coti_cliente->estado = 0;
+                        $estrellas_ = 0;
+                        if ($estrellas == 2)
+                            $estrellas_ = $coti->star_2 = 2;
+                        if ($estrellas == 3)
+                            $estrellas_ = $coti->star_3 = 3;
+                        if ($estrellas == 4)
+                            $estrellas_ = $coti->star_4 = 4;
+                        if ($estrellas == 5)
+                            $estrellas_ = $coti->star_5 = 5;
+                        $pqt = new PaqueteCotizaciones();
+                        $pqt->estrellas = $estrellas_;
+                        $pqt->codigo = $ppaquete->codigo;
+                        $pqt->titulo = $ppaquete->titulo;
+                        $pqt->duracion = $ppaquete->duracion;
+                        $pqt->preciocosto = $ppaquete->preciocosto;
+                        $pqt->utilidad = $ppaquete->utilidad;
+                        $pqt->estado = 0;
+                        $pqt->precioventa = $ppaquete->precio_venta;
+                        $pqt->descripcion = $ppaquete->descripcion;
+                        $pqt->incluye = $ppaquete->incluye;
+                        $pqt->noincluye = $ppaquete->noincluye;
+//                        $pqt->opcional ='';
+//                        $pqt->imagen ='';
+                        $pqt->posibilidad = '100';
+                        $pqt->cotizaciones_id = $coti->id;
+                        $pqt->plan = 'A';
+                        $pqt->proceso_complete = 1;
+//                        $pqt->pedir_datos ='';
+                        $pqt->save();
+                        if ($ppaquete->duracion > 1) {
+                            $pqt_precio = P_PaquetePrecio::where('estrellas', $estrellas)->get();
+                            foreach ($pqt_precio as $pqt_temp_2) {
+                                $pqt_precio = new PaquetePrecio();
+                                $pqt_precio->estrellas = $estrellas;
+                                $pqt_precio->precio_s = $pqt_temp_2->precio_s;
+                                $pqt_precio->personas_s = $pqt_temp_2->personas_s;
+                                $pqt_precio->precio_d = $pqt_temp_2->precio_d;
+                                $pqt_precio->personas_d = $pqt_temp_2->personas_d;
+                                $pqt_precio->precio_m = $pqt_temp_2->precio_m;
+                                $pqt_precio->personas_m = $pqt_temp_2->personas_m;
+                                $pqt_precio->precio_t = $pqt_temp_2->precio_t;
+                                $pqt_precio->personas_t = $pqt_temp_2->personas_t;
+                                $pqt_precio->estado = '1';
+                                $pqt_precio->paquete_cotizaciones_id = $pqt->id;
+                                $pqt_precio->hotel_id = $pqt_temp_2->hotel_id;
+                                $pqt_precio->utilidad_s = $pqt_temp_2->utilidad_s;
+                                $pqt_precio->utilidad_d = $pqt_temp_2->utilidad_d;
+                                $pqt_precio->utilidad_m = $pqt_temp_2->utilidad_m;
+                                $pqt_precio->utilidad_t = $pqt_temp_2->utilidad_t;
+                                $pqt_precio->utilidad_por_s = $pqt_temp_2->utilidad_por_s;
+                                $pqt_precio->utilidad_por_d = $pqt_temp_2->utilidad_por_d;
+                                $pqt_precio->utilidad_por_m = $pqt_temp_2->utilidad_por_m;
+                                $pqt_precio->utilidad_por_t = $pqt_temp_2->utilidad_por_t;
+                                $pqt_precio->save();
+                            }
                         }
-                        $coti_cliente->save();
+                        $dia = 0;
+                        $dia_texto = 1;
+                        $coti = Cotizacion::FindOrFail($coti->id);
+                        $fecha_viaje = date($coti->fecha);
+                        foreach ($ppaquete->itinerarios as $itinerarios_) {
+                            $p_itinerario = new ItinerarioCotizaciones();
+                            $p_itinerario->titulo = $itinerarios_->titulo;
+                            $p_itinerario->descripcion = $itinerarios_->descripcion;
+                            $p_itinerario->dias = $dia_texto;
+                            $mod_date = strtotime('+' . ($dia_texto - 1) . ' day', strtotime($fecha_viaje));
+                            $p_itinerario->fecha = date("Y-m-d", $mod_date);
+                            $p_itinerario->precio = $itinerarios_->precio;
+                            $p_itinerario->imagen = $itinerarios_->imagen;
+                            $p_itinerario->imagenB = $itinerarios_->imagenB;
+                            $p_itinerario->imagenC = $itinerarios_->imagenC;
+                            $p_itinerario->destino_foco = $itinerarios_->destino_foco;
+                            $p_itinerario->destino_duerme = $itinerarios_->destino_duerme;
+                            $p_itinerario->observaciones = '';
+                            $p_itinerario->estado = 1;
+                            $p_itinerario->paquete_cotizaciones_id = $pqt->id;
+                            $p_itinerario->save();
+                            $dia++;
+                            $dia_texto++;
+                            foreach ($itinerarios_->destinos as $m_destinos) {
+                                $p_destinos = new ItinerarioDestinos();
+                                $p_destinos->codigo = $m_destinos->codigo;
+                                $p_destinos->destino = $m_destinos->destino;
+                                $p_destinos->region = $m_destinos->region;
+                                $p_destinos->pais = $m_destinos->pais;
+                                $p_destinos->descripcion = $m_destinos->descripcion;
+                                $p_destinos->imagen = $m_destinos->imagen;
+                                $p_destinos->estado = 1;
+                                $p_destinos->itinerario_cotizaciones_id = $p_itinerario->id;
+                                $p_destinos->save();
+                            }
+                            $st = 0;
+                            foreach ($itinerarios_->serivicios as $servicios) {
+                                $p_servicio = new ItinerarioServicios();
+                                $p_servicio->nombre = $servicios->nombre;
+                                $p_servicio->observacion = '';
+                                if ($servicios->precio_grupo == 1) {
+                                    $p_servicio->precio = $servicios->precio * 2;
+                                } else {
+                                    $p_servicio->precio = $servicios->precio;
+                                }
+                                $st += $p_servicio->precio;
+                                $p_servicio->itinerario_cotizaciones_id = $p_itinerario->id;
+                                $p_servicio->precio_grupo = $servicios->precio_grupo;
+                                $p_servicio->min_personas = $servicios->min_personas;
+                                $p_servicio->max_personas = $servicios->max_personas;
+                                $p_servicio->salida = $servicios->salida;
+                                $p_servicio->llegada = $servicios->llegada;
+                                $p_servicio->precio_c = 0;
+                                $p_servicio->user_id = auth()->guard('admin')->user()->id;
+                                $p_servicio->m_servicios_id = $servicios->m_servicios_id;
+                                $p_servicio->pos = $servicios->pos;
+                                $p_servicio->save();
+                                if ($servicios->precio_grupo == 1 && $servicios->grupo == 'MOVILID') {
+                                    if ($servicios->min_personas <= $totaltravelers && $totaltravelers <= $servicios->max_personas) {
+                                    } else {
+                                        $servicios_list = M_Servicio::where('grupo', $servicios->grupo)
+                                            ->where('localizacion', $servicios->localizacion)
+                                            ->where('tipoServicio', $servicios->tipoServicio)
+                                            ->where('min_personas', '<=', $totaltravelers)
+                                            ->where('max_personas', '>=', $totaltravelers)
+                                            ->get();
+                                        foreach ($servicios_list->take(1) as $servi) {
+                                            $st -= $p_servicio->precio;
+                                            $p_servicio1 = ItinerarioServicios::FindOrFail($p_servicio->id);
+                                            $p_servicio1->nombre = $servi->nombre;
+                                            $p_servicio1->observacion = '';
+                                            $p_servicio1->precio = $servi->precio_venta;
+                                            $st += $p_servicio1->precio;
+                                            $p_servicio1->itinerario_cotizaciones_id = $p_itinerario->id;
+                                            $p_servicio1->precio_grupo = $servi->precio_grupo;
+                                            $p_servicio1->min_personas = $servi->min_personas;
+                                            $p_servicio1->max_personas = $servi->max_personas;
+                                            $p_servicio1->precio_c = 0;
+                                            $p_servicio1->estado = 1;
+                                            $p_servicio1->salida = $servi->salida;
+                                            $p_servicio1->llegada = $servi->llegada;
+                                            $p_servicio1->m_servicios_id = $servi->id;
+                                            $p_servicio1->save();
+                                        }
+                                    }
+                                }
+                            }
+                            $p_itinerario->precio = $st;
+                            $p_itinerario->save();
+                        }
+                        ////-- recorremos los dias para agregar los hoteles
+                        $itinerario_cotizaciones = ItinerarioCotizaciones::where('paquete_cotizaciones_id', $ppaquete->id)->get();
+                        $nroDias = count($itinerario_cotizaciones);
+                        $pos = 1;
+                        if ($ppaquete->duracion > 1) {
+                            $paquetePrecio = P_PaquetePrecio::where('estrellas', $estrellas)->first();
+//                        $paquetePrecio=PaquetePrecio::FindOrFail($pqt_precio);
+                            foreach ($itinerario_cotizaciones as $iti_coti) {
+                                if ($iti_coti->destino_duerme > 0) {
+                                    $temp_dest = M_Destino::findOrFail($iti_coti->destino_duerme);
+                                    if ($pos < $nroDias) {
+                                        $hotelesxdestinoes = Hotel::where('estrellas', $estrellas)->where('localizacion', $temp_dest->destino)->get();
+                                        foreach ($hotelesxdestinoes as $hotelxdestinos) {
+                                            $preio_hotel = new PrecioHotelReserva();
+                                            $preio_hotel->estrellas = $estrellas;
+                                            $preio_hotel->precio_s = $hotelxdestinos->single;
+                                            $preio_hotel->personas_s = $paquetePrecio->personas_s;
+                                            $preio_hotel->precio_d = $hotelxdestinos->doble;
+                                            $preio_hotel->personas_d = $paquetePrecio->personas_d;
+                                            $preio_hotel->precio_m = $hotelxdestinos->matrimonial;
+                                            $preio_hotel->personas_m = $paquetePrecio->personas_m;
+                                            $preio_hotel->precio_t = $hotelxdestinos->triple;
+                                            $preio_hotel->personas_t = $paquetePrecio->personas_t;
+                                            $preio_hotel->utilidad = $paquetePrecio->utilidad;
+                                            $preio_hotel->estado = $hotelxdestinos->estado;
+                                            $preio_hotel->hotel_id = $hotelxdestinos->id;
+                                            $preio_hotel->itinerario_cotizaciones_id = $iti_coti->id;
+                                            $preio_hotel->utilidad_s = $paquetePrecio->utilidad_s;
+                                            $preio_hotel->utilidad_d = $paquetePrecio->utilidad_d;
+                                            $preio_hotel->utilidad_m = $paquetePrecio->utilidad_m;
+                                            $preio_hotel->utilidad_t = $paquetePrecio->utilidad_t;
+                                            $preio_hotel->utilidad_por_s = $paquetePrecio->utilidad_por_s;
+                                            $preio_hotel->utilidad_por_d = $paquetePrecio->utilidad_por_d;
+                                            $preio_hotel->utilidad_por_m = $paquetePrecio->utilidad_por_m;
+                                            $preio_hotel->utilidad_por_t = $paquetePrecio->utilidad_por_t;
+                                            $preio_hotel->localizacion = $hotelxdestinos->localizacion;
+                                            $preio_hotel->save();
+                                        }
+                                        $pos++;
+                                    }
+                                }
+                            }
+                        }
+                        $arr[] = ['totaltravelers' => $totaltravelers, 'codigo' => $codigo, 'estrellas' => $estrellas, 'transactiondatetime' => $transactiondatetime, 'originalBookingDate' => $originalBookingDate, 'titulo' => $titulo, 'idioma' => $idioma, 'nombres' => $nombres, 'telefono' => $telefono, 'email' => $email, 'total' => $total, 'cost' => $cost, 'profit' => $profit, 'fecha_llegada' => $fecha_llegada, 'notas' => $notas];
                     }
-                    $coti->codigo='';
-                    $coti->nropersonas=$totaltravelers;
-                    $coti->duracion='';
-                    $coti->precioventa='';
-                    $coti->fecha=$fecha_llegada;
-                    $coti->posibilidad=100;
-                    $coti->estado=1;
-                    $coti->fecha_venta=$transactiondatetime;
-                    $coti->users_id==auth()->guard('admin')->user()->id;
-                    
-                    $coti->precioventa=$transactiondatetime;
-                    $coti->fecha_venta=$transactiondatetime;
-                    $coti->fecha_venta=$transactiondatetime;
-                    $coti->fecha_venta=$transactiondatetime;
-                    $coti->fecha_venta=$transactiondatetime;
-                    $coti->fecha_venta=$transactiondatetime;
-                    $coti->fecha_venta=$transactiondatetime;
-
-                    $arr[] = ['$codigo'=>$codigo,'$transactiondatetime' => $transactiondatetime,'$originalBookingDate' => $originalBookingDate,'$titulo' => $titulo, '$nombres' => $nombres, '$telefono' => $telefono, '$email' => $email, '$total' => $total, '$cost' => $cost, '$profit' => $profit, '$fecha_llegada' => $fecha_llegada, '$notas' => $notas];
                 }
             }
         }
-        return $arr;
+//        return $arr;
+        session()->flash('msg', 'OK');
+//        return redirect()->back();
+        return view('admin.expedia.expedia-import-vista-previa-rpt');
     }
 }

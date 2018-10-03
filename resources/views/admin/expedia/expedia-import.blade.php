@@ -24,15 +24,22 @@
                 </div>
                 <div class="card-body">
                     <form action="{{route('expedia_import_path')}}" method="post" enctype="multipart/form-data">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="txt_name" class="font-weight-bold text-secondary">Ingrese el archivo</label>
+                        <div class="row">
+                            <div class="col">
+                                {!! Session::has('msg') ? Session::get("msg") : '' !!}
                             </div>
-                            <input type="file" class="form-control" id="excel" name="import_file" placeholder="Archivo excel">
                         </div>
-                        <div class="col-4 mt-5">
-                            {{csrf_field()}}
-                            <button type="submit" class="btn btn-primary btn-lg">Subir archivo</button>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="txt_name" class="font-weight-bold text-secondary">Ingrese el archivo</label>
+                                </div>
+                                <input type="file" class="form-control" id="excel" name="import_file" placeholder="Archivo excel" value="{{old('import_file')}}">
+                            </div>
+                            <div class="col-4 mt-5">
+                                {{csrf_field()}}
+                                <button type="submit" class="btn btn-primary btn-lg">Subir archivo</button>
+                            </div>
                         </div>
                     </form>
                 </div>

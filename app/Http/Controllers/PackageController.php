@@ -133,86 +133,89 @@ class PackageController extends Controller
         $paquete->descripcion=$txta_description;
         $paquete->incluye=$txta_include;
         $paquete->noincluye=$txta_notinclude;
-        $paquete->utilidad=40;
+        $paquete->utilidad=$request->input('txt_utilidad');
+        $paquete->precio_venta=$request->input('totalItinerario_venta');
         $paquete->estado=1;
         $paquete->preciocosto=$totalItinerario;
         $paquete->save();
 //dd($paquete);
-        $paquete_precio2=new P_PaquetePrecio();
-        $paquete_precio2->estrellas=2;
-        $paquete_precio2->precio_s=$amount_s2;
-        $paquete_precio2->personas_s=1;
-        $paquete_precio2->precio_m=$amount_d2;
-        $paquete_precio2->personas_m=1;
-        $paquete_precio2->precio_d=$amount_d2;
-        $paquete_precio2->personas_d=1;
-        $paquete_precio2->precio_t=$amount_t2;
-        $paquete_precio2->personas_t=1;
-        if($strellas_2==2)
-            $paquete_precio2->estado=1;
-        else
-            $paquete_precio2->estado=0;
-        $paquete_precio2->utilidad=$profit_2;
-        $paquete_precio2->p_paquete_id=$paquete->id;
-        $paquete_precio2->hotel_id=$hotel_id_2;
-        $paquete_precio2->save();
+        if($txt_day>1) {
+            $paquete_precio2 = new P_PaquetePrecio();
+            $paquete_precio2->estrellas = 2;
+            $paquete_precio2->precio_s = $amount_s2;
+            $paquete_precio2->personas_s = 1;
+            $paquete_precio2->precio_m = $amount_d2;
+            $paquete_precio2->personas_m = 1;
+            $paquete_precio2->precio_d = $amount_d2;
+            $paquete_precio2->personas_d = 1;
+            $paquete_precio2->precio_t = $amount_t2;
+            $paquete_precio2->personas_t = 1;
+            if ($strellas_2 == 2)
+                $paquete_precio2->estado = 1;
+            else
+                $paquete_precio2->estado = 0;
+            $paquete_precio2->utilidad = $profit_2;
+            $paquete_precio2->p_paquete_id = $paquete->id;
+            $paquete_precio2->hotel_id = $hotel_id_2;
+            $paquete_precio2->save();
 
-        $paquete_precio3=new P_PaquetePrecio();
-        $paquete_precio3->estrellas=3;
-        $paquete_precio3->precio_s=$amount_s3;
-        $paquete_precio3->personas_s=1;
-        $paquete_precio3->precio_m=$amount_d3;
-        $paquete_precio3->personas_m=1;
-        $paquete_precio3->precio_d=$amount_d3;
-        $paquete_precio3->personas_d=1;
-        $paquete_precio3->precio_t=$amount_t3;
-        $paquete_precio3->personas_t=1;
-        if($strellas_3==3)
-            $paquete_precio3->estado=1;
-        else
-            $paquete_precio3->estado=0;
-        $paquete_precio3->utilidad=$profit_3;
-        $paquete_precio3->p_paquete_id=$paquete->id;
-        $paquete_precio3->hotel_id=$hotel_id_3;
-        $paquete_precio3->save();
+            $paquete_precio3 = new P_PaquetePrecio();
+            $paquete_precio3->estrellas = 3;
+            $paquete_precio3->precio_s = $amount_s3;
+            $paquete_precio3->personas_s = 1;
+            $paquete_precio3->precio_m = $amount_d3;
+            $paquete_precio3->personas_m = 1;
+            $paquete_precio3->precio_d = $amount_d3;
+            $paquete_precio3->personas_d = 1;
+            $paquete_precio3->precio_t = $amount_t3;
+            $paquete_precio3->personas_t = 1;
+            if ($strellas_3 == 3)
+                $paquete_precio3->estado = 1;
+            else
+                $paquete_precio3->estado = 0;
+            $paquete_precio3->utilidad = $profit_3;
+            $paquete_precio3->p_paquete_id = $paquete->id;
+            $paquete_precio3->hotel_id = $hotel_id_3;
+            $paquete_precio3->save();
 
-        $paquete_precio4=new P_PaquetePrecio();
-        $paquete_precio4->estrellas=4;
-        $paquete_precio4->precio_s=$amount_s4;
-        $paquete_precio4->personas_s=1;
-        $paquete_precio4->precio_m=$amount_d4;
-        $paquete_precio4->personas_m=1;
-        $paquete_precio4->precio_d=$amount_d4;
-        $paquete_precio4->personas_d=1;
-        $paquete_precio4->precio_t=$amount_t4;
-        $paquete_precio4->personas_t=1;
-        if($strellas_4==4)
-            $paquete_precio4->estado=1;
-        else
-            $paquete_precio4->estado=0;
-        $paquete_precio4->utilidad=$profit_4;
-        $paquete_precio4->p_paquete_id=$paquete->id;
-        $paquete_precio4->hotel_id=$hotel_id_4;
-        $paquete_precio4->save();
+            $paquete_precio4 = new P_PaquetePrecio();
+            $paquete_precio4->estrellas = 4;
+            $paquete_precio4->precio_s = $amount_s4;
+            $paquete_precio4->personas_s = 1;
+            $paquete_precio4->precio_m = $amount_d4;
+            $paquete_precio4->personas_m = 1;
+            $paquete_precio4->precio_d = $amount_d4;
+            $paquete_precio4->personas_d = 1;
+            $paquete_precio4->precio_t = $amount_t4;
+            $paquete_precio4->personas_t = 1;
+            if ($strellas_4 == 4)
+                $paquete_precio4->estado = 1;
+            else
+                $paquete_precio4->estado = 0;
+            $paquete_precio4->utilidad = $profit_4;
+            $paquete_precio4->p_paquete_id = $paquete->id;
+            $paquete_precio4->hotel_id = $hotel_id_4;
+            $paquete_precio4->save();
 
-        $paquete_precio5=new P_PaquetePrecio();
-        $paquete_precio5->estrellas=5;
-        $paquete_precio5->precio_s=$amount_s5;
-        $paquete_precio5->personas_s=1;
-        $paquete_precio5->precio_m=$amount_d5;
-        $paquete_precio5->personas_m=1;
-        $paquete_precio5->precio_d=$amount_d5;
-        $paquete_precio5->personas_d=1;
-        $paquete_precio5->precio_t=$amount_t5;
-        $paquete_precio5->personas_t=1;
-        if($strellas_5==5)
-            $paquete_precio5->estado=1;
-        else
-            $paquete_precio5->estado=0;
-        $paquete_precio5->utilidad=$profit_5;
-        $paquete_precio5->p_paquete_id=$paquete->id;
-        $paquete_precio5->hotel_id=$hotel_id_5;
-        $paquete_precio5->save();
+            $paquete_precio5 = new P_PaquetePrecio();
+            $paquete_precio5->estrellas = 5;
+            $paquete_precio5->precio_s = $amount_s5;
+            $paquete_precio5->personas_s = 1;
+            $paquete_precio5->precio_m = $amount_d5;
+            $paquete_precio5->personas_m = 1;
+            $paquete_precio5->precio_d = $amount_d5;
+            $paquete_precio5->personas_d = 1;
+            $paquete_precio5->precio_t = $amount_t5;
+            $paquete_precio5->personas_t = 1;
+            if ($strellas_5 == 5)
+                $paquete_precio5->estado = 1;
+            else
+                $paquete_precio5->estado = 0;
+            $paquete_precio5->utilidad = $profit_5;
+            $paquete_precio5->p_paquete_id = $paquete->id;
+            $paquete_precio5->hotel_id = $hotel_id_5;
+            $paquete_precio5->save();
+        }
         $dia=0;
         foreach ($itinerarios_ as $itinerario_id){
             $dia_=$dia+1;
@@ -355,91 +358,93 @@ class PackageController extends Controller
         $paquete->descripcion=$txta_description;
         $paquete->incluye=$txta_include;
         $paquete->noincluye=$txta_notinclude;
-        $paquete->utilidad=40;
+        $paquete->utilidad=$request->input('txt_utilidad');
+        $paquete->precio_venta=$request->input('totalItinerario_venta');
         $paquete->estado=1;
         $paquete->preciocosto=$totalItinerario;
         $paquete->save();
 
         $p_paquete_precio=P_PaquetePrecio::where('p_paquete_id',$paquete_id)->delete();
         $p_paquete_itinerario=P_Itinerario::where('p_paquete_id',$paquete_id)->delete();
+        if($txt_day>1) {
+            $paquete_precio2 = new P_PaquetePrecio();
+            $paquete_precio2->estrellas = 2;
+            $paquete_precio2->precio_s = $amount_s2;
+            $paquete_precio2->personas_s = 1;
+            $paquete_precio2->precio_m = $amount_d2;
+            $paquete_precio2->personas_m = 1;
+            $paquete_precio2->precio_d = $amount_d2;
+            $paquete_precio2->personas_d = 1;
+            $paquete_precio2->precio_t = $amount_t2;
+            $paquete_precio2->personas_t = 1;
+            if ($strellas_2 == 2)
+                $paquete_precio2->estado = 1;
+            else
+                $paquete_precio2->estado = 0;
+            $paquete_precio2->utilidad = $profit_2;
+            $paquete_precio2->p_paquete_id = $paquete->id;
+            $paquete_precio2->hotel_id = $hotel_id_2;
+            $paquete_precio2->save();
 
-        $paquete_precio2=new P_PaquetePrecio();
-        $paquete_precio2->estrellas=2;
-        $paquete_precio2->precio_s=$amount_s2;
-        $paquete_precio2->personas_s=1;
-        $paquete_precio2->precio_m=$amount_d2;
-        $paquete_precio2->personas_m=1;
-        $paquete_precio2->precio_d=$amount_d2;
-        $paquete_precio2->personas_d=1;
-        $paquete_precio2->precio_t=$amount_t2;
-        $paquete_precio2->personas_t=1;
-        if($strellas_2==2)
-            $paquete_precio2->estado=1;
-        else
-            $paquete_precio2->estado=0;
-        $paquete_precio2->utilidad=$profit_2;
-        $paquete_precio2->p_paquete_id=$paquete->id;
-        $paquete_precio2->hotel_id=$hotel_id_2;
-        $paquete_precio2->save();
+            $paquete_precio3 = new P_PaquetePrecio();
+            $paquete_precio3->estrellas = 3;
+            $paquete_precio3->precio_s = $amount_s3;
+            $paquete_precio3->personas_s = 1;
+            $paquete_precio3->precio_m = $amount_d3;
+            $paquete_precio3->personas_m = 1;
+            $paquete_precio3->precio_d = $amount_d3;
+            $paquete_precio3->personas_d = 1;
+            $paquete_precio3->precio_t = $amount_t3;
+            $paquete_precio3->personas_t = 1;
+            if ($strellas_3 == 3)
+                $paquete_precio3->estado = 1;
+            else
+                $paquete_precio3->estado = 0;
+            $paquete_precio3->utilidad = $profit_3;
+            $paquete_precio3->p_paquete_id = $paquete->id;
+            $paquete_precio3->hotel_id = $hotel_id_3;
+            $paquete_precio3->save();
 
-        $paquete_precio3=new P_PaquetePrecio();
-        $paquete_precio3->estrellas=3;
-        $paquete_precio3->precio_s=$amount_s3;
-        $paquete_precio3->personas_s=1;
-        $paquete_precio3->precio_m=$amount_d3;
-        $paquete_precio3->personas_m=1;
-        $paquete_precio3->precio_d=$amount_d3;
-        $paquete_precio3->personas_d=1;
-        $paquete_precio3->precio_t=$amount_t3;
-        $paquete_precio3->personas_t=1;
-        if($strellas_3==3)
-            $paquete_precio3->estado=1;
-        else
-            $paquete_precio3->estado=0;
-        $paquete_precio3->utilidad=$profit_3;
-        $paquete_precio3->p_paquete_id=$paquete->id;
-        $paquete_precio3->hotel_id=$hotel_id_3;
-        $paquete_precio3->save();
+            $paquete_precio4 = new P_PaquetePrecio();
+            $paquete_precio4->estrellas = 4;
+            $paquete_precio4->precio_s = $amount_s4;
+            $paquete_precio4->personas_s = 1;
+            $paquete_precio4->precio_m = $amount_d4;
+            $paquete_precio4->personas_m = 1;
+            $paquete_precio4->precio_d = $amount_d4;
+            $paquete_precio4->personas_d = 1;
+            $paquete_precio4->precio_t = $amount_t4;
+            $paquete_precio4->personas_t = 1;
+            if ($strellas_4 == 4)
+                $paquete_precio4->estado = 1;
+            else
+                $paquete_precio4->estado = 0;
+            $paquete_precio4->utilidad = $profit_4;
+            $paquete_precio4->p_paquete_id = $paquete->id;
+            $paquete_precio4->hotel_id = $hotel_id_4;
+            $paquete_precio4->save();
 
-        $paquete_precio4=new P_PaquetePrecio();
-        $paquete_precio4->estrellas=4;
-        $paquete_precio4->precio_s=$amount_s4;
-        $paquete_precio4->personas_s=1;
-        $paquete_precio4->precio_m=$amount_d4;
-        $paquete_precio4->personas_m=1;
-        $paquete_precio4->precio_d=$amount_d4;
-        $paquete_precio4->personas_d=1;
-        $paquete_precio4->precio_t=$amount_t4;
-        $paquete_precio4->personas_t=1;
-        if($strellas_4==4)
-            $paquete_precio4->estado=1;
-        else
-            $paquete_precio4->estado=0;
-        $paquete_precio4->utilidad=$profit_4;
-        $paquete_precio4->p_paquete_id=$paquete->id;
-        $paquete_precio4->hotel_id=$hotel_id_4;
-        $paquete_precio4->save();
+            $paquete_precio5 = new P_PaquetePrecio();
+            $paquete_precio5->estrellas = 5;
+            $paquete_precio5->precio_s = $amount_s5;
+            $paquete_precio5->personas_s = 1;
+            $paquete_precio5->precio_m = $amount_d5;
+            $paquete_precio5->personas_m = 1;
+            $paquete_precio5->precio_d = $amount_d5;
+            $paquete_precio5->personas_d = 1;
+            $paquete_precio5->precio_t = $amount_t5;
+            $paquete_precio5->personas_t = 1;
+            if ($strellas_5 == 5)
+                $paquete_precio5->estado = 1;
+            else
+                $paquete_precio5->estado = 0;
+            $paquete_precio5->utilidad = $profit_5;
+            $paquete_precio5->p_paquete_id = $paquete->id;
+            $paquete_precio5->hotel_id = $hotel_id_5;
+            $paquete_precio5->save();
 
-        $paquete_precio5=new P_PaquetePrecio();
-        $paquete_precio5->estrellas=5;
-        $paquete_precio5->precio_s=$amount_s5;
-        $paquete_precio5->personas_s=1;
-        $paquete_precio5->precio_m=$amount_d5;
-        $paquete_precio5->personas_m=1;
-        $paquete_precio5->precio_d=$amount_d5;
-        $paquete_precio5->personas_d=1;
-        $paquete_precio5->precio_t=$amount_t5;
-        $paquete_precio5->personas_t=1;
-        if($strellas_5==5)
-            $paquete_precio5->estado=1;
-        else
-            $paquete_precio5->estado=0;
-        $paquete_precio5->utilidad=$profit_5;
-        $paquete_precio5->p_paquete_id=$paquete->id;
-        $paquete_precio5->hotel_id=$hotel_id_5;
-        $paquete_precio5->save();
-        $dia=0;
-
+        }
+        $dia = 0;
         foreach ($itinerarios_ as $itinerario_id){
             $dia_=$dia+1;
             $m_itineario=M_Itinerario::FindOrFail($itinerario_id);

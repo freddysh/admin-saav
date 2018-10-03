@@ -1182,3 +1182,7 @@ Route::post('admin/quotes/expedia/new/profile/import', [
     'uses' => 'QouteController@import',
     'as' => 'expedia_import_path',
 ]);
+Route::post('admin/quotes/expedia/new/profile/import/save',[
+    'uses' => 'QouteController@expedia_save',
+    'as' => 'quotes_new1_expedia_save_path',
+]);

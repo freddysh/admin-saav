@@ -1468,7 +1468,6 @@ class PackageCotizacionController extends Controller
         $fecha_viaje=date($coti->fecha);
         foreach($p_paquete as $p_paquete_){
             foreach($p_paquete_->itinerarios as $itinerarios_){
-
                 $p_itinerario=new ItinerarioCotizaciones();
                 $p_itinerario->titulo=$itinerarios_->titulo;
                 $p_itinerario->descripcion=$itinerarios_->descripcion;
