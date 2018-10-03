@@ -721,6 +721,7 @@ class PackageCotizacionController extends Controller
     }
     public function contabilidad($fecha)
     {
+        $m_servicios=M_Servicio::get();
         $cotizacion=Cotizacion::where('estado',2)->where('categorizado','N')->get();
         $cotizacion_cat=Cotizacion::whereYear('fecha',$fecha)->where('estado',2)
             ->whereBetween('categorizado',['C','S'])->get();
@@ -737,7 +738,7 @@ class PackageCotizacionController extends Controller
 
         //        dd($cotizacion_cat);
 //        dd($cotizacion);
-        return view('admin.contabilidad.categorizacion',['cotizacion'=>$cotizacion,'cotizacion_cat'=>$cotizacion_cat,'fecha_pqt'=>$fecha]);
+        return view('admin.contabilidad.categorizacion',['cotizacion'=>$cotizacion,'cotizacion_cat'=>$cotizacion_cat,'fecha_pqt'=>$fecha,'m_servicios'=>$m_servicios]);
     }
     public function categorizar(Request $request)
     {

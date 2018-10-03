@@ -68,50 +68,52 @@
                                                                 </td>
                                                             </tr>
                                                             @foreach($itinerarios->itinerario_servicios as $servicios)
-                                                                <tr>
-                                                                    <td>
-                                                                        @if($servicios->servicio->grupo=='TOURS')
-                                                                            <i class="fas fa-map text-info"></i>
-                                                                        @elseif($servicios->servicio->grupo=='MOVILID')
-                                                                            <i class="fas fa-bus text-warning"></i>
-                                                                        @elseif($servicios->servicio->grupo=='REPRESENT')
-                                                                            <i class="fas fa-users text-success"></i>
-                                                                        @elseif($servicios->servicio->grupo=='ENTRANCES')
-                                                                            <i class="fas fa-ticket-alt text-warning"></i>
-                                                                        @elseif($servicios->servicio->grupo=='FOOD')
-                                                                            <i class="fas fa-bus text-danger"></i>
-                                                                        @elseif($servicios->servicio->grupo=='TRAINS')
-                                                                            <i class="fas fa-train text-info"></i>
-                                                                        @elseif($servicios->servicio->grupo=='FLIGHT')
-                                                                            <i class="fas fa-plain text-primary"></i>
-                                                                        @elseif($servicios->servicio->grupo=='OTHERS')
-                                                                            <i class="fas fa-question text-success"></i>
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>{{$servicios->servicio->nombre}} (<span class="text-primary">{{$servicios->servicio->tipoServicio}}</span>)</td>
-                                                                    <td><span class="text-warning">{{$servicios->servicio->localizacion}}</span></td>
-                                                                    <td>
-                                                                        @if($servicios->servicio->precio_grupo=='1')
-                                                                            {{round($servicios->precio/$cotizacion_->nropersonas,2)}}<sub>$</sub> <b>x</b> {{$cotizacion_->nropersonas}} <i class="fas fa-male text-primary"></i>
-                                                                        @elseif($servicios->servicio->precio_grupo=='0')
-                                                                            {{$servicios->precio}}<sub>$</sub> <b>x</b> {{$cotizacion_->nropersonas}} <i class="fas fa-male text-primary"></i>
-                                                                        @else
-                                                                            -
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        @if($servicios->servicio->precio_grupo=='1')
-                                                                            {{$servicios->precio}}
-                                                                            @php $total+=$servicios->precio; @endphp
-                                                                        @elseif($servicios->servicio->precio_grupo=='0')
-                                                                            {{$servicios->precio*$cotizacion_->nropersonas}}
-                                                                            @php $total+=$servicios->precio*$cotizacion_->nropersonas; @endphp
-                                                                        @else
-                                                                            -
-                                                                        @endif
-                                                                        <sub>$</sub>
-                                                                    </td>
-                                                                </tr>
+                                                                @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $servicio)
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if($servicio->grupo=='TOURS')
+                                                                                <i class="fas fa-map text-info"></i>
+                                                                            @elseif($servicio->grupo=='MOVILID')
+                                                                                <i class="fas fa-bus text-warning"></i>
+                                                                            @elseif($servicio->grupo=='REPRESENT')
+                                                                                <i class="fas fa-users text-success"></i>
+                                                                            @elseif($servicio->grupo=='ENTRANCES')
+                                                                                <i class="fas fa-ticket-alt text-warning"></i>
+                                                                            @elseif($servicio->grupo=='FOOD')
+                                                                                <i class="fas fa-bus text-danger"></i>
+                                                                            @elseif($servicio->grupo=='TRAINS')
+                                                                                <i class="fas fa-train text-info"></i>
+                                                                            @elseif($servicio->grupo=='FLIGHT')
+                                                                                <i class="fas fa-plain text-primary"></i>
+                                                                            @elseif($servicio->grupo=='OTHERS')
+                                                                                <i class="fas fa-question text-success"></i>
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>{{$servicio->nombre}} (<span class="text-primary">{{$servicio->tipoServicio}}</span>)</td>
+                                                                        <td><span class="text-warning">{{$servicio->localizacion}}</span></td>
+                                                                        <td>
+                                                                            @if($servicio->precio_grupo=='1')
+                                                                                {{round($servicios->precio/$cotizacion_->nropersonas,2)}}<sub>$</sub> <b>x</b> {{$cotizacion_->nropersonas}} <i class="fas fa-male text-primary"></i>
+                                                                            @elseif($servicio->precio_grupo=='0')
+                                                                                {{$servicios->precio}}<sub>$</sub> <b>x</b> {{$cotizacion_->nropersonas}} <i class="fas fa-male text-primary"></i>
+                                                                            @else
+                                                                                -
+                                                                            @endif
+                                                                        </td>
+                                                                        <td>
+                                                                            @if($servicio->precio_grupo=='1')
+                                                                                {{$servicios->precio}}
+                                                                                @php $total+=$servicios->precio; @endphp
+                                                                            @elseif($servicio->precio_grupo=='0')
+                                                                                {{$servicios->precio*$cotizacion_->nropersonas}}
+                                                                                @php $total+=$servicios->precio*$cotizacion_->nropersonas; @endphp
+                                                                            @else
+                                                                                -
+                                                                            @endif
+                                                                            <sub>$</sub>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
                                                             @endforeach
                                                             @foreach($itinerarios->hotel as $hotel)
                                                                 <tr>
