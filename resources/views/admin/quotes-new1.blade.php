@@ -39,7 +39,7 @@
                         <div class="col-4">
                             <div class="form-group">
                                 <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
-                                <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}" readonly>
+                                <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}">
                             </div>
                         </div>
                         <div class="col-4">
@@ -344,7 +344,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="txt_days" class="font-weight-bold text-secondary">Days</label>
-                                <input type="number" class="form-control" id="txt_days" name="txt_days" placeholder="Days" min="1" onchange="poner_dias()" value="{{$days}}">
+                                <input type="number" class="form-control" id="txt_days" name="txt_days" placeholder="Days" min="1" onchange="poner_dias($('#web').val(),$(this).val())" value="{{$days}}">
                             </div>
                         </div>
                         <div class="col">
@@ -638,7 +638,7 @@
                             <div class="">
                                 <div class="">
                                     <label class="m-0">
-                                        <input class="destinospack" type="checkbox" name="destinos[]" value="{{$destino->id.'_'.$destino->destino}}" onchange="filtrar_itinerarios1()">
+                                        <input class="destinospack" type="checkbox" name="destinos[]" value="{{$destino->id.'_'.$destino->destino}}" onchange="poner_dias($('#web').val(),$('#txt_days').val())">
                                         {{ucwords(strtolower($destino->destino))}}
                                     </label>
                                 </div>
@@ -699,95 +699,8 @@
                     {{--<div class="row caja_itinerario" style="height: 600px; overflow-y: auto;">--}}
                     <div class="row">
                         <div class="col-9">
-                            <div class="row">
-                                <div class="text-right loadder "><i id="caja_load" class="fa fa-spinner d-none" aria-hidden="true"></i></div>
-                                @php
-                                    $pos=0;
-                                    $precio_hotel_s=0;
-                                    $precio_hotel_d=0;
-                                    $precio_hotel_m=0;
-                                    $precio_hotel_t=0;
-                                @endphp
-                                @foreach($p_paquete as $p_paquete_)
-                                    @php
-                                        $array_destinos1='';
-                                        $array_destinos2=array();
-                                    @endphp
-                                    @foreach($p_paquete_->itinerarios as $itinerarios0)
-                                        @foreach($itinerarios0->destinos as $destino0)
-                                            @php
-                                                $array_destinos2[$destino0->destino]=$destino0->destino;
-                                            @endphp
-                                        @endforeach
-                                    @endforeach
-                                    @foreach($array_destinos2 as $destino12)
-                                        @php
-                                            $array_destinos1.=$destino12.'/';
-                                        @endphp
-                                    @endforeach
+                            <div class="row" id="pqts">
 
-                                    @php
-                                        $array_destinos1=substr($array_destinos1,0,(strlen($array_destinos1)-1));
-                                    @endphp
-                                    @foreach($p_paquete_->precios as $precio0)
-                                        @php
-                                            $iti_total=0;
-                                            $hotel0='';
-                                            $cadena_hiden='';
-                                        @endphp
-                                        @php
-                                            $pos++;
-                                            $hotel0.=$precio0->precio_s.'_'.$precio0->precio_d.'_'.$precio0->precio_m.'_'.$precio0->precio_t.'/';
-                                        @endphp
-                                        <div class="col-4 d-none  mb-3" id="itinerario3_{{$precio0->estrellas}}_{{$pos}}">
-                                            <div class="card w-100">
-                                                <div class="card-header">
-                                                    @foreach($p_paquete_->itinerarios as $itinerarios0)
-                                                        @foreach($itinerarios0->serivicios as $serivicios0)
-                                                            @if($serivicios0->precio_grupo==1)
-                                                                @php
-                                                                    $iti_total+=$serivicios0->precio;
-                                                                    $cadena_hiden.=($serivicios0->precio*2).'_g/';
-                                                                @endphp
-                                                            @else
-                                                                @php
-                                                                    $iti_total+=$serivicios0->precio;
-                                                                    $cadena_hiden.=$serivicios0->precio.'_i/';
-                                                                @endphp
-                                                            @endif
-                                                        @endforeach
-                                                    @endforeach
-                                                    <label class="lista_itinerarios2 small font-weight-bold">
-                                                        <input class="lista_itinerarios3" type="hidden"  value="{{$p_paquete_->id.'_'.$p_paquete_->duracion.'_'.$array_destinos1.'_'.$pos}}">
-                                                        <input class="paquetespack" type="radio" name="paquetes[]" id="pqt_{{$pos}}" value="{{$p_paquete_->id.'_'.$p_paquete_->duracion.'_'.$array_destinos1.'_'.$precio0->estrellas}}" onchange="mostrar_datos('{{$p_paquete_->id.'_'.$p_paquete_->duracion.'_'.$iti_total.'_'.$pos.'_'.$precio0->estrellas}}')">
-                                                        <input type="hidden" name="datos_paquete_{{$p_paquete_->id}}" id="datos_paquete_{{$p_paquete_->id}}" value="{{$hotel0}}">
-                                                        <input type="hidden" class="lista_itinerarios4" id="lista_servicios_{{$pos}}" value="{{$cadena_hiden}}">
-                                                        <span class="text-green-goto">{{$p_paquete_->codigo}} - </span> <span class="text-g-yellow">{{$precio0->estrellas}} STARS</span>
-                                                    </label>
-                                                </div>
-
-
-                                                <div id="collapseExample_{{$p_paquete_->id}}" class="card-body">
-                                                    <h6 class="text-center text-secondary">{{$p_paquete_->titulo}}</h6>
-                                                    <ul class="list-style-none p-0">
-                                                        @foreach($p_paquete_->itinerarios as $itinerarios0)
-                                                            <li><small><b class="font-weight-bold">Dia {{$itinerarios0->dias}}</b> {{ucwords(strtolower($itinerarios0->titulo))}}</small></li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-
-                                                {{--<div class="row">--}}
-                                                {{--<div class="col-lg-12 text-right ">--}}
-                                                {{--<b class="text-15 text-green-goto margin-right-15">Basado en 2 personas -> {{$iti_total}}$</b>--}}
-                                                {{--</div>--}}
-                                                {{--</div>--}}
-                                                <div class="card-footer">
-                                                    <small class="text-muted">Basado en 2 personas <span class="text-primary"><sup>$</sup>{{$iti_total}}</span></small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                @endforeach
                             </div>
                         </div>
                         <div class="col">

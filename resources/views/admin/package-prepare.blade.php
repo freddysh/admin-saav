@@ -25,6 +25,7 @@
         $include='';
         $no_include='';
         $cliente_id=0;
+    $duracion=0;
     @endphp
 
     @foreach($cotizaciones as $cotizacion)
@@ -51,35 +52,41 @@
                 <p class="text-18">Web:<b class="text-info">{{$cotizacion->web}}</b> | Codigo:<b class="text-info">{{$cotizacion->codigo}}</b> | Idioma:<b class="text-info">{{$cotizacion->idioma_pasajeros}}</b></p>
                 <b class="text-g-yellow h2">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} <i class="fa fa-star" aria-hidden="true"></i>:</b>
                 @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
-                    @foreach($paquete->paquete_precios as $precio)
-                        <b class="text-secondary h2">
-                            @if($precio->personas_s>0)
-                                SINGLE
-                                @php
-                                    $s=1;
-                                @endphp
-                            @endif
-                            @if($precio->personas_d>0)
-                                DOUBLE
-                                @php
-                                    $d=1;
-                                @endphp
-                            @endif
-                            @if($precio->personas_m>0)
-                                MATRIMONIAL
-                                @php
-                                    $m=1;
-                                @endphp
-                            @endif
-                            @if($precio->personas_t>0)
-                                TRIPLE
-                                @php
-                                    $t=1;
-                                @endphp
-                            @endif
-                        </b>
-                    @endforeach
-                    @if($s==0&&$d==0&&$m==0&&$t==0)<b class="text-secondary h2"> SIN HOTEL</b>@endif
+                    @php
+                    $duracion=$paquete->duracion;
+                    @endphp
+                    @if($paquete->duracion==1)
+                        <b class="text-secondary h2"> SIN HOTEL</b>
+                    @else
+                        @foreach($paquete->paquete_precios as $precio)
+                            <b class="text-secondary h2">
+                                @if($precio->personas_s>0)
+                                    SINGLE
+                                    @php
+                                        $s=1;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_d>0)
+                                    DOUBLE
+                                    @php
+                                        $d=1;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_m>0)
+                                    MATRIMONIAL
+                                    @php
+                                        $m=1;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_t>0)
+                                    TRIPLE
+                                    @php
+                                        $t=1;
+                                    @endphp
+                                @endif
+                            </b>
+                        @endforeach
+                    @endif
                 @endforeach
             @endforeach
         </div>
@@ -88,7 +95,7 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col caja_paso_noactivo text-30 text-center">
-                            <a href="{{route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete_id])}}" class="caja_paso_noactivo_ no_stilo">1</a>
+                            <a href="{{route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete_id,'nuevo'])}}" class="caja_paso_noactivo_ no_stilo">1</a>
                             {{--<b>1</b>--}}
                         </div>
                         <div class="col caja_paso_activo text-30 text-center">
@@ -368,20 +375,20 @@
                                     </div>
                                     <div class="col text-right">
                                         <div class="row">
-                                            <div class="col @if($s==0) d-none @endif">
-                                                <b><sup>$</sup> {{round($pre_s,0)}}</b>
+                                            <div class="col @if($duracion>1) @if($s==0) d-none @endif @else d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_s,2)}}</b>
                                             </div>
-                                            <div class="col @if($d==0) d-none @endif">
-                                                <b><sup>$</sup> {{round($pre_d,0)}}</b>
+                                            <div class="col @if($duracion>1) @if($d==0) d-none @endif @else d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_d,2)}}</b>
                                             </div>
-                                            <div class="col @if($m==0) d-none @endif">
-                                                <b><sup>$</sup> {{round($pre_m,0)}}</b>
+                                            <div class="col @if($duracion>1) @if($m==0) d-none @endif @else d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_m,2)}}</b>
                                             </div>
-                                            <div class="col @if($t==0) d-none @endif">
-                                                <b><sup>$</sup> {{round($pre_t,0)}}</b>
+                                            <div class="col @if($duracion>1) @if($t==0) d-none @endif @else d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_t,2)}}</b>
                                             </div>
-                                            <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">
-                                                <b><sup>$</sup> {{round($pre_sh,0)}}</b>
+                                            <div class="col @if($duracion>1) d-none @endif">
+                                                <b><sup>$</sup> {{round($pre_sh,2)}}</b>
                                             </div>
                                         </div>
                                     </div>
@@ -409,19 +416,19 @@
                             <b class="">PRICE PER PERSON</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
-                            <div class="col @if($s==0) d-none @endif">
+                            <div class="col @if($duracion>1) @if($s==0) d-none @endif @else d-none @endif">
                                 <b class="text-secondary">S</b>
                             </div>
-                            <div class="col @if($d==0) d-none @endif">
+                            <div class="col @if($duracion>1) @if($d==0) d-none @endif @else d-none @endif">
                                 <b class="text-secondary">D</b>
                             </div>
-                            <div class="col @if($m==0) d-none @endif">
+                            <div class="col @if($duracion>1) @if($m==0) d-none @endif @else d-none @endif">
                                 <b class="text-secondary">M</b>
                             </div>
-                            <div class="col @if($t==0) d-none @endif">
+                            <div class="col @if($duracion>1) @if($t==0) d-none @endif @else d-none @endif">
                                 <b class="text-secondary">T</b>
                             </div>
-                            <div class="col @if($s==0&&$s==0&&$m==0&&$t==0) @else d-none @endif">
+                            <div class="col @if($duracion>1) d-none @endif">
                                 <b class="text-secondary">SIN HOTEL</b>
                             </div>
                         {{--</div>--}}
@@ -431,20 +438,20 @@
                             <b class="text-g-yellow">COST</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
-                            <div class="col @if($s==0) d-none @endif">
-                                <b class="text-secondary"><sup>$</sup><span name="cost_s" id="cost_s">{{ceil($prem_s)}}</span></b>
+                            <div class="col @if($duracion>1) @if($s==0) d-none @endif @else d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_s" id="cost_s">{{round($prem_s,2)}}</span></b>
                             </div>
-                            <div class="col @if($d==0) d-none @endif">
-                                <b class="text-secondary"><sup>$</sup><span name="cost_d" id="cost_d">{{ceil($prem_d)}}</span></b>
+                            <div class="col @if($duracion>1) @if($d==0) d-none @endif @else d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_d" id="cost_d">{{round($prem_d,2)}}</span></b>
                             </div>
-                            <div class="col @if($m==0) d-none @endif">
-                                <b class="text-secondary"><sup>$</sup><span name="cost_m" id="cost_m">{{ceil($prem_m)}}</span></b>
+                            <div class="col @if($duracion>1) @if($m==0) d-none @endif @else d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_m" id="cost_m">{{round($prem_m,2)}}</span></b>
                             </div>
-                            <div class="col @if($t==0) d-none @endif">
-                                <b class="text-secondary"><sup>$</sup><span name="cost_t" id="cost_t">{{ceil($prem_t)}}</span></b>
+                            <div class="col @if($duracion>1) @if($t==0) d-none @endif @else d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_t" id="cost_t">{{round($prem_t,2)}}</span></b>
                             </div>
-                            <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">
-                                <b class="text-secondary"><sup>$</sup><span name="cost_sh" id="cost_sh">{{ceil($prem_sh)}}</span></b>
+                            <div class="col @if($duracion>1) d-none @endif">
+                                <b class="text-secondary"><sup>$</sup><span name="cost_sh" id="cost_sh">{{round($prem_sh,2)}}</span></b>
                             </div>
                         {{--</div>--}}
                     </div>
@@ -453,23 +460,23 @@
                             <b class="text-secondary">PROFIT</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
-                            <div class="col @if($s==0) d-none @endif">
+                            <div class="col @if($duracion>1) @if($s==0) d-none @endif @else d-none @endif">
                                 <input class="form-control text-right" type="text" name="pro_s" id="pro_s" value="{{$utilidad_s}}" onchange="variar_profit('s')">
                                 <b class="text-secondary"><span id="porc_s">{{$utilidad_por_s}}</span>%</b>
                             </div>
-                            <div class="col @if($d==0) d-none @endif">
+                            <div class="col @if($duracion>1) @if($d==0) d-none @endif @else d-none @endif">
                                 <input class="form-control text-right" type="text" name="pro_d" id="pro_d" value="{{$utilidad_d}}" onchange="variar_profit('d')">
                                 <b class="text-secondary"><span id="porc_d">{{$utilidad_por_d}}</span>%</b>
                             </div>
-                            <div class="col @if($m==0) d-none @endif">
+                            <div class="col @if($duracion>1) @if($m==0) d-none @endif @else d-none @endif">
                                 <input class="form-control text-right" type="text" name="pro_m" id="pro_m" value="{{$utilidad_m}}" onchange="variar_profit('m')">
                                 <b class="text-secondary"><span id="porc_m">{{$utilidad_por_m}}</span>%</b>
                             </div>
-                            <div class="col @if($t==0) d-none @endif">
+                            <div class="col @if($duracion>1) @if($t==0) d-none @endif @else d-none @endif">
                                 <input class="form-control text-right" type="text" name="pro_t" id="pro_t" value="{{$utilidad_t}}" onchange="variar_profit('t')">
                                 <b class="text-secondary"><span id="porc_t">{{$utilidad_por_t}}</span>%</b>
                             </div>
-                            <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">
+                            <div class="col @if($duracion>1) d-none @endif">
                                 <input class="form-control text-right" type="text" name="pro_sh" id="pro_sh" value="{{$utilidad}}" onchange="variar_profit('sh')">
                                 <b class="text-secondary"><span id="porc_sh">{{round(($utilidad*100)/($prem_sh),2)}}</span>%</b>
                             </div>
@@ -480,7 +487,7 @@
                         @php
                             $valor=0;
                         @endphp
-                        @if($s==0&&$d==0&&$m==0&&$t==0)
+                        @if($duracion==1)
                             @php
                                 $valor+=round($prem_sh+$utilidad,2);
                             @endphp
@@ -512,20 +519,20 @@
                         <div class="col-7">
                             <b class="text-g-yellow text-15">SALES</b>
                         </div>
-                        <div class="col @if($s==0) d-none @endif">
-                            <input class="form-control text-right" type="text" name="sale_s" id="sale_s" value="@if($s!=0){{round(ceil($prem_s)+$utilidad_s,2)}}@else{{0}}@endif" onchange="variar_sales('s')">
+                        <div class="col @if($duracion>1) @if($s==0) d-none @endif @else d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_s" id="sale_s" value=" @if($s!=0){{round(round($prem_s,2)+$utilidad_s,2)}}@else{{0}}@endif" onchange="variar_sales('s')">
                         </div>
-                        <div class="col @if($d==0) d-none @endif">
-                            <input class="form-control text-right" type="text" name="sale_d" id="sale_d" value="@if($d!=0){{round(ceil($prem_d)+$utilidad_d,2)}}@else{{0}}@endif" onchange="variar_sales('d')">
+                        <div class="col @if($duracion>1) @if($d==0) d-none @endif @else d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_d" id="sale_d" value=" @if($d!=0){{round(round($prem_d,2)+$utilidad_d,2)}}@else{{0}}@endif" onchange="variar_sales('d')">
                         </div>
-                        <div class="col @if($m==0) d-none @endif">
-                            <input class="form-control text-right" type="text" name="sale_m" id="sale_m" value="@if($m!=0){{round(ceil($prem_m)+$utilidad_m,2)}}@else{{0}}@endif" onchange="variar_sales('m')">
+                        <div class="col @if($duracion>1) @if($m==0) d-none @endif @else d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_m" id="sale_m" value=" @if($m!=0){{round(round($prem_m,2)+$utilidad_m,2)}}@else{{0}}@endif" onchange="variar_sales('m')">
                         </div>
-                        <div class="col @if($t==0) d-none @endif">
-                            <input class="form-control text-right" type="text" name="sale_t" id="sale_t" value="@if($t!=0){{round(ceil($prem_t)+$utilidad_t,2)}}@else{{0}}@endif" onchange="variar_sales('t')">
+                        <div class="col @if($duracion>1) @if($t==0) d-none @endif @else d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_t" id="sale_t" value=" @if($t!=0){{round(round($prem_t,2)+$utilidad_t,2)}}@else{{0}}@endif" onchange="variar_sales('t')">
                         </div>
-                        <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">
-                            <input class="form-control text-right" type="text" name="sale_sh" id="sale_sh" value="@if($s==0&&$d==0&&$m==0&&$t==0){{round(ceil($prem_sh)+$utilidad,2)}}@else{{0}}@endif" onchange="variar_sales('sh')">
+                        <div class="col @if($duracion>1) d-none @endif">
+                            <input class="form-control text-right" type="text" name="sale_sh" id="sale_sh" value="@if($duracion==1){{round(round($prem_sh,2)+$utilidad,2)}}@else{{0}}@endif" onchange="variar_sales('sh')">
                         </div>
                     </div>
                     <div class="row mt-3">

@@ -44,39 +44,45 @@
                 $d=0;
                 $m=0;
                 $t=0;
+                $duracion=0;
             @endphp
             @foreach($cotizaciones as $cotizacion)
-                <p class="text-18">Web:<b class="text-info">{{$cotizacion->web}}</b> | Codigo:<b class="text-info">{{$cotizacion->codigo}}</b> | Idioma:<b class="text-info">{{$cotizacion->idioma_pasajeros}}</b></p>
-                <b class="text-g-yellow h2">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} STARS:</b>
                 @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
-                    @foreach($paquete->paquete_precios as $precio)
-                        <b class="text-secondary h2">
-                            @if($precio->personas_s>0)
-                                S |
-                                @php
-                                    $s=1;
-                                @endphp
-                            @endif
-                            @if($precio->personas_d>0)
-                                D |
-                                @php
-                                    $d=1;
-                                @endphp
-                            @endif
-                            @if($precio->personas_m>0)
-                                M |
-                                @php
-                                    $m=1;
-                                @endphp
-                            @endif
-                            @if($precio->personas_t>0)
-                                T
-                                @php
-                                    $t=1;
-                                @endphp
-                            @endif
-                        </b>
-                    @endforeach
+                    @php
+                        $duracion=$paquete->duracion;
+                    @endphp
+                    <p class="text-18">Web:<b class="text-info">{{$cotizacion->web}}</b> | Codigo:<b class="text-info">{{$cotizacion->codigo}}</b> | Idioma:<b class="text-info">{{$cotizacion->idioma_pasajeros}}</b></p>
+                    <b class="text-secondary h2">{{$cotizacion->nropersonas}} PAXS</b><b class="text-warning h2"> | </b><b class="text-secondary h2">@if($duracion>1) {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} STARS @else SIN HOTEL @endif</b><b class="text-warning h2"> | </b>
+                    @if($duracion>1)
+                        @foreach($paquete->paquete_precios as $precio)
+                            <b class="text-secondary h3">
+                                @if($precio->personas_s>0)
+                                    <b class="badge badge-g-yellow">SINGLE</b>
+                                    @php
+                                        $s=1;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_d>0)
+                                        <b class="badge badge-g-yellow">DOUBLE</b>
+                                    @php
+                                        $d=1;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_m>0)
+                                        <b class="badge badge-g-yellow">MATRIMONIAL</b>
+                                    @php
+                                        $m=1;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_t>0)
+                                        <b class="badge badge-g-yellow">TRIPLE</b>
+                                    @php
+                                        $t=1;
+                                    @endphp
+                                @endif
+                            </b>
+                        @endforeach
+                    @endif
                 @endforeach
             @endforeach
         </div>
@@ -177,6 +183,7 @@
                                     <div class="col @if($d==0) d-none @endif">D</div>
                                     <div class="col @if($m==0) d-none @endif">M</div>
                                     <div class="col @if($t==0) d-none @endif">T</div>
+                                    @if($duracion==1)<div class="col">SIN HOTEL</div>@endif
                                     {{--<div class="col-2 d-none"></div>--}}
                                 </div>
                                 <div class="row caja_detalle">
@@ -256,8 +263,9 @@
                                                 <div class="col @if($d==0) d-none @endif">$<input type="hidden" class="precio_servicio_d" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                                 <div class="col @if($m==0) d-none @endif">$<input type="hidden" class="precio_servicio_m" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                                 <div class="col @if($t==0) d-none @endif">$<input type="hidden" class="precio_servicio_t" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
+                                                <div class="col @if($duracion>1) d-none @endif">$<input type="hidden" class="precio_servicio_sh" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                                 <div class="col text-right">
-                                                    <a class="btn p-0" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->servicio->grupo}}','nuevo')">
+                                                    <a class="btn p-0" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->servicio->grupo}}','{{$msj}}')">
                                                         <i class="fas fa-pencil-alt text-primary" aria-hidden="true"></i>
                                                     </a>
                                                     <!-- Modal -->
@@ -431,10 +439,11 @@
                     <div class="col">
                         <div class="row bg-g-dark text-white rounded py-2">
                             <div class="col-8"><b>COST</b></div>
-                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s)}}</span></b></div>
-                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d)}}</span></b></div>
-                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m)}}</span></b></div>
-                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t)}}</span></b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s,2)}}</span></b></div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_d,2)}}</span></b></div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_m,2)}}</span></b></div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($precio_hotel_t,2)}}</span></b></div>
+                            <div class="col text-warning @if($duracion>1) d-none @endif"><b>$<span id="cost_sh">{{round($precio_iti,2)}}</span></b></div>
                         </div>
                         <div class="row">
                             <div class="col text-right">PRICE PER PERSON</div>

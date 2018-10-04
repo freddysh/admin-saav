@@ -2067,7 +2067,7 @@ function pasar_dias(){
     var dias=$('#txt_days').val();
     $('#dias_html').html(dias+'d');
 }
-function poner_dias() {
+function poner_dias(web,dias) {
     $('#txt_days1').val($('#txt_days').val());
     $('#dias3').html($('#txt_days').val());
     $('#dias_html').html($('#txt_days').val()+'d');
@@ -2076,6 +2076,7 @@ function poner_dias() {
     //calcular_precio1();
     filtrar_itinerarios_admin();
     comprobar_dist_acom();
+    buscar_pqts(web,dias);
 }
 
 function variar_profit(acom) {
@@ -2105,16 +2106,16 @@ function variar_profit(acom) {
     var uti_por_t=0;
     var uti_por_sh=0;
     if(sale_s!=0)
-        uti_por_d=Math.round((pro_s/sale_s)*100,0);
+        uti_por_d=Math.round((pro_s/sale_s)*100,2);
     if(sale_d!=0)
-    var uti_por_d=Math.round((pro_d/sale_d)*100,0);
+    var uti_por_d=Math.round((pro_d/sale_d)*100,2);
     if(sale_m!=0)
-        var uti_por_m=Math.round((pro_m/sale_m)*100,0);
+        var uti_por_m=Math.round((pro_m/sale_m)*100,2);
     if(sale_t!=0)
-    var uti_por_t=Math.round((pro_t/sale_t)*100,0);
+    var uti_por_t=Math.round((pro_t/sale_t)*100,2);
 
     if(sale_s && sale_d && sale_m && sale_t){
-        var uti_por_sh=Math.round((pro_sh/sale_sh)*100,0);
+        var uti_por_sh=Math.round((pro_sh/sale_sh)*100,2);
     }
     console.log('uti_por_s:'+uti_por_s);
     console.log('uti_por_d:'+uti_por_d);
@@ -4834,10 +4835,10 @@ function traer_servicios_paso1(itinerario_id,servicios_id,localizacion,grupo,mod
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-    // if(modo='nuevo'){
+    if(modo=='nuevo'){
         $.ajax({
             type: 'POST',
-            url: '../../../../../book/listar-servicios-paso1',
+            url: '../../../../../../book/listar-servicios-paso1',
             data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
             // Mostramos un mensaje con la respuesta de PHP
             success: function(data) {
@@ -4845,7 +4846,19 @@ function traer_servicios_paso1(itinerario_id,servicios_id,localizacion,grupo,mod
                 $('#list_servicios_grupo_'+servicios_id).html(data);
             }
         })
-    // }
+    }
+    else if(modo=='nuevo_ajax'){
+        $.ajax({
+            type: 'POST',
+            url: '../../../../../../../book/listar-servicios-paso1',
+            data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
+            // Mostramos un mensaje con la respuesta de PHP
+            success: function(data) {
+                console.log('se recojio datos');
+                $('#list_servicios_grupo_'+servicios_id).html(data);
+            }
+        })
+    }
     // else if(modo=='edit'){
     //     $.ajax({
     //         type: 'POST',
@@ -5255,4 +5268,43 @@ function mostrarleads(page,mes,anio){
 
         }
     });
+}
+function buscar_pqts(pagina,duracion){
+    destinos='';
+    var valorci='';
+    $("input[class='destinospack']").each(function (index) {
+        if($(this).is(':checked')) {
+            valorci=$(this).val().split('_');
+            destinos+=valorci[1]+'/';
+        }
+    });
+    destinos=destinos.substr(0,destinos.length-1);
+    if(destinos!=''){
+        console.log('pagina:'+pagina+',duracion:'+duracion);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: "../new/profile/list-paquetes",
+            data: 'pagina='+pagina+'&duracion='+duracion+'&destinos='+destinos+'&estrellas='+$('#estrellas_from').val(),
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend: function(data1){
+                $('#pqts').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+            success: function(data){
+                $('#pqts').html(data);
+
+            }
+        });
+    }
+    else{
+        swal(
+            'MENSAJE DEL SISTEMA',
+            'Escoja por lo menos un destino.',
+            'warning'
+        )
+    }
 }

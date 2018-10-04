@@ -560,11 +560,11 @@ Route::get('/admin/quotes/new/{id}', [
     'uses' => 'PackageCotizacionController@nuevo_plan_cotizacion',
     'as' => 'new_plan_cotizacion_path'
 ]);
-Route::get('/admin/quotes/new/step1/{cliente}/{coti_id}/{pqt_id}', [
+Route::get('/admin/quotes/new/step1/{cliente}/{coti_id}/{pqt_id}/{msj}', [
     'uses' => 'PackageCotizacionController@show_step1',
     'as' => 'show_step1_path'
 ]);
-Route::get('/admin/quotes/new/step1/{cliente}/{coti_id}/{pqt_id}/{id_serv}', [
+Route::get('/admin/quotes/new/step1/{cliente}/{coti_id}/{pqt_id}/{id_serv}/{msj}', [
     'uses' => 'PackageCotizacionController@show_step1_ser',
     'as' => 'show_step1_ser_path'
 ]);
@@ -1185,4 +1185,8 @@ Route::post('admin/quotes/expedia/new/profile/import', [
 Route::post('admin/quotes/expedia/new/profile/import/save',[
     'uses' => 'QouteController@expedia_save',
     'as' => 'quotes_new1_expedia_save_path',
+]);
+Route::post('admin/quotes/new/profile/list-paquetes',[
+    'uses' => 'PackageCotizacionController@list_paquetes',
+    'as' => 'Package_list_paquetes_path',
 ]);
