@@ -89,6 +89,7 @@ class PackageController extends Controller
         $strellas_4=$request->input('strellas_4');
         $strellas_5=$request->input('strellas_5');
 
+       //-- precio de los hoteles
         $amount_t2=$request->input('amount_t2');
         $amount_d2=$request->input('amount_d2');
         $amount_s2=$request->input('amount_s2');
@@ -105,10 +106,55 @@ class PackageController extends Controller
         $amount_d5=$request->input('amount_d5');
         $amount_s5=$request->input('amount_s5');
 
-        $profit_2=$request->input('profitt_2');
-        $profit_3=$request->input('profitt_3');
-        $profit_4=$request->input('profitt_4');
-        $profit_5=$request->input('profitt_5');
+
+        //-- recojemos los profit en dolares de cada estrella y acomodacion
+        $amount_t2_a_p=$request->input('amount_d2_a_p');
+        $amount_m2_a_p=$request->input('amount_m2_a_p');
+        $amount_d2_a_p=$request->input('amount_d2_a_p');
+        $amount_s2_a_p=$request->input('amount_s2_a_p');
+
+        $amount_t3_a_p=$request->input('amount_d3_a_p');
+        $amount_m3_a_p=$request->input('amount_m3_a_p');
+        $amount_d3_a_p=$request->input('amount_d3_a_p');
+        $amount_s3_a_p=$request->input('amount_s3_a_p');
+
+        $amount_t4_a_p=$request->input('amount_d4_a_p');
+        $amount_m4_a_p=$request->input('amount_m4_a_p');
+        $amount_d4_a_p=$request->input('amount_d4_a_p');
+        $amount_s4_a_p=$request->input('amount_s4_a_p');
+
+        $amount_t5_a_p=$request->input('amount_d5_a_p');
+        $amount_m5_a_p=$request->input('amount_m5_a_p');
+        $amount_d5_a_p=$request->input('amount_d5_a_p');
+        $amount_s5_a_p=$request->input('amount_s5_a_p');
+
+        //-- precio de venta
+        $amount_t2_a_v=$request->input('amount_t2_a_v');
+        $amount_m2_a_v=$request->input('amount_m2_a_v');
+        $amount_d2_a_v=$request->input('amount_d2_a_v');
+        $amount_s2_a_v=$request->input('amount_s2_a_v');
+
+        $amount_t3_a_v=$request->input('amount_d3_a_v');
+        $amount_m3_a_v=$request->input('amount_m3_a_v');
+        $amount_d3_a_v=$request->input('amount_d3_a_v');
+        $amount_s3_a_v=$request->input('amount_s3_a_v');
+
+        $amount_t4_a_v=$request->input('amount_d4_a_v');
+        $amount_m4_a_v=$request->input('amount_m4_a_v');
+        $amount_d4_a_v=$request->input('amount_d4_a_v');
+        $amount_s4_a_v=$request->input('amount_s4_a_v');
+
+        $amount_t5_a_v=$request->input('amount_d5_a_v');
+        $amount_m5_a_v=$request->input('amount_m5_a_v');
+        $amount_d5_a_v=$request->input('amount_d5_a_v');
+        $amount_s5_a_v=$request->input('amount_s5_a_v');
+
+//        $profit_2=$request->input('profitt_2');
+//        $profit_3=$request->input('profitt_3');
+//        $profit_4=$request->input('profitt_4');
+//        $profit_5=$request->input('profitt_5');
+
+
 
         $plantillas= P_Paquete::where('duracion',$txt_day)->get();
         $diferencia = 4 - strlen(count($plantillas));
@@ -154,7 +200,10 @@ class PackageController extends Controller
                 $paquete_precio2->estado = 1;
             else
                 $paquete_precio2->estado = 0;
-            $paquete_precio2->utilidad = $profit_2;
+            $paquete_precio2->utilidad_s = $amount_s2_a_p;
+            $paquete_precio2->utilidad_m = $amount_m2_a_p;
+            $paquete_precio2->utilidad_d = $amount_d2_a_p;
+            $paquete_precio2->utilidad_t = $amount_t2_a_p;
             $paquete_precio2->p_paquete_id = $paquete->id;
             $paquete_precio2->hotel_id = $hotel_id_2;
             $paquete_precio2->save();
@@ -173,7 +222,10 @@ class PackageController extends Controller
                 $paquete_precio3->estado = 1;
             else
                 $paquete_precio3->estado = 0;
-            $paquete_precio3->utilidad = $profit_3;
+            $paquete_precio3->utilidad_s = $amount_s3_a_p;
+            $paquete_precio3->utilidad_m = $amount_m3_a_p;
+            $paquete_precio3->utilidad_d = $amount_d3_a_p;
+            $paquete_precio3->utilidad_t = $amount_t3_a_p;
             $paquete_precio3->p_paquete_id = $paquete->id;
             $paquete_precio3->hotel_id = $hotel_id_3;
             $paquete_precio3->save();
@@ -192,7 +244,10 @@ class PackageController extends Controller
                 $paquete_precio4->estado = 1;
             else
                 $paquete_precio4->estado = 0;
-            $paquete_precio4->utilidad = $profit_4;
+            $paquete_precio4->utilidad_s = $amount_s4_a_p;
+            $paquete_precio4->utilidad_m = $amount_m4_a_p;
+            $paquete_precio4->utilidad_d = $amount_d4_a_p;
+            $paquete_precio4->utilidad_t = $amount_t4_a_p;
             $paquete_precio4->p_paquete_id = $paquete->id;
             $paquete_precio4->hotel_id = $hotel_id_4;
             $paquete_precio4->save();
@@ -211,7 +266,10 @@ class PackageController extends Controller
                 $paquete_precio5->estado = 1;
             else
                 $paquete_precio5->estado = 0;
-            $paquete_precio5->utilidad = $profit_5;
+            $paquete_precio5->utilidad_s = $amount_s5_a_p;
+            $paquete_precio5->utilidad_m = $amount_m5_a_p;
+            $paquete_precio5->utilidad_d = $amount_d5_a_p;
+            $paquete_precio5->utilidad_t = $amount_t5_a_p;
             $paquete_precio5->p_paquete_id = $paquete->id;
             $paquete_precio5->hotel_id = $hotel_id_5;
             $paquete_precio5->save();
@@ -276,31 +334,6 @@ class PackageController extends Controller
         return redirect()->route('show_itineraries_path');
 
     }
-    public function itineraries()
-    {
-        $itineraries=P_Paquete::get();
-        $itinerarios=M_Itinerario::get();
-        session()->put('menu-lateral', 'sales/iti/list');
-        return view('admin.show-itineraries',['itineraries'=>$itineraries,'itinerarios'=>$itinerarios]);
-    }
-    public function show_itinerary($id)
-    {
-        $destinos=M_Destino::get();
-        $itinerarios=M_Itinerario::get();
-        $m_servicios=M_Servicio::get();
-        $itinerary=P_Paquete::FindOrFail($id);
-        $itinerarios_d=M_ItinerarioDestino::get();
-        return view('admin.show-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d]);
-    }
-    public function duplicate_itinerary($id)
-    {
-        $destinos=M_Destino::get();
-        $itinerarios=M_Itinerario::get();
-        $m_servicios=M_Servicio::get();
-        $itinerary=P_Paquete::FindOrFail($id);
-        return view('admin.duplicate-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id]);
-    }
-
     public function itinerary_edit(Request $request)
     {
         $paquete_id=$request->input('paquete_id');
@@ -321,6 +354,7 @@ class PackageController extends Controller
         $strellas_4=$request->input('strellas_4');
         $strellas_5=$request->input('strellas_5');
 
+        //-- precio de los hoteles
         $amount_t2=$request->input('amount_t2');
         $amount_d2=$request->input('amount_d2');
         $amount_s2=$request->input('amount_s2');
@@ -337,16 +371,57 @@ class PackageController extends Controller
         $amount_d5=$request->input('amount_d5');
         $amount_s5=$request->input('amount_s5');
 
-        $profit_2=$request->input('profitt_2');
-        $profit_3=$request->input('profitt_3');
-        $profit_4=$request->input('profitt_4');
-        $profit_5=$request->input('profitt_5');
+//        $profit_2=$request->input('profitt_2');
+//        $profit_3=$request->input('profitt_3');
+//        $profit_4=$request->input('profitt_4');
+//        $profit_5=$request->input('profitt_5');
 
         $hotel_id_2=$request->input('hotel_id_2');
         $hotel_id_3=$request->input('hotel_id_3');
         $hotel_id_4=$request->input('hotel_id_4');
         $hotel_id_5=$request->input('hotel_id_5');
 
+        //-- recojemos los profit en dolares de cada estrella y acomodacion
+        $amount_t2_a_p=$request->input('amount_d2_a_p');
+        $amount_m2_a_p=$request->input('amount_m2_a_p');
+        $amount_d2_a_p=$request->input('amount_d2_a_p');
+        $amount_s2_a_p=$request->input('amount_s2_a_p');
+
+        $amount_t3_a_p=$request->input('amount_d3_a_p');
+        $amount_m3_a_p=$request->input('amount_m3_a_p');
+        $amount_d3_a_p=$request->input('amount_d3_a_p');
+        $amount_s3_a_p=$request->input('amount_s3_a_p');
+
+        $amount_t4_a_p=$request->input('amount_d4_a_p');
+        $amount_m4_a_p=$request->input('amount_m4_a_p');
+        $amount_d4_a_p=$request->input('amount_d4_a_p');
+        $amount_s4_a_p=$request->input('amount_s4_a_p');
+
+        $amount_t5_a_p=$request->input('amount_d5_a_p');
+        $amount_m5_a_p=$request->input('amount_m5_a_p');
+        $amount_d5_a_p=$request->input('amount_d5_a_p');
+        $amount_s5_a_p=$request->input('amount_s5_a_p');
+
+        //-- precio de venta
+        $amount_t2_a_v=$request->input('amount_t2_a_v');
+        $amount_m2_a_v=$request->input('amount_m2_a_v');
+        $amount_d2_a_v=$request->input('amount_d2_a_v');
+        $amount_s2_a_v=$request->input('amount_s2_a_v');
+
+        $amount_t3_a_v=$request->input('amount_d3_a_v');
+        $amount_m3_a_v=$request->input('amount_m3_a_v');
+        $amount_d3_a_v=$request->input('amount_d3_a_v');
+        $amount_s3_a_v=$request->input('amount_s3_a_v');
+
+        $amount_t4_a_v=$request->input('amount_d4_a_v');
+        $amount_m4_a_v=$request->input('amount_m4_a_v');
+        $amount_d4_a_v=$request->input('amount_d4_a_v');
+        $amount_s4_a_v=$request->input('amount_s4_a_v');
+
+        $amount_t5_a_v=$request->input('amount_d5_a_v');
+        $amount_m5_a_v=$request->input('amount_m5_a_v');
+        $amount_d5_a_v=$request->input('amount_d5_a_v');
+        $amount_s5_a_v=$request->input('amount_s5_a_v');
 
 //        dd('profit_2:'.$profit_2.',profit_3:'.$profit_3.',profit_4:'.$profit_4.',profit_5:'.$profit_5);
 //        dd($txta_include.'_'.$txta_notinclude);
@@ -381,7 +456,10 @@ class PackageController extends Controller
                 $paquete_precio2->estado = 1;
             else
                 $paquete_precio2->estado = 0;
-            $paquete_precio2->utilidad = $profit_2;
+            $paquete_precio2->utilidad_s = $amount_s2_a_p;
+            $paquete_precio2->utilidad_m = $amount_m2_a_p;
+            $paquete_precio2->utilidad_d = $amount_d2_a_p;
+            $paquete_precio2->utilidad_t = $amount_t2_a_p;
             $paquete_precio2->p_paquete_id = $paquete->id;
             $paquete_precio2->hotel_id = $hotel_id_2;
             $paquete_precio2->save();
@@ -400,7 +478,10 @@ class PackageController extends Controller
                 $paquete_precio3->estado = 1;
             else
                 $paquete_precio3->estado = 0;
-            $paquete_precio3->utilidad = $profit_3;
+            $paquete_precio3->utilidad_s = $amount_s2_a_p;
+            $paquete_precio3->utilidad_m = $amount_m2_a_p;
+            $paquete_precio3->utilidad_d = $amount_d2_a_p;
+            $paquete_precio3->utilidad_t = $amount_t2_a_p;
             $paquete_precio3->p_paquete_id = $paquete->id;
             $paquete_precio3->hotel_id = $hotel_id_3;
             $paquete_precio3->save();
@@ -419,7 +500,10 @@ class PackageController extends Controller
                 $paquete_precio4->estado = 1;
             else
                 $paquete_precio4->estado = 0;
-            $paquete_precio4->utilidad = $profit_4;
+            $paquete_precio4->utilidad_s = $amount_s2_a_p;
+            $paquete_precio4->utilidad_m = $amount_m2_a_p;
+            $paquete_precio4->utilidad_d = $amount_d2_a_p;
+            $paquete_precio4->utilidad_t = $amount_t2_a_p;
             $paquete_precio4->p_paquete_id = $paquete->id;
             $paquete_precio4->hotel_id = $hotel_id_4;
             $paquete_precio4->save();
@@ -438,7 +522,10 @@ class PackageController extends Controller
                 $paquete_precio5->estado = 1;
             else
                 $paquete_precio5->estado = 0;
-            $paquete_precio5->utilidad = $profit_5;
+            $paquete_precio5->utilidad_s = $amount_s2_a_p;
+            $paquete_precio5->utilidad_m = $amount_m2_a_p;
+            $paquete_precio5->utilidad_d = $amount_d2_a_p;
+            $paquete_precio5->utilidad_t = $amount_t2_a_p;
             $paquete_precio5->p_paquete_id = $paquete->id;
             $paquete_precio5->hotel_id = $hotel_id_5;
             $paquete_precio5->save();
@@ -503,6 +590,30 @@ class PackageController extends Controller
 //        return view('admin.show-itineraries',['itineraries'=>$itineraries]);
 //        return redirect()->route('show_itineraries_path');
         return redirect()->route('show_itineraries_path');
+    }
+    public function itineraries()
+    {
+        $itineraries=P_Paquete::get();
+        $itinerarios=M_Itinerario::get();
+        session()->put('menu-lateral', 'sales/iti/list');
+        return view('admin.show-itineraries',['itineraries'=>$itineraries,'itinerarios'=>$itinerarios]);
+    }
+    public function show_itinerary($id)
+    {
+        $destinos=M_Destino::get();
+        $itinerarios=M_Itinerario::get();
+        $m_servicios=M_Servicio::get();
+        $itinerary=P_Paquete::FindOrFail($id);
+        $itinerarios_d=M_ItinerarioDestino::get();
+        return view('admin.show-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d]);
+    }
+    public function duplicate_itinerary($id)
+    {
+        $destinos=M_Destino::get();
+        $itinerarios=M_Itinerario::get();
+        $m_servicios=M_Servicio::get();
+        $itinerary=P_Paquete::FindOrFail($id);
+        return view('admin.duplicate-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id]);
     }
     public function itinerary_duplicate(Request $request)
     {
@@ -909,7 +1020,6 @@ class PackageController extends Controller
         return redirect()->route('cotizacion_id_show_path',$coti_id);
     }
 }
-
     public function generar_codigo_plantilla(Request $request){
         $duracion=$request->input('duracion');
         $tipo_plantilla=$request->input('tipo_plantilla');
@@ -944,7 +1054,6 @@ class PackageController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -955,7 +1064,6 @@ class PackageController extends Controller
     {
         //
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -967,7 +1075,6 @@ class PackageController extends Controller
     {
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *

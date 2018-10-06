@@ -802,6 +802,35 @@ class BookController extends Controller
             return 0;
         }
     }
-
+    public function anular_servicio_reservas(Request $request)
+    {
+        $id = $request->input('id');
+        $estado = $request->input('estado');
+//        dd($estado);
+        $servicio =ItinerarioServicios::FindOrFail($id);
+        $servicio->anulado=$estado;
+        if ($servicio->save())
+            return 1;
+        else
+            return 0;
+    }
+    public function anular_hotel_reservas(Request $request)
+    {
+        $id = $request->input('id');
+        $estado = $request->input('estado');
+        $hotel =PrecioHotelReserva::FindOrFail($id);
+        $hotel->anulado=$estado;
+        if($hotel->delete())
+            return 1;
+        else
+            return 0;
+    }
+    public function list_paquetes_fecha(Request $request)
+    {
+        $mes = $request->input('mes');
+        $anio = $request->input('anio');
+        $cotizacion_cat =Cotizacion::whereYear('fecha',$anio)->whereMonth('fecha',$mes)->get();
+        return view('admin.book.list-paquetes',compact('cotizacion_cat'));
+    }
 
 }

@@ -334,6 +334,22 @@
                                         $hotel_id_3=0;
                                         $hotel_id_4=0;
                                         $hotel_id_5=0;
+                                        $profit_t2=0;
+                                        $profit_m2=0;
+                                        $profit_d2=0;
+                                        $profit_s2=0;
+                                        $profit_t3=0;
+                                        $profit_m3=0;
+                                        $profit_d3=0;
+                                        $profit_s3=0;
+                                        $profit_t4=0;
+                                        $profit_m4=0;
+                                        $profit_d4=0;
+                                        $profit_s4=0;
+                                        $profit_t5=0;
+                                        $profit_m5=0;
+                                        $profit_d5=0;
+                                        $profit_s5=0;
                                         ?>
                                         @foreach($itinerary as $$itinerary)
                                             @foreach($itinerary->precios as $precio)
@@ -344,6 +360,10 @@
                                                     $amount_m2=$precio->precio_m;
                                                     $amount_t2=$precio->precio_t;
                                                     $hotel_id_2=$precio->hotel_id;
+                                                    $profit_t2=$precio->utilidad_t;
+                                                    $profit_m2=$precio->utilidad_m;
+                                                    $profit_d2=$precio->utilidad_d;
+                                                    $profit_s2=$precio->utilidad_s;
                                                     ?>
                                                 @endif
                                                 @if($precio->estrellas=="3")
@@ -353,6 +373,10 @@
                                                     $amount_m3=$precio->precio_m;
                                                     $amount_t3=$precio->precio_t;
                                                     $hotel_id_3=$precio->hotel_id;
+                                                    $profit_t3=$precio->utilidad_t;
+                                                    $profit_m3=$precio->utilidad_m;
+                                                    $profit_d3=$precio->utilidad_d;
+                                                    $profit_s3=$precio->utilidad_s;
                                                     ?>
                                                 @endif
                                                 @if($precio->estrellas=="4")
@@ -362,6 +386,10 @@
                                                     $amount_m4=$precio->precio_m;
                                                     $amount_t4=$precio->precio_t;
                                                     $hotel_id_4=$precio->hotel_id;
+                                                    $profit_t4=$precio->utilidad_t;
+                                                    $profit_m4=$precio->utilidad_m;
+                                                    $profit_d4=$precio->utilidad_d;
+                                                    $profit_s4=$precio->utilidad_s;
                                                     ?>
                                                 @endif
                                                 @if($precio->estrellas=="5")
@@ -371,6 +399,10 @@
                                                     $amount_m5=$precio->precio_m;
                                                     $amount_t5=$precio->precio_t;
                                                     $hotel_id_5=$precio->hotel_id;
+                                                    $profit_t5=$precio->utilidad_t;
+                                                    $profit_m5=$precio->utilidad_m;
+                                                    $profit_d5=$precio->utilidad_d;
+                                                    $profit_s5=$precio->utilidad_s;
                                                     ?>
                                                 @endif
                                             @endforeach
@@ -1210,7 +1242,7 @@
                                                                 </button>
                                                             </h5>
                                                         </div>
-                                                        <div class="col-1">
+                                                        <div class="col-1 d-none">
                                                             <div class="input-group has-success">
                                                                 <input type="number" id="profitt_4" name="profitt_4" class="form-control input-porcent text-right text-13" value="{{$profit_2}}" onchange="calcular_resumen()">
                                                                 <b class="input-group-addon input- text-success text-25" id="basic-addon2">%</b>
@@ -1247,10 +1279,10 @@
                                                                     <b class="text-12">$ <span id="amount_t2_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_t2_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_t2_a_p" id="amount_t2_a_p" value="{{$profit_t2}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_t2_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_t2_a_v" id="amount_t2_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'2','t',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr class="d-none">
@@ -1263,11 +1295,11 @@
                                                                 <td class="text-right">
                                                                     <b class="text-16">$ <span id="amount_m2_a"></span>.00</b>
                                                                 </td>
-                                                                <td class="text-right">
-                                                                    <b class="text-16">$ <span id="amount_m2_a_p"></span>.00</b>
+                                                                <td class="w-20 text-right">
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_m2_a_p" id="amount_m2_a_p" value="{{$profit_m2}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
-                                                                <td class="text-right">
-                                                                    <b class="text-16">$ <span id="amount_m2_a_v"></span>.00</b>
+                                                                <td class="w-20 text-right">
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_m2_a_v" id="amount_m2_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'2','m',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1282,10 +1314,10 @@
                                                                     <b class="text-12">$ <span id="amount_d2_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_d2_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_d2_a_p" id="amount_d2_a_p" value="{{$profit_d2}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_d2_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_d2_a_v" id="amount_d2_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'2','d',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1299,13 +1331,13 @@
                                                                     <b class="text-12">$ <span id="amount_s2_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_s2_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_s2_a_p" id="amount_s2_a_p" value="{{$profit_s2}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_s2_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_s2_a_v" id="amount_s2_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'2','s',$(this).val())">
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr class="d-none">
                                                                 <td class="w-5 ">
 
                                                                 </td>
@@ -1337,7 +1369,7 @@
                                                                 </button>
                                                             </h5>
                                                         </div>
-                                                        <div class="col-1">
+                                                        <div class="col-1 d-none">
                                                             <div class="input-group has-success">
                                                                 <input type="number" id="profitt_3" name="profitt_3" class="form-control input-porcent text-right text-13" value="{{$profit_3}}" onchange="calcular_resumen()">
                                                                 <b class="input-group-addon input- text-success text-25" id="basic-addon2">%</b>
@@ -1372,10 +1404,10 @@
                                                                     <b class="text-12">$ <span id="amount_t3_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_t3_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_t3_a_p" id="amount_t3_a_p" value="{{$profit_t3}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_t3_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_t3_a_v" id="amount_t3_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'3','t',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr class="d-none">
@@ -1388,11 +1420,11 @@
                                                                 <td class="text-right">
                                                                     <b class="text-16">$ <span id="amount_m3_a"></span>.00</b>
                                                                 </td>
-                                                                <td class="text-right">
-                                                                    <b class="text-16">$ <span id="amount_m3_a_p"></span>.00</b>
+                                                                <td class="w-20 text-right">
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_m3_a_p" id="amount_m3_a_p" value="{{$profit_m3}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
-                                                                <td class="text-right">
-                                                                    <b class="text-16">$ <span id="amount_m3_a_v"></span>.00</b>
+                                                                <td class="w-20 text-right">
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_m3_a_v" id="amount_m3_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'3','m',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1408,10 +1440,10 @@
                                                                     <b class="text-12">$ <span id="amount_d3_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_d3_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_m2_a_p" id="amount_d3_a_p" value="{{$profit_d3}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_d3_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_d3_a_v" id="amount_d3_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'3','d',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1425,13 +1457,13 @@
                                                                     <b class="text-12">$ <span id="amount_s3_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_s3_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_s3_a_p" id="amount_s3_a_p" value="{{$profit_s3}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_s3_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_s3_a_v" id="amount_s3_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'3','s',$(this).val())">
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr class="d-none">
                                                                 <td class="w-5 ">
 
                                                                 </td>
@@ -1463,14 +1495,13 @@
                                                                 </button>
                                                             </h5>
                                                         </div>
-                                                        <div class="col-1">
+                                                        <div class="col-1 d-none">
                                                             <div class="input-group has-success">
                                                                 <input type="number" id="profitt_4" name="profitt_4" class="form-control input-porcent text-right text-13" value="{{$profit_4}}" onchange="calcular_resumen()">
                                                                 <b class="input-group-addon input- text-success text-25" id="basic-addon2">%</b>
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                                                     <div class="card-body">
@@ -1499,10 +1530,10 @@
                                                                     <b class="text-12">$ <span id="amount_t4_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_t4_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_t4_a_p" id="amount_t4_a_p" value="{{$profit_t4}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_t4_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_t4_a_v" id="amount_t4_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'4','t',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr class="d-none">
@@ -1515,11 +1546,11 @@
                                                                 <td class="text-right">
                                                                     <b class="text-16">$ <span id="amount_m4_a"></span>.00</b>
                                                                 </td>
-                                                                <td class="text-right">
-                                                                    <b class="text-16">$ <span id="amount_m4_a_p"></span>.00</b>
+                                                                <td class="w-20 text-right">
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_m4_a_p" id="amount_m4_a_p" value="{{$profit_m4}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
-                                                                <td class="text-right">
-                                                                    <b class="text-16">$ <span id="amount_m4_a_v"></span>.00</b>
+                                                                <td class="w-20 text-right">
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_m4_a_v" id="amount_m4_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'4','m',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1535,10 +1566,10 @@
                                                                     <b class="text-12">$ <span id="amount_d4_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_d4_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_d4_a_p" id="amount_d4_a_p" value="{{$profit_d4}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_d4_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_d4_a_v" id="amount_d4_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'4','d',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1552,13 +1583,13 @@
                                                                     <b class="text-12">$ <span id="amount_s4_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_s4_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_s4_a_p" id="amount_s4_a_p" value="{{$profit_s4}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_s4_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_s4_a_v" id="amount_s4_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'4','s',$(this).val())">
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr class="d-none">
                                                                 <td class="w-5 ">
 
                                                                 </td>
@@ -1585,12 +1616,12 @@
                                                     <div class="row">
                                                         <div class="col-11">
                                                             <h5 class="mb-0">
-                                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
                                                                     Precio 5 <i class="fas fa-star"></i>
                                                                 </button>
                                                             </h5>
                                                         </div>
-                                                        <div class="col-1">
+                                                        <div class="col-1 d-none">
                                                             <div class="input-group has-success">
                                                                 <input type="number" id="profitt_5" name="profitt_5" class="form-control input-porcent text-right text-13" value="{{$profit_5}}" onchange="calcular_resumen()">
                                                                 <b class="input-group-addon input- text-success text-25" id="basic-addon2">%</b>
@@ -1599,7 +1630,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                                <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
                                                     <div class="card-body">
                                                         <table class="table table-condensed font-montserrat">
                                                             {{--<caption>table title and/or explanatory text</caption>--}}
@@ -1626,10 +1657,10 @@
                                                                     <b class="text-12">$ <span id="amount_t5_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_t5_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_t5_a_p" id="amount_t5_a_p" value="{{$profit_t5}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_t5_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_t5_a_v" id="amount_t5_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'5','t',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr class="d-none">
@@ -1642,11 +1673,11 @@
                                                                 <td class="text-right">
                                                                     <b class="text-16">$ <span id="amount_m5_a"></span>.00</b>
                                                                 </td>
-                                                                <td class="text-right">
-                                                                    <b class="text-16">$ <span id="amount_m5_a_p"></span>.00</b>
+                                                                <td class="w-20 text-right">
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_m5_a_p" id="amount_m5_a_p" value="{{$profit_m5}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
-                                                                <td class="text-right">
-                                                                    <b class="text-16">$ <span id="amount_m5_a_v"></span>.00</b>
+                                                                <td class="w-20 text-right">
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_m5_a_v" id="amount_m5_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'5','m',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1662,10 +1693,10 @@
                                                                     <b class="text-12">$ <span id="amount_d5_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_d5_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_d5_a_p" id="amount_d5_a_p" value="{{$profit_d5}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_d5_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_d5_a_v" id="amount_d5_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'5','d',$(this).val())">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -1679,13 +1710,13 @@
                                                                     <b class="text-12">$ <span id="amount_s5_a"></span>.00</b>
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_s5_a_p"></span>.00</b>
+                                                                    <b class="text-success">$ </b><input  style="width: 80px" type="number" name="amount_s5_a_p" id="amount_s5_a_p" value="{{$profit_s5}}" step="0.01" min="0" onchange="calcular_resumen()">
                                                                 </td>
                                                                 <td class="w-20 text-right">
-                                                                    <b class="text-12">$ <span id="amount_s5_a_v"></span>.00</b>
+                                                                    <b class="text-pink-goto">$ </b><input  style="width: 80px" type="number" name="amount_s5_a_v" id="amount_s5_a_v" value="0.00" step="0.01" min="0" onchange="calcular_resumen_venta($('#txt_day').val(),'5','s',$(this).val())">
                                                                 </td>
                                                             </tr>
-                                                            <tr>
+                                                            <tr class="d-none">
                                                                 <td class="w-5 ">
 
                                                                 </td>

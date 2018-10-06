@@ -1190,3 +1190,16 @@ Route::post('admin/quotes/new/profile/list-paquetes',[
     'uses' => 'PackageCotizacionController@list_paquetes',
     'as' => 'Package_list_paquetes_path',
 ]);
+Route::post('admin/book/servicio/anular', [
+    'uses' => 'BookController@anular_servicio_reservas',
+    'as' => 'anular_reservas_servicio_path',
+]);
+Route::post('admin/book/hotel/anular', [
+    'uses' => 'BookController@anular_hotel_reservas',
+    'as' => 'anular_hotel_servicio_path',
+]);
+
+Route::post('admin/book/list-paquetes', [
+    'uses' => 'BookController@list_paquetes_fecha',
+    'as' => 'list_paquetes_path',
+]);

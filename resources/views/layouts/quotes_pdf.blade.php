@@ -7,6 +7,20 @@
         <!-- CSS  -->
         <link href="{{asset('css/quotes-pdf.css')}}" type="text/css" rel="stylesheet" media="screen,projection"/>
     </head>
+    <style>
+        .alert{
+            position: relative;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+        }
+        .alert-danger{
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
 <body>
 <div class="footer text-center text-12">
     <p class="page">Páge </p>

@@ -121,8 +121,8 @@
                             @endforeach
                         </td>
                         <td>
-                            @if(array_key_exists($key1,$array_hotel))
-                                {!! $array_hotel[$key1] !!}
+                            @if(array_key_exists($key,$array_hotel))
+                                {!! $array_hotel[$key] !!}
                             @endif
                         </td>
                         <td>

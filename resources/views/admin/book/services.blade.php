@@ -454,7 +454,7 @@
                                             </tr>
 
                                             @foreach($itinerario->itinerario_servicios->sortBy('pos') as $servicios)
-                                                <tr id="servicio_{{$servicios->id}}">
+                                                <tr id="servicio_{{$servicios->id}}" class="@if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
                                                     <td class="text-center">
                                                         @php
                                                             $grupe='ninguno';
@@ -1050,6 +1050,10 @@
                                                             @endphp
                                                         @endforeach
                                                         <div class="btn-group">
+                                                            <input type="hidden" id="serv_anulado_{{$servicios->id}}" value="@if($servicios->anulado==1){{0}}@else{{1}}@endif">
+                                                            <button type="button" class="btn btn-danger btn-sm" onclick="anular_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
+                                                                <i class="fa fa-ban"></i>
+                                                            </button>
                                                             <button id="confim_{{$servicios->id}}" type="button" class="btn btn-sm" onclick="confirmar_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
                                                                 @if($servicios->primera_confirmada==0)
                                                                     <i class="fas fa-unlock"></i>
@@ -1514,6 +1518,10 @@
                                                         @endif
                                                     </td>
                                                     <td class="boton">
+                                                        <input type="hidden" id="hotel_anulado_{{$hotel->id}}" value="@if($hotel->anulado==1){{0}}@else{{1}}@endif">
+                                                        <button type="button" class="btn btn-danger btn-sm" onclick="anular_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
+                                                            <i class="fa fa-ban"></i>
+                                                        </button>
                                                         <button id="confim_h_{{$hotel->id}}" type="button" class="btn btn-sm" onclick="confirmar_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
                                                             @if($hotel->primera_confirmada==0)
                                                                 <i class="fas fa-unlock"></i>
