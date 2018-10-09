@@ -239,16 +239,13 @@ class QouteController extends Controller
         if($user_tipo=='ventas')
             $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('posibilidad','100')->get();
         else
-        $cotizacion=Cotizacion::where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('posibilidad','100')->get();
-
-
+            $cotizacion=Cotizacion::where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('posibilidad','100')->get();
+//        return dd('cotizacion:'.$cotizacion);
         session()->put('menu-lateral', 'quotes/current');
         return view('admin.quotes-sales-page-mes',['cotizacion'=>$cotizacion, 'page'=>$page,'mes'=>$mes,'anio'=>$anio,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
-
     }
     public function expedia()
     {
-
         return view('admin.expedia.expedia-import');
     }
     public function import(Request $request)

@@ -1631,9 +1631,9 @@ function calcular_resumen() {
     $("#amount_t5_a").html(amount_t5_u);
     $("#amount_t5_a_p").val(amount_t5_u_pro);
     $("#amount_t5_a_v").val(amount_t5_u_pri);
-
+    var dias_1=$('#txt_day').val();
     if($('#tipo_plantilla').val()=='si') {
-        var dias_1=$('#txt_day').val();
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -2832,6 +2832,7 @@ function poner_dias(web,dias) {
 }
 
 function variar_profit(acom) {
+    var dias=$('#dias').val();
     var valor=parseFloat($('#cost_'+acom).html());
     var pro=parseFloat($('#pro_'+acom).val());
     var sale=Math.round(valor+pro,2);
@@ -2844,8 +2845,12 @@ function variar_profit(acom) {
     var sale_m=parseFloat($('#sale_m').val());
     var sale_t=parseFloat($('#sale_t').val());
     var sale_sh=parseFloat($('#sale_sh').val());
-
-    $('#total_profit').html(sale_s+sale_d+sale_m+sale_t+sale_sh);
+    if(dias>1) {
+        $('#total_profit').html(sale_s + sale_d + sale_m + sale_t);
+    }
+    else if(dias==1){
+        $('#total_profit').html(sale_sh);
+    }
     var pro_s=parseFloat($('#pro_s').val());
     var pro_d=parseFloat($('#pro_d').val());
     var pro_m=parseFloat($('#pro_m').val());
@@ -2857,17 +2862,19 @@ function variar_profit(acom) {
     var uti_por_m=0;
     var uti_por_t=0;
     var uti_por_sh=0;
-    if(sale_s!=0)
-        uti_por_d=Math.round((pro_s/sale_s)*100,2);
-    if(sale_d!=0)
-    var uti_por_d=Math.round((pro_d/sale_d)*100,2);
-    if(sale_m!=0)
-        var uti_por_m=Math.round((pro_m/sale_m)*100,2);
-    if(sale_t!=0)
-    var uti_por_t=Math.round((pro_t/sale_t)*100,2);
 
-    if(sale_s && sale_d && sale_m && sale_t){
-        var uti_por_sh=Math.round((pro_sh/sale_sh)*100,2);
+    if(dias>1) {
+        if (sale_s != 0)
+            uti_por_d = Math.round((pro_s / sale_s) * 100, 2);
+        if (sale_d != 0)
+            uti_por_d = Math.round((pro_d / sale_d) * 100, 2);
+        if (sale_m != 0)
+            uti_por_m = Math.round((pro_m / sale_m) * 100, 2);
+        if (sale_t != 0)
+            uti_por_t = Math.round((pro_t / sale_t) * 100, 2);
+    }
+    else if(dias==1){
+        uti_por_sh=Math.round((pro_sh/sale_sh)*100,2);
     }
     console.log('uti_por_s:'+uti_por_s);
     console.log('uti_por_d:'+uti_por_d);
@@ -2881,8 +2888,7 @@ function variar_profit(acom) {
     $('#profit_por_sh').val(uti_por_sh);
 }
 function variar_sales(acom){
-
-
+    var dias=$('#dias').val();
     var valor=parseFloat($('#cost_'+acom).html());
     var sale=parseFloat($('#sale_'+acom).val());
     var pro=Math.round(sale-valor);
@@ -2890,38 +2896,67 @@ function variar_sales(acom){
     var profit_por=Math.round((pro/sale)*100,2);
     $('#porc_'+acom).html(profit_por);
     $('#porc_'+acom).val(profit_por);
-    var sale_s=parseFloat($('#sale_s').val());
-    var sale_d=parseFloat($('#sale_d').val());
-    var sale_m=parseFloat($('#sale_m').val());
-    var sale_t=parseFloat($('#sale_t').val());
+    $('#sale_'+acom).val(sale);
 
-    $('#total_profit').html(sale_s+sale_d+sale_m+sale_t);
-    var pro_s=parseFloat($('#pro_s').val());
-    var pro_d=parseFloat($('#pro_d').val());
-    var pro_m=parseFloat($('#pro_m').val());
-    var pro_t=parseFloat($('#pro_t').val());
+    var sale_s=0;
+    var sale_d=0;
+    var sale_m=0;
+    var sale_t=0;
+    var sale_sh=0;
+    if(dias>1) {
+        var sale_s=parseFloat($('#sale_s').val());
+        var sale_d=parseFloat($('#sale_d').val());
+        var sale_m=parseFloat($('#sale_m').val());
+        var sale_t=parseFloat($('#sale_t').val());
+    }
+    else if(dias==1){
+        sale_sh=parseFloat($('#sale_sh').val());
+    }
+
+    if(dias>1) {
+        $('#total_profit').html(sale_s + sale_d + sale_m + sale_t);
+    }
+    else if(dias==1){
+        $('#total_profit').html(sale_sh);
+
+    }
+    var pro_s = parseFloat($('#pro_s').val());
+    var pro_d = parseFloat($('#pro_d').val());
+    var pro_m = parseFloat($('#pro_m').val());
+    var pro_t = parseFloat($('#pro_t').val());
+    var pro_sh = parseFloat($('#pro_sh').val());
+
     var uti_por_s=0;
     var uti_por_d=0;
     var uti_por_m=0;
     var uti_por_t=0;
-    if(sale_s!=0)
-        uti_por_d=Math.round((pro_s/sale_s)*100,0);
-    if(sale_d!=0)
-        var uti_por_d=Math.round((pro_d/sale_d)*100,0);
-    if(sale_m!=0)
-        var uti_por_m=Math.round((pro_m/sale_m)*100,0);
-    if(sale_t!=0)
-        var uti_por_t=Math.round((pro_t/sale_t)*100,0);
+    var uti_por_sh=0;
 
-    console.log('uti_por_s:'+uti_por_s);
-    console.log('uti_por_d:'+uti_por_d);
-    console.log('uti_por_m:'+uti_por_m);
-    console.log('uti_por_t:'+uti_por_t);
+    if(dias>1) {
+        if (sale_s != 0)
+            uti_por_d = Math.round((pro_s / sale_s) * 100, 0);
+        if (sale_d != 0)
+            uti_por_d = Math.round((pro_d / sale_d) * 100, 0);
+        if (sale_m != 0)
+            uti_por_m = Math.round((pro_m / sale_m) * 100, 0);
+        if (sale_t != 0)
+            uti_por_t = Math.round((pro_t / sale_t) * 100, 0);
 
-    $('#profit_por_s').val(uti_por_s);
-    $('#profit_por_d').val(uti_por_d);
-    $('#profit_por_m').val(uti_por_m);
-    $('#profit_por_t').val(uti_por_t);
+        $('#profit_por_s').val(uti_por_s);
+        $('#profit_por_d').val(uti_por_d);
+        $('#profit_por_m').val(uti_por_m);
+        $('#profit_por_t').val(uti_por_t);
+    }
+    else if(dias==1){
+        uti_por_sh=Math.round((pro_sh/sale_sh)*100,2);
+        $('#profit_por_sh').val(uti_por_sh);
+    }
+    // console.log('uti_por_s:'+uti_por_s);
+    // console.log('uti_por_d:'+uti_por_d);
+    // console.log('uti_por_m:'+uti_por_m);
+    // console.log('uti_por_t:'+uti_por_t);
+
+
 }
 
 function filtrar_itinerarios_(){
@@ -5671,15 +5706,16 @@ function mostrar_pqts(pagina) {
 
 function confirmar_servicio_reservas(id,servicio,tipo) {
     // alert('holaaa');
-    swal({
-        title: 'MENSAJE DEL SISTEMA',
-        text: "¿Estas seguro de guardar los cambios para "+servicio+" ?",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
-    }).then(function () {
+    // swal({
+    //     title: 'MENSAJE DEL SISTEMA',
+    //     text: "¿Estas seguro de guardar los cambios para "+servicio+" ?",
+    //     type: 'warning',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     confirmButtonText: 'Yes'
+    // }).then(function () {
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5694,11 +5730,11 @@ function confirmar_servicio_reservas(id,servicio,tipo) {
                         $("#confim_" + id).html('<i class="fas fa-lock text-success"></i>');
                     else if (confirm[0] == '0')
                         $("#confim_" + id).html('<i class="fas fa-unlock"></i>');
-                    swal(
-                        'Mensaje del sistema',
-                        'Se confirmo el servicio ',
-                        'success'
-                    )
+                    // swal(
+                    //     'Mensaje del sistema',
+                    //     'Se confirmo el servicio ',
+                    //     'success'
+                    // )
                 }
             }).fail(function (data) {
 
@@ -5713,17 +5749,17 @@ function confirmar_servicio_reservas(id,servicio,tipo) {
                         $("#confim_h_" + id).html('<i class="fas fa-lock text-success"></i>');
                     else if (confirm[0] == '0')
                         $("#confim_h_" + id).html('<i class="fas fa-unlock"></i>');
-                    swal(
-                        'Mensaje del sistema',
-                        'Se confirmo el hotel ',
-                        'success'
-                    )
+                    // swal(
+                    //     'Mensaje del sistema',
+                    //     'Se confirmo el hotel ',
+                    //     'success'
+                    // )
                 }
             }).fail(function (data) {
 
             });
         }
-    })
+    // })
 }
 function editar_producto(id){
     var grupo=$('#grupo_'+id).val();

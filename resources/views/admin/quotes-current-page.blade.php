@@ -110,6 +110,7 @@
                     <li value="0">
                         <ol class='simple_with_animation vertical m-0 p-0 caja_sort'>
                             @foreach($cotizacion->sortByDesc('created_at') as $cotizacion_)
+
                                 @php
                                     $s=0;
                                     $d=0;
@@ -123,6 +124,7 @@
                                     $precio_hotel_m=0;
                                     $precio_hotel_t=0;
                                     $cotizacion_id='';
+                                    $utilidad=0;
                                     $utilidad_s=0;
                                     $utilidad_por_s=0;
                                     $utilidad_d=0;
@@ -132,8 +134,11 @@
                                     $utilidad_t=0;
                                     $utilidad_por_t=0;
                                 @endphp
-
+                                @php
+                                    $nro_dias=$cotizacion_->duracion;
+                                @endphp
                                 @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+
                                     @foreach($paquete->paquete_precios as $precio)
                                         @if($precio->personas_s>0)
                                             @php
@@ -227,13 +232,13 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                @if($nro_dias==1)
                                     @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                         @php
                                             $valor=$precio_iti+$paquete->utilidad;
                                         @endphp
                                     @endforeach
-                                @else
+                                @elseif($nro_dias>1)
                                     @if($s!=0)
                                         @php
                                             $valor+=round($precio_hotel_s+$utilidad_s,2);
@@ -324,7 +329,9 @@
                                     $utilidad_t=0;
                                     $utilidad_por_t=0;
                                 @endphp
-
+                                @php
+                                    $nro_dias=$cotizacion_->duracion;
+                                @endphp
                                 @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                     @foreach($paquete->paquete_precios as $precio)
                                         @if($precio->personas_s>0)
@@ -419,13 +426,13 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                @if($nro_dias==1)
                                     @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                         @php
                                             $valor=$precio_iti+$paquete->utilidad;
                                         @endphp
                                     @endforeach
-                                @else
+                                @elseif($nro_dias>1)
                                     @if($s!=0)
                                         @php
                                             $valor+=round($precio_hotel_s+$utilidad_s,2);
@@ -514,7 +521,9 @@
                                     $utilidad_t=0;
                                     $utilidad_por_t=0;
                                 @endphp
-
+                                @php
+                                    $nro_dias=$cotizacion_->duracion;
+                                @endphp
                                 @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                     @foreach($paquete->paquete_precios as $precio)
                                         @if($precio->personas_s>0)
@@ -609,13 +618,13 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                @if($nro_dias==1)
                                     @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                         @php
                                             $valor=$precio_iti+$paquete->utilidad;
                                         @endphp
                                     @endforeach
-                                @else
+                                @elseif($nro_dias>1)
                                     @if($s!=0)
                                         @php
                                             $valor+=round($precio_hotel_s+$utilidad_s,2);
@@ -704,7 +713,9 @@
                                     $utilidad_t=0;
                                     $utilidad_por_t=0;
                                 @endphp
-
+                                @php
+                                    $nro_dias=$cotizacion_->duracion;
+                                @endphp
                                 @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                     @foreach($paquete->paquete_precios as $precio)
                                         @if($precio->personas_s>0)
@@ -799,13 +810,13 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                @if($nro_dias==1)
                                     @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                         @php
                                             $valor=$precio_iti+$paquete->utilidad;
                                         @endphp
                                     @endforeach
-                                @else
+                                @elseif($nro_dias>1)
                                     @if($s!=0)
                                         @php
                                             $valor+=round($precio_hotel_s+$utilidad_s,2);
@@ -894,7 +905,9 @@
                                     $utilidad_t=0;
                                     $utilidad_por_t=0;
                                 @endphp
-
+                                @php
+                                    $nro_dias=$cotizacion_->duracion;
+                                @endphp
                                 @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                     @foreach($paquete->paquete_precios as $precio)
                                         @if($precio->personas_s>0)
@@ -989,13 +1002,13 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                @if($nro_dias==1)
                                     @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                         @php
                                             $valor=$precio_iti+$paquete->utilidad;
                                         @endphp
                                     @endforeach
-                                @else
+                                @elseif($nro_dias>1)
                                     @if($s!=0)
                                         @php
                                             $valor+=round($precio_hotel_s+$utilidad_s,2);
@@ -1084,7 +1097,9 @@
                                     $utilidad_t=0;
                                     $utilidad_por_t=0;
                                 @endphp
-
+                                @php
+                                    $nro_dias=$cotizacion_->duracion;
+                                @endphp
                                 @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                     @foreach($paquete->paquete_precios as $precio)
                                         @if($precio->personas_s>0)
@@ -1179,13 +1194,13 @@
                                 @php
                                     $valor=0;
                                 @endphp
-                                @if($s==0&&$d==0&&$m==0&&$t==0)
+                                @if($nro_dias==1)
                                     @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                                         @php
                                             $valor=$precio_iti+$paquete->utilidad;
                                         @endphp
                                     @endforeach
-                                @else
+                                @elseif($nro_dias>1)
                                     @if($s!=0)
                                         @php
                                             $valor+=round($precio_hotel_s+$utilidad_s,2);

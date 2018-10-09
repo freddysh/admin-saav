@@ -1641,8 +1641,8 @@ class PackageCotizacionController extends Controller
 
         $paquete=PaqueteCotizaciones::FindOrFail($paquete_id);
         $paquete->titulo=$txt_titulo;
-        if($paquete_precio_id!='0')
-            $paquete->utilidad=$request->input('profit_sh');
+        if($cotizacion->duracion==1)
+            $paquete->utilidad=$request->input('pro_sh');
         $paquete->descripcion=$descripcion;
         $paquete->incluye=$incluye;
         $paquete->noincluye=$no_incluye;
@@ -1650,7 +1650,7 @@ class PackageCotizacionController extends Controller
         $paquete->proceso_complete=2;
         $paquete->save();
 
-        if($paquete_precio_id!='0') {
+        if($cotizacion->duracion>1) {
             $paquete_precio = PaquetePrecio::FindOrFail($paquete_precio_id);
             $paquete_precio->utilidad_s = $pro_s;
             $paquete_precio->utilidad_d = $pro_d;
@@ -1662,21 +1662,22 @@ class PackageCotizacionController extends Controller
             $paquete_precio->utilidad_por_m = $profit_por_m;
             $paquete_precio->utilidad_por_t = $profit_por_t;
             $paquete_precio->save();
-        }
-        $itinerarios=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$paquete_id)->get();
-        foreach ($itinerarios as $itinerario){
-            foreach ($itinerario->hotel as $hotel){
-                $hotel1=PrecioHotelReserva::FindOrFail($hotel->id);
-                $hotel1->utilidad_s=$pro_s;
-                $hotel1->utilidad_d=$pro_d;
-                $hotel1->utilidad_m=$pro_m;
-                $hotel1->utilidad_t=$pro_t;
 
-                $hotel1->utilidad_por_s=$profit_por_s;
-                $hotel1->utilidad_por_d=$profit_por_d;
-                $hotel1->utilidad_por_m=$profit_por_m;
-                $hotel1->utilidad_por_t=$profit_por_t;
-                $hotel1->save();
+            $itinerarios = ItinerarioCotizaciones::where('paquete_cotizaciones_id', $paquete_id)->get();
+            foreach ($itinerarios as $itinerario) {
+                foreach ($itinerario->hotel as $hotel) {
+                    $hotel1 = PrecioHotelReserva::FindOrFail($hotel->id);
+                    $hotel1->utilidad_s = $pro_s;
+                    $hotel1->utilidad_d = $pro_d;
+                    $hotel1->utilidad_m = $pro_m;
+                    $hotel1->utilidad_t = $pro_t;
+
+                    $hotel1->utilidad_por_s = $profit_por_s;
+                    $hotel1->utilidad_por_d = $profit_por_d;
+                    $hotel1->utilidad_por_m = $profit_por_m;
+                    $hotel1->utilidad_por_t = $profit_por_t;
+                    $hotel1->save();
+                }
             }
         }
         $paquete_precio_id=$request->input('paquete_precio_id');
@@ -1710,10 +1711,14 @@ class PackageCotizacionController extends Controller
                 else
                     $numero_con_ceros ='001';
 
+                $inical='GTP';
+                if($cotizacion->web=='expedia.com')
+                    $inical='E';
+
                 $plantilla_pqt= new P_Paquete();
-                $plantilla_pqt->codigo='GTP'.$ogiginal_pqt->duracion.$numero_con_ceros;
+                $plantilla_pqt->codigo=$inical.$ogiginal_pqt->duracion.$numero_con_ceros;
                 $plantilla_pqt->pagina=$cotizacion->web;
-                $plantilla_pqt->titulo=$plantilla_pqt->titulo;
+                $plantilla_pqt->titulo=$ogiginal_pqt->titulo;
                 $plantilla_pqt->duracion=$ogiginal_pqt->duracion;
                 $plantilla_pqt->precio_venta=$ogiginal_pqt->precioventa;
                 $plantilla_pqt->utilidad=$ogiginal_pqt->utilidad;
@@ -1725,30 +1730,32 @@ class PackageCotizacionController extends Controller
                 $plantilla_pqt->estado=1;
                 $plantilla_pqt->save();
                 $new_pqt_id=$plantilla_pqt->id;
-                foreach ($ogiginal_pqt->paquete_precios as $paquete_precio){
-                    $plantilla_ppqt=new P_PaquetePrecio();
-                    $plantilla_ppqt->estrellas=$paquete_precio->estrellas;
-                    $plantilla_ppqt->precio_s=$paquete_precio->precio_s;
-                    $plantilla_ppqt->personas_s=1;
-                    $plantilla_ppqt->precio_d=$paquete_precio->precio_d;
-                    $plantilla_ppqt->personas_d=1;
-                    $plantilla_ppqt->precio_m=$paquete_precio->precio_m;
-                    $plantilla_ppqt->personas_m=1;
-                    $plantilla_ppqt->precio_t=$paquete_precio->precio_t;
-                    $plantilla_ppqt->personas_t=1;
-                    $plantilla_ppqt->estado=1;
-                    $plantilla_ppqt->utilidad=$paquete_precio->utilidad;
-                    $plantilla_ppqt->p_paquete_id=$plantilla_pqt->id;
-                    $plantilla_ppqt->hotel_id=$paquete_precio->hotel_id;
-                    $plantilla_ppqt->utilidad_s=$paquete_precio->utilidad_s;
-                    $plantilla_ppqt->utilidad_d=$paquete_precio->utilidad_d;
-                    $plantilla_ppqt->utilidad_m=$paquete_precio->utilidad_m;
-                    $plantilla_ppqt->utilidad_t=$paquete_precio->utilidad_t;
-                    $plantilla_ppqt->utilidad_por_s=$paquete_precio->utilidad_por_s;
-                    $plantilla_ppqt->utilidad_por_d=$paquete_precio->utilidad_por_d;
-                    $plantilla_ppqt->utilidad_por_m=$paquete_precio->utilidad_por_m;
-                    $plantilla_ppqt->utilidad_por_t=$paquete_precio->utilidad_por_t;
-                    $plantilla_ppqt->save();
+                if($ogiginal_pqt->duracion>1) {
+                    foreach ($ogiginal_pqt->paquete_precios as $paquete_precio) {
+                        $plantilla_ppqt = new P_PaquetePrecio();
+                        $plantilla_ppqt->estrellas = $paquete_precio->estrellas;
+                        $plantilla_ppqt->precio_s = $paquete_precio->precio_s;
+                        $plantilla_ppqt->personas_s = 1;
+                        $plantilla_ppqt->precio_d = $paquete_precio->precio_d;
+                        $plantilla_ppqt->personas_d = 1;
+                        $plantilla_ppqt->precio_m = $paquete_precio->precio_m;
+                        $plantilla_ppqt->personas_m = 1;
+                        $plantilla_ppqt->precio_t = $paquete_precio->precio_t;
+                        $plantilla_ppqt->personas_t = 1;
+                        $plantilla_ppqt->estado = 1;
+                        $plantilla_ppqt->utilidad = $paquete_precio->utilidad;
+                        $plantilla_ppqt->p_paquete_id = $plantilla_pqt->id;
+                        $plantilla_ppqt->hotel_id = $paquete_precio->hotel_id;
+                        $plantilla_ppqt->utilidad_s = $paquete_precio->utilidad_s;
+                        $plantilla_ppqt->utilidad_d = $paquete_precio->utilidad_d;
+                        $plantilla_ppqt->utilidad_m = $paquete_precio->utilidad_m;
+                        $plantilla_ppqt->utilidad_t = $paquete_precio->utilidad_t;
+                        $plantilla_ppqt->utilidad_por_s = $paquete_precio->utilidad_por_s;
+                        $plantilla_ppqt->utilidad_por_d = $paquete_precio->utilidad_por_d;
+                        $plantilla_ppqt->utilidad_por_m = $paquete_precio->utilidad_por_m;
+                        $plantilla_ppqt->utilidad_por_t = $paquete_precio->utilidad_por_t;
+                        $plantilla_ppqt->save();
+                    }
                 }
                 foreach ($ogiginal_pqt->itinerario_cotizaciones as $itinerario_cotizacion){
                     $plantilla_piti=new P_Itinerario();

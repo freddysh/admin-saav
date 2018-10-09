@@ -35,7 +35,7 @@
                     <div class="col-1">
                         <div class="form-group">
                             <label for="txt_day" class="text-secondary font-weight-bold">Duracion</label>
-                            <input type="number" class="form-control" id="txt_day" name="txt_day" placeholder="Days" min="0" onchange="calcular_resumen_edit()"  value="{{$itinerary->duracion}}" >
+                            <input type="number" class="form-control" id="txt_day" name="txt_day" placeholder="Days" min="0" onchange="calcular_resumen()"  value="{{$itinerary->duracion}}" >
                         </div>
                     </div>
                     <div class="col-2 @if($itinerary->pagina!='expedia.com') d-none @endif" id="txt_codigo_">

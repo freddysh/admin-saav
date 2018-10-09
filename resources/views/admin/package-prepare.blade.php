@@ -25,11 +25,11 @@
         $include='';
         $no_include='';
         $cliente_id=0;
-    $duracion=0;
+        $duracion=0;
     @endphp
 
     @foreach($cotizaciones as $cotizacion)
-        @foreach($cotizacion->cotizaciones_cliente as $coti_cliente)
+        @foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $coti_cliente)
             @php
                 $cliente=$coti_cliente->cliente->nombres.' '.$coti_cliente->cliente->apellidos;
                 $cliente_id=$coti_cliente->cliente->id;
@@ -281,7 +281,7 @@
                                 @endphp
                             @endif
                         @endforeach
-                        @if($s==0&&$d==0&&$m==0&&$t==0)
+                        @if($duracion==1)
                             @php
                                 $utilidad=$paquete->utilidad;
                             @endphp
@@ -546,6 +546,7 @@
                     <hr>
                     <div class="row text-right mt-4">
                         <div class="text-center col-12 ">
+                            <input type="hidden" id="dias" value="{{$dias}}">
                             <input type="hidden" name="paquete_id" value="{{$paquete_id}}">
                             <input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id1}}">
                             <input type="hidden" name="profit_por_s" id="profit_por_s" value="40">
