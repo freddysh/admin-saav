@@ -131,7 +131,7 @@
                         @endforeach
                     @endforeach
                 @endforeach
-                @if(1<$confirmados && $confirmados<$total)
+                @if(1<=$confirmados && $confirmados<$total)
                     <div class="content-list-book">
                         <div class="content-list-book-s">
                             <a href="{{route('book_show_path', $cotizacion_cat_->id)}}">
