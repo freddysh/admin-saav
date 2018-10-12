@@ -6198,3 +6198,24 @@ function mostrarreservas(mes,anio){
         }
     });
 }
+
+function buscar_x_codigo_nuevo(codigo){
+    console.log('codigo::'+codigo);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "../admin/book/list-paquetes-codigo",
+        data: 'codigo='+codigo,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#nuevos').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#nuevos').html(data);
+        }
+    });
+}

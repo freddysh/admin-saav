@@ -834,5 +834,12 @@ class BookController extends Controller
 //        dd($anio);
         return view('admin.book.list-paquetes',compact('cotizacion_cat'));
     }
-
+    public function list_paquetes_codigo(Request $request)
+    {
+//        return 'hola';
+        $codigo = $request->input('codigo');
+        $cotizacion_cat =Cotizacion::where('codigo',$codigo)->get();
+//        dd($anio);
+        return view('admin.book.list-paquetes',compact('cotizacion_cat'));
+    }
 }

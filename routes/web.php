@@ -1203,3 +1203,7 @@ Route::post('admin/book/list-paquetes', [
     'uses' => 'BookController@list_paquetes_fecha',
     'as' => 'list_paquetes_path',
 ]);
+Route::post('admin/book/list-paquetes-codigo', [
+    'uses' => 'BookController@list_paquetes_codigo',
+    'as' => 'list_paquetes_codigo_path',
+]);
