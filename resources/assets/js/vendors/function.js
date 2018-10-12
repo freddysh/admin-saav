@@ -4876,6 +4876,7 @@ function buscar_day_by_day_edit(destino) {
     })
 }
 function traer_servicios_paso1(itinerario_id,servicios_id,localizacion,grupo,modo) {
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5437,6 +5438,7 @@ function anular_servicio_reservas(id,servicio,tipo) {
     })
 }
 function mostrarreservas(mes,anio){
+    console.log('mes:'+mes+',anio:'+anio);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5444,7 +5446,7 @@ function mostrarreservas(mes,anio){
     });
     $.ajax({
         type: 'POST',
-        url: "../admin/book/list-paquetes",
+        url: "../admin/book/listpaquetes",
         data: 'mes='+mes+'&anio='+anio,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data1){
@@ -5454,5 +5456,4 @@ function mostrarreservas(mes,anio){
             $('#reservas').html(data);
         }
     });
-
 }

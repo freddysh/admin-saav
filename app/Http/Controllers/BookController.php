@@ -827,9 +827,11 @@ class BookController extends Controller
     }
     public function list_paquetes_fecha(Request $request)
     {
+//        return 'hola';
         $mes = $request->input('mes');
         $anio = $request->input('anio');
         $cotizacion_cat =Cotizacion::whereYear('fecha',$anio)->whereMonth('fecha',$mes)->get();
+//        dd($anio);
         return view('admin.book.list-paquetes',compact('cotizacion_cat'));
     }
 

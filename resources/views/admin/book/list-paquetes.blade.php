@@ -1,7 +1,7 @@
 @php
     $dato_cliente='';
 @endphp
-@foreach($cotizacion_cat->sortByDesc('fecha') as $cotizacion_cat_)
+@foreach($cotizacion_cat->sortBy('fecha') as $cotizacion_cat_)
     @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
         @if($clientes->estado==1)
             @php

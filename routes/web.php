@@ -1199,7 +1199,7 @@ Route::post('admin/book/hotel/anular', [
     'as' => 'anular_hotel_servicio_path',
 ]);
 
-Route::post('admin/book/list-paquetes', [
+Route::post('admin/book/listpaquetes', [
     'uses' => 'BookController@list_paquetes_fecha',
     'as' => 'list_paquetes_path',
 ]);
