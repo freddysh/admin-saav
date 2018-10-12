@@ -163,7 +163,6 @@
                         <div class="col text-right">
                             <span class="text-25">
                                 {{csrf_field()}}
-                                {{--<input type="hidden" name="_token" value="AIGSGtFs2Tvq1IOTWtxziG3dOq2keCoSnNejallh">--}}
                                 <input name="anio" id="anio" class="form-control" type="text" value="2018">
                             </span>
                         </div>

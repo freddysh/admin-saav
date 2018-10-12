@@ -6187,7 +6187,7 @@ function mostrarreservas(mes,anio){
     });
     $.ajax({
         type: 'POST',
-        url: "../admin/book/listpaquetes",
+        url: "../admin/book/list-paquetes",
         data: 'mes='+mes+'&anio='+anio,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data1){
