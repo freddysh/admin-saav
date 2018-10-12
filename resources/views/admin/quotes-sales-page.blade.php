@@ -39,6 +39,10 @@
             @if($page == 'gotoperu.com') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
         </div>
         <div class="col text-center">
+            <a href="{{route('sales_quote_page_path', 'llama.tours')}}" class="btn btn-block btn-sm @if($page == 'llama.tours') btn-success @else btn-light text-secondary  @endif">llama.tours</a>
+            @if($page == 'llama.tours') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
+        </div>
+        <div class="col text-center">
             <a href="{{route('sales_quote_page_path', 'gotoperu.com.pe')}}" class="btn btn-block btn-sm @if($page == 'gotoperu.com.pe') btn-success @else  btn-light text-secondary @endif">gotoperu.com.pe</a>
             @if($page == 'gotoperu.com.pe') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
         </div>

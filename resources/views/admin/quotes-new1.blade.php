@@ -28,6 +28,7 @@
                                 <label for="txt_travel_date" class="font-weight-bold text-secondary">Pagina de origen</label>
                                 <select name="web" id="web" class="form-control" onchange="generar_codigo($(this).val())">
                                     <option value="gotoperu.com" @if($web=='gotoperu.com') selected @endif>gotoperu.com</option>
+                                    <option value="llama.tours" @if($web=='llama.tours') selected @endif>llama.tours</option>
                                     <option value="gotoperu.com.pe" @if($web=='gotoperu.com.pe') selected @endif>gotoperu.com.pe</option>
                                     <option value="andesviagens.com" @if($web=='andesviagens.com') selected @endif>andesviagens.com</option>
                                     <option value="machupicchu-galapagos.com" @if($web=='machupicchu-galapagos.com') selected @endif>machupicchu-galapagos.com</option>
