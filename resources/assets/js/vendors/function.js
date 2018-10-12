@@ -5460,6 +5460,7 @@ function mostrarreservas(mes,anio){
 
 function buscar_x_codigo_nuevo(codigo){
     console.log('codigo::'+codigo);
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
