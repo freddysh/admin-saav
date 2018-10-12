@@ -4,6 +4,7 @@
         @if($punto_inicio=='LIMA')
                 <option value="LIMA-AIRPORT">LIMA-AIRPORT</option>
                 <option value="AIRPORT-LIMA">AIRPORT-LIMA</option>
+                <option value="LIMA-ICA">LIMA-ICA</option>
         @elseif($punto_inicio=='CUSCO')
                 <option value="CUSCO-AIRPORT">CUSCO-AIRPORT</option>
                 <option value="CUSCO-OLLANTA">CUSCO-OLLANTA</option>
