@@ -1541,7 +1541,7 @@
                                 </tbody>
                                 <tbody>
                                 <tr>
-                                    <td colspan="5"><b>Total</b></td>
+                                    <td colspan="4"><b>Total</b></td>
                                     <td class="text-right h5 text-g-yellow"><b><sup>$</sup>{{$sumatotal_v}}</b></td>
                                     <td class="text-right h5 text-info"><b><sup>$</sup>{{$sumatotal_v_r}}</b></td>
                                 </tr>

@@ -762,7 +762,7 @@ class BookController extends Controller
             $filename ='archivo-'.$archivos->id.'.'.$txt_imagen->getClientOriginalExtension();
             $archivos->imagen=$filename;
             $archivos->extension=$txt_imagen->getClientOriginalExtension();
-//            $archivos->nombre=$txt_imagen->getClientOriginalName();
+            $archivos->nombre=$txt_imagen->getClientOriginalName();
             $archivos->fecha_subida=$dia.'-'.$mes.'-'.$anio;
             $archivos->hora_subida=$hora.':'.$minuto.':'.$segundo;
             $archivos->save();

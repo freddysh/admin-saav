@@ -4905,17 +4905,17 @@ function traer_servicios_paso1(itinerario_id,servicios_id,localizacion,grupo,mod
             }
         })
     }
-    // else if(modo=='edit'){
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '../../../../../book/listar-servicios-paso1',
-    //         data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
-    //         // Mostramos un mensaje con la respuesta de PHP
-    //         success: function(data) {
-    //             $('#list_servicios_grupo_'+servicios_id).html(data);
-    //         }
-    //     })
-    // }
+    else if(modo=='edit'){
+        $.ajax({
+            type: 'POST',
+            url: '../../../../../book/listar-servicios-paso1',
+            data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
+            // Mostramos un mensaje con la respuesta de PHP
+            success: function(data) {
+                $('#list_servicios_grupo_'+servicios_id).html(data);
+            }
+        })
+    }
 }
 function mostrar_servicios_localizacion_paso1(itinerario_id,servicios_id,localizacion,grupo,proveedor_id) {
     console.log('itinerario_id:'+itinerario_id);
