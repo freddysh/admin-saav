@@ -206,6 +206,7 @@ class QouteController extends Controller
     {
         $precodigo=array(
             "gotoperu.com"=>"G",
+            "llama.tours"=>"LLA",
             "gotoperu.com.pe"=>"GP",
             "andesviagens.com"=>"AV",
             "machupicchu-galapagos.com"=>"MP",
