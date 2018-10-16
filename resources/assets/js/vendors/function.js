@@ -4931,7 +4931,7 @@ function mostrar_servicios_localizacion_paso1(itinerario_id,servicios_id,localiz
     });
     $.ajax({
         type: 'POST',
-        url: '../../../../../book/listar-servicios/localizacion-paso1',
+        url: '../../../../../../book/listar-servicios/localizacion-paso1',
         data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id+'&proveedor_id='+proveedor_id,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend:
