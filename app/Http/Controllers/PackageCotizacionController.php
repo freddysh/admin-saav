@@ -1918,8 +1918,10 @@ class PackageCotizacionController extends Controller
         $cliente=Cliente::FindOrFail($cliente_id);
         $cotizaciones=Cotizacion::where('id',$cotizacion_id)->get();
         $m_servicios=M_Servicio::get();
-
-        return view('admin.package-details1',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id,'msj'=>$msj]);
+        $destinations=M_Destino::get();
+        $categorias=M_Category::get();
+        $hoteles=Hotel::where('localizacion','CUSCO')->get();
+        return view('admin.package-details1',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id,'msj'=>$msj,'destinations'=>$destinations,'categorias'=>$categorias,'hoteles'=>$hoteles]);
     }
     public function show_step1_editar($cliente_id, $cotizacion_id,$pqt_id)
     {
@@ -2403,5 +2405,111 @@ class PackageCotizacionController extends Controller
 //        return dd($ppaquetes);
         return view('admin.lista-paquetes-duracion-pagina',compact('ppaquetes','destinos','estrellas'));
     }
+    public function agregar_nuevo_servicio(Request $request)
+    {
+        $itinerario_cotizaciones_id=$request->input('dia');
+        $servicios=$request->input('servicios');
+        $itinerario_cotizacion=ItinerarioCotizaciones::Find($itinerario_cotizaciones_id);
 
+        foreach ($servicios as $servicio){
+            $serv=explode('_',$servicio);
+            $m_servicio=M_Servicio::Find($serv[2]);
+            $temp=new ItinerarioServicios();
+            $temp->nombre=$m_servicio->nombre;
+            $temp->precio=$m_servicio->precio_venta;
+            $temp->precio_grupo=$m_servicio->precio_grupo;
+            $temp->itinerario_cotizaciones_id=$itinerario_cotizaciones_id;
+            $temp->m_servicios_id=$m_servicio->id;
+            $temp->user_id=auth()->guard('admin')->user()->id;
+            $temp->min_personas=$m_servicio->min_personas;
+            $temp->max_personas=$m_servicio->max_personas;
+            $temp->grupo=$m_servicio->grupo;
+            $temp->clase=$m_servicio->clase;
+            $temp->salida=$m_servicio->salida;
+            $temp->llegada=$m_servicio->llegada;
+            $temp->fecha_uso=$itinerario_cotizacion->fecha;
+            $temp->s_p=$m_servicio->s_p;
+            $temp->s_p=0;
+            $temp->pos=20;
+            $temp->save();
+        }
+
+        return redirect()->back();
+    }
+    public function agregar_nuevo_hotel(Request $request)
+    {
+        $itinerario_cotizaciones_id=$request->input('dia');
+        $estrellas=$request->input('categoria');
+        $pqt_precio_id=$request->input('pqt_precio');
+        $pqt_precio=PaquetePrecio::Find($pqt_precio_id);
+//        dd($estrellas[0]);
+        $nombre='hotel_id_'.$estrellas[0];
+        $hotel_id=$request->input($nombre);
+        $hotel=Hotel::Find($hotel_id);
+        $precio_h_r=new PrecioHotelReserva();
+        $precio_h_r->estrellas=$hotel->estrellas;
+        $precio_h_r->precio_s=$hotel->single;
+        $precio_h_r->personas_s=$pqt_precio->personas_s;
+        $precio_h_r->precio_m=$hotel->matrimonial;
+        $precio_h_r->personas_m=$pqt_precio->personas_m;
+        $precio_h_r->precio_d=$hotel->doble;
+        $precio_h_r->personas_d=$pqt_precio->personas_d;
+        $precio_h_r->precio_t=$hotel->triple;
+        $precio_h_r->personas_t=$pqt_precio->personas_t;
+        $precio_h_r->utilidad=$pqt_precio->utilidad;
+        $precio_h_r->estado=1;
+        $precio_h_r->user_id=auth()->guard('admin')->user()->id;
+        $precio_h_r->hotel_id=$hotel->id;
+        $precio_h_r->utilidad_s=$pqt_precio->utilidad_s;
+        $precio_h_r->utilidad_d=$pqt_precio->utilidad_d;
+        $precio_h_r->utilidad_m=$pqt_precio->utilidad_m;
+        $precio_h_r->utilidad_t=$pqt_precio->utilidad_t;
+        $precio_h_r->itinerario_cotizaciones_id=$itinerario_cotizaciones_id;
+        $precio_h_r->localizacion=$hotel->localizacion;
+        $precio_h_r->save();
+        return redirect()->back();
+    }
+    public function listar_hoteles(Request $request)
+    {
+        $loca=explode('_',$request->input('loca'));
+//        dd($loca[1]);
+        $hoteles=Hotel::where('localizacion',$loca[1])->get();
+        return view('admin.lista_hoteles_localizacion',compact(['hoteles']));
+    }
+    public function cambiar_hotel(Request $request)
+    {
+        $itinerario_cotizaciones_id=$request->input('itinerario_cotizaciones_id');
+        $precio_hotel_reserva_id=$request->input('precio_hotel_reserva_id');
+//        dd($precio_hotel_reserva_id);
+        $pqt_precio=PrecioHotelReserva::Find($precio_hotel_reserva_id);
+//        dd($pqt_precio);
+        $estrellas=$request->input('categoria_');
+        $nombre='hotel_id_'.$estrellas[0];
+        $hotel_id=$request->input($nombre);
+        $hotel=Hotel::Find($hotel_id);
+        $precio_h_r=new PrecioHotelReserva();
+        $precio_h_r->estrellas=$hotel->estrellas;
+        $precio_h_r->precio_s=$hotel->single;
+        $precio_h_r->personas_s=$pqt_precio->personas_s;
+        $precio_h_r->precio_m=$hotel->matrimonial;
+        $precio_h_r->personas_m=$pqt_precio->personas_m;
+        $precio_h_r->precio_d=$hotel->doble;
+        $precio_h_r->personas_d=$pqt_precio->personas_d;
+        $precio_h_r->precio_t=$hotel->triple;
+        $precio_h_r->personas_t=$pqt_precio->personas_t;
+        $precio_h_r->utilidad=$pqt_precio->utilidad;
+        $precio_h_r->estado=1;
+        $precio_h_r->user_id=auth()->guard('admin')->user()->id;
+        $precio_h_r->hotel_id=$hotel->id;
+        $precio_h_r->utilidad_s=$pqt_precio->utilidad_s;
+        $precio_h_r->utilidad_d=$pqt_precio->utilidad_d;
+        $precio_h_r->utilidad_m=$pqt_precio->utilidad_m;
+        $precio_h_r->utilidad_t=$pqt_precio->utilidad_t;
+        $precio_h_r->itinerario_cotizaciones_id=$itinerario_cotizaciones_id;
+        $precio_h_r->localizacion=$hotel->localizacion;
+        $precio_h_r->save();
+
+        $pqt_precio->delete();
+        return redirect()->back();
+    }
 }

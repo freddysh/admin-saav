@@ -299,7 +299,7 @@
                                 <div class="col-4 no-padding">
                                     <div class="estilo_form clearfix small">
                                         <label class="">
-                                            <input type="radio" name="servicio_cambiar_{{$itinerario_id}}_{{$grupo}}[]" id="servicio_cambiar_{{$itinerario_id}}_{{$grupo}}_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
+                                            <input type="radio" name="op_services" id="servicio_cambiar_{{$itinerario_id}}_{{$grupo}}_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                             {{$m_servicio->nombre}}
                                         </label>
                                         <label class="text-right"> -> {{$m_servicio->precio_venta}}$ </label>
@@ -360,7 +360,7 @@
                         <div class="col-4 no-padding">
                             <div class="estilo_form clearfix small">
                                 <label class="">
-                                    <input type="radio" name="servicio_cambiar_{{$itinerario_id}}_{{$grupo}}[]" id="servicio_cambiar_{{$itinerario_id}}_{{$grupo}}_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
+                                    <input type="radio" name="op_services" id="servicio_cambiar_{{$itinerario_id}}_{{$grupo}}_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                     {{$m_servicio->nombre}} {{$m_servicio->precio_venta}}$)
                                 </label>
                                 <label class="text-right"> -> {{$m_servicio->precio_venta}}$ </label>

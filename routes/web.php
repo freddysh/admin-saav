@@ -1207,3 +1207,19 @@ Route::post('admin/book/list-paquetes-codigo', [
     'uses' => 'BookController@list_paquetes_codigo',
     'as' => 'list_paquetes_codigo_path',
 ]);
+Route::post('admin/quotes/new/step1/agregar-nuevo-servicio', [
+    'uses' => 'PackageCotizacionController@agregar_nuevo_servicio',
+    'as' => 'agregar_nuevo_servicio_path',
+]);
+Route::post('admin/quotes/new/step1/agregar-nuevo-hotel', [
+    'uses' => 'PackageCotizacionController@agregar_nuevo_hotel',
+    'as' => 'agregar_nuevo_hotel_path',
+]);
+Route::post('admin/quotes/new/step1/list-localizacion-hoteles', [
+    'uses' => 'PackageCotizacionController@listar_hoteles',
+    'as' => 'listar_hoteles_path',
+]);
+Route::post('admin/quotes/new/step1/cambiar-hotel', [
+    'uses' => 'PackageCotizacionController@cambiar_hotel',
+    'as' => 'cambiar_hotel_path',
+]);

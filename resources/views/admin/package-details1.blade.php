@@ -92,7 +92,160 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col  text-30 text-center">
-                            <a href="{{route('agregar_servicios_paso1_path',[$cliente,$cotizacion_id,$paquete_precio_id])}}" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar servicio</a>
+{{--                            <a href="{{route('agregar_servicios_paso1_path',[$cliente,$cotizacion_id,$paquete_precio_id])}}" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar servicio</a>--}}
+                            <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="mostrarservicios()">
+                                <i class="fas fa-plus"></i> Agregar servicio
+                            </a>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <form action="{{route('agregar_nuevo_servicio_path')}}" method="post">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO SERVICO</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label for="dia">Ingrese el dia</label>
+                                                            <select class="form-control" name="dia" id="dia">
+                                                                @foreach($cotizaciones as $cotizacion)
+                                                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
+                                                                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                                                                            <option value="{{$itinerario->id}}">DIA {{$itinerario->dias}}</option>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{csrf_field()}}
+                                                        <select class="form-control" name="txt_destino" id="txt_destino" onchange="limpiar_caja_servicios()">
+                                                            @foreach($destinations as $destino)
+                                                                <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div class="row mt-4">
+                                                            @foreach($categorias as $categoria)
+                                                                <?php
+                                                                $tipoServicio[]=$categoria->nombre;
+                                                                ?>
+                                                            @endforeach
+                                                            <div class="col-10">
+                                                                <div class="row text-left">
+                                                                    <div class="col-3 m-0">
+                                                                        <div class="list-group text-center">
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fas fa-map  text-info"></i><b class="small d-block">{{$tipoServicio[1] }}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus  text-warning"></i><b class="small d-block">{{$tipoServicio[2]}}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users  text-success"></i><b class="small d-block">{{$tipoServicio[3]}}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fas fa-ticket-alt  text-warning"></i><b class="small d-block">{{$tipoServicio[4]}}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fas fa-utensils  text-danger"></i><b class="small d-block">{{$tipoServicio[5]}}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train  text-info"></i><b class="small d-block">{{$tipoServicio[6]}}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane  text-primary"></i><b class="small d-block">{{$tipoServicio[7]}}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[8]}}')"> <i class="fa fa-question  text-success"></i><b class="small d-block">{{$tipoServicio[8]}}</b></a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-9">
+                                                                        <div class="panel panel-default">
+                                                                            <div id="list_servicios_grupo" class="panel-body"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                            {{csrf_field()}}
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" >Agregar servicio</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 text-left">
+                    <div class="row ">
+                        <div class="col  text-30 text-center">
+                            <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_h" onclick="mostrarservicios()">
+                                <i class="fas fa-plus"></i> Agregar Hotel
+                            </a>
+                            <div class="modal fade" id="exampleModal_h" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <form action="{{route('agregar_nuevo_hotel_path')}}" method="post">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO HOTEL</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label for="dia">Ingrese el dia</label>
+                                                            <select class="form-control" name="dia" id="dia">
+                                                                @foreach($cotizaciones as $cotizacion)
+                                                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
+                                                                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                                                                            <option value="{{$itinerario->id}}">DIA {{$itinerario->dias}}</option>
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{csrf_field()}}
+                                                        <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'n')">
+                                                            @foreach($destinations as $destino)
+                                                                <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <div id="lista_hoteles_n" class="row mt-4">
+                                                            @foreach($hoteles as $hotel)
+                                                                <div class="col">
+                                                                    <input type="hidden" name="hotel_id_{{$hotel->estrellas}}" value="{{$hotel->id}}">
+                                                                    <div class="custom-control custom-radio">
+                                                                        <input type="radio" id="customRadio{{$hotel->estrellas}}" name="categoria[]" class="custom-control-input" value="{{$hotel->estrellas}}">
+                                                                        <label class="custom-control-label" for="customRadio{{$hotel->estrellas}}">{{$hotel->estrellas}} <i class="fas fa-star text-warning"></i></label>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                {{csrf_field()}}
+                                                @foreach($cotizaciones as $cotizacion)
+                                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
+                                                        @foreach($paquete->paquete_precios as $hotel)
+                                                            <input type="hidden" name="pqt_precio" value="{{$hotel->id}}">
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary" >Agregar servicio</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -329,8 +482,7 @@
                                             @endphp
                                         @endif
                                     <div id="caja_detalle_{{$hotel->id}}" class="row caja_detalle_hotel margin-bottom-15">
-
-                                    <div class="col-7">
+                                        <div class="col-7">
                                             <div class="row">
                                                 <div class="col-10 text-12">HOTEL | <span class="text-11">{{strtoupper($hotel->estrellas) }}STARS</span> | <span class="text-11">{{$hotel->localizacion}}</span>
                                                 </div>
@@ -397,6 +549,54 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 {{csrf_field()}}
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <a class="btn py-0" data-toggle="modal" data-target="#modal_cambiar_{{$hotel->id}}">
+                                                <i class="fas fa-exchange-alt text-success" aria-hidden="true"></i>
+                                            </a>
+                                            <div class="modal fade bd-example-modal-m" id="modal_cambiar_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-m" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="{{route('cambiar_hotel_path')}}" method="post" enctype="multipart/form-data">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Editar Precio hotel</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="col">
+                                                                    {{csrf_field()}}
+                                                                    <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'ch')">
+                                                                        @foreach($destinations as $destino)
+                                                                            <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    <div id="lista_hoteles_ch" class="row mt-4">
+                                                                        @foreach($hoteles as $hotel_)
+                                                                            <div class="col">
+                                                                                <input type="hidden" name="hotel_id_{{$hotel_->estrellas}}" value="{{$hotel_->id}}">
+                                                                                <div class="custom-control custom-radio">
+                                                                                    <input type="radio" id="customRadio_{{$itinerario->id}}_{{$hotel_->estrellas}}" name="categoria_[]" class="custom-control-input" value="{{$hotel_->estrellas}}">
+                                                                                    <label class="custom-control-label" for="customRadio_{{$itinerario->id}}_{{$hotel_->estrellas}}">{{$hotel_->estrellas}} <i class="fas fa-star text-warning"></i></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                {{csrf_field()}}
+                                                                <input type="hidden" name="itinerario_cotizaciones_id" value="{{$hotel->itinerario_cotizaciones_id}}">
+                                                                <input type="hidden" name="precio_hotel_reserva_id" value="{{$hotel->id}}">
+
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                                 <button type="submit" class="btn btn-primary">Save changes</button>
                                                             </div>

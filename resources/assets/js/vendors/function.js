@@ -5479,3 +5479,22 @@ function buscar_x_codigo_nuevo(codigo){
         }
     });
 }
+function llamar_hoteles(loca,tipo) {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "../../../list-localizacion-hoteles",
+        data: 'loca='+loca,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#lista_hoteles_'+tipo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#lista_hoteles_'+tipo).html(data);
+        }
+    });
+}
