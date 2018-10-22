@@ -564,6 +564,7 @@ class ServicesController extends Controller
         return view('admin.book.mostrar-servicios-localizacion',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));
     }
     public function listar_servicios_paso1(Request $request){
+        $modo=$request->input('modo');
         $itinerario_id=$request->input('itinerario_id');
         $localizacion=$request->input('localizacion');
         $destino=M_Destino::find($localizacion);
@@ -573,7 +574,7 @@ class ServicesController extends Controller
         $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
         $destinos=M_Destino::get();
         $proveedores=Proveedor::where('grupo',$grupo)->get();
-        return view('admin.book.mostrar-servicios-paso1',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','proveedores']));
+        return view('admin.book.mostrar-servicios-paso1',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','proveedores','modo']));
     }
     public function listar_servicios_localizacion_paso1(Request $request){
         $itinerario_id=$request->input('itinerario_id');

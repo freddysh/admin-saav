@@ -1923,12 +1923,15 @@ class PackageCotizacionController extends Controller
         $hoteles=Hotel::where('localizacion','CUSCO')->get();
         return view('admin.package-details1',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id,'msj'=>$msj,'destinations'=>$destinations,'categorias'=>$categorias,'hoteles'=>$hoteles]);
     }
-    public function show_step1_editar($cliente_id, $cotizacion_id,$pqt_id)
+    public function show_step1_editar($cliente_id, $cotizacion_id,$pqt_id,$msj)
     {
         $cliente=Cliente::FindOrFail($cliente_id);
         $cotizaciones=Cotizacion::where('id',$cotizacion_id)->get();
         $m_servicios=M_Servicio::get();
-        return view('admin.package-details1-edit',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id]);
+        $destinations=M_Destino::get();
+        $categorias=M_Category::get();
+        $hoteles=Hotel::where('localizacion','CUSCO')->get();
+        return view('admin.package-details1-edit',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id,'destinations'=>$destinations,'categorias'=>$categorias,'hoteles'=>$hoteles,'msj'=>$msj]);
     }
     public function show_step1_ser($cliente_id, $cotizacion_id,$pqt_id,$id_serv,$msj)
     {
@@ -1982,7 +1985,8 @@ class PackageCotizacionController extends Controller
             $servicios->clase = $m_servicio->clase;
             $servicios->save();
         }
-        return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id,'nuevo_ajax']);
+//        return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id,'nuevo_ajax']);
+        return redirect()->back();
     }
     public function step1_edit_edit(Request $request, $id)
     {
@@ -2064,34 +2068,33 @@ class PackageCotizacionController extends Controller
             $pqtTemp->save();
         }
         $coti_pqt=PaqueteCotizaciones::FindORFail($id);
-
-
         $coti=Cotizacion::FindOrFail($coti_pqt->cotizaciones_id);
         $coti->estado=2;
-        $coti->categorizado='N';
+        $coti->categorizado='C';
+        $coti->posibilidad=100;
         $coti->fecha_venta=date("Y-m-d");
         $coti->save();
         $pqt=PaqueteCotizaciones::FindOrFail($id);
         $pqt->estado=2;
         $pqt->save();
-        $usuario=auth()->guard('admin')->user();
-        $email=$usuario->email;
-//        $email='fredy1432@gmail.com';
-        $name=$usuario->name;
-        $array_emails=[];
-        $emails=User::where('tipo_user','contabilidad')->get();
-        foreach($emails as $emails_){
-            $array_emails[]=array('email'=>$emails_->email,'name'=>$emails_->name);
-        }
-        $array_emails[]=array('email'=>$email,'name'=>$name);
-        $anio=explode('-',$coti->fecha);
-        $coti_datos='';
-        foreach($coti->cotizaciones_cliente as $clientes){
-            if($clientes->estado==1){
-                $coti_datos='Cod:'.$coti->codigo.' | '.$clientes->cliente->nombres.' '.$clientes->cliente->apellidos.' x '.$coti->nropersonas.' '.date_format(date_create($coti->fecha), ' l jS F Y').'(X'.$coti->nropersonas.')';
-            }
-        }
-        $email_send=Mail::to($email,$name)->send(new ContabilidadEmail($coti_datos,$anio[0],$array_emails,$email,$name));
+//        $usuario=auth()->guard('admin')->user();
+//        $email=$usuario->email;
+////        $email='fredy1432@gmail.com';
+//        $name=$usuario->name;
+//        $array_emails=[];
+//        $emails=User::where('tipo_user','contabilidad')->get();
+//        foreach($emails as $emails_){
+//            $array_emails[]=array('email'=>$emails_->email,'name'=>$emails_->name);
+//        }
+//        $array_emails[]=array('email'=>$email,'name'=>$name);
+//        $anio=explode('-',$coti->fecha);
+//        $coti_datos='';
+//        foreach($coti->cotizaciones_cliente as $clientes){
+//            if($clientes->estado==1){
+//                $coti_datos='Cod:'.$coti->codigo.' | '.$clientes->cliente->nombres.' '.$clientes->cliente->apellidos.' x '.$coti->nropersonas.' '.date_format(date_create($coti->fecha), ' l jS F Y').'(X'.$coti->nropersonas.')';
+//            }
+//        }
+//        $email_send=Mail::to($email,$name)->send(new ContabilidadEmail($coti_datos,$anio[0],$array_emails,$email,$name));
         return redirect()->route('cotizacion_id_show_path',$coti->id);
     }
     public function add_cod_verif(Request $request)
@@ -2337,7 +2340,7 @@ class PackageCotizacionController extends Controller
         foreach ($cotizaciones_clientes as $cli){
             $cliente_id=$cli->clientes_id;
         }
-        return redirect()->route('show_step1_editar_path',[$cliente_id,$cotizacion_id,$pqt_id]);
+        return redirect()->route('show_step1_editar_path',[$cliente_id,$cotizacion_id,$pqt_id,'nuevo']);
     }
     public function show_step2_post(Request $request)
     {
@@ -2471,10 +2474,11 @@ class PackageCotizacionController extends Controller
     }
     public function listar_hoteles(Request $request)
     {
+        $id=$request->input('id');
         $loca=explode('_',$request->input('loca'));
 //        dd($loca[1]);
         $hoteles=Hotel::where('localizacion',$loca[1])->get();
-        return view('admin.lista_hoteles_localizacion',compact(['hoteles']));
+        return view('admin.lista_hoteles_localizacion',compact(['hoteles','id']));
     }
     public function cambiar_hotel(Request $request)
     {

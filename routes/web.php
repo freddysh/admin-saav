@@ -589,11 +589,11 @@ Route::patch('/admin/quotes/new/step1/step1_edit/{id}', [
     'uses' => 'PackageCotizacionController@step1_edit',
     'as' => 'step1_edit_path'
 ])->where('id', '[0-9]+');
+
 Route::patch('/admin/quotes/edit/step1/step1_edit/{id}', [
     'uses' => 'PackageCotizacionController@step1_edit_edit',
     'as' => 'step1_edit_edit_path'
 ])->where('id', '[0-9]+');
-
 
 Route::post('/admin/quotes/hotel/delete', [
     'uses' => 'PackageCotizacionController@delete_hotel_quotes_paso1',
@@ -847,7 +847,7 @@ Route::get('/cotizacion/current/paquete/edit/{id}', [
     'as' => 'show_current_paquete_edit_path',
 ]);
 
-Route::get('/admin/quotes/editar/step1/{cliente}/{coti_id}/{pqt_id}', [
+Route::get('/admin/quotes/editar/step1/{cliente}/{coti_id}/{pqt_id}/{msj}', [
     'uses' => 'PackageCotizacionController@show_step1_editar',
     'as' => 'show_step1_editar_path'
 ]);
@@ -1218,6 +1218,10 @@ Route::post('admin/quotes/new/step1/agregar-nuevo-hotel', [
 Route::post('admin/quotes/new/step1/list-localizacion-hoteles', [
     'uses' => 'PackageCotizacionController@listar_hoteles',
     'as' => 'listar_hoteles_path',
+]);
+Route::post('admin/quotes/editar/step1/list-localizacion-hoteles', [
+    'uses' => 'PackageCotizacionController@listar_hoteles',
+    'as' => 'listar_hoteles_edit_path',
 ]);
 Route::post('admin/quotes/new/step1/cambiar-hotel', [
     'uses' => 'PackageCotizacionController@cambiar_hotel',

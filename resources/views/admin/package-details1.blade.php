@@ -86,15 +86,14 @@
                 @endforeach
             @endforeach
         </div>
-
         <div class="col-6">
             <div class="row align-items-center">
-                <div class="col-6">
+                <div class="col-2">
                     <div class="row">
-                        <div class="col  text-30 text-center">
+                        <div class="col  text-30 ">
 {{--                            <a href="{{route('agregar_servicios_paso1_path',[$cliente,$cotizacion_id,$paquete_precio_id])}}" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar servicio</a>--}}
                             <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="mostrarservicios()">
-                                <i class="fas fa-plus"></i> Agregar servicio
+                                <i class="fa fa-cubes fa-4x"></i><br> Agregar servicio
                             </a>
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
@@ -175,11 +174,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 text-left">
+                <div class="col-2 text-left">
                     <div class="row ">
-                        <div class="col  text-30 text-center">
+                        <div class="col  text-30">
                             <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_h" onclick="mostrarservicios()">
-                                <i class="fas fa-plus"></i> Agregar Hotel
+                                <i class="fa fa-h-square fa-4x" aria-hidden="true"></i> <br> Agregar Hotel
                             </a>
                             <div class="modal fade" id="exampleModal_h" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
@@ -294,7 +293,7 @@
                             </div>
                             <div class="col-5">
                                 <div class="row bg-g-dark rounded text-white">
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <b id="iti_fecha_b_{{$itinerario->id}}" class="badge badge-g-yellow">{{fecha_peru($itinerario->fecha)}}</b>
                                         <b>{{ucwords(strtolower($itinerario->titulo))}}</b>
                                         <!-- Button trigger modal -->
@@ -378,7 +377,7 @@
                                             @endif
                                             {{--@endif--}}
                                             <div class="row card_servicios_{{$itinerario->dias}} card_servicios" id="lista_servicios_{{$servicios->id}}" data-value="{{$servicios->id}}">
-                                                <div class="col-7">
+                                                <div class="col-6">
                                                     <div class="row">
                                                         <div class="col-lg-10{{$rango}}">
                                                             @if($servicios->servicio->grupo=='TOURS')
@@ -417,44 +416,49 @@
                                                 <div class="col @if($m==0) d-none @endif">$<input type="hidden" class="precio_servicio_m" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                                 <div class="col @if($t==0) d-none @endif">$<input type="hidden" class="precio_servicio_t" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                                 <div class="col @if($duracion>1) d-none @endif">$<input type="hidden" class="precio_servicio_sh" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
-                                                <div class="col text-right">
-                                                    <a class="btn p-0" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->servicio->grupo}}','{{$msj}}')">
-                                                        <i class="fas fa-pencil-alt text-primary" aria-hidden="true"></i>
-                                                    </a>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade bd-example-modal-lg" id="modal_new_destination1_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-lg" role="document">
-                                                            <div class="modal-content">
-                                                                <form action="{{route('step1_edit_path', $servicios->id)}}" method="post" enctype="multipart/form-data">
-                                                                    <input type="hidden" name="_method" value="patch">
-                                                                    <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
-                                                                    <input type="hidden" name="id_client" value="{{$cliente->id}}">
-                                                                    <input type="hidden" name="id_paquete" value="{{$paquete->id}}">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">Editar Servicio</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
+                                                <div class="col-1">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <a class="btn p-0" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->servicio->grupo}}','{{$msj}}')">
+                                                                <i class="fas fa-exchange-alt text-success" aria-hidden="true"></i>
+                                                            </a>
+                                                            <!-- Modal -->
+                                                            <div class="modal fade bd-example-modal-lg" id="modal_new_destination1_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-lg" role="document">
+                                                                    <div class="modal-content">
+                                                                        <form action="{{route('step1_edit_path', $servicios->id)}}" method="post" enctype="multipart/form-data">
+                                                                            <input type="hidden" name="_method" value="patch">
+                                                                            <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
+                                                                            <input type="hidden" name="id_client" value="{{$cliente->id}}">
+                                                                            <input type="hidden" name="id_paquete" value="{{$paquete->id}}">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel">Editar Servicio</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <div id="list_servicios_grupo_{{$servicios->id}}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                {{csrf_field()}}
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                            </div>
+                                                                        </form>
                                                                     </div>
-                                                                    <div class="modal-body">
-                                                                        <div id="list_servicios_grupo_{{$servicios->id}}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        {{csrf_field()}}
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                                                    </div>
-                                                                </form>
+                                                                </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <b class="text-danger puntero" onclick="borrar_serv_quot_paso1('{{$servicios->id}}','{{$servicios->nombre}}')">
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                            </b>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-1">
-                                                    <b class="text-danger puntero" onclick="borrar_serv_quot_paso1('{{$servicios->id}}','{{$servicios->nombre}}')">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </b>
-                                                </div>
+
                                             </div>
                                         @endforeach
                                     </div>
@@ -482,7 +486,7 @@
                                             @endphp
                                         @endif
                                     <div id="caja_detalle_{{$hotel->id}}" class="row caja_detalle_hotel margin-bottom-15">
-                                        <div class="col-7">
+                                        <div class="col-6">
                                             <div class="row">
                                                 <div class="col-10 text-12">HOTEL | <span class="text-11">{{strtoupper($hotel->estrellas) }}STARS</span> | <span class="text-11">{{$hotel->localizacion}}</span>
                                                 </div>
@@ -496,120 +500,125 @@
                                         <input type="hidden" class="precio_servicio_d_h" value="{{explode('.00',$hotel->precio_d)[0]/2}}">
                                         <input type="hidden" class="precio_servicio_m_h" value="{{explode('.00',$hotel->precio_m)[0]/2}}">
                                         <input type="hidden" class="precio_servicio_t_h" value="{{explode('.00',$hotel->precio_t)[0]/3}}">
-                                        <div class="col">
-                                            <a class="btn py-0" data-toggle="modal" data-target="#modal_new_destinationh_{{$hotel->id}}">
-                                                <i class="fas fa-pencil-alt text-primary" aria-hidden="true"></i>
-                                            </a>
-                                            <div class="modal fade bd-example-modal-m" id="modal_new_destinationh_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-m" role="document">
-                                                    <div class="modal-content">
-                                                        <form action="{{route('step1_edit_hotel_path', $hotel->id)}}" method="post" enctype="multipart/form-data">
-                                                            <input type="hidden" name="_method" value="patch">
-                                                            <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
-                                                            <input type="hidden" name="id_client" value="{{$cliente->id}}">
-                                                            <input type="hidden" name="id_paquete" value="{{$paquete->id}}">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Editar Precio hotel</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="row  caja_dia">
-                                                                    <div class="col-4">
-                                                                        <div class="row">
-                                                                            <div class="col-10">Acomodacion</div>
-                                                                        </div>
+                                        <div class="col-2">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <a class="btn py-0" data-toggle="modal" data-target="#modal_new_destinationh_{{$hotel->id}}">
+                                                        <i class="fas fa-pencil-alt text-primary" aria-hidden="true"></i>
+                                                    </a>
+                                                    <div class="modal fade bd-example-modal-m" id="modal_new_destinationh_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-m" role="document">
+                                                            <div class="modal-content">
+                                                                <form action="{{route('step1_edit_hotel_path', $hotel->id)}}" method="post" enctype="multipart/form-data">
+                                                                    <input type="hidden" name="_method" value="patch">
+                                                                    <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
+                                                                    <input type="hidden" name="id_client" value="{{$cliente->id}}">
+                                                                    <input type="hidden" name="id_paquete" value="{{$paquete->id}}">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Editar Precio hotel</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
                                                                     </div>
-                                                                    <div class="col @if($hotel->personas_s==0) d-none @endif">S</div>
-                                                                    <div class="col @if($hotel->personas_d==0) d-none @endif">D</div>
-                                                                    <div class="col @if($hotel->personas_m==0) d-none @endif">M</div>
-                                                                    <div class="col @if($hotel->personas_t==0) d-none @endif">T</div>
-                                                                </div>
-                                                                <div class="row  caja_detalle_hotel">
-                                                                    <div class="col-4">
-                                                                        <div class="row">
-                                                                            <div class="col-10">HOTEL</div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col @if($hotel->personas_s==0) d-none @endif">
-                                                                        <input class="form-control" type="number" name="precio_s" value="{{explode('.00',$hotel->precio_s)[0]/1}}">
-                                                                    </div>
-                                                                    <div class="col @if($hotel->personas_d==0) d-none @endif">
-                                                                        <input class="form-control" type="number" name="precio_d" value="{{explode('.00',$hotel->precio_d)[0]/2}}">
-                                                                    </div>
-                                                                    <div class="col @if($hotel->personas_m==0) d-none @endif">
-                                                                        <input class="form-control" type="number" name="precio_m" value="{{explode('.00',$hotel->precio_m)[0]/2}}">
-                                                                    </div>
-                                                                    <div class="col @if($hotel->personas_t==0) d-none @endif">
-
-                                                                        <input class="form-control" type="number" name="precio_t" value="{{explode('.00',$hotel->precio_t)[0]/3}}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                {{csrf_field()}}
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <a class="btn py-0" data-toggle="modal" data-target="#modal_cambiar_{{$hotel->id}}">
-                                                <i class="fas fa-exchange-alt text-success" aria-hidden="true"></i>
-                                            </a>
-                                            <div class="modal fade bd-example-modal-m" id="modal_cambiar_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-m" role="document">
-                                                    <div class="modal-content">
-                                                        <form action="{{route('cambiar_hotel_path')}}" method="post" enctype="multipart/form-data">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Editar Precio hotel</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="col">
-                                                                    {{csrf_field()}}
-                                                                    <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'ch')">
-                                                                        @foreach($destinations as $destino)
-                                                                            <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                    <div id="lista_hoteles_ch" class="row mt-4">
-                                                                        @foreach($hoteles as $hotel_)
-                                                                            <div class="col">
-                                                                                <input type="hidden" name="hotel_id_{{$hotel_->estrellas}}" value="{{$hotel_->id}}">
-                                                                                <div class="custom-control custom-radio">
-                                                                                    <input type="radio" id="customRadio_{{$itinerario->id}}_{{$hotel_->estrellas}}" name="categoria_[]" class="custom-control-input" value="{{$hotel_->estrellas}}">
-                                                                                    <label class="custom-control-label" for="customRadio_{{$itinerario->id}}_{{$hotel_->estrellas}}">{{$hotel_->estrellas}} <i class="fas fa-star text-warning"></i></label>
+                                                                    <div class="modal-body">
+                                                                        <div class="row  caja_dia">
+                                                                            <div class="col-4">
+                                                                                <div class="row">
+                                                                                    <div class="col-10">Acomodacion</div>
                                                                                 </div>
                                                                             </div>
-                                                                        @endforeach
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                {{csrf_field()}}
-                                                                <input type="hidden" name="itinerario_cotizaciones_id" value="{{$hotel->itinerario_cotizaciones_id}}">
-                                                                <input type="hidden" name="precio_hotel_reserva_id" value="{{$hotel->id}}">
+                                                                            <div class="col @if($hotel->personas_s==0) d-none @endif">S</div>
+                                                                            <div class="col @if($hotel->personas_d==0) d-none @endif">D</div>
+                                                                            <div class="col @if($hotel->personas_m==0) d-none @endif">M</div>
+                                                                            <div class="col @if($hotel->personas_t==0) d-none @endif">T</div>
+                                                                        </div>
+                                                                        <div class="row  caja_detalle_hotel">
+                                                                            <div class="col-4">
+                                                                                <div class="row">
+                                                                                    <div class="col-10">HOTEL</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col @if($hotel->personas_s==0) d-none @endif">
+                                                                                <input class="form-control" type="number" name="precio_s" value="{{explode('.00',$hotel->precio_s)[0]/1}}">
+                                                                            </div>
+                                                                            <div class="col @if($hotel->personas_d==0) d-none @endif">
+                                                                                <input class="form-control" type="number" name="precio_d" value="{{explode('.00',$hotel->precio_d)[0]/2}}">
+                                                                            </div>
+                                                                            <div class="col @if($hotel->personas_m==0) d-none @endif">
+                                                                                <input class="form-control" type="number" name="precio_m" value="{{explode('.00',$hotel->precio_m)[0]/2}}">
+                                                                            </div>
+                                                                            <div class="col @if($hotel->personas_t==0) d-none @endif">
 
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                                <input class="form-control" type="number" name="precio_t" value="{{explode('.00',$hotel->precio_t)[0]/3}}">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        {{csrf_field()}}
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                        </form>
+                                                        </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <a class="btn py-0" data-toggle="modal" data-target="#modal_cambiar_{{$hotel->id}}">
+                                                        <i class="fas fa-exchange-alt text-success" aria-hidden="true"></i>
+                                                    </a>
+                                                    <div class="modal fade bd-example-modal-m" id="modal_cambiar_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-m" role="document">
+                                                            <div class="modal-content">
+                                                                <form action="{{route('cambiar_hotel_path')}}" method="post" enctype="multipart/form-data">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Editar hotel</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="col">
+                                                                            {{csrf_field()}}
+                                                                            <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'ch','{{$itinerario->id}}')">
+                                                                                @foreach($destinations as $destino)
+                                                                                    <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <div id="lista_hoteles_ch_{{$itinerario->id}}" class="row mt-4">
+                                                                                @foreach($hoteles as $hotel_)
+                                                                                    <div class="col">
+                                                                                        <input type="hidden" name="hotel_id_{{$hotel_->estrellas}}" value="{{$hotel_->id}}">
+                                                                                        <div class="custom-control custom-radio">
+                                                                                            <input type="radio" id="customRadio_{{$itinerario->id}}_{{$hotel_->estrellas}}" name="categoria_[]" class="custom-control-input" value="{{$hotel_->estrellas}}">
+                                                                                            <label class="custom-control-label" for="customRadio_{{$itinerario->id}}_{{$hotel_->estrellas}}">{{$hotel_->estrellas}} <i class="fas fa-star text-warning"></i></label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @endforeach
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        {{csrf_field()}}
+                                                                        <input type="hidden" name="itinerario_cotizaciones_id" value="{{$hotel->itinerario_cotizaciones_id}}">
+                                                                        <input type="hidden" name="precio_hotel_reserva_id" value="{{$hotel->id}}">
+
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <b class="text-right text-danger puntero" onclick="borrar_hotel_quot_paso1('{{$hotel->id}}','{{$itinerario->dias}}')">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    </b>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-1 text-right">
-                                            <b class="text-right text-danger puntero" onclick="borrar_hotel_quot_paso1('{{$hotel->id}}','{{$itinerario->dias}}')">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </b>
-                                        </div>
+
                                     </div>
                                 @endforeach
 

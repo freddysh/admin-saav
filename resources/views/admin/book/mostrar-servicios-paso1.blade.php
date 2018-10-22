@@ -14,7 +14,7 @@
         <div class="col-6">
             <div class="">
                 <label>Punto de inicio</label>
-                <select name="Destinos_{{$servicios_id}}" id="Destinos_{{$servicios_id}}" class="form-control" onchange="mostrar_servicios_localizacion_paso1('{{$itinerario_id}}','{{$servicios_id}}',$('#Destinos_{{$servicios_id}}').val(),'{{$grupo}}',$('#empresa_{{$servicios_id}}').val())">
+                <select name="Destinos_{{$servicios_id}}" id="Destinos_{{$servicios_id}}" class="form-control" onchange="mostrar_servicios_localizacion_paso1('{{$itinerario_id}}','{{$servicios_id}}',$('#Destinos_{{$servicios_id}}').val(),'{{$grupo}}',$('#empresa_{{$servicios_id}}').val()),'{{$modo}}'">
                     <option value="0">Escoja el punto de inicio</option>
                     @foreach($destinos as $destino)
                         <option value="{{$destino->destino}}">{{$destino->destino}}</option>
@@ -28,7 +28,7 @@
     <div class="col-12">
         <div class="">
         <label>Localizacion</label>
-            <select name="Destinos_{{$servicios_id}}" id="Destinos_{{$servicios_id}}" class="form-control" onchange="mostrar_servicios_localizacion_paso1('{{$itinerario_id}}','{{$servicios_id}}',$('#Destinos_{{$servicios_id}}').val(),'{{$grupo}}',$('#empresa_{{$servicios_id}}').val())">
+            <select name="Destinos_{{$servicios_id}}" id="Destinos_{{$servicios_id}}" class="form-control" onchange="mostrar_servicios_localizacion_paso1('{{$itinerario_id}}','{{$servicios_id}}',$('#Destinos_{{$servicios_id}}').val(),'{{$grupo}}',$('#empresa_{{$servicios_id}}').val(),'{{$modo}}')">
                 <option value="0">Escoja la localizacion</option>
                 @foreach($destinos as $destino)
                     <option value="{{$destino->destino}}" @if($localizacion==$destino->destino){{'selected'}}@endif>{{$destino->destino}}</option>

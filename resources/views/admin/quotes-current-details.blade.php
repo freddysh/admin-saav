@@ -271,7 +271,7 @@
                     </td>
                     <td><small class="display-block text-primary"><sup>$</sup>{{$valor}}</small></td>
                     <td><a class="text-primary" href="#!" data-toggle="tooltip" data-placement="top" title="Detalles"><b><i class="fa fa-eye" aria-hidden="true"></i></b></a></td>
-                    <td><a class="text-warning" href="{{route('show_current_paquete_edit_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a></td>
+                    <td><a class="text-warning" href="{{route('show_current_paquete_edit_path',[$paquete->id])}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.com.pe/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a></td>
                     <td><a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a></td>
