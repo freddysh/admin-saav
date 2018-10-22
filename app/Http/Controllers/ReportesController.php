@@ -23,5 +23,8 @@ class ReportesController extends Controller
         $cotizacion = Cotizacion::FindOrFail($id);
         return view('admin.reportes.view',['cotizacion'=>$cotizacion]);
     }
-
+    public function profit($id)
+    {
+        return view('admin.reportes.profit');
+    }
 }

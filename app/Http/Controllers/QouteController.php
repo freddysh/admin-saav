@@ -443,7 +443,7 @@ class QouteController extends Controller
                         $coti->duracion = $ppaquete->duracion;
                         $coti->precioventa = $ppaquete->precio_venta;
                         $coti->fecha = $fecha_llegada;
-                        $coti->posibilidad = 100;
+                        $coti->posibilidad = 0;
                         $coti->estado = 1;
                         $coti->fecha_venta = $transactiondatetime;
                         $coti->users_id = auth()->guard('admin')->user()->id;

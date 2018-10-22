@@ -40,11 +40,19 @@
                 $m=0;
                 $t=0;
                 $duracion=0;
+                $utilidad=0;
+                $utilidad_s=0;
+                $utilidad_d=0;
+                $utilidad_m=0;
+                $utilidad_t=0;
+
             @endphp
             @foreach($cotizaciones as $cotizacion)
                 @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
                     @php
                         $duracion=$paquete->duracion;
+                        $utilidad=$paquete->utilidad;
+
                     @endphp
                     <p class="text-18">Web:<b class="text-info">{{$cotizacion->web}}</b> | Codigo:<b class="text-info">{{$cotizacion->codigo}}</b> | Idioma:<b class="text-info">{{$cotizacion->idioma_pasajeros}}</b></p>
                     <b class="text-secondary h2">{{$cotizacion->nropersonas}} PAXS</b><b class="text-warning h2"> | </b><b class="text-secondary h2">@if($duracion>1) {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} STARS @else SIN HOTEL @endif</b><b class="text-warning h2"> | </b>
@@ -54,24 +62,28 @@
                                 @if($precio->personas_s>0)
                                     <b class="badge badge-g-yellow">SINGLE</b>
                                     @php
+                                        $utilidad_s=$precio->utilidad_s;
                                         $s=1;
                                     @endphp
                                 @endif
                                 @if($precio->personas_d>0)
                                     <b class="badge badge-g-yellow">DOUBLE</b>
                                     @php
+                                        $utilidad_d=$precio->utilidad_d;
                                         $d=1;
                                     @endphp
                                 @endif
                                 @if($precio->personas_m>0)
                                     <b class="badge badge-g-yellow">MATRIMONIAL</b>
                                     @php
+                                        $utilidad_m=$precio->utilidad_m;
                                         $m=1;
                                     @endphp
                                 @endif
                                 @if($precio->personas_t>0)
                                     <b class="badge badge-g-yellow">TRIPLE</b>
                                     @php
+                                        $utilidad_t=$precio->utilidad_t;
                                         $t=1;
                                     @endphp
                                 @endif
@@ -460,7 +472,7 @@
                                             @endphp
                                         @endif
                                     <div id="caja_detalle_{{$hotel->id}}" class="row caja_detalle_hotel margin-bottom-15">
-                                    <div class="col-6">
+                                        <div class="col-6">
                                             <div class="row">
                                                 <div class="col-10 text-12">HOTEL | <span class="text-11">{{strtoupper($hotel->estrellas) }}STARS</span> | <span class="text-11">{{$hotel->localizacion}}</span>
                                                 </div>
@@ -591,7 +603,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 @endforeach
 
@@ -617,39 +628,56 @@
         @endphp
     {{--<form action="{{route('show_step2_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" method="get">--}}
         <div class="row">
-            <div class="col">
-                <div class="row bg-g-dark text-white rounded py-2">
-                    <div class="col-lg-8"><b>COST</b></div>
-                    <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s)}}</span></b></div>
-                    <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d)}}</span></b></div>
-                    <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m)}}</span></b></div>
-                    <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t)}}</span></b></div>
-                    <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{ceil($precio_iti)}}</span></b></div>
-                </div>
+            <div class="col-6">
                 <div class="row">
-                    <div class="col text-right">PRICE PER PERSON</div>
+                    <div class="col-12">
+                        <div class="row bg-g-dark text-white rounded py-2">
+                            <div class="col-lg-8"><b>COST</b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s)}}</span></b></div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d)}}</span></b></div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m)}}</span></b></div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t)}}</span></b></div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{ceil($precio_iti)}}</span></b></div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row bg-g-dark text-white rounded py-2">
+                            <div class="col-lg-8"><b>PROFIT</b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($utilidad_s)}}</span></b></div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($utilidad_d)}}</span></b></div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($utilidad_m)}}</span></b></div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($utilidad_t)}}</span></b></div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{ceil($utilidad)}}</span></b></div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row bg-g-dark text-white rounded py-2">
+                            <div class="col-lg-8"><b>SALE</b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s+$utilidad_s)}}</span></b></div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d+$utilidad_d)}}</span></b></div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m+$utilidad_m)}}</span></b></div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t+$utilidad_t)}}</span></b></div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{ceil($precio_iti+$utilidad)}}</span></b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-right">PRICE PER PERSON</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col text-right">
-                <form id="step1" action="{{route('show_step2_post_path')}}" method="post">
-                    {{csrf_field()}}
-                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">
-                    <input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">
-                    <input type="hidden" name="imprimir" value="si">
-                    <input type="hidden" name="itis" value="{{$itis}}">
-                    <button class="btn btn-success btn-lg" type="submit">EDIT</button>
-                    {{--                        <a href="{{route('show_step2_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" class="btn btn-warning btn-lg" type="submit" name="create">CREATE</a>--}}
-                </form>
-
-                {{--{{csrf_field()}}--}}
-                {{--<input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">--}}
-                {{--<input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">--}}
-                {{--<input type="hidden" name="imprimir" value="no">--}}
-                {{--                    <a href="{{route('show_step2_edit_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" class="btn btn-warning btn-lg" type="submit" name="create">EDIT</a>--}}
-
+            <div class="col-6">
+                <div class="col text-right">
+                    <form id="step1" action="{{route('show_step2_post_path')}}" method="post">
+                        {{csrf_field()}}
+                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">
+                        <input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">
+                        <input type="hidden" name="imprimir" value="si">
+                        <input type="hidden" name="itis" value="{{$itis}}">
+                        <button class="btn btn-success btn-lg" type="submit">EDIT</button>
+                    </form>
+                </div>
             </div>
         </div>
-    {{--</form>--}}
     <script>
         $(document).ready(function() {
             calcular_resumen();

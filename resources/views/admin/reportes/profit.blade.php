@@ -15,15 +15,20 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active">Reportes</li>
+            <li class="breadcrumb-item ">Reportes</li>
+            <li class="breadcrumb-item active">Profit</li>
         </ol>
     </nav>
     <hr>
     <div class="row">
         <div class="col">
-            <a href="{{route('reporte_profit_path')}}" class="btn btn-primary">
-                <i class="fas fa-coins fa-4x"></i><p>Profit</p>
-            </a>
+            <form action="">
+                <div class="form-group">
+                    <label for="desde">Desde</label>
+                    <input type="date" class="form-control" id="desde">
+                </div>
+            </form>
+
         </div>
     </div>
 

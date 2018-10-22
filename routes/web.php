@@ -1227,3 +1227,8 @@ Route::post('admin/quotes/new/step1/cambiar-hotel', [
     'uses' => 'PackageCotizacionController@cambiar_hotel',
     'as' => 'cambiar_hotel_path',
 ]);
+Route::post('reportes/profit', [
+    'uses' => 'ReportesController@profit',
+    'as' => 'reporte_profit_path',
+]);
+
