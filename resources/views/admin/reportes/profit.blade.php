@@ -10,6 +10,7 @@
 @section('archivos-js')
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js")}}"></script>
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js")}}"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 @stop
 @section('content')
     <nav aria-label="breadcrumb">
@@ -22,81 +23,22 @@
     <hr>
     <div class="row">
         <div class="col">
-            <form action="">
-                <div class="form-group">
+            <form action="{{route('reporte_profit_buscar_path')}}" method="post" class="row">
+                <div class="form-group col">
                     <label for="desde">Desde</label>
-                    <input type="date" class="form-control" id="desde">
+                    <input type="date" class="form-control" id="desde" name="desde" value="{{date("Y-m-d")}}">
+                </div>
+                <div class="form-group col">
+                    <label for="hasta">Hasta</label>
+                    <input type="date" class="form-control" id="hasta" name="hasta" value="{{date("Y-m-d")}}">
+                </div>
+                <div class="form-group col">
+                    {{csrf_field()}}
+                    <button type="submit" class="btn btn-primary mt-4"><i class="fas fa-search"></i> Buscar</button>
                 </div>
             </form>
 
         </div>
     </div>
 
-    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Cotizaciones</th>
-            <th>Operaciones</th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr>
-            <th>#</th>
-            <th>Cotizaciones</th>
-            <th>Operaciones</th>
-        </tr>
-        </tfoot>
-        <tbody>
-        @php
-            $dato_cliente='';
-            $i=1;
-        @endphp
-        @foreach($cotizacion->sortByDesc('fecha') as $cotizacion_cat_)
-            @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
-                @if($clientes->estado==1)
-                    @php
-                        $dato_cliente=$clientes->cliente->nombres.' '.$clientes->cliente->apellidos;
-                    @endphp
-                @endif
-            @endforeach
-            <tr id="lista_categoria_{{$cotizacion_cat_->id}}">
-                <td>{{$i++}}</td>
-                <td>
-                    <strong>
-                    <img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">
-                        {{ucwords(strtolower($dato_cliente))}} X{{$cotizacion_cat_->nropersonas}}: {{$cotizacion_cat_->duracion}} days: {{strftime("%d %B, %Y", strtotime(str_replace('-','/', $cotizacion_cat_->fecha)))}}
-                    </strong>
-                    <small>
-                       $
-                    </small>
-                </td>
-                <td class="text-center">
-                    <a type="button" class="btn btn-primary btn-sm" href="{{route('ver_cotizacion_path',$cotizacion_cat_->id)}}" >
-                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
-                    </a>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-
-
-    {{--<div class="row margin-top-5 hide">--}}
-        {{--<div class="col-md-6 no-padding">--}}
-            {{--<div class="box-header-book">--}}
-                {{--<h4 class="no-margin">New--}}
-                    {{--<span>--}}
-                        {{--<b class="label label-danger">#{{$cotizacion->count()}}</b>--}}
-                        {{--<small><b> </b>  </small>--}}
-                    {{--</span>--}}
-                {{--</h4>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        } );
-    </script>
 @stop
