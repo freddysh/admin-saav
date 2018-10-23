@@ -215,17 +215,17 @@
                                         <div class="row">
                                             <div class="col">
                                                 {{csrf_field()}}
-                                                <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'n')">
+                                                <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'n','{{$itinerario->id}}')">
                                                     @foreach($destinations as $destino)
                                                         <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
                                                     @endforeach
                                                 </select>
-                                                <div id="lista_hoteles_n" class="row mt-4">
+                                                <div id="lista_hoteles_n_{{$itinerario->id}}" class="row mt-4">
                                                     @foreach($hoteles as $hotel)
                                                         <div class="col">
                                                             <input type="hidden" name="hotel_id_{{$hotel->estrellas}}" value="{{$hotel->id}}">
                                                             <div class="custom-control custom-radio">
-                                                                <input type="radio" id="customRadio{{$hotel->estrellas}}" name="categoria[]" class="custom-control-input" value="{{$hotel->estrellas}}">
+                                                                <input type="radio" id="customRadio{{$hotel->estrellas}}" name="categoria_[]" class="custom-control-input" value="{{$hotel->estrellas}}">
                                                                 <label class="custom-control-label" for="customRadio{{$hotel->estrellas}}">{{$hotel->estrellas}} <i class="fas fa-star text-warning"></i></label>
                                                             </div>
                                                         </div>

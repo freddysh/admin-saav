@@ -2442,7 +2442,7 @@ class PackageCotizacionController extends Controller
     public function agregar_nuevo_hotel(Request $request)
     {
         $itinerario_cotizaciones_id=$request->input('dia');
-        $estrellas=$request->input('categoria');
+        $estrellas=$request->input('categoria_');
         $pqt_precio_id=$request->input('pqt_precio');
         $pqt_precio=PaquetePrecio::Find($pqt_precio_id);
 //        dd($estrellas[0]);

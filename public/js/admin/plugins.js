@@ -5951,7 +5951,6 @@ function  modificar_fecha(fecha,iti_id,tipo){
     console.log('fecha:'+fecha+',iti_id:'+iti_id);
     $('#rp_cambio_fecha_'+iti_id).removeClass('text-danger');
     $('#rp_cambio_fecha_'+iti_id).removeClass('text-success');
-
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5982,7 +5981,7 @@ function  modificar_fecha(fecha,iti_id,tipo){
     else{
         $.ajax({
             type: 'POST',
-            url: '../../../../../quotes/new/step1/cambiar-fecha/ajax',
+            url: '../../../../../../quotes/new/step1/cambiar-fecha/ajax',
             data: 'fecha='+fecha+'&iti_id='+iti_id,
             // Mostramos un mensaje con la respuesta de PHP
             beforeSend:
