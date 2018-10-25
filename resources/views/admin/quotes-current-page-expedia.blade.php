@@ -54,7 +54,7 @@
             @endfor
         </div>
         <div id="" class="card col">
-            @foreach($cotizacion->sortByDesc('fecha')->where('estado','!=','2') as $cotizacion_)
+            @foreach($cotizacion->sortByDesc('fecha')->where('estado','!=','1') as $cotizacion_)
                 @php
                     $f1=explode('-',$cotizacion_->fecha);
                 @endphp
