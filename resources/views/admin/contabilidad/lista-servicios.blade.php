@@ -258,16 +258,16 @@
                                                             <div class="col-6">
                                                                 <div class="form-group"><label for="txt_type" class="text-secondary font-weight-bold"> Type</label >
                                                                     <select class="form-control" id = "txt_type_{{$servicio->id}}" name = "txt_type_{{$servicio->id}}" >
-                                                                        <option value = "GROUP"
-                                                                        @if ($servicio->tipoServicio == "GROUP")
+                                                                        <option value = "COMPARTIDO"
+                                                                        @if ($servicio->tipoServicio == "COMPARTIDO")
                                                                             {{'selected'}}
                                                                                 @endif
-                                                                        >GROUP </option >
-                                                                        <option value = "PRIVATE"
-                                                                        @if ($servicio->tipoServicio == "PRIVATE")
+                                                                        >COMPARTIDO </option >
+                                                                        <option value = "PRIVADO"
+                                                                        @if ($servicio->tipoServicio == "PRIVADO")
                                                                             {{'selected'}}
                                                                                 @endif
-                                                                        >PRIVATE</option >
+                                                                        >PRIVADO</option >
                                                                     </select>
                                                                 </div>
                                                             </div>

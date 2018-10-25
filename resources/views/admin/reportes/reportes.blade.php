@@ -21,36 +21,40 @@
     </nav>
     <hr>
     <div class="row">
-        <div class="col-4">
-            <h3 class="text-primary">PROFIT</h3>
-            <div class="row">
-                <div class="col-5">
-                    <div class="form-group">
-                        <label for="desde">Desde</label>
-                        <input type="date" class="form-control" id="desde" name="desde" value="{{date("Y-m-d")}}">
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header bg-primary text-white"><i class="fas fa-coins"></i> PROFIT</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="form-group">
+                                <label for="desde">Desde</label>
+                                <input type="date" class="form-control" id="desde" name="desde" value="{{date("Y-m-d")}}">
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                <label for="hasta">Hasta</label>
+                                <input type="date" class="form-control" id="hasta" name="hasta" value="{{date("Y-m-d")}}">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                {{csrf_field()}}
+                                <button type="button" class="btn btn-primary mt-4" onclick="mostrar_reporte($('#desde').val(),$('#hasta').val())"><i class="fas fa-search"></i> Buscar</button>
+                            </div>
+                        </div>
+                        <a href="{{route('reporte_profit_path')}}" class="btn btn-primary d-none">
+                            <i class="fas fa-coins fa-4x"></i><p>Profit</p>
+                        </a>
                     </div>
+                    <div id="rpt_profit"></div>
                 </div>
-                <div class="col-5">
-                    <div class="form-group">
-                        <label for="hasta">Hasta</label>
-                        <input type="date" class="form-control" id="hasta" name="hasta" value="{{date("Y-m-d")}}">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="form-group">
-                        {{csrf_field()}}
-                        <button type="button" class="btn btn-primary mt-4" onclick="mostrar_reporte($('#desde').val(),$('#hasta').val())"><i class="fas fa-search"></i> Buscar</button>
-                    </div>
-                </div>
-                <a href="{{route('reporte_profit_path')}}" class="btn btn-primary d-none">
-                    <i class="fas fa-coins fa-4x"></i><p>Profit</p>
-                </a>
             </div>
-            <div id="rpt_profit"></div>
         </div>
     </div>
 
-    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <table id="example" class="table table-striped table-bordered d-none" cellspacing="0" width="100%">
         <thead>
         <tr>
             <th>#</th>

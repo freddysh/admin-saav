@@ -260,7 +260,7 @@ Route::get('/admin/current-quote/{page}', [
     'uses' => 'PackageCotizacionController@current_cotizacion_page',
     'as' => 'current_quote_page_path',
 ]);
-Route::get('/admin/current-quote/expedia/{page}', [
+Route::get('/admin/current-quote/expedia/{anio}/{mes}/{page}', [
     'uses' => 'PackageCotizacionController@current_cotizacion_page_expedia',
     'as' => 'current_quote_page_expedia_path',
 ]);

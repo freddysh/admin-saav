@@ -294,8 +294,8 @@
                                                     <div class="form-group">
                                                         <label for="txt_type" class="font-weight-bold text-secondary">Type</label>
                                                         <select class="form-control" id="txt_type_{{$pos}}" name="txt_type_{{$pos}}">
-                                                            <option value="GROUP">GROUP</option>
-                                                            <option value="PRIVATE">PRIVATE</option>
+                                                            <option value="SIC">COMPARTIDO</option>
+                                                            <option value="PV">PRIVADO</option>
                                                         </select>
                                                     </div>
                                                 </div>

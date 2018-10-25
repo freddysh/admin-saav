@@ -11,7 +11,7 @@
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Task', 'Profit'],
-                    @foreach($array_profit as $key => $array_profit_)
+                @foreach($array_profit as $key => $array_profit_)
                 ['{{ $key}}',{{ $array_profit_}}],
                 @endforeach
             ]);
@@ -26,4 +26,41 @@
             chart.draw(data, options);
         }
     </script>
-    <div id="piechart" style="width: 700px; height: 500px;"></div>
+    <div class="row">
+        <div class="col-5">
+            <table class="table table-bordered table-striped table-responsive dataTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Página</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @php
+                    $pos=1;
+                    $total=0;
+                @endphp
+                @foreach($array_profit as $key => $array_profit_)
+                    <tr>
+                        <td>{{$pos}}</td>
+                        <td>{{$key}}</td>
+                        <td>{{$array_profit_}}</td>
+                    </tr>
+                    @php
+                        $pos++;
+                        $total+=$array_profit_;
+                    @endphp
+                @endforeach
+                <tr class="">
+                    <td colspan="2"><strong>TOTAL</strong></td>
+                    <td><strong>{{$total}}</strong></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-7">
+            <div id="piechart" style="width: 480px; height: 400px;"></div>
+
+        </div>
+    </div>

@@ -1,13 +1,13 @@
 @if(session()->has('menu'))
     @if(session()->get('menu')=='ventas')
-        <li class="active">
+        <li>
             <a href="{{route('inventory_path')}}">Inventory</a>
         </li>
         <li>
             <a href="{{route('current_quote_page_path', 'gotoperu.com')}}">Leads</a>
         </li>
         <li>
-            <a href="{{route('current_quote_page_expedia_path', 'expedia.com')}}">Expedia</a>
+            <a href="{{route('current_quote_page_expedia_path', [date("Y"),date("m"),'expedia.com'])}}">Expedia</a>
         </li>
         <li>
             <a href="{{route('sales_quote_page_path', 'gotoperu.com')}}">Sales</a>

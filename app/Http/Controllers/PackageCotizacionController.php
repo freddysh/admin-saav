@@ -2385,17 +2385,18 @@ class PackageCotizacionController extends Controller
         else
             return 0;
     }
-    public function current_cotizacion_page_expedia($page)
+    public function current_cotizacion_page_expedia($anio,$mes,$page)
     {
         $user_name=auth()->guard('admin')->user()->name;
         $user_tipo=auth()->guard('admin')->user()->tipo_user;
-        if($user_tipo=='ventas')
-            $cotizacion=Cotizacion::where('web', $page)->where('users_id',auth()->guard('admin')->user()->id)->get();
-        else
-            $cotizacion=Cotizacion::where('web', $page)->get();
+        if($user_tipo=='ventas') {
+            $cotizacion = Cotizacion::where('web', $page)->where('users_id', auth()->guard('admin')->user()->id)->get();
+        }
+        else {
+            $cotizacion = Cotizacion::where('web', $page)->get();
+        }
         session()->put('menu-lateral', 'quotes/current');
-
-        return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
+        return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes]);
     }
     public function list_paquetes(Request $request)
     {
