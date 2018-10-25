@@ -28,8 +28,13 @@
                     <select class="form-control" id="txt_pagina" name="txt_pagina" onchange="mostrar_codigo_($(this).val())">
                         <option value="0">Escoja una opcion</option>
                         <option value="gotoperu.com">gotoperu.com</option>
-                        <option value="expedia.com">expedia</option>
-                        <option value="viator.com">viator</option>
+                        <option value="llama.tours">llama.tours</option>
+                        <option value="gotoperu.com.pe">gotoperu.com.pe</option>
+                        <option value="andesviagens.com">andesviagens.com</option>
+                        <option value="machupicchu-galapagos.com">machupicchu-galapagos.com</option>
+                        <option value="gotolatinamerica.com">gotolatinamerica.com</option>
+                        <option value="expedia.com">expedia.com</option>
+                        <option value="viator.com">viator.com</option>
                     </select>
                 </div>
             </div>

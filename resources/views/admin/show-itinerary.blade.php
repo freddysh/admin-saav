@@ -27,6 +27,11 @@
                             <select class="form-control" id="txt_pagina" name="txt_pagina" onchange="mostrar_codigo_($(this).val())">
                                 <option value="0">Escoja una opcion</option>
                                 <option value="gotoperu.com" @if($itinerary->pagina=='gotoperu.com') {{'selected'}} @endif>gotoperu.com</option>
+                                <option value="llama.tours" @if($itinerary->pagina=='llama.tours') {{'selected'}} @endif>llama.tours</option>
+                                <option value="gotoperu.com.pe" @if($itinerary->pagina=='gotoperu.com.pe') {{'selected'}} @endif>gotoperu.com.pe</option>
+                                <option value="andesviagens.com" @if($itinerary->pagina=='andesviagens.com') {{'selected'}} @endif>andesviagens.com</option>
+                                <option value="machupicchu-galapagos.com" @if($itinerary->pagina=='machupicchu-galapagos.com') {{'selected'}} @endif>machupicchu-galapagos.com</option>
+                                <option value="gotolatinamerica.com" @if($itinerary->pagina=='gotolatinamerica.com') {{'selected'}} @endif>gotolatinamerica.com</option>
                                 <option value="expedia.com" @if($itinerary->pagina=='expedia.com') {{'selected'}} @endif>expedia.com</option>
                                 <option value="viator.com" @if($itinerary->pagina=='viator.com') {{'selected'}} @endif>viator.com</option>
                             </select>
