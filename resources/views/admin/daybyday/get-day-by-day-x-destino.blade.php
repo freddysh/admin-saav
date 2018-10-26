@@ -6,10 +6,12 @@
                                                 $servicios1='';
                                                 $precio_iti=0;
                                                 $destinos_iti='';
+                                                $nro_servicios=0;
                                                 ?>
                                                 @foreach($day_by_day->itinerario_itinerario_servicios as $servicios)
                                                     <?php
                                                     if($servicios->itinerario_servicios_servicio->grupo!='HOTELS'){
+                                                        $nro_servicios++;
                                                         if($servicios->itinerario_servicios_servicio->precio_grupo==1){
                                                             $precio_iti+=round($servicios->itinerario_servicios_servicio->precio_venta/2,2);
                                                             $servicios1.=$servicios->itinerario_servicios_servicio->nombre.'//'.round($servicios->itinerario_servicios_servicio->precio_venta/2,2).'//'.$servicios->itinerario_servicios_servicio->precio_grupo.'*';
@@ -31,7 +33,7 @@
                                                 $servicios1=substr($servicios1,0,strlen($servicios1)-1);
                                                 ?>
                                                 <div class="input-group-text">
-                                                <input class="itinerario" type="checkbox" aria-label="..." name="itinerarios_{{$day_by_day->id}}" value="{{$day_by_day->id}}_{{$destinos_iti}}_{{$day_by_day->titulo}}_a_{{$precio_iti}}_s">
+                                                <input class="itinerario" type="checkbox" aria-label="..." name="itinerarios_{{$day_by_day->id}}" value="{{$day_by_day->id}}_{{$destinos_iti}}_{{$day_by_day->titulo}}_a_{{$precio_iti}}_s_{{$nro_servicios}}">
                                             </div>
                                             </span>
         <input type="text" name="titulo_{{$day_by_day->id}}" class="form-control text-11" aria-label="..." value="{{$day_by_day->titulo}}" readonly>

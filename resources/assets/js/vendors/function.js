@@ -50,18 +50,18 @@ function Pasar_datos(){
     $("input[class='itinerario']").each(function (index){
         if($(this).is(':checked')){
             itinerario=$(this).val().split('_');
-            if(!existe(itinerario[0])) {
+            if(itinerario[6]==0){
                 total_Itinerarios++;
                 var precio_grupo=0;
                 Itis_precio += parseFloat(itinerario[4]);
                 console.log('Precios:'+Itis_precio);
                 var servicios=itinerario[5].split('*');
-            $.each(servicios, function( key, value ) {
-                var serv=value.split('//');
-                var val_p_g=parseFloat(serv[1]);
-            });
-            var iti_temp='';
-                    iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '">' +
+                $.each(servicios, function( key, value ) {
+                    var serv=value.split('//');
+                    var val_p_g=parseFloat(serv[1]);
+                });
+                var iti_temp='';
+                iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '">' +
                     '<div class="content-list-book-s">' +
                     '<a href="#!">' +
                     '<strong>' +
@@ -82,7 +82,43 @@ function Pasar_datos(){
                 '</div>' +
                 '</div>' +
                 '</li>';
-            $('#Lista_itinerario_g').append(iti_temp);
+                $('#Lista_itinerario_g').append(iti_temp);
+            }
+            else{
+                if(!existe(itinerario[0])) {
+                    total_Itinerarios++;
+                    var precio_grupo=0;
+                    Itis_precio += parseFloat(itinerario[4]);
+                    console.log('Precios:'+Itis_precio);
+                    var servicios=itinerario[5].split('*');
+                $.each(servicios, function( key, value ) {
+                    var serv=value.split('//');
+                    var val_p_g=parseFloat(serv[1]);
+                });
+                var iti_temp='';
+                        iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '">' +
+                        '<div class="content-list-book-s">' +
+                        '<a href="#!">' +
+                        '<strong>' +
+                        '<input type="hidden" class="servicios_new" name="servicios_new_'+itinerario[0]+'" value="' + itinerario[0] + '">' +
+                        '<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">' +
+                        '<input type="hidden" name="itinerarios_1[]" value="' + itinerario[5] + '">' +
+                        '<input type="hidden" name="itinerarios_2[]" value="' + itinerario[0] + '">' +
+                        '<span class="itinerarios_1 d-none">' + itinerario[5] + '</span>' +
+                        '<span class="txt_itinerarios d-none" name="itinerarios1">' + itinerario[0] + '</span>' +
+                        '<b class="dias_iti_c2" id="dias_' + total_Itinerarios + '">Dia ' + total_Itinerarios + ':</b> ' + itinerario[2] +
+                        '</strong>' +
+                        '<small>' +
+                        itinerario[4] + '$' +
+                        '</small>' +
+                        '</a>' +
+                        '<div class="icon">' +
+                        ' <a class="text-right" href="#!" onclick="eliminar_iti(' + itinerario[0] + ',' + itinerario[4] + ')"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>'
+                    '</div>' +
+                    '</div>' +
+                    '</li>';
+                $('#Lista_itinerario_g').append(iti_temp);
+                }
             }
         }
     });
@@ -1713,7 +1749,7 @@ function Pasar_datos1(){
     $("input[class='itinerario']").each(function (index){
         if($(this).is(':checked')){
             itinerario=$(this).val().split('_');
-            if(!existe(itinerario[0])) {
+            if(itinerario[6]==0){
                 total_Itinerarios_camino2++;
                 var precio_grupo = 0;
                 Itis_precio += parseFloat(itinerario[4]);
@@ -1726,7 +1762,7 @@ function Pasar_datos1(){
                 var servicios = itinerario[5].split('*');
                 var iti_temp = '';
                 iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '">' +
-                // iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '" value="' + itinerario[0] + '">' +
+                    // iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '" value="' + itinerario[0] + '">' +
                     '<div class="content-list-book-s">' +
                     '<a href="#!">' +
                     '<strong>' +
@@ -1748,8 +1784,46 @@ function Pasar_datos1(){
                 '</div>' +
                 '</div>' +
                 '</li>';
-
                 $('#Lista_itinerario_g').append(iti_temp);
+            }
+            else{
+                if(!existe(itinerario[0])) {
+                    total_Itinerarios_camino2++;
+                    var precio_grupo = 0;
+                    Itis_precio += parseFloat(itinerario[4]);
+                    console.log('Precios:' + Itis_precio);
+                    var servicios=itinerario[5].split('*');
+                    $.each(servicios, function (key, value) {
+                        var serv = value.split('//');
+                        var val_p_g = parseFloat(serv[1]);
+                    });
+                    var servicios = itinerario[5].split('*');
+                    var iti_temp = '';
+                    iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '">' +
+                    // iti_temp += '<li class="content-list-book" id="content-list-' + itinerario[0] + '" value="' + itinerario[0] + '">' +
+                        '<div class="content-list-book-s">' +
+                        '<a href="#!">' +
+                        '<strong>' +
+                        // '<input type="hidden" class="servicios_new" name="servicios_new_'+itinerario[0]+'" value="' + itinerario[0] + '">' +
+                        '<input type="hidden" class="servicios_new" name="servicios_new_" value="' + itinerario[0] + '">' +
+                        '<img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">' +
+                        '<input type="hidden" name="itinerarios_1[]" value="' + itinerario[5] + '">' +
+                        '<input type="hidden" name="itinerarios_2[]" value="' + itinerario[0] + '">' +
+                        '<span class="itinerarios_1 d-none">' + itinerario[5] + '</span>' +
+                        '<span class="txt_itinerarios d-none" name="itinerarios1">' + itinerario[0] + '</span>' +
+                        '<b class="dias_iti_c2" id="dias_' + total_Itinerarios_camino2 + '">Dia ' + total_Itinerarios_camino2 + ':</b> ' + itinerario[2] +
+                        '</strong>' +
+                        '<small>' +
+                        itinerario[4] + '$' +
+                        '</small>' +
+                        '</a>' +
+                        '<div class="icon">' +
+                        ' <a class="text-right" href="#!" onclick="borrar_iti(' + itinerario[0] + ',' + itinerario[4] + ')"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>'
+                    '</div>' +
+                    '</div>' +
+                    '</li>';
+                    $('#Lista_itinerario_g').append(iti_temp);
+                }
             }
         }
     });
@@ -5532,5 +5606,13 @@ function mostrar_reporte(desde,hasta) {
         success: function(data){
             $('#rpt_profit').html(data);
         }
+    });
+}
+
+function mostrar_ventas_expedia(anio,mes,page){
+    $.ajax({
+        data:"",
+        url:   "../../../expedia/"+anio+"/"+mes+"/"+page,
+        type:  'GET',
     });
 }

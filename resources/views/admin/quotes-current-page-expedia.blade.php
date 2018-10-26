@@ -35,6 +35,21 @@
     </div>
     <div class="row">
         <div id="list-example" class="list-group">
+            <div class="list-group-item list-group-item-action">
+                <form action="{{route('current_quote_page_expedia_path')}}" method="get">
+                    <div class="col-auto">
+                        <label class="sr-only" for="anio">Año</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" id="anio_" name="anio" placeholder="Año" value="{{$anio}}">
+                            <input type="hidden" name="mes" value="{{$mes}}">
+                            <input type="hidden" name="page" value="{{$page}}">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-primary input-group-text"><i class="fas fa-search"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
             @php
                 $mes_[1]='ENERO';
                 $mes_[2]='FEBRERO';
@@ -50,11 +65,26 @@
                 $mes_[12]='DICIEMBRE';
             @endphp
             @for($i=1;$i<=12;$i++)
-                <a class="@if($i==$mes) active @endif list-group-item list-group-item-action" href="{{route('current_quote_page_expedia_path',[$anio,$i,$page])}}"><b>{{$mes_[$i]}}</b> <i class="fas fa-arrow-circle-right"></i></a>
+                @php
+                    $nro=0;
+                @endphp
+                @foreach($cotizacion->sortByDesc('fecha')->where('estado','!=','2') as $cotizacion_)
+                    @php
+                        $f1=explode('-',$cotizacion_->fecha);
+                    @endphp
+                    @if($f1[0]==$anio && $f1[1]==$i)
+                        @foreach($cotizacion_->paquete_cotizaciones->where('estado','!=','2')->take(1) as $paquete)
+                            @php
+                                $nro++;
+                            @endphp
+                        @endforeach
+                    @endif
+                @endforeach
+                <a class="@if($i==$mes) active @endif list-group-item list-group-item-action" href="{{route('current_quote_page_expedia_path',[$anio,$i,$page])}}"><b>{{$mes_[$i]}} <span class="badge badge-info">{{$nro}}</span> </b> <i class="fas fa-arrow-circle-right"></i></a>
             @endfor
         </div>
         <div id="" class="card col">
-            @foreach($cotizacion->sortByDesc('fecha')->where('estado','!=','1') as $cotizacion_)
+            @foreach($cotizacion->sortByDesc('fecha')->where('estado','!=','2') as $cotizacion_)
                 @php
                     $f1=explode('-',$cotizacion_->fecha);
                 @endphp
@@ -81,7 +111,7 @@
                     $utilidad_t=0;
                     $utilidad_por_t=0;
                     @endphp
-                    @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                    @foreach($cotizacion_->paquete_cotizaciones->where('estado','!=','2')->take(1) as $paquete)
                         @foreach($paquete->paquete_precios as $precio)
                             @if($precio->personas_s>0)
                                 @php
@@ -204,44 +234,38 @@
                         @endif
                     @endif
                     @if($cotizacion_->posibilidad=="0")
-                    <?php
-                    $date = date_create($cotizacion_->fecha);
-                    $fecha=date_format($date, 'F jS, Y');
-                    $titulo='';
-                    ?>
-
-                    <li class="content-list-book" id="content-list-{{$cotizacion_->id}}" value="{{$cotizacion_->id}}">
-                        <div class="content-list-book-s">
-                            <div class="row">
-                                <div class="col-10">
-                                    <a href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}">
-                                        @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                            @if($cliente_coti->estado=='1')
-                                                <?php
-                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
-                                                ?>
-                                                <small class="text-dark font-weight-bold">
-                                                    <i class="fas fa-user-circle text-secondary"></i>
-                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} {{$fecha}}
-                                                </small>
-                                                <small class="text-primary">
+                        @php
+                            $date = date_create($cotizacion_->fecha);
+                            $fecha=date_format($date, 'F jS, Y');
+                            $titulo='';
+                        @endphp
+                        <div class="row">
+                            <div class="col-10">
+                                <a href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}">
+                                    @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
+                                        @if($cliente_coti->estado=='1')
+                                            <?php
+                                            $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                            ?>
+                                            <b class="text-dark font-weight-bold text-15">
+                                                <i class="fas fa-user-circle text-success"></i>
+                                                <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} {{$fecha}}
+                                                <span class="text-primary">
                                                     <sup>$</sup>{{$valor}}
-                                                </small>
-                                            @endif
-                                        @endforeach
-                                    </a>
-                                </div>
-                                <div class="col-2">
-                                    <div class="icon">
-                                        <a href="#" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash small text-danger"></i></a>
-                                    </div>
+                                                </span>
+                                            </b>
+                                        @endif
+                                    @endforeach
+                                </a>
+                            </div>
+                            <div class="col-2">
+                                <div class="icon">
+                                    <a href="#" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash text-danger"></i></a>
                                 </div>
                             </div>
-
-
                         </div>
-                    </li>
-                @endif
+                        <hr>
+                    @endif
                 @endif
             @endforeach
         </div>
@@ -1494,6 +1518,7 @@
     </div>
     </div>
     <script>
+
         //formilario contac
         function update_p(valor){
             var s_name = $('#mi_id').val();

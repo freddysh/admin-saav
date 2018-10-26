@@ -13,6 +13,7 @@ use App\ItinerarioServicios;
 use App\M_Category;
 use App\M_Destino;
 use App\M_Itinerario;
+use App\M_ItinerarioServicio;
 use App\M_Servicio;
 use App\Mail\ContabilidadEmail;
 use App\Mail\ReservasEmail;
@@ -2516,5 +2517,11 @@ class PackageCotizacionController extends Controller
 
         $pqt_precio->delete();
         return redirect()->back();
+    }
+    public function buscar_servicios(Request $request)
+    {
+        $id = $request->input('id');
+        $nro_servicios=M_ItinerarioServicio::where('m_itinerario_id',$id)->count();
+        return $nro_servicios;
     }
 }

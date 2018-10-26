@@ -1235,3 +1235,7 @@ Route::post('admin/reportes/profit', [
     'uses' => 'ReportesController@profit_buscar',
     'as' => 'reporte_profit_buscar_path',
 ]);
+Route::post('admin/quotes/buscar-nro-servicios', [
+    'uses' => 'PackageCotizacionController@buscar_servicios',
+    'as' => 'nueva_cotizacions_buscar_path',
+]);

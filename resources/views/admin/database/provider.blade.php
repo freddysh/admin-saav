@@ -91,7 +91,6 @@
                                                                                 <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" value="{{substr($tipoServicio_,0,2)}}{{$auto}}" readonly>
                                                                             </div>
                                                                         </div>
-
                                                                     </div>
                                                                 </div>
                                                                 <div class="col">
