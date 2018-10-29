@@ -140,10 +140,10 @@ class OperacionesController extends Controller
                 }
             }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
-                foreach ($pqts->itinerario_cotizaciones->sortby('fecha') as $itinerario) {
+                foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
-                    $array_datos_coti[$key1]= $cotizacion->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas;
-                    foreach ($itinerario->itinerario_servicios->whereBetween('fecha_uso',[$desde,$hasta])->sortby('hora_llegada') as $servicio) {
+                    $array_datos_coti[$key1]= $itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas;
+                    foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
                         $hora='00.00';
                         if(trim($servicio->hora_llegada)!=''){
                             $hora=str_replace(':','.',$servicio->hora_llegada);
@@ -219,7 +219,7 @@ class OperacionesController extends Controller
         }
 //        $array_datos_cotizacion[$key]=substr($array_datos_cotizacion[$key],0,strlen($array_datos_cotizacion[$key])-1);
 //            dd($array_hotel);
-//        dd($array_hotel);
+//        dd($array_datos_coti);
 //        dd($array_datos_cotizacion);
         return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
     }
@@ -249,9 +249,9 @@ class OperacionesController extends Controller
                 }
             }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
-                foreach ($pqts->itinerario_cotizaciones->sortby('fecha') as $itinerario) {
+                foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
-                    $array_datos_coti[$key1]= $cotizacion->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas;
+                    $array_datos_coti[$key1]= $itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas;
                     foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
                         $hora='00.00';
                         if(trim($servicio->hora_llegada)!=''){

@@ -89,7 +89,7 @@
     <div class="tab-content mt-3">
         @if($grupo=='TOURS')
             <div id="private" class="tab-pane fade show active">
-                @foreach($servicios->where('tipoServicio','PRIVATE') as $servicio)
+                @foreach($servicios->where('tipoServicio','PV') as $servicio)
                     <div class="row">
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
@@ -104,7 +104,7 @@
                 @endforeach
             </div>
             <div id="group" class="tab-pane fade">
-                @foreach($servicios->where('tipoServicio','GROUP') as $servicio)
+                @foreach($servicios->where('tipoServicio','SIC') as $servicio)
                     <div class="row">
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">

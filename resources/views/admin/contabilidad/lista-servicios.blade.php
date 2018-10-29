@@ -258,12 +258,12 @@
                                                             <div class="col-6">
                                                                 <div class="form-group"><label for="txt_type" class="text-secondary font-weight-bold"> Type</label >
                                                                     <select class="form-control" id = "txt_type_{{$servicio->id}}" name = "txt_type_{{$servicio->id}}" >
-                                                                        <option value = "COMPARTIDO"
+                                                                        <option value = "SIC"
                                                                         @if ($servicio->tipoServicio == "COMPARTIDO")
                                                                             {{'selected'}}
                                                                                 @endif
                                                                         >COMPARTIDO </option >
-                                                                        <option value = "PRIVADO"
+                                                                        <option value = "PV"
                                                                         @if ($servicio->tipoServicio == "PRIVADO")
                                                                             {{'selected'}}
                                                                                 @endif
