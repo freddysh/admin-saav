@@ -9,7 +9,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ReservasEmail extends Mailable
 {
+
     public $coti;
+    public $id;
     public $anio;
     public $emails;
     public $email_ventas;
@@ -21,9 +23,10 @@ class ReservasEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($coti,$anio,$emails,$email_ventas,$nombre_ventas)
+    public function __construct($coti,$id,$anio,$emails,$email_ventas,$nombre_ventas)
     {
         //
+        $this->id=$id;
         $this->coti=$coti;
         $this->anio=$anio;
         $this->emails=$emails;
@@ -38,9 +41,9 @@ class ReservasEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.mails.book.new-venta-filtrada',['coti'=>$this->coti,'anio'=>$this->anio])
+        return $this->view('admin.mails.book.new-venta-filtrada',['coti'=>$this->coti,'anio'=>$this->anio,'id'=>$this->id])
             ->to($this->emails)
             ->from($this->email_ventas,$this->nombre_ventas)
-            ->subject('Nueva venta filtrada '.$this->coti.' (GotoPeru)');
+            ->subject('Nueva venta Cerrada '.$this->coti.' (GotoPeru)');
     }
 }

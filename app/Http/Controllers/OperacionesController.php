@@ -122,11 +122,12 @@ class OperacionesController extends Controller
     {
         $desde = $request->input('txt_desde');
         $hasta = $request->input('txt_hasta');
-        $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
-            $query->whereBetween('fecha', array($desde, $hasta));
-        }])
-            ->where('confirmado_r', 'ok')
-            ->get();
+//        $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
+//            $query->whereBetween('fecha', array($desde, $hasta));
+//        }])
+//            ->where('confirmado_r', 'ok')
+//            ->get();
+        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
         $clientes2 = Cliente::get();
         $array_datos_coti= [];
         $array_datos_cotizacion= [];
@@ -142,7 +143,7 @@ class OperacionesController extends Controller
                 foreach ($pqts->itinerario_cotizaciones->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
                     $array_datos_coti[$key1]= $cotizacion->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas;
-                    foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
+                    foreach ($itinerario->itinerario_servicios->whereBetween('fecha_uso',[$desde,$hasta])->sortby('hora_llegada') as $servicio) {
                         $hora='00.00';
                         if(trim($servicio->hora_llegada)!=''){
                             $hora=str_replace(':','.',$servicio->hora_llegada);

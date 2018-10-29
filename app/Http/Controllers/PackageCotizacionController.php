@@ -2032,7 +2032,10 @@ class PackageCotizacionController extends Controller
         else
             return 0;
     }
-    public function escojer_pqt($id){
+    public function escojer_pqt(Request $request){
+
+        $id= $request->input('id');
+        $valor= $request->input('valor');
         $coti_pqt=PaqueteCotizaciones::FindORFail($id);
 
         $cotizaciones=Cotizacion::where('id',$coti_pqt->cotizaciones_id)->get();
@@ -2058,7 +2061,7 @@ class PackageCotizacionController extends Controller
         $paquetesPrecio1=PaquetePrecio::where('paquete_cotizaciones_id',$id)->get();
         foreach ($paquetesPrecio1 as $paquetesPrecio1_){
             $paquetePrecio_temp1=PaquetePrecio::FindOrFail($paquetesPrecio1_->id);
-            $paquetePrecio_temp1->estado=2;
+            $paquetePrecio_temp1->estado=$valor;
             $paquetePrecio_temp1->save();
         }
 
@@ -2070,14 +2073,35 @@ class PackageCotizacionController extends Controller
         }
         $coti_pqt=PaqueteCotizaciones::FindORFail($id);
         $coti=Cotizacion::FindOrFail($coti_pqt->cotizaciones_id);
-        $coti->estado=2;
+        $coti->estado=$valor;
         $coti->categorizado='C';
         $coti->posibilidad=100;
         $coti->fecha_venta=date("Y-m-d");
         $coti->save();
         $pqt=PaqueteCotizaciones::FindOrFail($id);
-        $pqt->estado=2;
+        $pqt->estado=$valor;
         $pqt->save();
+    if($valor=='2') {
+        $usuario = auth()->guard('admin')->user();
+        $email = $usuario->email;
+        $email = 'fredy1432@gmail.com';
+        $name = $usuario->name;
+        $array_emails = [];
+        $emails = User::where('tipo_user', 'reservas')->get();
+        foreach ($emails as $emails_) {
+            $array_emails[] = array('email' => $emails_->email, 'name' => $emails_->name);
+        }
+        $array_emails[] = array('email' => $email, 'name' => $name);
+        $anio = explode('-', $cotizacion->fecha);
+        $coti_datos = '';
+        foreach ($cotizacion->cotizaciones_cliente as $clientes) {
+            if ($clientes->estado == 1) {
+                $coti_datos = 'Cod:' . $cotizacion->codigo . ' | ' . $clientes->cliente->nombres . ' ' . $clientes->cliente->apellidos . ' x ' . $cotizacion->nropersonas . ' ' . date_format(date_create($cotizacion->fecha), ' l jS F Y') . '(X' . $cotizacion->nropersonas . ')';
+            }
+        }
+        $email_send = Mail::to($email, $name)->send(new ReservasEmail($coti_datos,$coti->id, $anio[0], $array_emails, $email, $name));
+    }
+
 //        $usuario=auth()->guard('admin')->user();
 //        $email=$usuario->email;
 ////        $email='fredy1432@gmail.com';
@@ -2096,7 +2120,8 @@ class PackageCotizacionController extends Controller
 //            }
 //        }
 //        $email_send=Mail::to($email,$name)->send(new ContabilidadEmail($coti_datos,$anio[0],$array_emails,$email,$name));
-        return redirect()->route('cotizacion_id_show_path',$coti->id);
+//        return redirect()->route('cotizacion_id_show_path',$coti->id);
+        return 1;
     }
     public function add_cod_verif(Request $request)
     {

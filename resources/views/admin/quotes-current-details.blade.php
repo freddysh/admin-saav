@@ -367,11 +367,14 @@
                         <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
                     </td>
                     <td>
+
                         @if($paquete->estado==2)
-                            <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-success small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
+                            <input type="hidden" id="confirmado" value="1">
+                            <a id="caja_confirmar" href="#!" class="text-success small" onclick="confirmar_enviar_email($('#confirmado').val(),'{{$paquete->id}}')"><i class="fas fa-check" aria-hidden="true"></i> Confirmado</a>
                             {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-success btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
                         @else
-                            <a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="text-primary small"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
+                            <input type="hidden" id="confirmado" value="2">
+                            <a id="caja_confirmar" href="#!" class="text-primary small" onclick="confirmar_enviar_email($('#confirmado').val(),'{{$paquete->id}}')"><i class="fas fa-check" aria-hidden="true"></i> Confirmar</a>
                             {{--<a href="{{route('escojer_pqt_plan',$paquete->id)}}" class="pull-right btn btn-default btn-sm"><i class="fa fa-check" aria-hidden="true"></i></a>--}}
                         @endif
                     </td>
@@ -670,6 +673,38 @@
     </div>
 
     <script>
+        function confirmar_enviar_email(valor,id){
+           $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('[name="_token"]').val()
+                }
+            });
+            $.ajax({
+                type: 'GET',
+                url: "{{route('escojer_pqt_plan')}}",
+                data: 'id='+id+'&valor='+valor,
+                // Mostramos un mensaje con la respuesta de PHP
+                beforeSend: function(data1){
+                    $('#caja_confirmar').html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+                },
+                success: function(data) {
+                    if(data==1) {
+                        if (valor == '2') {
+                            $('#caja_confirmar').removeClass('text-primary');
+                            $('#caja_confirmar').addClass('text-success');
+                            $('#caja_confirmar').html('<i class="fas fa-check" aria-hidden="true"></i> Confirmado');
+                            $('#confirmado').val('1');
+                        }
+                        else {
+                            $('#caja_confirmar').removeClass('text-success');
+                            $('#caja_confirmar').addClass('text-primary');
+                            $('#caja_confirmar').html('<i class="fas fa-check" aria-hidden="true"></i> Confirmar');
+                            $('#confirmado').val('2');
+                        }
+                    }
+                }
+            })
+        }
         $(function () {
             $('#txt_name').autocomplete({
                 source: function(request, response) {
