@@ -132,6 +132,7 @@ class OperacionesController extends Controller
         $array_datos_coti= [];
         $array_datos_cotizacion= [];
         $array_hotel=[];
+        
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
             $clientes_ ='';
             foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
