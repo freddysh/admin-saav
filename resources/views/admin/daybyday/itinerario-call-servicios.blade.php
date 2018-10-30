@@ -2,10 +2,10 @@
     <ul class="nav nav-tabs nav-justified">
         @if($grupo=='TOURS')
             <li class="nav-item active">
-                <a class="nav-link show active small rounded-0" href="#private" data-toggle="tab">PRIVATE</a>
+                <a class="nav-link show active small rounded-0" href="#privado" data-toggle="tab">PRIVADO</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link small rounded-0" href="#group" data-toggle="tab">GROUP</a>
+                <a class="nav-link small rounded-0" href="#compartido" data-toggle="tab">COMPARTIDO</a>
             </li>
         @elseif($grupo=='MOVILID')
             <li class="nav-item active">
@@ -88,8 +88,8 @@
     </ul>
     <div class="tab-content mt-3">
         @if($grupo=='TOURS')
-            <div id="private" class="tab-pane fade show active">
-                @foreach($servicios->where('tipoServicio','PV') as $servicio)
+            <div id="privado" class="tab-pane fade show active">
+                @foreach($servicios->whereIn('tipoServicio',['PV','PRIVATE']) as $servicio)
                     <div class="row">
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
@@ -98,13 +98,12 @@
                                     {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
                                 </label>
                             </div>
-
                         </div>
                     </div>
                 @endforeach
             </div>
-            <div id="group" class="tab-pane fade">
-                @foreach($servicios->where('tipoServicio','SIC') as $servicio)
+            <div id="compartido" class="tab-pane fade">
+                @foreach($servicios->whereIn('tipoServicio',['SIC','GROUP']) as $servicio)
                     <div class="row">
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">

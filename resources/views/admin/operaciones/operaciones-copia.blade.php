@@ -5,7 +5,6 @@
         return $fecha_temp[2].'/'.$fecha_temp[1].'/'.$fecha_temp[0];
     }
 @endphp
-
 @extends('layouts.admin.operaciones')
 @section('content')
     <nav aria-label="breadcrumb">
@@ -59,7 +58,17 @@
                 </a>
             </div>
             <!-- Table -->
-            <table class="table table-striped table-responsive table-bordered table-hover small table-sm py-0">
+            <div class="row d-none">
+                <div class="col">
+                    <label for="cliente">Cliente:</label>
+                    <input class="form-control" id="cliente" type="text" placeholder="Nombre del cliente">
+                </div>
+                <div class="col">
+                    <label for="proveedor">Proveedor:</label>
+                    <input class="form-control" id="proveedor" type="text" placeholder="Ingrese el proveedor">
+                </div>
+            </div>
+            <table id="example" class="table table-striped table-bordered">
                 <thead>
                     <tr class="bg-primary text-white">
                         <td>FECHA</td>
@@ -80,7 +89,7 @@
                         <td>OBSERVACIONES</td>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="myTable">
                 @foreach($array_datos_cotizacion as $key => $array_datos_coti_)
                     @php
                         $arreglo=explode('%',$array_datos_coti_);
@@ -200,4 +209,15 @@
         </div>
     </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+            var table = $('#example').DataTable( {
+                lengthChange: false,
+                buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+            } );
+            table.buttons().container()
+                .appendTo( '#example_wrapper .col-sm-6:eq(0)' );
+        });
+    </script>
 @stop

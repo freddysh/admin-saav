@@ -1075,7 +1075,7 @@ Route::post('admin/book/listar-servicios',[
     'as' => 'reservas_listar_servicios_path',
 ]);
 Route::post('admin/book/listar-servicios/localizacion',[
-    'uses' => 'ServicesController@listar_servicios_localizacion',
+    'uses' => 'ServicesController@listar_servicios_localizacionlistar_servicios_localizacion',
     'as' => 'reservas_localizacion_listar_servicios_path',
 ]);
 Route::post('admin/package/buscar-day-by-day/ajax',[

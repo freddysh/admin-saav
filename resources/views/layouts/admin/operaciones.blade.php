@@ -11,13 +11,14 @@
     <link rel="stylesheet" href="{{mix("css/admin/admin.css")}}">
     {{--fonts--}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
     @yield('archivos-css')
     {{--scripts--}}
     <script src="{{asset("js/app.js")}}"></script>
     <script src="{{asset("https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.js")}}"></script>
     @yield('archivos-js')
     <script src="{{asset("js/admin/plugins.js")}}"></script>
-
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
 </head>
 <body>
 

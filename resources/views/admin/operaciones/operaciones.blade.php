@@ -10,7 +10,7 @@
 @section('content')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
-            <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a href="/">Home1</a></li>
             <li class="breadcrumb-item" aria-current="page"><a href="/">Operaciones</a></li>
             <li class="breadcrumb-item active">List</li>
         </ol>
@@ -312,4 +312,5 @@
         </div>
     </div>
     </div>
+
 @stop

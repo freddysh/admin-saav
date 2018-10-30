@@ -7,14 +7,14 @@
                     <a class="small nav-link show active" href="#private_{{$servicios_id}}" data-toggle="tab">PRIVATE</a>
                 </li>
                 <li class="nav-item">
-                    <a class="small nav-link show" href="#group_{{$servicios_id}}" data-toggle="tab">GROUP</a>
+                    <a class="small nav-link show" href="#group_{{$servicios_id}}" data-toggle="tab">COMPARTIDO</a>
                 </li>
             </ul>
             <div class="tab-content">
                 <div id="private_{{$servicios_id}}" class="tab-pane fade show active">
                     <div class="row mt-3">
                         @foreach($m_servicios as $m_servicio)
-                            @if($m_servicio->tipoServicio=='PRIVATE')
+                            @if($m_servicio->tipoServicio=='PRIVATE' || $m_servicio->tipoServicio=='PV')
                                 <div class="col-4 estilo_form">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
@@ -29,7 +29,7 @@
                 <div id="group_{{$servicios_id}}" class="tab-pane fade">
                     <div class="row mt-3">
                         @foreach($m_servicios as $m_servicio)
-                            @if($m_servicio->tipoServicio=='GROUP')
+                            @if($m_servicio->tipoServicio=='GROUP' || $m_servicio->tipoServicio=='SIC')
                                 <div class="col-4 estilo_form">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">

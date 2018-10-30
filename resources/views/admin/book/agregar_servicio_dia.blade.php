@@ -76,7 +76,7 @@
                                     @php $estado='';@endphp
 
 
-                                    @if($service->tipoServicio=='PRIVATE')
+                                    @if($service->tipoServicio=='PRIVATE' || $service->tipoServicio=='PV')
                                         @php
                                             $visual=' hide';
                                         @endphp
@@ -117,7 +117,7 @@
                                 @if($service->grupo==$tipoServicio[1])
                                     @php $estado='';@endphp
 
-                                    @if($service->tipoServicio=='GROUP')
+                                    @if($service->tipoServicio=='GROUP' || $service->tipoServicio=='SIC')
                                         @php
                                             $visual=' hide';
                                         @endphp

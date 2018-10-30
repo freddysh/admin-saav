@@ -233,7 +233,6 @@ class CostController extends Controller
                 $hotel_proveedor->save();
             }
             if($txt_categoria=='3') {
-
                 $hotel_proveedor_3 = new HotelProveedor();
                 $hotel_proveedor_3->localizacion = $txt_localizacion;
                 $hotel_proveedor_3->estrellas = 3;
