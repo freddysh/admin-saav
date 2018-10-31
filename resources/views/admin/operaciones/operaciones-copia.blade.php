@@ -56,7 +56,7 @@
                     <a href="{{route('imprimir_operaciones_path',[$desde,$hasta])}}" class="btn btn-danger btn-sm">
                         <i class="fas fa-file-pdf"></i>
                     </a>
-                    <a href="{{route('imprimir_operaciones_excel_path',[$desde,$hasta])}}" class="btn btn-success btn-sm">
+                    <a href="{{route('imprimir_operaciones_excel_path',[$desde,$hasta])}}" class="btn btn-success btn-sm d-none">
                         <i class="fas fa-file-excel"></i>
                     </a>
                 </div>
@@ -235,4 +235,31 @@
             </table>
         </div>
     </div>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+
+    <script>
+        $(document).ready( function () {
+            // $('#example_tabla').DataTable({
+            //     paging: false,
+            //     dom: 'Bfrtip',
+            //     buttons: [
+            //         'copyHtml5',
+            //         'excelHtml5',
+            //     ]
+            // });
+
+            var table = $('#example_tabla').DataTable( {
+                paging: false,
+                dom: 'Bfrtip',
+                buttons: [ 'copyHtml5', 'excelHtml5'],
+
+            } );
+
+            table.buttons().container()
+                .appendTo( '#example_tabla_wrapper .col-md-6:eq(0)' );
+        } );
+    </script>
 @stop

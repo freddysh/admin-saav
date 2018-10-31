@@ -15,31 +15,31 @@
                 Lista de operaciones de <span class="bg-primary text-15">{{fecha_peru($desde)}}</span> a <span class="bg-primary text-15">{{fecha_peru($hasta)}}</span>
             </div>
             <!-- Table -->
-            <table class="table table-striped table-responsive table-bordered table-hover small table-sm py-0">
+            <table id="example_tabla" class="table table-striped table-bordered table-responsive">
                 <thead>
-                    <tr class="bg-primary text-white">
-                        <td>FECHA</td>
-                        <td>N° PAX.</td>
-                        <td>CLIENTE</td>
-                        <td>CTA</td>
-                        <td>ID</td>
-                        <td>HORA</td>
-                        <td>TOUR</td>
-                        <td>REPRESENT</td>
-                        <td>HOTEL</td>
-                        <td>MOVILIDAD</td>
-                        <td>ENTRANCES</td>
-                        <td>FOOD</td>
-                        <td>TRAIN</td>
-                        <td>FLIGHT</td>
-                        <td>OTHERS</td>
-                        <td>OBSERVACIONES</td>
-                    </tr>
+                <tr class="bg-primary text-white">
+                    <th>FECHA</th>
+                    <th>N° PAX.</th>
+                    <th>CLIENTE</th>
+                    <th>CTA</th>
+                    <th>ID</th>
+                    <th>HORA</th>
+                    <th>TOUR</th>
+                    <th>REPRESENT</th>
+                    <th>HOTEL</th>
+                    <th>MOVILIDAD</th>
+                    <th>ENTRANCES</th>
+                    <th>FOOD</th>
+                    <th>TRAIN</th>
+                    <th>FLIGHT</th>
+                    <th>OTHERS</th>
+                    <th>OBSERVACIONES</th>
+                </tr>
                 </thead>
-                <tbody>
+                <tbody >
                 @foreach($array_datos_cotizacion as $key => $array_datos_coti_)
                     @php
-                        $arreglo=explode('%',$array_datos_coti_);
+                        $arreglo=explode('==',$array_datos_coti_);
                     @endphp
                     <tr>
                         @php
@@ -77,9 +77,11 @@
                             @endforeach
                         </td>
                         <td>
-                            @if(array_key_exists($key,$array_hotel))
-                                {!! $array_hotel[$key] !!}
-                            @endif
+                            @foreach($array_hotel as $key_ => $array_hotel_)
+                                @if($key_==$key)
+                                    {{$array_hotel_ }}
+                                @endif
+                            @endforeach
                         </td>
                         <td>
                             @foreach($arreglo as $arre)
@@ -150,8 +152,27 @@
                         <td>{{$valor1[5]}}</td>
                     </tr>
                 @endforeach
-
                 </tbody>
+                <tfoot>
+                <tr class="bg-primary text-white">
+                    <th>FECHA</th>
+                    <th>N° PAX.</th>
+                    <th>CLIENTE</th>
+                    <th>CTA</th>
+                    <th>ID</th>
+                    <th>HORA</th>
+                    <th>TOUR</th>
+                    <th>REPRESENT</th>
+                    <th>HOTEL</th>
+                    <th>MOVILIDAD</th>
+                    <th>ENTRANCES</th>
+                    <th>FOOD</th>
+                    <th>TRAIN</th>
+                    <th>FLIGHT</th>
+                    <th>OTHERS</th>
+                    <th>OBSERVACIONES</th>
+                </tr>
+                </tfoot>
             </table>
         </div>
     </div>

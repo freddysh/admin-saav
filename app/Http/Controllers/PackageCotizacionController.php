@@ -26,7 +26,9 @@ use App\PaqueteCotizaciones;
 use App\PaquetePrecio;
 use App\PrecioHotelReserva;
 
+use App\Proveedor;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 use PhpParser\Node\Expr\Array_;
@@ -2568,4 +2570,24 @@ class PackageCotizacionController extends Controller
         $nro_servicios=M_ItinerarioServicio::where('m_itinerario_id',$id)->count();
         return $nro_servicios;
     }
+    public function traer_fecha_pago(Request $request)
+    {
+        $id = $request->input('id');
+        $fecha_uso=$request->input('fecha_uso');
+
+        $fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
+        $proveedor=Proveedor::find($id);
+        if(strlen($proveedor->plazo)>0 && strlen($proveedor->desci)>0) {
+            if ($proveedor->desci = 'antes')
+                $fecha->subDays($proveedor->plazo);
+            else
+                $fecha->addDays($proveedor->plazo);
+
+            return $fecha->toDateString();
+        }
+        else{
+            return 'aaaa-mm-dd';
+        }
+    }
+
 }

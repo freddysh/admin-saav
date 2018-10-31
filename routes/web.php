@@ -1084,7 +1084,7 @@ Route::post('admin/book/listar-servicios',[
     'as' => 'reservas_listar_servicios_path',
 ]);
 Route::post('admin/book/listar-servicios/localizacion',[
-    'uses' => 'ServicesController@listar_servicios_localizacionlistar_servicios_localizacion',
+    'uses' => 'ServicesController@listar_servicios_localizacion',
     'as' => 'reservas_localizacion_listar_servicios_path',
 ]);
 Route::post('admin/package/buscar-day-by-day/ajax',[
@@ -1247,4 +1247,8 @@ Route::post('admin/reportes/profit', [
 Route::post('admin/quotes/buscar-nro-servicios', [
     'uses' => 'PackageCotizacionController@buscar_servicios',
     'as' => 'nueva_cotizacions_buscar_path',
+]);
+Route::post('admin/book/traer-fecha-pago', [
+    'uses' => 'PackageCotizacionController@traer_fecha_pago',
+    'as' => 'traer_fecha_pago_path',
 ]);

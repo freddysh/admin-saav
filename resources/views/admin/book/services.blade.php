@@ -780,7 +780,7 @@
                                                                                                                         </b>
                                                                                                                     </p>
                                                                                                                     <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
-                                                                                                                    <input class="grupo" type="radio" onchange="dato_producto({{$producto->id}})" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}">
+                                                                                                                    <input class="grupo" type="radio" onchange="dato_producto('{{$producto->id}}','{{$producto->proveedor->id}}','{{$servicios->id}}','{{$itinerario->fecha}}')" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}">
                                                                                                                     <small>$</small>
                                                                                                                     @if($producto->precio_grupo==1)
                                                                                                                         {{$producto->precio_costo*1}}
@@ -790,6 +790,7 @@
                                                                                                                         {{--<input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}">--}}
                                                                                                                         <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*$cotizacion->nropersonas}}">
                                                                                                                     @endif
+                                                                                                                    <span class="text-primary"> Se paga {{$producto->proveedor->plazo}} {{$producto->proveedor->desci}}</span>
                                                                                                                 </label>
                                                                                                             </div>
                                                                                                         </div>
@@ -799,6 +800,39 @@
                                                                                             @endif
                                                                                         @endforeach
                                                                                     @endif
+                                                                                </div>
+                                                                                <div class="col-12 bg-green-goto">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label for="exampleInputEmail1">Fecha a pagar</label>
+                                                                                                <input id="rpt_book_proveedor_fecha_{{$servicios->id}}" type="date" class="form-control" name="fecha_pagar">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-check-label">
+                                                                                                Escoja la prioridad
+                                                                                            </label>
+                                                                                            <div class="row mt-3">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-check ">
+                                                                                                        <label class="form-check-label">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad[]" value="BAJA">
+                                                                                                            BAJA
+                                                                                                        </label>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-check">
+                                                                                                        <label class="form-check-label">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad[]" value="URGENTE">
+                                                                                                            URGENTE
+                                                                                                        </label>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                                 <div class="col-md-12">
                                                                                     <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>

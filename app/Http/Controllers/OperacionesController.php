@@ -9,6 +9,7 @@ use App\M_Servicio;
 use App\PrecioHotelReserva;
 use App\Proveedor;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OperacionesController extends Controller
 {
@@ -233,15 +234,20 @@ class OperacionesController extends Controller
     }
     public function pdf($desde,$hasta)
     {
-        $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
-            $query->whereBetween('fecha', array($desde, $hasta));
-        }])
-            ->where('confirmado_r', 'ok')
-            ->get();
+        set_time_limit(0);
+//        $desde = $request->input('txt_desde');
+//        $hasta = $request->input('txt_hasta');
+//        $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
+//            $query->whereBetween('fecha', array($desde, $hasta));
+//        }])
+//            ->where('confirmado_r', 'ok')
+//            ->get();
+        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
         $clientes2 = Cliente::get();
-        $array_datos_coti= [];
-        $array_datos_cotizacion= [];
-        $array_hotel=[];
+        $array_datos_coti= array();
+        $array_datos_cotizacion= array();
+        $array_hotel=array();
+
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
             $clientes_ ='';
             foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
@@ -252,7 +258,7 @@ class OperacionesController extends Controller
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
                 foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
-                    $array_datos_coti[$key1]= $itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas;
+                    $array_datos_coti[$key1]=$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|';
                     foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
                         $hora='00.00';
                         if(trim($servicio->hora_llegada)!=''){
@@ -277,13 +283,13 @@ class OperacionesController extends Controller
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                            $array_datos_cotizacion[$key].=$serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br><span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
+                            $array_datos_cotizacion[$key].=$serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br><span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>==';
                         }
                         else{
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                            $array_datos_cotizacion[$key]=$serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br><span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
+                            $array_datos_cotizacion[$key]=$serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br><span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>==';
 //                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
                         }
                     }
@@ -320,24 +326,17 @@ class OperacionesController extends Controller
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
 //                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
                         if(array_key_exists($key,$array_hotel))
-                            $array_hotel[$key].=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.'</p>';
+                            $array_hotel[$key].=$cadena.'<p class="text-11 text-danger">('.$hotel->localizacion.')</p><p class="text-primary">'.$nombre_comercial.'</p>';
                         else
-                            $array_hotel[$key]=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.'</p>';
+                            $array_hotel[$key]=$cadena.'<p class="text-11 text-danger">('.$hotel->localizacion.')</p><p class="text-primary">'.$nombre_comercial.'</p>';
                     }
                 }
             }
         }
-//        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
 
-//        $cotizaciones=Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones'=> function ($query) use ($desde,$hasta) {
-//            $query->whereBetween('fecha', array($desde, $hasta));
-//        }])
-//            ->where('confirmado_r','ok')
-//            ->get();
-//        $clientes2=Cliente::get();
-//        $m_servicios=M_Servicio::get();
-//        $proveedores=Proveedor::get();
-//        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
+//        dd($array_datos_coti);
+//        dd($array_datos_cotizacion);
+//        dd($array_hotel);
 
         $pdf = \PDF::loadView('admin.operaciones.operaciones-copia-pdf', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'))
         ->setPaper('a4', 'landscape')->setWarnings(true);
@@ -345,6 +344,7 @@ class OperacionesController extends Controller
 
     }
     public function excel($desde,$hasta){
+        set_time_limit(0);
         $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
             $query->whereBetween('fecha', array($desde, $hasta));
         }])
@@ -439,24 +439,11 @@ class OperacionesController extends Controller
                 }
             }
         }
-//        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
-
-//        $cotizaciones=Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones'=> function ($query) use ($desde,$hasta) {
-//            $query->whereBetween('fecha', array($desde, $hasta));
-//        }])
-//            ->where('confirmado_r','ok')
-//            ->get();
-//        $clientes2=Cliente::get();
-//        $m_servicios=M_Servicio::get();
-//        $proveedores=Proveedor::get();
-//        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
-
-
-        return view('admin.operaciones.operaciones-copia-excel', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
-
-//        $pdf = \PDF::loadView('admin.operaciones.operaciones-copia-pdf', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'))
-//            ->setPaper('a4', 'landscape')->setWarnings(true);
-//        return $pdf->download('Operaciones.pdf');
+        Excel::create('archivo', function($excel) use($desde,$hasta,$array_datos_cotizacion,$array_datos_coti,$array_hotel) {
+            $excel->sheet('New sheet', function($sheet) use ($desde,$hasta,$array_datos_cotizacion,$array_datos_coti,$array_hotel) {
+                $sheet->loadView('admin.operaciones.operaciones-copia-pdf', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
+            });
+        })->download('xlsx');
     }
     public function asignar_observacion(Request $request)
     {

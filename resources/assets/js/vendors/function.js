@@ -3167,9 +3167,23 @@ function Guardar_proveedor_costo(id) {
     return false;
     // });
 }
-function dato_producto(valor){
+function dato_producto(valor,proveedor_id,id,fecha_uso){
     dato_producto_id=valor;
     console.log('valor:'+valor);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../book/traer-fecha-pago',
+        data: 'id='+proveedor_id+'&fecha_uso='+fecha_uso,
+        // Mostramos un mensaje con la respuesta de PHP
+        success: function(data) {
+            $('#rpt_book_proveedor_fecha_'+id).val(data);
+        }
+    })
 }
 function Guardar_proveedor(id,url,csrf_field) {
     // $('#asignar_proveedor_path_'+id).submit(function() {
@@ -3444,6 +3458,7 @@ function Guardar_proveedor_hotel(id,url,csrf_field,s,d,m,t) {
 function dato_producto_hotel(valor){
     dato_producto_hotel_id=valor;
     console.log('valor:'+valor);
+
 }
 
 function guardar_reserva(){

@@ -3008,13 +3008,13 @@ function variar_sales(acom){
 
     if(dias>1) {
         if (sale_s != 0)
-            uti_por_d = Math.round((pro_s / sale_s) * 100, 0);
+            uti_por_d = Math.round((pro_s / sale_s) * 100, 2);
         if (sale_d != 0)
-            uti_por_d = Math.round((pro_d / sale_d) * 100, 0);
+            uti_por_d = Math.round((pro_d / sale_d) * 100, 2);
         if (sale_m != 0)
-            uti_por_m = Math.round((pro_m / sale_m) * 100, 0);
+            uti_por_m = Math.round((pro_m / sale_m) * 100, 2);
         if (sale_t != 0)
-            uti_por_t = Math.round((pro_t / sale_t) * 100, 0);
+            uti_por_t = Math.round((pro_t / sale_t) * 100, 2);
 
         $('#profit_por_s').val(uti_por_s);
         $('#profit_por_d').val(uti_por_d);
@@ -3908,9 +3908,23 @@ function Guardar_proveedor_costo(id) {
     return false;
     // });
 }
-function dato_producto(valor){
+function dato_producto(valor,id,fecha_uso){
     dato_producto_id=valor;
     console.log('valor:'+valor);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../book/traer-fecha-pago',
+        data: 'id='+valor+'&fecha_uso='+fecha_uso,
+        // Mostramos un mensaje con la respuesta de PHP
+        success: function(data) {
+            $('#rpt_book_proveedor_fecha_'+id).val(data);
+        }
+    })
 }
 function Guardar_proveedor(id,url,csrf_field) {
     // $('#asignar_proveedor_path_'+id).submit(function() {
@@ -4185,6 +4199,7 @@ function Guardar_proveedor_hotel(id,url,csrf_field,s,d,m,t) {
 function dato_producto_hotel(valor){
     dato_producto_hotel_id=valor;
     console.log('valor:'+valor);
+
 }
 
 function guardar_reserva(){
