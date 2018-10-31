@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row d-none">
         <div class="col-md-12">
             <div class="card w-100">
                 <!-- Default panel contents -->
@@ -55,9 +55,6 @@
                     Lista de operaciones de <span class="badge badge-primary">{{fecha_peru($desde)}}</span> a <span class="badge badge-primary">{{fecha_peru($hasta)}}</span>
                     <a href="{{route('imprimir_operaciones_path',[$desde,$hasta])}}" class="btn btn-danger btn-sm">
                         <i class="fas fa-file-pdf"></i>
-                    </a>
-                    <a href="{{route('imprimir_operaciones_excel_path',[$desde,$hasta])}}" class="btn btn-success btn-sm">
-                        <i class="fas fa-file-excel"></i>
                     </a>
                 </div>
                 <!-- Table -->
@@ -235,4 +232,37 @@
             </table>
         </div>
     </div>
+    {{--<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>--}}
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    {{--<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>--}}
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>--}}
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    {{--<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>--}}
+    {{--<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>--}}
+
+
+    <script>
+        $(document).ready(function(){
+            var table = $('#example_tabla').DataTable( {
+                lengthChange: false,
+                dom:'Bfrtip',
+                paging: false,
+                buttons: [ 'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5',],
+                // serverSide: true,
+                // initComplete : function () {
+                //     table.buttons().container()
+                //         .appendTo( $('#example_tabla_wrapper .col-sm-6:eq(0)'));
+                // },
+            } );
+            // table.buttons().container()
+            //     .appendTo( '#example_tabla_wrapper .col-sm-6:eq(0)' );
+        });
+    </script>
 @stop

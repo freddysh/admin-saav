@@ -2424,6 +2424,25 @@ class PackageCotizacionController extends Controller
         session()->put('menu-lateral', 'quotes/current');
         return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes]);
     }
+    public function current_cotizacion_page_expedia_(Request $request)
+    {
+        $anio=$request->input('anio');
+        $mes=$request->input('mes');
+        $page=$request->input('page');
+
+//        dd($anio.'_'.$mes.'_'.$page);
+
+        $user_name=auth()->guard('admin')->user()->name;
+        $user_tipo=auth()->guard('admin')->user()->tipo_user;
+        if($user_tipo=='ventas') {
+            $cotizacion = Cotizacion::where('web', $page)->where('users_id', auth()->guard('admin')->user()->id)->get();
+        }
+        else {
+            $cotizacion = Cotizacion::where('web', $page)->get();
+        }
+        session()->put('menu-lateral', 'quotes/current');
+        return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes]);
+    }
     public function list_paquetes(Request $request)
     {
         $duracion=$request->input('duracion');

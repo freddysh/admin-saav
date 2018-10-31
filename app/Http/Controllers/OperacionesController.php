@@ -344,6 +344,120 @@ class OperacionesController extends Controller
         return $pdf->download('Operaciones.pdf');
 
     }
+    public function excel($desde,$hasta){
+        $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
+            $query->whereBetween('fecha', array($desde, $hasta));
+        }])
+            ->where('confirmado_r', 'ok')
+            ->get();
+        $clientes2 = Cliente::get();
+        $array_datos_coti= [];
+        $array_datos_cotizacion= [];
+        $array_hotel=[];
+        foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
+            $clientes_ ='';
+            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+                foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
+                    $clientes_= $cliente->nombres . " " . $cliente->apellidos;
+                }
+            }
+            foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
+                foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
+                    $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
+                    $array_datos_coti[$key1]= $itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas;
+                    foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
+                        $hora='00.00';
+                        if(trim($servicio->hora_llegada)!=''){
+                            $hora=str_replace(':','.',$servicio->hora_llegada);
+                        }
+                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
+                        $serv = M_Servicio::Find($servicio->m_servicios_id);
+                        $nombre_comercial='Sin reserva';
+                        if($servicio->proveedor_id>0) {
+                            $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
+                            if(count($pro1)>0){
+                                if (strlen($pro1->nombre_comercial) > 0)
+                                    $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
+                                else
+                                    $nombre_comercial = 'Sin nombre comercial';
+                            }
+                            else{
+                                $nombre_comercial = 'Proveedor borrado de la db';
+                            }
+                        }
+                        if(array_key_exists($key,$array_datos_cotizacion)){
+                            $clase='';
+                            if($servicio->anulado=='1')
+                                $clase='alert alert-danger';
+                            $array_datos_cotizacion[$key].=$serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br><span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
+                        }
+                        else{
+                            $clase='';
+                            if($servicio->anulado=='1')
+                                $clase='alert alert-danger';
+                            $array_datos_cotizacion[$key]=$serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br><span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
+//                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
+                        }
+                    }
+                    foreach ($itinerario->hotel->sortby('hora_llegada') as $hotel) {
+                        $hora='00.00';
+//                        if($hotel->hora_llegada!=''){
+//                            $hora=str_replace(':','.',$hotel->hora_llegada);
+//                        }
+                        if(trim($hotel->hora_llegada)!='')
+                            $hora=str_replace(':','.',$hotel->hora_llegada);
+//                            $hora=trim($servicio->hora_llegada);
+                        $cadena='';
+                        if($hotel->personas_s>0)
+                            $cadena.=$hotel->personas_s.' Single';
+                        if($hotel->personas_d>0)
+                            $cadena.=$hotel->personas_d.' Double';
+                        if($hotel->personas_m>0)
+                            $cadena.=$hotel->personas_m.' Matrimonial';
+                        if($hotel->personas_t>0)
+                            $cadena.=$hotel->personas_t.' Triple';
+                        $nombre_comercial='Sin reserva';
+                        if($hotel->proveedor_id>0) {
+                            $pro1=Proveedor::where('id',$hotel->proveedor_id)->first();
+                            if(count($pro1)){
+                                if (strlen($pro1->nombre_comercial) > 0)
+                                    $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
+                                else
+                                    $nombre_comercial = 'Sin nombre comercial';
+                            }
+                            else{
+                                $nombre_comercial = 'Proveedor borrado de la db';
+                            }
+                        }
+                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
+//                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
+                        if(array_key_exists($key,$array_hotel))
+                            $array_hotel[$key].=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.'</p>';
+                        else
+                            $array_hotel[$key]=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.'</p>';
+                    }
+                }
+            }
+        }
+//        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
+
+//        $cotizaciones=Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones'=> function ($query) use ($desde,$hasta) {
+//            $query->whereBetween('fecha', array($desde, $hasta));
+//        }])
+//            ->where('confirmado_r','ok')
+//            ->get();
+//        $clientes2=Cliente::get();
+//        $m_servicios=M_Servicio::get();
+//        $proveedores=Proveedor::get();
+//        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
+
+
+        return view('admin.operaciones.operaciones-copia-excel', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
+
+//        $pdf = \PDF::loadView('admin.operaciones.operaciones-copia-pdf', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'))
+//            ->setPaper('a4', 'landscape')->setWarnings(true);
+//        return $pdf->download('Operaciones.pdf');
+    }
     public function asignar_observacion(Request $request)
     {
         $id=$request->input('id');

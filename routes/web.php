@@ -264,6 +264,11 @@ Route::get('/admin/current-quote/expedia/{anio}/{mes}/{page}', [
     'uses' => 'PackageCotizacionController@current_cotizacion_page_expedia',
     'as' => 'current_quote_page_expedia_path',
 ]);
+Route::post('/admin/current-quote/expedia', [
+    'uses' => 'PackageCotizacionController@current_cotizacion_page_expedia_',
+    'as' => 'current_quote_page_expedia_post_path',
+]);
+
 Route::get('/admin/sales-quote/{page}', [
     'uses' => 'PackageCotizacionController@sales_cotizacion_page',
     'as' => 'sales_quote_page_path',
@@ -655,6 +660,10 @@ Route::get('admin/operaciones/s_p/{id1}/{id2}/{id3}', [
 Route::get('admin/operaciones/pdf/{id1}/{id2}', [
     'uses' => 'OperacionesController@pdf',
     'as' => 'imprimir_operaciones_path',
+]);
+Route::get('admin/operaciones/excel/{id1}/{id2}', [
+    'uses' => 'OperacionesController@excel',
+    'as' => 'imprimir_operaciones_excel_path',
 ]);
 Route::post('admin/operaciones/observacion', [
     'uses' => 'OperacionesController@asignar_observacion',

@@ -36,10 +36,11 @@
     <div class="row">
         <div id="list-example" class="list-group">
             <div class="list-group-item list-group-item-action">
-                <form action="{{route('current_quote_page_expedia_path')}}" method="get">
+                <form action="{{route('current_quote_page_expedia_post_path')}}" method="post">
                     <div class="col-auto">
                         <label class="sr-only" for="anio">Año</label>
                         <div class="input-group mb-2">
+                            {{csrf_field()}}
                             <input type="text" class="form-control" id="anio_" name="anio" placeholder="Año" value="{{$anio}}">
                             <input type="hidden" name="mes" value="{{$mes}}">
                             <input type="hidden" name="page" value="{{$page}}">
