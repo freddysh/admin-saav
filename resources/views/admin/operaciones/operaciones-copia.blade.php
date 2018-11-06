@@ -76,7 +76,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <table id="example_tabla" class="table table-striped table-bordered table-responsive">
+            <table id="example_tabla" class="table table-striped table-responsive table-bordered table-hover small table-sm py-0 text-11 table-condensed no-padding no-margin">
                 <thead>
                 <tr class="bg-primary text-white">
                     <th>FECHA</th>
@@ -212,26 +212,26 @@
                     </tr>
                 @endforeach
                 </tbody>
-                <tfoot>
-                <tr class="bg-primary text-white">
-                    <th>FECHA</th>
-                    <th>N° PAX.</th>
-                    <th>CLIENTE</th>
-                    <th>CTA</th>
-                    <th>ID</th>
-                    <th>HORA</th>
-                    <th>TOUR</th>
-                    <th>REPRESENT</th>
-                    <th>HOTEL</th>
-                    <th>MOVILIDAD</th>
-                    <th>ENTRANCES</th>
-                    <th>FOOD</th>
-                    <th>TRAIN</th>
-                    <th>FLIGHT</th>
-                    <th>OTHERS</th>
-                    <th>OBSERVACIONES</th>
-                </tr>
-                </tfoot>
+                {{--<tfoot>--}}
+                {{--<tr class="bg-primary text-white">--}}
+                    {{--<th>FECHA</th>--}}
+                    {{--<th>N° PAX.</th>--}}
+                    {{--<th>CLIENTE</th>--}}
+                    {{--<th>CTA</th>--}}
+                    {{--<th>ID</th>--}}
+                    {{--<th>HORA</th>--}}
+                    {{--<th>TOUR</th>--}}
+                    {{--<th>REPRESENT</th>--}}
+                    {{--<th>HOTEL</th>--}}
+                    {{--<th>MOVILIDAD</th>--}}
+                    {{--<th>ENTRANCES</th>--}}
+                    {{--<th>FOOD</th>--}}
+                    {{--<th>TRAIN</th>--}}
+                    {{--<th>FLIGHT</th>--}}
+                    {{--<th>OTHERS</th>--}}
+                    {{--<th>OBSERVACIONES</th>--}}
+                {{--</tr>--}}
+                {{--</tfoot>--}}
             </table>
         </div>
     </div>
@@ -252,6 +252,7 @@
             // });
 
             var table = $('#example_tabla').DataTable( {
+                "ordering": false,
                 paging: false,
                 dom: 'Bfrtip',
                 buttons: [ 'copyHtml5', 'excelHtml5'],

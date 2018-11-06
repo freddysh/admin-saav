@@ -2572,22 +2572,53 @@ class PackageCotizacionController extends Controller
     }
     public function traer_fecha_pago(Request $request)
     {
+        $str_fecha='aaaa-mm-dd';
         $id = $request->input('id');
-        $fecha_uso=$request->input('fecha_uso');
-
+//        dd($id);
+        $itinerario_id=$request->input('itinerario_id');
+        $itinerario=ItinerarioCotizaciones::find($itinerario_id);
+        $fecha_uso=$itinerario->fecha;
         $fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
         $proveedor=Proveedor::find($id);
+//        dd($proveedor);
         if(strlen($proveedor->plazo)>0 && strlen($proveedor->desci)>0) {
-            if ($proveedor->desci = 'antes')
+            if ($proveedor->desci == 'antes')
                 $fecha->subDays($proveedor->plazo);
             else
                 $fecha->addDays($proveedor->plazo);
 
-            return $fecha->toDateString();
+            $str_fecha= $fecha->toDateString();
         }
-        else{
-            return 'aaaa-mm-dd';
-        }
-    }
+//        dd($fecha->toDateString().'_'.$proveedor->plazo.'/'.$proveedor->desci);
 
+        return '<label for="exampleInputEmail1">Fecha a pagar</label>
+                <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">';
+    }
+    public function traer_fecha_pago_h(Request $request)
+    {
+        $str_fecha='aaaa-mm-dd';
+        $hotel_proveedor_id = $request->input('hotel_proveedor_id');
+        $hotel_id = $request->input('hotel_id');
+
+//        dd($hotel_id);
+        $itinerario_id=$request->input('itinerario_id');
+        $itinerario=ItinerarioCotizaciones::find($itinerario_id);
+
+        $fecha_uso=$itinerario->fecha;
+        $fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
+        $proveedor=Proveedor::find($hotel_proveedor_id);
+//        dd($proveedor);
+        if(strlen($proveedor->plazo)>0 && strlen($proveedor->desci)>0) {
+            if ($proveedor->desci == 'antes')
+                $fecha->subDays($proveedor->plazo);
+            else
+                $fecha->addDays($proveedor->plazo);
+
+            $str_fecha= $fecha->toDateString();
+        }
+//        dd($fecha->toDateString().'_'.$proveedor->plazo.'/'.$proveedor->desci);
+
+        return '<label for="exampleInputEmail1">Fecha a pagar</label>
+                <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">';
+    }
 }

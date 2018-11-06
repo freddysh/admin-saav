@@ -19,7 +19,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
     .sass('resources/assets/sass/admin.scss', 'public/css/admin')
     // .sass('resources/assets/sass/fonts-awesome/font-awesome.scss', 'public/css/')
-    // .sass('resources/assets/sass/quotes-pdf.css', 'public/css/');
+    // .sass('resources/assets/sass/quotes-pdf.css', 'public/css/quotes-pdf.css');
     // .sass('vendor/clockpicker-gh-pages/dist/bootstrap-clockpicker.css', 'public/css/')
     // .sass('resources/assets/sass/quotes-pdf.css', 'public/css/')
     // .sass('resources/assets/sass/jquery-ui.css', 'public/css/')

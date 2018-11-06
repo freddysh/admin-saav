@@ -8,17 +8,42 @@
         <link href="{{asset('css/quotes-pdf.css')}}" type="text/css" rel="stylesheet" media="screen,projection"/>
     </head>
     <style>
-        .alert{
-            position: relative;
-            padding: 0.75rem 1.25rem;
-            margin-bottom: 1rem;
-            border: 1px solid transparent;
-            border-radius: 0.25rem;
+        html {
+            margin: 0;
         }
-        .alert-danger{
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 08px;
+            margin: 1rem 0.5rem 1rem 0.8rem;
+        }
+        .text-08{
+            font-size: 08px;
+        }
+        .text-09{
+             font-size: 09px;
+        }
+        .text-10{
+            font-size: 10px;
+        }
+        .text-12{
+            font-size: 12px;
+        }
+        .footer {
+            position: fixed;
+            left: 0px;
+            bottom: -25px;
+            right: 0px;
+            height: 55px;
+            line-height:2px;
+        }
+        .footer span{
+            color: #949494;
+        }
+        .footer .page:after {
+            content: counter(page);
+        }
+        .footer table {
+            width: 100%;
         }
     </style>
 <body>

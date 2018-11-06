@@ -211,23 +211,23 @@ b{
     text-align: right;
 }
 /*.table-border{*/
-   /*border: 1px solid #ccc;*/
+/*border: 1px solid #ccc;*/
 /*}*/
 
 /*.table-proveedor{*/
-    /*color: #3097D1;*/
+/*color: #3097D1;*/
 /*}*/
 /*.table-fondo{*/
-    /*background: #3097D1;*/
-    /*color: white;*/
+/*background: #3097D1;*/
+/*color: white;*/
 /*}*/
 .table-proveedor{
-     color: #3097D1;
+    color: #3097D1;
 }
 
 /** {*/
-    /*margin: 0;*/
-    /*padding: 0;*/
+/*margin: 0;*/
+/*padding: 0;*/
 /*}*/
 #page-wrap {
     margin: 9px;

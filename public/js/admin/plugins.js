@@ -3908,7 +3908,7 @@ function Guardar_proveedor_costo(id) {
     return false;
     // });
 }
-function dato_producto(valor,id,fecha_uso){
+function dato_producto(valor,proveedor_id,id,itinerario_id){
     dato_producto_id=valor;
     console.log('valor:'+valor);
     $.ajaxSetup({
@@ -3919,10 +3919,13 @@ function dato_producto(valor,id,fecha_uso){
     $.ajax({
         type: 'POST',
         url: '../book/traer-fecha-pago',
-        data: 'id='+valor+'&fecha_uso='+fecha_uso,
+        data: 'id='+proveedor_id+'&itinerario_id='+itinerario_id,
         // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#rpt_book_proveedor_fecha_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
         success: function(data) {
-            $('#rpt_book_proveedor_fecha_'+id).val(data);
+            $('#rpt_book_proveedor_fecha_'+id).html(data);
         }
     })
 }
@@ -3938,6 +3941,7 @@ function Guardar_proveedor(id,url,csrf_field) {
         data: $('#asignar_proveedor_path_'+id).serialize(),
         // Mostramos un mensaje con la respuesta de PHP
         success: function(data) {
+            console.log('data:'+data);
             if(data==1){
                 var precio_pro=$('#book_price_'+dato_producto_id).val();
                 console.log('precio:'+precio_pro+', dato_producto_id:'+dato_producto_id);
@@ -4196,12 +4200,28 @@ function Guardar_proveedor_hotel(id,url,csrf_field,s,d,m,t) {
     return false;
     // });
 }
-function dato_producto_hotel(valor){
+
+function dato_producto_hotel(valor,hotel_proveedor_id,hotel_id,itinerario_id){
     dato_producto_hotel_id=valor;
     console.log('valor:'+valor);
-
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../book/traer-fecha-pago-h',
+        data: 'hotel_proveedor_id='+hotel_proveedor_id+'&hotel_id='+hotel_id+'&itinerario_id='+itinerario_id,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#rpt_book_proveedor_fecha_h_'+hotel_id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data) {
+            $('#rpt_book_proveedor_fecha_h_'+hotel_id).html(data);
+        }
+    })
 }
-
 function guardar_reserva(){
     var nro_servicios_total=parseInt($('#nro_servicios_total').val());
     var nro_ser_reservado=parseInt($('#nro_servicios_reservados').val());

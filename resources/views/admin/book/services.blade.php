@@ -305,7 +305,7 @@
                                 <div class="col mt-1">
                                     <div class="alert alert-success" role="alert">
                                         @if(trim($cotizacion->notas)!='')
-                                            {{$cotizacion->notas}}
+                                            {!! $cotizacion->notas !!}
                                         @else
                                             No hay notas.
                                         @endif
@@ -780,7 +780,7 @@
                                                                                                                         </b>
                                                                                                                     </p>
                                                                                                                     <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
-                                                                                                                    <input class="grupo" type="radio" onchange="dato_producto('{{$producto->id}}','{{$producto->proveedor->id}}','{{$servicios->id}}','{{$itinerario->fecha}}')" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}">
+                                                                                                                    <input class="grupo" type="radio" onchange="dato_producto('{{$producto->id}}','{{$producto->proveedor_id}}','{{$servicios->id}}','{{$itinerario->id}}')" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}">
                                                                                                                     <small>$</small>
                                                                                                                     @if($producto->precio_grupo==1)
                                                                                                                         {{$producto->precio_costo*1}}
@@ -804,9 +804,9 @@
                                                                                 <div class="col-12 bg-green-goto">
                                                                                     <div class="row">
                                                                                         <div class="col-md-6">
-                                                                                            <div class="form-group">
+                                                                                            <div class="form-group" id="rpt_book_proveedor_fecha_{{$servicios->id}}">
                                                                                                 <label for="exampleInputEmail1">Fecha a pagar</label>
-                                                                                                <input id="rpt_book_proveedor_fecha_{{$servicios->id}}" type="date" class="form-control" name="fecha_pagar">
+                                                                                                <input type="date" class="form-control" name="fecha_pagar">
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-6">
@@ -817,7 +817,7 @@
                                                                                                 <div class="col-md-6">
                                                                                                     <div class="form-check ">
                                                                                                         <label class="form-check-label">
-                                                                                                            <input type="radio" class="form-check-input" name="prioridad[]" value="BAJA">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$servicios->id}}[]" value="BAJA" checked="checked">
                                                                                                             BAJA
                                                                                                         </label>
                                                                                                     </div>
@@ -825,7 +825,7 @@
                                                                                                 <div class="col-md-6">
                                                                                                     <div class="form-check">
                                                                                                         <label class="form-check-label">
-                                                                                                            <input type="radio" class="form-check-input" name="prioridad[]" value="URGENTE">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$servicios->id}}[]" value="URGENTE">
                                                                                                             URGENTE
                                                                                                         </label>
                                                                                                     </div>
@@ -840,8 +840,9 @@
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 {{csrf_field()}}
+                                                                                <input type="text" name="id_" value="{{$servicios->id}}">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}')">Guardar cambios1</button>
+                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}')">Guardar cambios</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -926,7 +927,6 @@
                                                                                                 @endif
                                                                                                 <div class="col-md-12">
                                                                                                     <div class="checkbox11 text-left">
-
                                                                                                         <div class="row">
                                                                                                             <div class="col-lg-12 caja_current">
                                                                                                                 <label class="text-grey-goto">
@@ -938,14 +938,17 @@
                                                                                                                        </b>
                                                                                                                     </p>
                                                                                                                     <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
-                                                                                                                    <input class="grupo" type="radio" onchange="dato_producto({{$producto->id}})" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>
+                                                                                                                    <input class="grupo" type="radio" onchange="dato_producto('{{$producto->id}}','{{$producto->proveedor_id}}','{{$servicios->id}}','{{$itinerario->id}}')" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>
+                                                                                                                    <small>$</small>
+                                                                                                                    {{--<input class="grupo" type="radio" onchange="dato_producto({{$producto->id}})" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>--}}
                                                                                                                     @if($producto->precio_grupo==1)
                                                                                                                         {{$producto->precio_costo*1}}
                                                                                                                         <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*1}}">
                                                                                                                     @else
                                                                                                                         {{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}
                                                                                                                         <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*$cotizacion->nropersonas}}">
-                                                                                                                    @endif $
+                                                                                                                    @endif
+                                                                                                                    <span class="text-primary"> Se paga {{$producto->proveedor->plazo}} {{$producto->proveedor->desci}}</span>
                                                                                                                 </label>
                                                                                                             </div>
                                                                                                         </div>
@@ -956,14 +959,48 @@
                                                                                         @endforeach
                                                                                     @endif
                                                                                 </div>
+                                                                                <div class="col-12 bg-green-goto">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group" id="rpt_book_proveedor_fecha_{{$servicios->id}}">
+                                                                                                <label for="exampleInputEmail1">Fecha a pagar</label>
+                                                                                                <input type="date" class="form-control" name="fecha_pagar" value="{{$servicios->fecha_venc}}">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-check-label">
+                                                                                                Escoja la prioridad
+                                                                                            </label>
+                                                                                            <div class="row mt-3">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-check ">
+                                                                                                        <label class="form-check-label">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$servicios->id}}[]" value="BAJA" @if($servicios->prioridad=='BAJA') checked="checked" @endif>
+                                                                                                            BAJA
+                                                                                                        </label>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-check">
+                                                                                                        <label class="form-check-label">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$servicios->id}}[]" value="URGENTE"  @if($servicios->prioridad=='URGENTE') checked="checked" @endif>
+                                                                                                            URGENTE
+                                                                                                        </label>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                                 <div class="col-md-12">
                                                                                     <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 {{csrf_field()}}
+                                                                                <input type="text" name="id_" value="{{$servicios->id}}">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}')">Guardar cambios</button>
+                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}')">Editar cambios</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -1411,12 +1448,10 @@
                                                                                             $valor_class='checked=\'checked\'';
                                                                                         @endphp
                                                                                     @endif
-                                                                                    {{--
-                                                                                                                                                                    {{--@if($hotel_proveedor_->estrellas==$paquete->estrellas)--}}
                                                                                     <div class="col-md-12">
                                                                                         <div class="checkbox11 text-left caja_current">
                                                                                             <label>
-                                                                                                <input class="grupo" onchange="dato_producto_hotel({{$hotel_proveedor_->id}})" type="radio" name="precio" value="{{$cotizacion->id}}_{{$hotel->id}}_{{$hotel_proveedor_->proveedor_id}}_{{$hotel_proveedor_->id}}" {!! $valor_class !!}>
+                                                                                                <input class="grupo" onchange="dato_producto_hotel('{{$hotel_proveedor_->id}}','{{$hotel_proveedor_->proveedor_id}}','{{$hotel->id}}','{{$itinerario->id}}')" type="radio" name="precio" value="{{$cotizacion->id}}_{{$hotel->id}}_{{$hotel_proveedor_->proveedor_id}}_{{$hotel_proveedor_->id}}" {!! $valor_class !!}>
                                                                                                 <b>{{$hotel_proveedor_->proveedor->nombre_comercial}} | {{$hotel_proveedor_->estrellas}}<i class="fa fa-star text-warning" aria-hidden="true"></i></b>
                                                                                                 <span class="d-none" id="proveedor_servicio_hotel_{{$hotel_proveedor_->id}}">
                                                                                                     {{$hotel_proveedor_->proveedor->nombre_comercial}}
@@ -1466,9 +1501,43 @@
                                                                                                     <p id="book_price_t_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
                                                                                                 @endif
                                                                                             </span>
+                                                                                            <span class="text-primary"> Se paga {{$hotel_proveedor_->proveedor->plazo}} {{$hotel_proveedor_->proveedor->desci}}</span>
                                                                                         </div>
                                                                                     </div>
                                                                                 @endforeach
+                                                                            </div>
+                                                                            <div class="col-12 bg-green-goto">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group" id="rpt_book_proveedor_fecha_h_{{$hotel->id}}">
+                                                                                            <label for="exampleInputEmail1">Fecha a pagar</label>
+                                                                                            <input type="date" class="form-control" name="fecha_pagar">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="form-check-label">
+                                                                                            Escoja la prioridad
+                                                                                        </label>
+                                                                                        <div class="row mt-3">
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="form-check ">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="NORMAL" checked="checked">
+                                                                                                        NORMAL
+                                                                                                    </label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="form-check">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="URGENTE">
+                                                                                                        URGENTE
+                                                                                                    </label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                             <div class="col-md-12">
                                                                                 <b id="rpt_book_proveedor_hotel_{{$hotel->id}}" class="text-success"></b>

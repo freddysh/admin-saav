@@ -1252,3 +1252,7 @@ Route::post('admin/book/traer-fecha-pago', [
     'uses' => 'PackageCotizacionController@traer_fecha_pago',
     'as' => 'traer_fecha_pago_path',
 ]);
+Route::post('admin/book/traer-fecha-pago-h', [
+    'uses' => 'PackageCotizacionController@traer_fecha_pago_h',
+    'as' => 'traer_fecha_pago_h_path',
+]);

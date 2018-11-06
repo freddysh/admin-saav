@@ -140,6 +140,12 @@ class BookController extends Controller
         //
     }
     function asignar_proveedor(Request $request){
+        $id_='prioridad_'.$request->input('id_');
+//        return $id_;
+        $fecha_pagar=$request->input('fecha_pagar');
+        $prioridad=$request->input($id_)[0];
+//        return $fecha_pagar;
+//        dd('fecha_pagar:'.$fecha_pagar.', prioridad:'.$prioridad);
         $dat=$request->input('precio')[0];
         $dato=explode('_',$dat);
         $itinerario=ItinerarioServicios::FindOrFail($dato[1]);
@@ -165,8 +171,11 @@ class BookController extends Controller
         $itinerario1->precio_proveedor=$dato[3];
         $itinerario1->proveedor_id=$dato[2];
         $itinerario1->proveedor_id_nuevo=$itinerario_serv_pro->id;
+        $itinerario1->fecha_venc=$fecha_pagar;
+        $itinerario1->prioridad=$prioridad;
         $iti_coti=ItinerarioCotizaciones::find($itinerario1->itinerario_cotizaciones_id);
-        $iti_coti->fecha;
+
+//        $iti_coti->fecha;
         $liquidacion=Liquidacion::where('ini','<=',$iti_coti->fecha)->where('fin','>=',$iti_coti->fecha)->count();
         if($liquidacion>0){
             $itinerario1->liquidacion=1;
