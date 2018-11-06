@@ -1302,11 +1302,11 @@
                                                             </a>
                                                             <div class="modal fade" id="myModal_edit_cost_h_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                                                 <div class="modal-dialog" role="document">
-                                                                    <div class="modal-content">
+                                                                    <div class="modal-content text-left">
                                                                         <form id="asignar_proveedor_hotel_costo_path_{{$hotel->id}}" action="{{route('asignar_proveedor_costo_hotel')}}" method="post">
                                                                             <div class="modal-header">
-                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Editar costo del hotel</h4>
+                                                                                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Editar costo del hotel</h4 class="modal-title" id="myModalLabel">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                                             </div>
                                                                             <div class="modal-body clearfix">
                                                                                 <table class="table m-0">
@@ -1430,117 +1430,136 @@
                                                             @endif
                                                         </a>
                                                         <div class="modal fade" id="myModal_h_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                            <div class="modal-dialog" role="document">
+                                                            <div class="modal-dialog modal-lg" role="document">
                                                                 <div class="modal-content">
+                                                                    @php
+                                                                        $s=0;
+                                                                        $d=0;
+                                                                        $m=0;
+                                                                        $t=0;
+                                                                    @endphp
                                                                     <form id="asignar_proveedor_hotel_path_{{$hotel->id}}" action="{{route('asignar_proveedor_hotel_path')}}" method="post">
                                                                         <div class="modal-header">
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                             <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Lista de proveedores para el hotel</h4>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                                         </div>
                                                                         <div class="modal-body clearfix">
-                                                                            <div class="col-md-12">
-                                                                                @foreach($hotel_proveedor->where('hotel_id',$hotel->hotel_id) as $hotel_proveedor_)
-                                                                                    @php
-                                                                                        $valor_class='';
-                                                                                    @endphp
-                                                                                    @if($hotel_proveedor_->proveedor_id==$hotel->proveedor_id)
-                                                                                        @php
-                                                                                            $valor_class='checked=\'checked\'';
-                                                                                        @endphp
-                                                                                    @endif
-                                                                                    <div class="col-md-12">
-                                                                                        <div class="checkbox11 text-left caja_current">
-                                                                                            <label>
-                                                                                                <input class="grupo" onchange="dato_producto_hotel('{{$hotel_proveedor_->id}}','{{$hotel_proveedor_->proveedor_id}}','{{$hotel->id}}','{{$itinerario->id}}')" type="radio" name="precio" value="{{$cotizacion->id}}_{{$hotel->id}}_{{$hotel_proveedor_->proveedor_id}}_{{$hotel_proveedor_->id}}" {!! $valor_class !!}>
-                                                                                                <b>{{$hotel_proveedor_->proveedor->nombre_comercial}} | {{$hotel_proveedor_->estrellas}}<i class="fa fa-star text-warning" aria-hidden="true"></i></b>
-                                                                                                <span class="d-none" id="proveedor_servicio_hotel_{{$hotel_proveedor_->id}}">
+                                                                            <div class="row">
+                                                                                <div class="col-12">
+                                                                                    <div class="row">
+                                                                                        @foreach($hotel_proveedor->where('hotel_id',$hotel->hotel_id) as $hotel_proveedor_)
+                                                                                            @php
+                                                                                                $valor_class='';
+                                                                                            @endphp
+                                                                                            @if($hotel_proveedor_->proveedor_id==$hotel->proveedor_id)
+                                                                                                @php
+                                                                                                    $valor_class='checked=\'checked\'';
+                                                                                                @endphp
+                                                                                            @endif
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="checkbox11 text-left caja_current">
+                                                                                                    <label>
+                                                                                                        <input class="grupo" onchange="dato_producto_hotel('{{$hotel_proveedor_->id}}','{{$hotel_proveedor_->proveedor_id}}','{{$hotel->id}}','{{$itinerario->id}}')" type="radio" name="precio" value="{{$cotizacion->id}}_{{$hotel->id}}_{{$hotel_proveedor_->proveedor_id}}_{{$hotel_proveedor_->id}}" {!! $valor_class !!}>
+                                                                                                        <b>{{$hotel_proveedor_->proveedor->nombre_comercial}} | {{$hotel_proveedor_->estrellas}}<i class="fa fa-star text-warning" aria-hidden="true"></i></b>
+                                                                                                        <span class="d-none" id="proveedor_servicio_hotel_{{$hotel_proveedor_->id}}">
                                                                                                     {{$hotel_proveedor_->proveedor->nombre_comercial}}
                                                                                                 </span>
-                                                                                            </label>
-                                                                                            @php
-                                                                                                $s=0;
-                                                                                                $d=0;
-                                                                                                $m=0;
-                                                                                                $t=0;
-                                                                                            @endphp
-                                                                                            @if($hotel->personas_s>0)
-                                                                                                @php
-                                                                                                    $s=1;
-                                                                                                @endphp
-                                                                                                <p class="text-grey-goto">Single: ${{($hotel_proveedor_->single*$hotel->personas_s)}}</p>
-                                                                                            @endif
-                                                                                            @if($hotel->personas_d>0)
-                                                                                                @php
-                                                                                                    $d=1;
-                                                                                                @endphp
-                                                                                                <p class="text-grey-goto">Double: ${{$hotel_proveedor_->doble*$hotel->personas_d}}</p>
-                                                                                            @endif
-                                                                                            @if($hotel->personas_m>0)
-                                                                                                @php
-                                                                                                    $m=1;
-                                                                                                @endphp
-                                                                                                <p class="text-grey-goto">Matrimonial: ${{$hotel_proveedor_->matrimonial*$hotel->personas_m}}</p>
-                                                                                            @endif
-                                                                                            @if($hotel->personas_t>0)
-                                                                                                @php
-                                                                                                    $t=1;
-                                                                                                @endphp
-                                                                                                <p class="text-grey-goto">Triple: ${{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
-                                                                                            @endif
-                                                                                            <span class="d-none" id="book_price_hotel_{{$hotel_proveedor_->id}}">
-                                                                                                @if($hotel->personas_s>0)
-                                                                                                    <p id="book_price_s_{{$hotel_proveedor_->id}}">{{($hotel_proveedor_->single*$hotel->personas_s)}}</p>
-                                                                                                @endif
-                                                                                                @if($hotel->personas_d>0)
-                                                                                                    <p id="book_price_d_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->doble*$hotel->personas_d}}</p>
-                                                                                                @endif
-                                                                                                @if($hotel->personas_m>0)
-                                                                                                    <p id="book_price_m_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->matrimonial*$hotel->personas_m}}</p>
-                                                                                                @endif
-                                                                                                @if($hotel->personas_t>0)
-                                                                                                    <p id="book_price_t_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
-                                                                                                @endif
-                                                                                            </span>
-                                                                                            <span class="text-primary"> Se paga {{$hotel_proveedor_->proveedor->plazo}} {{$hotel_proveedor_->proveedor->desci}}</span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                @endforeach
-                                                                            </div>
-                                                                            <div class="col-12 bg-green-goto">
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group" id="rpt_book_proveedor_fecha_h_{{$hotel->id}}">
-                                                                                            <label for="exampleInputEmail1">Fecha a pagar</label>
-                                                                                            <input type="date" class="form-control" name="fecha_pagar">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <label class="form-check-label">
-                                                                                            Escoja la prioridad
-                                                                                        </label>
-                                                                                        <div class="row mt-3">
-                                                                                            <div class="col-md-6">
-                                                                                                <div class="form-check ">
-                                                                                                    <label class="form-check-label">
-                                                                                                        <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="NORMAL" checked="checked">
-                                                                                                        NORMAL
                                                                                                     </label>
+
+                                                                                                    @if($hotel->personas_s>0)
+                                                                                                        @php
+                                                                                                            $s=1;
+                                                                                                        @endphp
+                                                                                                        <p class="text-grey-goto">Single: ${{($hotel_proveedor_->single*$hotel->personas_s)}}</p>
+                                                                                                    @endif
+                                                                                                    @if($hotel->personas_d>0)
+                                                                                                        @php
+                                                                                                            $d=1;
+                                                                                                        @endphp
+                                                                                                        <p class="text-grey-goto">Double: ${{$hotel_proveedor_->doble*$hotel->personas_d}}</p>
+                                                                                                    @endif
+                                                                                                    @if($hotel->personas_m>0)
+                                                                                                        @php
+                                                                                                            $m=1;
+                                                                                                        @endphp
+                                                                                                        <p class="text-grey-goto">Matrimonial: ${{$hotel_proveedor_->matrimonial*$hotel->personas_m}}</p>
+                                                                                                    @endif
+                                                                                                    @if($hotel->personas_t>0)
+                                                                                                        @php
+                                                                                                            $t=1;
+                                                                                                        @endphp
+                                                                                                        <p class="text-grey-goto">Triple: ${{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
+                                                                                                    @endif
+                                                                                                    <span class="d-none" id="book_price_hotel_{{$hotel_proveedor_->id}}">
+                                                                                                        @if($hotel->personas_s>0)
+                                                                                                            <p id="book_price_s_{{$hotel_proveedor_->id}}">{{($hotel_proveedor_->single*$hotel->personas_s)}}</p>
+                                                                                                        @endif
+                                                                                                        @if($hotel->personas_d>0)
+                                                                                                            <p id="book_price_d_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->doble*$hotel->personas_d}}</p>
+                                                                                                        @endif
+                                                                                                        @if($hotel->personas_m>0)
+                                                                                                            <p id="book_price_m_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->matrimonial*$hotel->personas_m}}</p>
+                                                                                                        @endif
+                                                                                                        @if($hotel->personas_t>0)
+                                                                                                            <p id="book_price_t_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
+                                                                                                        @endif
+                                                                                            </span>
+                                                                                                    <span class="text-primary"> Se paga {{$hotel_proveedor_->proveedor->plazo}} {{$hotel_proveedor_->proveedor->desci}}</span>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="col-md-6">
-                                                                                                <div class="form-check">
-                                                                                                    <label class="form-check-label">
-                                                                                                        <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="URGENTE">
-                                                                                                        URGENTE
-                                                                                                    </label>
+                                                                                        @endforeach
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="col-12 bg-green-goto text-white">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group" id="rpt_book_proveedor_fecha_h_{{$hotel->id}}">
+                                                                                                <label for="exampleInputEmail1">Fecha a pagar</label>
+                                                                                                <input type="date" class="form-control" name="fecha_pagar">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <label class="form-check-label">
+                                                                                                Escoja la prioridad
+                                                                                            </label>
+                                                                                            <div class="row mt-3">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-check ">
+                                                                                                        <label class="form-check-label">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="NORMAL" checked="checked">
+                                                                                                            NORMAL
+                                                                                                        </label>
+                                                                                                    </div>
                                                                                                 </div>
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-check">
+                                                                                                        <label class="form-check-label">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="URGENTE">
+                                                                                                            URGENTE
+                                                                                                        </label>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col">
+                                                                                            <div class="form-group form-check-inline">
+                                                                                                <label for="lista_dia">Ingrese los dias afectados</label>
+                                                                                                @for($i=1;$i<=$cotizacion->duracion;$i++)
+                                                                                                    <div class="form-check">
+                                                                                                        <input type="checkbox" class="form-check-input" id="dias_afectados_{{$hotel->id}}_{{$i}}" name="dias_afectados_{{$hotel->id}}[]" value="{{$i}}" @if($itinerario->dias==$i) checked="checked" @endif>
+                                                                                                        <label class="form-check-label" for="dias_afectados_{{$hotel->id}}_{{$i}}">DIA {{$i}}</label>
+                                                                                                    </div>
+                                                                                                @endfor
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="col-md-12">
-                                                                                <b id="rpt_book_proveedor_hotel_{{$hotel->id}}" class="text-success"></b>
+                                                                                <div class="col-12">
+                                                                                    <b id="rpt_book_proveedor_hotel_{{$hotel->id}}" class="text-success"></b>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -1589,8 +1608,8 @@
                                                                     <div class="input-group">
                                                                         <input class="form-control" type="text" id="code_{{$hotel->id}}" name="code_{{$hotel->id}}" value="{{$hotel->codigo_verificacion}}">
                                                                         <span class="input-group-btn">
-                                                                 <button type="submit" onclick="Enviar_codigo_reserva_hotel({{$hotel->id}})" id="btn_h_{{$hotel->id}}" class="btn btn-{{$codigo_ho}}"><i class="fa fa-{{$icon_ho}}" aria-hidden="true"></i></button>
-                                                            </span>
+                                                                             <button type="submit" onclick="Enviar_codigo_reserva_hotel({{$hotel->id}})" id="btn_h_{{$hotel->id}}" class="btn btn-{{$codigo_ho}}"><i class="fa fa-{{$icon_ho}}" aria-hidden="true"></i></button>
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                             </div>

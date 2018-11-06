@@ -194,7 +194,17 @@ class BookController extends Controller
 //        return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor]);
     }
     function asignar_proveedor_hotel(Request $request){
-
+        $fecha_pagar=$request->input('fecha_pagar');
+        $id='prioridad_'.$request->input('id');
+        $prioridad=$request->input($id)[0];
+        $key_dias_afectados='dias_afectados_'.$request->input('id').'[]';
+        $dias_afectados=$request->input($key_dias_afectados);
+//        return $dias_afectados;
+        $str='';
+        foreach ($dias_afectados as $dias_afectados_){
+            $str.=$dias_afectados_.'/';
+        }
+        return $str;
         $dat=$request->input('precio');
 //        return $dat;
         $dato=explode('_',$dat);
