@@ -817,8 +817,8 @@
                                                                                                 <div class="col-md-6">
                                                                                                     <div class="form-check ">
                                                                                                         <label class="form-check-label">
-                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$servicios->id}}[]" value="BAJA" checked="checked">
-                                                                                                            BAJA
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$servicios->id}}[]" value="NORMAL" checked="checked">
+                                                                                                            NORMAL
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 </div>
@@ -840,7 +840,7 @@
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 {{csrf_field()}}
-                                                                                <input type="text" name="id_" value="{{$servicios->id}}">
+                                                                                <input type="hidden" name="id_" value="{{$servicios->id}}">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                                                 <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}')">Guardar cambios</button>
                                                                             </div>
@@ -975,8 +975,8 @@
                                                                                                 <div class="col-md-6">
                                                                                                     <div class="form-check ">
                                                                                                         <label class="form-check-label">
-                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$servicios->id}}[]" value="BAJA" @if($servicios->prioridad=='BAJA') checked="checked" @endif>
-                                                                                                            BAJA
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$servicios->id}}[]" value="NORMAL" @if($servicios->prioridad=='NORMAL') checked="checked" @endif>
+                                                                                                            NORMAL
                                                                                                         </label>
                                                                                                     </div>
                                                                                                 </div>
