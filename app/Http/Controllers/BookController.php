@@ -195,16 +195,13 @@ class BookController extends Controller
     }
     function asignar_proveedor_hotel(Request $request){
         $fecha_pagar=$request->input('fecha_pagar');
-        $id='prioridad_'.$request->input('id');
-        $prioridad=$request->input($id)[0];
-        $key_dias_afectados='dias_afectados_'.$request->input('id').'[]';
+        $itinerario_paquete_id=$request->input('itinerario_paquete_id');
+        $id_='prioridad_'.$request->input('id');
+        $prioridad=$request->input($id_)[0];
+        $key_dias_afectados='dias_afectados_'.$request->input('id');
         $dias_afectados=$request->input($key_dias_afectados);
 //        return $dias_afectados;
-        $str='';
-        foreach ($dias_afectados as $dias_afectados_){
-            $str.=$dias_afectados_.'/';
-        }
-        return $str;
+
         $dat=$request->input('precio');
 //        return $dat;
         $dato=explode('_',$dat);
@@ -215,27 +212,37 @@ class BookController extends Controller
         $precio_d_r=$hotel_proveedor->doble;
         $precio_m_r=$hotel_proveedor->matrimonial;
         $precio_t_r=$hotel_proveedor->triple;
-//
+
 //        $precio_s_r=$request->input('txt_costo_edit_s');
 //        $precio_d_r=$request->input('txt_costo_edit_d');
 //        $precio_m_r=$request->input('txt_costo_edit_m');
 //        $precio_t_r=$request->input('txt_costo_edit_t');
+        $itinerario_cotizaciones=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)->get();
+//        return  dd($itinerario_cotizaciones);
+        foreach ($dias_afectados as $dias_afectados_){
+            foreach($itinerario_cotizaciones->where('dias',$dias_afectados_) as $itinerario_cotizaciones_){
+                foreach($itinerario_cotizaciones_->hotel as $hotel_){
+                    $hotel=PrecioHotelReserva::Find($hotel_->id);
+                    if($hotel_proveedor->estrellas==$hotel->estrellas){
+                        if($hotel->personas_s>0)
+                            $hotel->precio_s_r=$precio_s_r;
+                        if($hotel->personas_d>0)
+                            $hotel->precio_d_r=$precio_d_r;
+                        if($hotel->personas_m>0)
+                            $hotel->precio_m_r=$precio_m_r;
+                        if($hotel->personas_t>0)
+                            $hotel->precio_t_r=$precio_t_r;
 
-        $hotel=PrecioHotelReserva::Find($id);
-        if($hotel->personas_s>0)
-            $hotel->precio_s_r=$precio_s_r;
-        if($hotel->personas_d>0)
-            $hotel->precio_d_r=$precio_d_r;
-        if($hotel->personas_m>0)
-            $hotel->precio_m_r=$precio_m_r;
-        if($hotel->personas_t>0)
-            $hotel->precio_t_r=$precio_t_r;
-
-        $hotel->proveedor_id=$hotel_proveedor->proveedor_id;
-        if($hotel->save())
-            return 1;
-        else
-            return 0;
+                        $hotel->prioridad=$prioridad;
+                        $hotel->fecha_venc=$fecha_pagar;
+                        $hotel->proveedor_id=$hotel_proveedor->proveedor_id;
+                        $hotel->save();
+                    }
+                }
+            }
+        }
+        return redirect()->back();
+//        return 1;
 
 //        $dat=$request->input('precio')[0];
 //        $dato=explode('_',$dat);

@@ -1305,7 +1305,7 @@
                                                                     <div class="modal-content text-left">
                                                                         <form id="asignar_proveedor_hotel_costo_path_{{$hotel->id}}" action="{{route('asignar_proveedor_costo_hotel')}}" method="post">
                                                                             <div class="modal-header">
-                                                                                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Editar costo del hotel</h4 class="modal-title" id="myModalLabel">
+                                                                                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Editar costo del hotel</h4>
                                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                                             </div>
                                                                             <div class="modal-body clearfix">
@@ -1564,9 +1564,10 @@
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             {{csrf_field()}}
+                                                                            <input type="hidden" name="itinerario_paquete_id" value="{{$paquete->id}}">
                                                                             <input type="hidden" name="id" value="{{$hotel->id}}">
                                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                            <button type="button" class="btn btn-primary" onclick="Guardar_proveedor_hotel('{{$hotel->id}}','{{route('asignar_proveedor_costo_hotel')}}','{{csrf_token()}}','{{$s}}','{{$d}}','{{$m}}','{{$t}}')">
+                                                                            <button type="submit" class="btn btn-primary" onclick1="Guardar_proveedor_hotel('{{$hotel->id}}','{{route('asignar_proveedor_costo_hotel')}}','{{csrf_token()}}','{{$s}}','{{$d}}','{{$m}}','{{$t}}')">
                                                                                 @if($hotel->proveedor)
                                                                                     Editar cambios
                                                                                 @else
