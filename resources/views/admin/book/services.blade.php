@@ -1548,7 +1548,7 @@
                                                                                             <div class="form-group form-check-inline">
                                                                                                 <label for="lista_dia">Ingrese los dias afectados</label>
                                                                                                 @for($i=1;$i<=$cotizacion->duracion;$i++)
-                                                                                                    <div class="form-check">
+                                                                                                    <div class="form-check badge badge-warning ml-3">
                                                                                                         <input type="checkbox" class="form-check-input" id="dias_afectados_{{$hotel->id}}_{{$i}}" name="dias_afectados_{{$hotel->id}}[]" value="{{$i}}" @if($itinerario->dias==$i) checked="checked" @endif>
                                                                                                         <label class="form-check-label" for="dias_afectados_{{$hotel->id}}_{{$i}}">DIA {{$i}}</label>
                                                                                                     </div>
