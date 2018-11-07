@@ -998,7 +998,7 @@
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 {{csrf_field()}}
-                                                                                <input type="text" name="id_" value="{{$servicios->id}}">
+                                                                                <input type="hidden" name="id_" value="{{$servicios->id}}">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                                                 <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}')">Editar cambios</button>
                                                                             </div>

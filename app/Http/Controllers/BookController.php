@@ -173,13 +173,17 @@ class BookController extends Controller
         $itinerario1->proveedor_id_nuevo=$itinerario_serv_pro->id;
         $itinerario1->fecha_venc=$fecha_pagar;
         $itinerario1->prioridad=$prioridad;
-        $iti_coti=ItinerarioCotizaciones::find($itinerario1->itinerario_cotizaciones_id);
+        $m_servicio=M_Servicio::find($itinerario1->m_servicios_id);
+//        $iti_coti=ItinerarioCotizaciones::find($itinerario1->itinerario_cotizaciones_id);
 
-//        $iti_coti->fecha;
-        $liquidacion=Liquidacion::where('ini','<=',$iti_coti->fecha)->where('fin','>=',$iti_coti->fecha)->count();
-        if($liquidacion>0){
+        if(($m_servicio->grupo=='MOVILID' && $m_servicio->clase=='BOLETO') || $m_servicio->grupo=='ENTRANCES'){
             $itinerario1->liquidacion=1;
         }
+
+//        $liquidacion=Liquidacion::where('ini','<=',$iti_coti->fecha)->where('fin','>=',$iti_coti->fecha)->count();
+//        if($liquidacion>0){
+//            $itinerario1->liquidacion=1;
+//        }
         if($itinerario1->save())
             return 1;
         else

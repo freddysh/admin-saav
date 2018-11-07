@@ -1784,4 +1784,15 @@ class ContabilidadController extends Controller
 //            \File::delete('pdf/proposals_'.$id.'.pdf');
 //        }
     }
+    public function pagos_pendientes_filtro_datos_servicios_entradas(Request $request)
+    {
+        $opcion=$request->input('opcion');
+        $ini =$request->input('ini');
+        $fin =$request->input('fin');
+        $grupo=$request->input('grupo');
+        $cotizacion=Cotizacion::get();
+        $proveedores=Proveedor::where('grupo',$grupo)->get();
+        return view('admin.contabilidad.lista-entrada-pendiente',compact(['cotizacion', 'ini', 'fin','proveedores','grupo','opcion']));
+    }
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use App\Cotizacion;
+use App\CotizacionArchivos;
 use App\CotizacionesCliente;
 use App\Hotel;
 use App\HotelProveedor;
@@ -422,7 +423,8 @@ class PackageCotizacionController extends Controller
     public function show_cotizacion_id($cotizacion_id)
     {
         $cotizacion=Cotizacion::where('id',$cotizacion_id)->get();
-        return view('admin.quotes-current-details',['cotizacion'=>$cotizacion]);
+        $cotizacion_archivos=CotizacionArchivos::where('cotizaciones_id',$cotizacion_id)->get();
+        return view('admin.quotes-current-details',['cotizacion'=>$cotizacion,'cotizacion_archivos'=>$cotizacion_archivos]);
     }
 
     public function show_paxs()

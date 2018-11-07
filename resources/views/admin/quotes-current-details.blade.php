@@ -348,7 +348,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             {{csrf_field()}}
-                                            <input type="hidden" name="id" value="{{$cotizacion->id}}">
+                                            <input type="hidden" name="id" value="{{$cotizacion_->id}}">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                             <button type="submit" class="btn btn-primary">Subir archivo</button>
                                         </div>

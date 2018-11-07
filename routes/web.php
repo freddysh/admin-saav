@@ -1256,3 +1256,7 @@ Route::post('admin/book/traer-fecha-pago-h', [
     'uses' => 'PackageCotizacionController@traer_fecha_pago_h',
     'as' => 'traer_fecha_pago_h_path',
 ]);
+Route::post('/admin/contabilidad/pagos/entradas/pendientes/filtrar', [
+    'uses' => 'ContabilidadController@pagos_pendientes_filtro_datos_servicios_entradas',
+    'as' => 'pagos_pendientes_rango_fecha_filtro_servicios_entrada_path',
+]);

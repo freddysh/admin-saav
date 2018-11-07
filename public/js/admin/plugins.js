@@ -6392,3 +6392,28 @@ function mostrar_ventas_expedia(anio,mes,page){
         type:  'GET',
     });
 }
+
+function mostrar_opcion(opcion){
+    if(opcion=='TODOS LOS PENDIENTES'){
+        $('#from').addClass('d-none');
+        $('#to').addClass('d-none');
+    }
+    else if(opcion=='ENTRE DOS FECHAS'){
+        $('#from').removeClass('d-none');
+        $('#to').removeClass('d-none');
+    }
+}
+function buscar_servicios_pagos_pendientes_entradas(opcion,ini,fin,servicio) {
+    console.log('ini:' + ini + ' - fin:' + fin + ' - servicio:' + servicio);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $('#rpt_'+servicio).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+
+    $.post('/admin/contabilidad/pagos/entradas/pendientes/filtrar', 'opcion=' + opcion +'&ini=' + ini + '&fin=' + fin + '&grupo=' + servicio, function (data) {
+        $('#rpt_' + servicio).html(data);
+    }).fail(function (data) {
+    });
+}

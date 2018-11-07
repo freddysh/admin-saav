@@ -369,133 +369,221 @@ use Carbon\Carbon;
                             </div>
                         </div>
                         <div id="menu4" class="tab-pane fade @if($grupo=='ENTRANCES'){{'show active'}}@endif">
-                            <div class="row mt-3">
-                                <div class="col-lg-12">
-                                    <table id="lista_liquidaciones"  class="table table-bordered table-striped table-responsive table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th class="d-none">ID</th>
-                                            <th>DESDE</th>
-                                            <th>HASTA</th>
-                                            <th>ENVIADO POR</th>
-                                            <th>TOTAL</th>
-                                            <th>PAGADO</th>
-                                            <th>SALDO</th>
-                                            <th>ESTADO</th>
-                                            <th>OPERACIONES</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($liquidaciones->where('estado',1)->sortByDesc('id') as $liquidacion)
-                                            @php
-                                                $total=0;
-                                                $total_pagado=0;
-                                                $total_monto=0;
-                                                $total_pagado_monto=0;
-                                            @endphp
-                                            @foreach($cotizaciones as $cotizacion)
-                                                @foreach($cotizacion->paquete_cotizaciones->where('estado',2) as $paquete_cotizaciones)
-                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->where('fecha','>=',$liquidacion->ini)->where('fecha','<=',$liquidacion->fin)->sortBy('fecha') as $itinerario_cotizacion)
-                                                        @foreach($itinerario_cotizacion->itinerario_servicios as $itinerario_servicio)
-                                                            @foreach($servicios->where('id',$itinerario_servicio->m_servicios_id) as $serv)
-                                                                @if($serv->clase=='BTG' || $serv->clase=='CAT'||$serv->clase=='KORI'||$serv->clase=='MAPI'||$serv->clase=='OTROS')
+                            <div class="row mt-3 my-3">
+                                <div class="col-md-12">
+                                    <div class="card w-100">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-3 form-inline">
+                                                    @php
+                                                        $ToDay=new Carbon();
+                                                    @endphp
+                                                    {{csrf_field()}}
+                                                    <div class="form-group">
+                                                        <label for="tipo_filtro" class="text-secondary font-weight-bold pr-2">Escoja una opcion </label>
+                                                        <select name="tipo_filtro" id="tipo_filtro" class="form-control" onchange="mostrar_opcion($(this).val())">
+                                                            <option value="TODOS LOS PENDIENTES">TODOS LOS PENDIENTES</option>
+                                                            <option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-5 form-inline">
+                                                    @php
+                                                        $ToDay=new Carbon();
+                                                    @endphp
+                                                    {{csrf_field()}}
+                                                    <div class="form-group d-none" id="from">
+                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
+                                                        <input type="date" class="form-control" name="f_ini_ENTRADA" id="f_ini_ENTRADA" value="{{$ToDay->toDateString()}}" required>
+                                                    </div>
+                                                    <div class="form-group d-none" id="to">
+                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
+                                                        <input type="date" class="form-control" name="f_fin_ENTRADA" id="f_fin_ENTRADA" value="{{$ToDay->toDateString()}}" required>
+                                                    </div>
+                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes_entradas($('#tipo_filtro').val(),$('#f_ini_ENTRADA').val(),$('#f_fin_ENTRADA').val(),'ENTRANCES')">Filtrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" id="rpt_ENTRANCES">
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-md-12">
+                                    <div class="card w-100">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h2>Consultas Guardadas(TOURS)</h2>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-4 col-md-offset-4 text-center">
+                                                    @if(Session::has('message'))
+                                                        <div class="alert alert-danger" role="alert">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            {{Session::get('message')}}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @foreach($consulta_serv->where('grupo','TOURS') as $consultas)
+                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
+                                                            {{csrf_field()}}
+                                                            <input type="hidden" name="grupo" value="TOURS">
+                                                            <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
+                                                            <a href="javascript:;" onclick="parentNode.submit();">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
+                                                                {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
+                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                            </a>
+                                                            <p>
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'TOURS'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                            </p>
+                                                        </form>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 d-none">
+                                <table id="lista_liquidaciones"  class="table table-bordered table-striped table-responsive table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th class="d-none">ID</th>
+                                        <th>DESDE</th>
+                                        <th>HASTA</th>
+                                        <th>ENVIADO POR</th>
+                                        <th>TOTAL</th>
+                                        <th>PAGADO</th>
+                                        <th>SALDO</th>
+                                        <th>ESTADO</th>
+                                        <th>OPERACIONES</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($liquidaciones->where('estado',1)->sortByDesc('id') as $liquidacion)
+                                        @php
+                                            $total=0;
+                                            $total_pagado=0;
+                                            $total_monto=0;
+                                            $total_pagado_monto=0;
+                                        @endphp
+                                        @foreach($cotizaciones as $cotizacion)
+                                            @foreach($cotizacion->paquete_cotizaciones->where('estado',2) as $paquete_cotizaciones)
+                                                @foreach($paquete_cotizaciones->itinerario_cotizaciones->where('fecha','>=',$liquidacion->ini)->where('fecha','<=',$liquidacion->fin)->sortBy('fecha') as $itinerario_cotizacion)
+                                                    @foreach($itinerario_cotizacion->itinerario_servicios as $itinerario_servicio)
+                                                        @foreach($servicios->where('id',$itinerario_servicio->m_servicios_id) as $serv)
+                                                            @if($serv->clase=='BTG' || $serv->clase=='CAT'||$serv->clase=='KORI'||$serv->clase=='MAPI'||$serv->clase=='OTROS')
+                                                                @php
+                                                                    $total+=1;
+                                                                    $total_monto+=$itinerario_servicio->precio_proveedor;
+                                                                @endphp
+                                                                @if($itinerario_servicio->liquidacion==2)
                                                                     @php
-                                                                        $total+=1;
-                                                                        $total_monto+=$itinerario_servicio->precio_proveedor;
+                                                                        $total_pagado+=1;
+                                                                        $total_pagado_monto+=$itinerario_servicio->precio_proveedor;
                                                                     @endphp
-                                                                    @if($itinerario_servicio->liquidacion==2)
-                                                                        @php
-                                                                            $total_pagado+=1;
-                                                                            $total_pagado_monto+=$itinerario_servicio->precio_proveedor;
-                                                                        @endphp
-                                                                    @endif
                                                                 @endif
-                                                            @endforeach
-                                                            @foreach($servicios_movi->where('id',$itinerario_servicio->m_servicios_id) as $serv)
-                                                                @if($serv->clase=='BOLETO')
+                                                            @endif
+                                                        @endforeach
+                                                        @foreach($servicios_movi->where('id',$itinerario_servicio->m_servicios_id) as $serv)
+                                                            @if($serv->clase=='BOLETO')
+                                                                @php
+                                                                    $total+=1;
+                                                                    $total_monto+=$itinerario_servicio->precio_proveedor;
+                                                                @endphp
+                                                                @if($itinerario_servicio->liquidacion==2)
                                                                     @php
-                                                                        $total+=1;
-                                                                        $total_monto+=$itinerario_servicio->precio_proveedor;
+                                                                        $total_pagado+=1;
+                                                                        $total_pagado_monto+=$itinerario_servicio->precio_proveedor;
                                                                     @endphp
-                                                                    @if($itinerario_servicio->liquidacion==2)
-                                                                        @php
-                                                                            $total_pagado+=1;
-                                                                            $total_pagado_monto+=$itinerario_servicio->precio_proveedor;
-                                                                        @endphp
-                                                                    @endif
                                                                 @endif
-                                                            @endforeach
+                                                            @endif
                                                         @endforeach
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
-                                            <tr id="lista_liquidaciones_{{$liquidacion->id}}">
-                                                <td class="d-none">{{$liquidacion->id}}</td>
-                                                <td>{{fecha_peru($liquidacion->ini)}}</td>
-                                                <td>{{fecha_peru($liquidacion->fin)}}</td>
-                                                <td>
-                                                    @foreach($users->where('id',$liquidacion->user_id) as $user)
-                                                        {{$user->name}} {{$liquidacion->tipo_user}}
-                                                    @endforeach
-                                                </td>
-                                                <td>{{$total_monto}}$</td>
-                                                <td>{{$total_pagado_monto}}$</td>
-                                                <td>{{$total_monto-$total_pagado_monto}}$</td>
-
-                                                <td>
-                                                    @if($total==0)
-                                                        @php
-                                                            $total=1;
-                                                        @endphp
-                                                    @endif
-                                                    @php
-                                                        $pagado_porc=round(($total_pagado/$total)*100,2);
-                                                        $color_porc='progress-bar-danger';
-                                                    @endphp
-                                                    @if(25<$pagado_porc&&$pagado_porc<=50)
-                                                        @php
-                                                            $color_porc='progress-bar-warning';
-                                                        @endphp
-                                                    @endif
-                                                    @if(50<$pagado_porc&&$pagado_porc<=75)
-                                                        @php
-                                                            $color_porc='progress-bar-info';
-                                                        @endphp
-                                                    @endif
-                                                    @if(75<$pagado_porc&&$pagado_porc<=100)
-                                                        @php
-                                                            $color_porc='progress-bar-success';
-                                                        @endphp
-                                                    @endif
-                                                    <div class="progress">
-                                                        <div class="progress-bar {{$color_porc}} progress-bar-striped" role="progressbar" aria-valuenow="{{$pagado_porc}}" aria-valuemin="0" aria-valuemax="100"  style="min-width: 3em; width: {{$pagado_porc}}%">
-                                                            {{$pagado_porc}}%
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                @php
-                                                    $nro_cheque_s='Ninguno';
-                                                    $nro_cheque_c='Ninguno';
-
-                                                @endphp
-                                                @if(strlen($liquidacion->nro_cheque_s)>0 || $liquidacion->nro_cheque_s || $liquidacion->nro_cheque_s!='')
-                                                    @php
-                                                        $nro_cheque_s=$liquidacion->nro_cheque_s;
-                                                    @endphp
-                                                @endif
-                                                @if(strlen($liquidacion->nro_cheque_c)>0 || $liquidacion->nro_cheque_c || $liquidacion->nro_cheque_c!='')
-                                                    @php
-                                                        $nro_cheque_c=$liquidacion->nro_cheque_c;
-                                                    @endphp
-                                                @endif
-                                                <td>
-                                                    <a href="{{route('contabilidad_ver_liquidacion_path',[$liquidacion->id,$nro_cheque_s,$nro_cheque_c,$liquidacion->ini,$liquidacion->fin,'C'])}}" class="btn btn-primary"><i class="fa fa-eye-slash"></i></a>
-                                                </td>
-                                            </tr>
                                         @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        <tr id="lista_liquidaciones_{{$liquidacion->id}}">
+                                            <td class="d-none">{{$liquidacion->id}}</td>
+                                            <td>{{fecha_peru($liquidacion->ini)}}</td>
+                                            <td>{{fecha_peru($liquidacion->fin)}}</td>
+                                            <td>
+                                                @foreach($users->where('id',$liquidacion->user_id) as $user)
+                                                    {{$user->name}} {{$liquidacion->tipo_user}}
+                                                @endforeach
+                                            </td>
+                                            <td>{{$total_monto}}$</td>
+                                            <td>{{$total_pagado_monto}}$</td>
+                                            <td>{{$total_monto-$total_pagado_monto}}$</td>
+
+                                            <td>
+                                                @if($total==0)
+                                                    @php
+                                                        $total=1;
+                                                    @endphp
+                                                @endif
+                                                @php
+                                                    $pagado_porc=round(($total_pagado/$total)*100,2);
+                                                    $color_porc='progress-bar-danger';
+                                                @endphp
+                                                @if(25<$pagado_porc&&$pagado_porc<=50)
+                                                    @php
+                                                        $color_porc='progress-bar-warning';
+                                                    @endphp
+                                                @endif
+                                                @if(50<$pagado_porc&&$pagado_porc<=75)
+                                                    @php
+                                                        $color_porc='progress-bar-info';
+                                                    @endphp
+                                                @endif
+                                                @if(75<$pagado_porc&&$pagado_porc<=100)
+                                                    @php
+                                                        $color_porc='progress-bar-success';
+                                                    @endphp
+                                                @endif
+                                                <div class="progress">
+                                                    <div class="progress-bar {{$color_porc}} progress-bar-striped" role="progressbar" aria-valuenow="{{$pagado_porc}}" aria-valuemin="0" aria-valuemax="100"  style="min-width: 3em; width: {{$pagado_porc}}%">
+                                                        {{$pagado_porc}}%
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @php
+                                                $nro_cheque_s='Ninguno';
+                                                $nro_cheque_c='Ninguno';
+
+                                            @endphp
+                                            @if(strlen($liquidacion->nro_cheque_s)>0 || $liquidacion->nro_cheque_s || $liquidacion->nro_cheque_s!='')
+                                                @php
+                                                    $nro_cheque_s=$liquidacion->nro_cheque_s;
+                                                @endphp
+                                            @endif
+                                            @if(strlen($liquidacion->nro_cheque_c)>0 || $liquidacion->nro_cheque_c || $liquidacion->nro_cheque_c!='')
+                                                @php
+                                                    $nro_cheque_c=$liquidacion->nro_cheque_c;
+                                                @endphp
+                                            @endif
+                                            <td>
+                                                <a href="{{route('contabilidad_ver_liquidacion_path',[$liquidacion->id,$nro_cheque_s,$nro_cheque_c,$liquidacion->ini,$liquidacion->fin,'C'])}}" class="btn btn-primary"><i class="fa fa-eye-slash"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div id="menu5" class="tab-pane fade @if($grupo=='FOOD'){{'show active'}}@endif">
@@ -822,6 +910,28 @@ use Carbon\Carbon;
         </div>
     </div>
     <script>
+        $(document).ready(function() {
+
+            $(document).on('click keyup','.mis-checkboxes',function() {
+                calcular();
+            });
+
+        });
+
+        function calcular() {
+            var tot = $('#total_entrances');
+            tot.val(0);
+            $('.mis-checkboxes').each(function() {
+                if($(this).hasClass('mis-checkboxes')) {
+                    tot.val(($(this).is(':checked') ? parseFloat($(this).attr('value')) : 0) + parseFloat(tot.val()));
+                }
+                else {
+                    tot.val(parseFloat(tot.val()) + (isNaN(parseFloat($(this).val())) ? 0 : parseFloat($(this).val())));
+                }
+            });
+            var totalParts = parseFloat(tot.val()).toFixed(2).split('.');
+            tot.val('$' + totalParts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' +  (totalParts.length > 1 ? totalParts[1] : '00'));
+        }
         function eliminar_consulta(id,tipo) {
             // alert('holaaa');
             swal({
