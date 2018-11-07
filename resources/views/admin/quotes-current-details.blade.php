@@ -235,6 +235,7 @@
                     <td>PDF</td>
                     <td>LINK</td>
                     <td>CREAR TEMPLATE</td>
+                    <td>AGREGAR ARCHIVOS</td>
                     <td>AGREGAR NOTAS</td>
                     <td>PEDIR DATOS</td>
                     <td>REVISAR DATOS</td>
@@ -275,6 +276,87 @@
                     <td><a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.com.pe/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a></td>
                     <td><a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a></td>
+                    <td>
+                        <botton class="btn btn-primary" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_archivos">
+                            <i class="fas fa-file-alt"></i>
+                        </botton>
+                        <div class="modal fade" id="myModal_archivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <form action="{{route('guardar_archivos_cotizacion_path')}}" method="post" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel">Agregar archivos</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body clearfix">
+                                            <div class="col-md-12 text-left">
+                                                <div class="row">
+                                                    <div class="col-md-9 ">
+                                                        <div class="form-group">
+                                                            <label for="txt_archivo" class="font-weight-bold text-secondary">Agregar archivo</label>
+                                                            <input type="file" class="form-control" id="txt_archivo" name="txt_archivo">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 ">
+                                                        <div class="form-group">
+                                                            <label for="txt_archivo" class="font-weight-bold text-secondary">Formatos admitidos</label>
+                                                        </div>
+                                                        <i class="text-unset fas fa-image fa-2x"></i>
+                                                        <i class="text-primary fas fa-file-word fa-2x"></i>
+                                                        <i class="text-success fas fa-file-excel fa-2x"></i>
+                                                        <i class="text-danger fas fa-file-pdf fa-2x"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 caja_current">
+                                                        <p><b>Listado de archivos subidos</b></p>
+                                                        <div class="row">
+                                                            @foreach($cotizacion_archivos as $cotizacion_archivo)
+                                                                <div id="arch_{{$cotizacion_archivo->id}}"  class="col-3 caja_imagen ">
+                                                                    <div class="container-enlarge">
+                                                                        @if($cotizacion_archivo->extension=='jpg' || $cotizacion_archivo->extension=='png')
+                                                                            @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
+
+                                                                                <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="120" height="100">
+                                                                                <span><img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"></span>
+                                                                            @endif
+                                                                        @elseif($cotizacion_archivo->extension=='doc' || $cotizacion_archivo->extension=='docx')
+                                                                            <i class="text-primary fas fa-file-word fa-3x"></i>
+                                                                        @elseif($cotizacion_archivo->extension=='xls' || $cotizacion_archivo->extension=='xlsx')
+                                                                            <i class="text-success fas fa-file-excel fa-3x"></i>
+                                                                        @elseif($cotizacion_archivo->extension=='pdf' )
+                                                                            <i class="text-danger fas fa-file-pdf fa-3x"></i>
+                                                                        @elseif($cotizacion_archivo->extension=='txt' )
+                                                                            <i class="text-info fas fa-file fa-3x"></i>
+                                                                        @endif
+                                                                    </div>
+                                                                    <div>
+                                                                        <p><span class="text-unset">Subido el: {{$cotizacion_archivo->fecha_subida}} {{$cotizacion_archivo->hora_subida}}</span></p>
+                                                                        <a href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                        <a href="#!" onclick="eliminar_archivo('{{$cotizacion_archivo->id}}')"><i class="text-danger fas fa-trash-alt"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <b id="rpt_book_archivo" class="text-success"></b>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{csrf_field()}}
+                                            <input type="hidden" name="id" value="{{$cotizacion->id}}">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Subir archivo</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                     <td>
                         <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_notas_{{$paquete->id}}">
                             <i class="fas fa-list-alt" aria-hidden="true"></i>Agregar notas

@@ -1601,7 +1601,7 @@
                                                             @endphp
                                                         @endif
                                                         <form id="add_cod_verif_hotel_path_{{$hotel->id}}" class="form-inline" action="{{route('add_cod_verif_hotel_path')}}" method="post">
-                                                            <div class="row">
+                                                            <div class="row margin-left-0">
                                                                 {{csrf_field()}}
                                                                 <input type="hidden" name="id" value="{{$hotel->id}}">
                                                                 <input type="hidden" name="coti_id" value="{{$cotizacion->id}}">

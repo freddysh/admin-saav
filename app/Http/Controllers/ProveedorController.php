@@ -34,9 +34,10 @@ class ProveedorController extends Controller
             $estrellas='';
             if($grupo=='HOTELS'){
                 $estrellas= Input::get('estrellas');
-
             }
+            $destino=M_Destino::where('destino',$localizacion)->first();
 
+//            return ['id'=>$destino->id,'value'=>$destino->destino.''.$destino->codigo];
 //            $rs =strtoupper($request->get('txt_provider_0'));
             $results = null;
             $results = [];
@@ -62,7 +63,7 @@ class ProveedorController extends Controller
                 if($grupo==$query->grupo){
                     if($grupo=='HOTELS') {
                         if($estrellas==$query->categoria){
-                          if($localizacion==$query->localizacion)
+                            if($query->destinos_operados->where('m_destinos_id',$destino->id)->count()>0)
                             $results[] = ['id' => $query->id, 'value' => $query->codigo.' '.$query->nombre_comercial];
                         }
                     }
