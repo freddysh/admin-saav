@@ -674,6 +674,8 @@ class QouteController extends Controller
 //        return $arr;
         session()->flash('msg', 'OK');
 //        return redirect()->back();
-        return view('admin.expedia.expedia-import-vista-previa-rpt',compact([date("Y"),date("m")]));
+        $anio=date("Y");
+        $mes=date("m");
+        return view('admin.expedia.expedia-import-vista-previa-rpt',compact([$anio,$mes]));
     }
 }
