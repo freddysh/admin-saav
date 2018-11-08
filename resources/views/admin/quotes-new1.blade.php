@@ -872,9 +872,7 @@
 
     {{--</form>--}}
     <script>
-        $(document).ready(function(){
-            CKEDITOR.replace('txt_notas');
-        });
+        
         calcular_resumen();
 
         $(function()

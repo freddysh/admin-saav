@@ -1260,3 +1260,7 @@ Route::post('/admin/contabilidad/pagos/entradas/pendientes/filtrar', [
     'uses' => 'ContabilidadController@pagos_pendientes_filtro_datos_servicios_entradas',
     'as' => 'pagos_pendientes_rango_fecha_filtro_servicios_entrada_path',
 ]);
+Route::post('/admin/contabilidad/pagos/entradas/pendientes/pagar', [
+    'uses' => 'ContabilidadController@pagos_pendientes_entradas_pagar',
+    'as' => 'pagar_entradas_path',
+]);

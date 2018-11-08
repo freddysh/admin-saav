@@ -15,6 +15,15 @@ use Carbon\Carbon;
 @extends('layouts.admin.contabilidad')
 @section('archivos-css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
+    <style>
+        .fixed {
+            position: fixed;
+            background: whitesmoke;
+            top: 250px;
+            right: 0;
+            width: 300px;
+        }
+    </style>
 @stop
 @section('archivos-js')
     <script src="{{asset("https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js")}}"></script>
@@ -920,10 +929,12 @@ use Carbon\Carbon;
 
         function calcular() {
             var tot = $('#total_entrances');
+            var itinerario_servicio_id='';
             tot.val(0);
             $('.mis-checkboxes').each(function() {
                 if($(this).hasClass('mis-checkboxes')) {
-                    tot.val(($(this).is(':checked') ? parseFloat($(this).attr('value')) : 0) + parseFloat(tot.val()));
+                    itinerario_servicio_id='#precio_'.$(this).attr('value');
+                    tot.val(($(this).is(':checked') ? parseFloat($(itinerario_servicio_id).val()) : 0) + parseFloat(tot.val()));
                 }
                 else {
                     tot.val(parseFloat(tot.val()) + (isNaN(parseFloat($(this).val())) ? 0 : parseFloat($(this).val())));
