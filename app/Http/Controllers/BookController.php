@@ -798,7 +798,8 @@ class BookController extends Controller
             $archivos->save();
             Storage::disk('cotizacion_archivos')->put($filename,  File::get($txt_imagen));
         }
-        return redirect()->route('book_show_path',$txt_cotizacion_id);
+        return redirect()->back();
+//        return redirect()->route('book_show_path',$txt_cotizacion_id);
     }
 
     public function getCotiArchivosImageName($filename){

@@ -872,7 +872,7 @@
 
     {{--</form>--}}
     <script>
-        
+
         calcular_resumen();
 
         $(function()

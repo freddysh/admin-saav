@@ -933,7 +933,8 @@ use Carbon\Carbon;
             tot.val(0);
             $('.mis-checkboxes').each(function() {
                 if($(this).hasClass('mis-checkboxes')) {
-                    itinerario_servicio_id='#precio_'.$(this).attr('value');
+                    itinerario_servicio_id='#precio_'+$(this).attr('value');
+                    // console.log('lectura del valor de '+$(this).attr('value')+' :'+$(itinerario_servicio_id).val());
                     tot.val(($(this).is(':checked') ? parseFloat($(itinerario_servicio_id).val()) : 0) + parseFloat(tot.val()));
                 }
                 else {

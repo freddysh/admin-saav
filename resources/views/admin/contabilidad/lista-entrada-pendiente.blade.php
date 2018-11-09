@@ -609,7 +609,8 @@
             <input type="hidden" name="ini" value="{{$ini}}">
             <input type="hidden" name="fin" value="{{$fin}}">
             {{csrf_field()}}
-            <button type="submit" class="form-control btn btn-primary btn-block"><i class="fas fa-save"></i> Pagar</button>
+            <button type="submit" class="form-control btn btn-success btn-block"><i class="fas fa-save"></i> Guardar para despues</button>
+            <button type="submit" class="form-control btn btn-primary btn-block"><i class="fas fa-coin"></i> Pagar</button>
         </form>
     </div>
 </div>
