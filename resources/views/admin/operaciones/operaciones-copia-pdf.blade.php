@@ -35,13 +35,13 @@
                 <tbody >
                 @foreach($array_datos_cotizacion as $key => $array_datos_coti_)
                     @php
-                        $arreglo=explode('==',$array_datos_coti_);
+                        $arreglo=explode('%',$array_datos_coti_['servicio']);
                     @endphp
                     <tr>
                         @php
                             $key1=substr($key,0,strlen($key)-6);
-                            $valor=explode('|',$array_datos_coti[$key1]);
-                            $valor1=explode('|',$array_datos_coti[$key1]);
+                            $valor=explode('|',$array_datos_coti[$key1]['datos']);
+                            $valor1=explode('|',$array_datos_coti[$key1]['datos']);
                             $hora=explode('_',$key);
                         @endphp
                         <td width="50px">{{fecha_peru($valor[0])}}</td>
