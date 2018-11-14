@@ -4,7 +4,7 @@
     @php
         $dato_cliente='';
         $tiempo_dias=5;
-        $hoy=\Carbon\Carbon::now();
+
         $color='bg-danger-goto';
 
         function fecha_peru($fecha){
@@ -123,6 +123,7 @@
                     <div class="col-12" id="NUEVO">
                         @foreach($cotizacion_cat->sortBy('fecha') as $cotizacion_cat_)
                             @php
+                                $hoy=\Carbon\Carbon::now();
                                 $fecha_llegada=\Carbon\Carbon::createFromFormat('Y-m-d',$cotizacion_cat_->fecha);
                                 $diff_dias=$hoy->diffInDays($fecha_llegada,false);
                             @endphp
@@ -173,6 +174,7 @@
                                 @endforeach
                             @endforeach
                             @php
+                                $hoy=\Carbon\Carbon::now();
                                 $ultimo_dia=\Carbon\Carbon::createFromFormat('Y-m-d',$ultimo_dia);
                                 $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
                             @endphp
@@ -310,6 +312,7 @@
                     <div class="col-12" id="CURRENT">
                         @foreach($cotizacion_cat->sortBy('fecha') as $cotizacion_cat_)
                             @php
+                                $hoy=\Carbon\Carbon::now();
                                 $fecha_llegada=\Carbon\Carbon::createFromFormat('Y-m-d',$cotizacion_cat_->fecha);
                                 $diff_dias=$hoy->diffInDays($fecha_llegada,false);
                             @endphp
@@ -498,6 +501,7 @@
                     <div class="col-12" id="COMPLETE">
                         @foreach($cotizacion_cat->sortBy('fecha') as $cotizacion_cat_)
                             @php
+                                $hoy=\Carbon\Carbon::now();
                                 $fecha_llegada=\Carbon\Carbon::createFromFormat('Y-m-d',$cotizacion_cat_->fecha);
                                 $diff_dias=$hoy->diffInDays($fecha_llegada,false);
                             @endphp
@@ -548,6 +552,7 @@
                                 @endforeach
                             @endforeach
                             @php
+                                $hoy=\Carbon\Carbon::now();
                                 $ultimo_dia=\Carbon\Carbon::createFromFormat('Y-m-d',$ultimo_dia);
                                 $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
                             @endphp

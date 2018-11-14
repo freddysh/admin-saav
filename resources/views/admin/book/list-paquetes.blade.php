@@ -1,7 +1,6 @@
 @php
     $dato_cliente='';
     $tiempo_dias=5;
-    $hoy=\Carbon\Carbon::now();
     $color='bg-danger-goto';
 
     function fecha_peru($fecha){
@@ -11,6 +10,7 @@
 @endphp
 @foreach($cotizacion_cat->sortBy('fecha') as $cotizacion_cat_)
     @php
+        $hoy=\Carbon\Carbon::now();
         $fecha_llegada=\Carbon\Carbon::createFromFormat('Y-m-d',$cotizacion_cat_->fecha);
         $diff_dias=$hoy->diffInDays($fecha_llegada,false);
     @endphp
@@ -61,6 +61,7 @@
         @endforeach
     @endforeach
     @php
+        $hoy=\Carbon\Carbon::now();
         $ultimo_dia=\Carbon\Carbon::createFromFormat('Y-m-d',$ultimo_dia);
         $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
     @endphp

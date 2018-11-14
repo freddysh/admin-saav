@@ -2088,7 +2088,7 @@ class PackageCotizacionController extends Controller
     if($valor=='2') {
         $usuario = auth()->guard('admin')->user();
         $email = $usuario->email;
-        $email = 'fredy1432@gmail.com';
+//        $email = 'fredy1432@gmail.com';
         $name = $usuario->name;
         $array_emails = [];
         $emails = User::where('tipo_user', 'reservas')->get();

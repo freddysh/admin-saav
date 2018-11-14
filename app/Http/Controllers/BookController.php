@@ -864,27 +864,43 @@ class BookController extends Controller
         $columna= $request->input('columna');
         $cotizacion_cat =NULL;
         if($campo=='CODIGO/NOMBRE'){
-            $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
-                $query->where('estado','1');
-                $query->whereHas('cliente',function ($query)use ($valor1){
-                    $query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
-                });
-            })
-            ->orWhere('codigo','like','%'.$valor1.'%')->get();
+            if(trim($valor1)==''){
+                $cotizacion_cat =Cotizacion::get();
+            }
+            elseif(trim($valor1)!=''){
+                $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
+                    $query->where('estado','1');
+                    $query->whereHas('cliente',function ($query)use ($valor1){
+                        $query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
+                    });
+                })
+                    ->orWhere('codigo','like','%'.$valor1.'%')->get();
+            }
 //            return dd($cotizacion_cat);
             return view('admin.book.list-paquetes-todos',compact('cotizacion_cat','columna'));
         }
         elseif($campo=='CODIGO'){
-            $cotizacion_cat =Cotizacion::where('codigo','like','%'.$valor1.'%')->get();
+            if(trim($valor1)==''){
+                $cotizacion_cat =Cotizacion::get();
+            }
+            elseif(trim($valor1)!=''){
+                $cotizacion_cat =Cotizacion::where('codigo','like','%'.$valor1.'%')->get();
+            }
             return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
         }
         elseif($campo=='NOMBRE'){
-            $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
-                $query->where('estado','1');
-                $query->whereHas('cliente',function ($query)use ($valor1){
-                    $query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
-                });
-            })->get();
+            if(trim($valor1)==''){
+                $cotizacion_cat =Cotizacion::get();
+            }
+            elseif(trim($valor1)!=''){
+                $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
+                    $query->where('estado','1');
+                    $query->whereHas('cliente',function ($query)use ($valor1){
+                        $query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
+                    });
+                })->get();
+            }
+
 
             return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
         }
