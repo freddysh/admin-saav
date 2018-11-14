@@ -863,20 +863,39 @@ class BookController extends Controller
         $campo = $request->input('campo');
         $columna= $request->input('columna');
         $cotizacion_cat =NULL;
-        if($campo=='CODIGO'){
-            $cotizacion_cat =Cotizacion::where('codigo',$valor1)->get();
+        if($campo=='CODIGO/NOMBRE'){
+            $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
+                $query->where('estado','1');
+                $query->whereHas('cliente',function ($query)use ($valor1){
+                    $query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
+                });
+            })
+            ->orWhere('codigo','like','%'.$valor1.'%')->get();
+//            return dd($cotizacion_cat);
+            return view('admin.book.list-paquetes-todos',compact('cotizacion_cat','columna'));
+        }
+        elseif($campo=='CODIGO'){
+            $cotizacion_cat =Cotizacion::where('codigo','like','%'.$valor1.'%')->get();
+            return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
         }
         elseif($campo=='NOMBRE'){
-            $cotizacion_cat =Cotizacion::where('nombre','like','%'.$valor1.'%')->get();
+            $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
+                $query->where('estado','1');
+                $query->whereHas('cliente',function ($query)use ($valor1){
+                    $query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
+                });
+            })->get();
+
+            return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
         }
         elseif($campo=='FECHAS'){
             $cotizacion_cat =Cotizacion::whereBetween('fecha', [$valor1, $valor2])->get();
+            return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
         }
         elseif($campo=='ANIO-MES'){
             $cotizacion_cat =Cotizacion::whereYear('fecha',$valor1)->whereMonth('fecha',$valor2)->get();
+            return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
         }
-//        return dd($cotizacion_cat);
-        return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
     }
     public function list_paquetes_codigo(Request $request)
     {
