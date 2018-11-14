@@ -1808,6 +1808,10 @@ a.ui-button:active,
   color: #e91e63;
 }
 
+.bg-danger-goto {
+  background: #f2dede;
+}
+
 .bg-green-goto {
   background: #7F8429;
 }

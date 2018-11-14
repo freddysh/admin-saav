@@ -44,7 +44,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="text-primary">
-                                                            <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                            <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                             <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                             <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                         </label>
@@ -80,7 +80,7 @@
                                             <tr>
                                                 <td>
                                                     <label class="text-primary">
-                                                        <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                        <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                         <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                         <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                     </label>
@@ -138,7 +138,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="text-primary">
-                                                            <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                            <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                             <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                             <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                         </label>
@@ -174,7 +174,7 @@
                                             <tr>
                                                 <td>
                                                     <label class="text-primary">
-                                                        <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                        <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                         <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                         <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                     </label>
@@ -232,7 +232,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="text-primary">
-                                                            <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                            <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                             <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                             <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                         </label>
@@ -268,7 +268,7 @@
                                             <tr>
                                                 <td>
                                                     <label class="text-primary">
-                                                        <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                        <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                         <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                         <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                     </label>
@@ -326,7 +326,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="text-primary">
-                                                            <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                            <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                             <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                             <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                         </label>
@@ -362,7 +362,7 @@
                                             <tr>
                                                 <td>
                                                     <label class="text-primary">
-                                                        <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                        <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                         <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                         <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                     </label>
@@ -420,7 +420,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="text-primary">
-                                                            <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                            <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                             <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                             <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                         </label>
@@ -456,7 +456,7 @@
                                             <tr>
                                                 <td>
                                                     <label class="text-primary">
-                                                        <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                        <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                         <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                         <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                     </label>
@@ -514,7 +514,7 @@
                                                 <tr>
                                                     <td>
                                                         <label class="text-primary">
-                                                            <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                            <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                             <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                             <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                         </label>
@@ -550,7 +550,7 @@
                                             <tr>
                                                 <td>
                                                     <label class="text-primary">
-                                                        <input type="checkbox" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
+                                                        <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}">
                                                         <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
                                                         <b>{{fecha_peru($itinerario_cotizaciones->fecha)}}</b>
                                                     </label>
@@ -597,20 +597,20 @@
         </div>
     </div>
     <div class="col-2 fixed">
-        <form action="{{route('pagar_entradas_path')}}" method="post">
+        <form id="form_guardar" action="{{route('pagar_entradas_path')}}" method="post">
             <div class="form-group">
                 <label for="total_entrances" class="text-secondary font-weight-bold pr-2">TOTAL </label>
-                <input type="text" class="form-control" id="total_entrances" value="0" disabled="disabled">
+                <input type="text" class="form-control" id="total_entrances" name="total_entrances" value="0">
             </div>
             <div class="form-group">
                 <label for="nro_operacion">Nro de operacion</label>
-                <input type="text" class="form-control" id="nro_operacion" aria-describedby="Nro operacion" placeholder="Nro operacion">
+                <input type="text" class="form-control" id="nro_operacion" name="nro_operacion" aria-describedby="Nro operacion" placeholder="Nro operacion">
             </div>
             <input type="hidden" name="ini" value="{{$ini}}">
             <input type="hidden" name="fin" value="{{$fin}}">
             {{csrf_field()}}
-            <button type="submit" class="form-control btn btn-success btn-block"><i class="fas fa-save"></i> Guardar para despues</button>
-            <button type="submit" class="form-control btn btn-primary btn-block"><i class="fas fa-coin"></i> Pagar</button>
+            <button type="submit" name="guardar" class="form-control btn btn-success btn-block" value="Guardar"><i class="fas fa-save"></i> Guardar para despues</button>
+            <button type="submit" name="pagar" class="form-control btn btn-primary btn-block" value="Pagar"><i class="fas fa-coin"></i> Pagar</button>
         </form>
     </div>
 </div>

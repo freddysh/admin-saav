@@ -1794,5 +1794,59 @@ class ContabilidadController extends Controller
         $proveedores=Proveedor::where('grupo',$grupo)->get();
         return view('admin.contabilidad.lista-entrada-pendiente',compact(['cotizacion', 'ini', 'fin','proveedores','grupo','opcion']));
     }
+    public function pagos_pendientes_entradas_pagar(Request $request)
+    {
+        $opcion = $request->input('tipo_filtro');
+        $ini = $request->input('ini');
+        $fin = $request->input('fin');
+        $total_entrances = $request->input('total_entrances');
+        $total_entrances=substr($total_entrances,1,strlen($total_entrances));
+        $nro_operacion = $request->input('nro_operacion');
+        $guardar = $request->input('guardar');
+        $pagar = $request->input('pagar');
+        $itinerario_servicio_id = $request->input('itinerario_servicio_id');
+        $data=Carbon::now()->subHour(5);
+        $mes='00';
+        if($data->month<10)
+            $mes='0'.$data->month;
+
+        $created_at=$data->year.'-'.$mes.'-'.$data->day.' '.$data->hour.':'.$data->minute.':'.$data->second;
+//        dd($created_at);
+        if (isset($guardar)) {
+            $liquidacion = new Liquidacion();
+            $liquidacion->ini = $ini;
+            $liquidacion->fin = $fin;
+            $liquidacion->user_id == auth()->guard('admin')->user()->id;
+            $liquidacion->total = $total_entrances;
+            $liquidacion->opcion = $opcion;
+            $liquidacion->nro_operacion = $nro_operacion;
+            $liquidacion->estado = '1';
+//            $liquidacion->created_at=$created_at;
+            $liquidacion->save();
+            foreach ($itinerario_servicio_id as $id) {
+                $temp = ItinerarioServicios::Find($id);
+                $temp->liquidacion_id =$liquidacion->id;
+                $temp->save();
+            }
+        }
+        elseif (isset($pagar)) {
+            $liquidacion = new Liquidacion();
+            $liquidacion->ini = $ini;
+            $liquidacion->fin = $fin;
+            $liquidacion->user_id == auth()->guard('admin')->user()->id;
+            $liquidacion->total = $total_entrances;
+            $liquidacion->opcion = $opcion;
+            $liquidacion->nro_operacion = $nro_operacion;
+            $liquidacion->estado = '2';
+            $liquidacion->save();
+            foreach ($itinerario_servicio_id as $id) {
+                $temp = ItinerarioServicios::Find($id);
+                $temp->liquidacion =2;
+                $temp->liquidacion_id =$liquidacion->id;
+                $temp->save();
+            }
+        }
+        return redirect()->route('pagos_pendientes_rango_fecha_path','ENTRANCES');
+    }
 
 }

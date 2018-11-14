@@ -856,14 +856,27 @@ class BookController extends Controller
         else
             return 0;
     }
-    public function list_paquetes_fecha(Request $request)
+    public function list_paquetes(Request $request)
     {
-//        return 'hola';
-        $mes = $request->input('mes');
-        $anio = $request->input('anio');
-        $cotizacion_cat =Cotizacion::whereYear('fecha',$anio)->whereMonth('fecha',$mes)->get();
-//        dd($anio);
-        return view('admin.book.list-paquetes',compact('cotizacion_cat'));
+        $valor1 =strtoupper(trim($request->input('valor1')));
+        $valor2 =strtoupper(trim($request->input('valor2')));
+        $campo = $request->input('campo');
+        $columna= $request->input('columna');
+        $cotizacion_cat =NULL;
+        if($campo=='CODIGO'){
+            $cotizacion_cat =Cotizacion::where('codigo',$valor1)->get();
+        }
+        elseif($campo=='NOMBRE'){
+            $cotizacion_cat =Cotizacion::where('nombre','like','%'.$valor1.'%')->get();
+        }
+        elseif($campo=='FECHAS'){
+            $cotizacion_cat =Cotizacion::whereBetween('fecha', [$valor1, $valor2])->get();
+        }
+        elseif($campo=='ANIO-MES'){
+            $cotizacion_cat =Cotizacion::whereYear('fecha',$valor1)->whereMonth('fecha',$valor2)->get();
+        }
+//        return dd($cotizacion_cat);
+        return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
     }
     public function list_paquetes_codigo(Request $request)
     {

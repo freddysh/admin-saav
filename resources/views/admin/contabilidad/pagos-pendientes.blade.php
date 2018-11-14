@@ -390,9 +390,11 @@ use Carbon\Carbon;
                                                     {{csrf_field()}}
                                                     <div class="form-group">
                                                         <label for="tipo_filtro" class="text-secondary font-weight-bold pr-2">Escoja una opcion </label>
-                                                        <select name="tipo_filtro" id="tipo_filtro" class="form-control" onchange="mostrar_opcion($(this).val())">
+                                                        <select form="form_guardar" name="tipo_filtro" id="tipo_filtro" class="form-control" onchange="mostrar_opcion($(this).val())">
                                                             <option value="TODOS LOS PENDIENTES">TODOS LOS PENDIENTES</option>
+                                                            {{--<option value="TODOS LOS URGENTES">TODOS LOS URGENTES</option>--}}
                                                             <option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS</option>
+                                                            {{--<option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS URGENTES</option>--}}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -426,7 +428,7 @@ use Carbon\Carbon;
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <h2>Consultas Guardadas(TOURS)</h2>
+                                                    <h2>Consultas Guardadas(ENTRANCES)</h2>
                                                 </div>
                                             </div>
                                             <hr>
@@ -443,25 +445,44 @@ use Carbon\Carbon;
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($consulta_serv->where('grupo','TOURS') as $consultas)
-                                                    <div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">
+                                                @foreach($liquidaciones as $liquidaciones_)
+                                                    <div id="c_s_{{$liquidaciones_->id}}" class="col-md-2 text-center">
                                                         <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
                                                             {{csrf_field()}}
-                                                            <input type="hidden" name="grupo" value="TOURS">
-                                                            <input type="hidden" name="txt_codigos" value="{{$consultas->id}}">
+                                                            <input type="hidden" name="grupo" value="ENTRANCES">
+                                                            <input type="hidden" name="txt_codigos" value="{{$liquidaciones_->id}}">
                                                             <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
+                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="70px" height="70px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-14">Creado:<br>{{fecha_peru1($liquidaciones_->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
-                                                                <a href="{{route('descargar_consulta_s_path',[$consultas->id,'TOURS'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>
-                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>
+                                                                <a href="{{route('descargar_consulta_s_path',[$liquidaciones_->id,'ENTRANCES'])}}" class="btn btn-danger"><i class="fas fa-file-pdf"></i></a>
+                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$liquidaciones_->id}}','s')"><i class="fa fa-trash"></i></a>
                                                             </p>
                                                         </form>
                                                     </div>
                                                 @endforeach
+                                                {{--@foreach($consulta_serv->where('grupo','TOURS') as $consultas)--}}
+                                                    {{--<div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">--}}
+                                                        {{--<form action="{{route('list_fechas_servivios_show_path')}}" method="post">--}}
+                                                            {{--{{csrf_field()}}--}}
+                                                            {{--<input type="hidden" name="grupo" value="TOURS">--}}
+                                                            {{--<input type="hidden" name="txt_codigos" value="{{$consultas->id}}">--}}
+                                                            {{--<a href="javascript:;" onclick="parentNode.submit();">--}}
+                                                                {{--<img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">--}}
+                                                                {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
+                                                                {{--<br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>--}}
+                                                            {{--</a>--}}
+                                                            {{--<p>--}}
+                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                                {{--<a href="{{route('descargar_consulta_s_path',[$consultas->id,'TOURS'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>--}}
+                                                                {{--<a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>--}}
+                                                            {{--</p>--}}
+                                                        {{--</form>--}}
+                                                    {{--</div>--}}
+                                                {{--@endforeach--}}
                                             </div>
                                         </div>
                                     </div>

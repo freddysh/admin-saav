@@ -180,34 +180,50 @@
                                                             <div class="row">
                                                                 <div class="col-md-12 caja_current">
                                                                     <p><b>Listado de archivos subidos</b></p>
-                                                                    <div class="row">
+                                                                    <ul class="list-inline gallery">
                                                                         @foreach($cotizacion_archivos as $cotizacion_archivo)
-                                                                            <div id="arch_{{$cotizacion_archivo->id}}"  class="col-3 caja_imagen ">
-                                                                                <div class="container-enlarge">
-                                                                                    @if($cotizacion_archivo->extension=='jpg' || $cotizacion_archivo->extension=='png')
-                                                                                        @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
-
-                                                                                            <img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"  width="120" height="100">
-                                                                                            <span><img src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}"></span>
+                                                                            <li id="arch_{{$cotizacion_archivo->id}}" class="border border-secondary rounded mb-1">
+                                                                                <div class="row ">
+                                                                                    <div class="col-2 text-center">
+                                                                                        {{--<img class="thumbnail zoom" src="https://placeimg.com/110/110/abstract/1">--}}
+                                                                                        @if($cotizacion_archivo->extension=='jpg' || $cotizacion_archivo->extension=='png')
+                                                                                            @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
+                                                                                                <img class="thumbnail zoom" width="80px" height="75px" src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}" >
+                                                                                            @endif
+                                                                                        @elseif($cotizacion_archivo->extension=='doc' || $cotizacion_archivo->extension=='docx')
+                                                                                            <i class="text-primary fas fa-file-word fa-3x"></i>
+                                                                                        @elseif($cotizacion_archivo->extension=='xls' || $cotizacion_archivo->extension=='xlsx')
+                                                                                            <i class="text-success fas fa-file-excel fa-3x"></i>
+                                                                                        @elseif($cotizacion_archivo->extension=='pdf' )
+                                                                                            <i class="text-danger fas fa-file-pdf fa-3x"></i>
+                                                                                        @elseif($cotizacion_archivo->extension=='txt' )
+                                                                                            <i class="text-info fas fa-file fa-3x"></i>
                                                                                         @endif
-                                                                                    @elseif($cotizacion_archivo->extension=='doc' || $cotizacion_archivo->extension=='docx')
-                                                                                        <i class="text-primary fas fa-file-word fa-3x"></i>
-                                                                                    @elseif($cotizacion_archivo->extension=='xls' || $cotizacion_archivo->extension=='xlsx')
-                                                                                        <i class="text-success fas fa-file-excel fa-3x"></i>
-                                                                                    @elseif($cotizacion_archivo->extension=='pdf' )
-                                                                                        <i class="text-danger fas fa-file-pdf fa-3x"></i>
-                                                                                    @elseif($cotizacion_archivo->extension=='txt' )
-                                                                                        <i class="text-info fas fa-file fa-3x"></i>
-                                                                                    @endif
+                                                                                    </div>
+                                                                                    <div class="col-10">
+                                                                                        <div class="row">
+                                                                                            <div class="col-12">
+                                                                                                <b>Nombre:</b> {{$cotizacion_archivo->nombre}}
+                                                                                            </div>
+                                                                                            <div class="col-12">
+                                                                                                <b>Subido el:</b> {{$cotizacion_archivo->fecha_subida}} {{$cotizacion_archivo->hora_subida}}
+                                                                                            </div>
+                                                                                            <div class="col-12">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-1">
+                                                                                                        <a class="btn btn-primary" href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                                                    </div>
+                                                                                                    <div class="col-1">
+                                                                                                        <a class="btn btn-danger" href="#!" onclick="eliminar_archivo('{{$cotizacion_archivo->id}}')"><i class="fas fa-trash-alt"></i></a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <div>
-                                                                                    <p><span class="text-unset">Subido el: {{$cotizacion_archivo->fecha_subida}} {{$cotizacion_archivo->hora_subida}}</span></p>
-                                                                                    <a href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
-                                                                                    <a href="#!" onclick="eliminar_archivo('{{$cotizacion_archivo->id}}')"><i class="text-danger fas fa-trash-alt"></i></a>
-                                                                                </div>
-                                                                            </div>
+                                                                            </li>
                                                                         @endforeach
-                                                                    </div>
+                                                                    </ul>
                                                                 </div>
 
                                                             </div>

@@ -5584,8 +5584,11 @@ function mostrarreservas(mes,anio){
     });
 }
 
-function buscar_x_codigo_nuevo(codigo){
-    console.log('codigo::'+codigo);
+function buscar_reserva(valor1,valor2,columna,campo){
+    console.log('valor1:'+valor1);
+    console.log('valor2:'+valor2);
+    console.log('columna:'+columna);
+    console.log('campo:'+campo);
 
     $.ajaxSetup({
         headers: {
@@ -5594,14 +5597,14 @@ function buscar_x_codigo_nuevo(codigo){
     });
     $.ajax({
         type: 'POST',
-        url: "../admin/book/list-paquetes-codigo",
-        data: 'codigo='+codigo,
+        url: "../admin/book/list-paquetes",
+        data: 'valor1='+valor1+'&valor2='+valor2+'&campo='+campo+'&columna='+columna,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data1){
-            $('#nuevos').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            $('#'+columna).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
         success: function(data){
-            $('#nuevos').html(data);
+            $('#'+columna).html(data);
         }
     });
 }
@@ -5675,4 +5678,12 @@ function buscar_servicios_pagos_pendientes_entradas(opcion,ini,fin,servicio) {
         $('#rpt_' + servicio).html(data);
     }).fail(function (data) {
     });
+}
+function mostrar_filtro_reservas(valor,tipo){
+    $('#show-codigo-'+tipo).addClass('d-none');
+    $('#show-nombre-'+tipo).addClass('d-none');
+    $('#show-fechas-'+tipo).addClass('d-none');
+    $('#show-anio-mes-'+tipo).addClass('d-none');
+
+    $('#'+valor).removeClass('d-none');
 }
