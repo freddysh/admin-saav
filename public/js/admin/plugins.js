@@ -5203,6 +5203,7 @@ function mostrar_proveedores(destino,grupo){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
+    $("#caja_listado_proveedores_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.post('/admin/provider/filtro/localizacion', 'destino='+destino+'&grupo='+grupo, function(data) {
         $("#caja_listado_proveedores_"+grupo).html(data);
     }).fail(function (data) {
@@ -5224,6 +5225,7 @@ function mostrar_proveedores_x_estrellas(destino,grupo,estrellas){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
+    $("#caja_listado_proveedores_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.post('/admin/provider/filtro/localizacion/estrellas', 'destino='+destino+'&grupo='+grupo+'&estrellas='+estrellas, function(data) {
         $("#caja_listado_proveedores_"+grupo).html(data);
 
@@ -5239,6 +5241,7 @@ function mostrar_proveedores_cost(destino,grupo){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
+    $("#caja_listado_cost_proveedores_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.post('/admin/cost-provider/filtro/localizacion', 'destino='+destino+'&grupo='+grupo, function(data) {
         $("#caja_listado_cost_proveedores_"+grupo).html(data);
 
@@ -5261,6 +5264,7 @@ function mostrar_proveedores_x_estrellas_cost(destino,grupo,estrellas){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
+    $("#caja_listado_cost_proveedores_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.post('/admin/cost-provider/filtro/localizacion/estrellas', 'destino='+destino+'&grupo='+grupo+'&estrellas='+estrellas, function(data) {
         $("#caja_listado_cost_proveedores_"+grupo).html(data);
 

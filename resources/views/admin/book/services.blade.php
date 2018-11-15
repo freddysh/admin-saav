@@ -1463,7 +1463,7 @@
                                                                             <div class="row">
                                                                                 <div class="col-12">
                                                                                     <div class="row">
-                                                                                        @foreach($hotel_proveedor->where('hotel_id',$hotel->hotel_id) as $hotel_proveedor_)
+                                                                                        @foreach($hotel_proveedor->where('estrellas',$hotel->estrellas)->where('localizacion',$hotel->localizacion) as $hotel_proveedor_)
                                                                                             @php
                                                                                                 $valor_class='';
                                                                                             @endphp

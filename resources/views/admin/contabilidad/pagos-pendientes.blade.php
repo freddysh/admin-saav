@@ -963,7 +963,7 @@ use Carbon\Carbon;
                 }
             });
             var totalParts = parseFloat(tot.val()).toFixed(2).split('.');
-            tot.val('$' + totalParts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '.' +  (totalParts.length > 1 ? totalParts[1] : '00'));
+            tot.val(totalParts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "") + '.' +  (totalParts.length > 1 ? totalParts[1] : '00'));
         }
         function eliminar_consulta(id,tipo) {
             // alert('holaaa');

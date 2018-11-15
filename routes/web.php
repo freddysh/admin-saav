@@ -907,7 +907,7 @@ Route::post('/admin/contabilidad/confirmar-precio-c-hotel',[
 ]);
 Route::get('admin/contabilidad/pagos/pendientes/{grupo}', [
     'uses' => 'ContabilidadController@pagos_pendientes',
-    'as' => 'admin/book',
+    'as' => 'pagos_pendientes_rango_fecha_path',
 ]);
 Route::post('/admin/contabilidad/pagos/pendientes/filtrar', [
     'uses' => 'ContabilidadController@pagos_pendientes_filtro_datos',
