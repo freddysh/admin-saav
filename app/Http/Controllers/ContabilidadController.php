@@ -1797,27 +1797,35 @@ class ContabilidadController extends Controller
     public function pagos_pendientes_filtro_datos_servicios_entradas_guardado_pagado($boton,$id)
     {
         $liquidacion=Liquidacion::Find($id);
+//        return dd($liquidacion);
 //        dd($liquidacion);
         $ini=$liquidacion->ini;
         $fin=$liquidacion->fin;
         $cotizacion=null;
         $opcion=$liquidacion->opcion;
-        if($opcion=='TODOS LOS PENDIENTES'){
-            $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function ($query) use($id,$ini,$fin){
-                $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin){
-                    $query->where('liquidacion','1');
-                });
-            })->get();
-        }
-        elseif($opcion=='ENTRE DOS FECHAS'){
-            $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function ($query) use($id,$ini,$fin){
-                $query->whereBetween('fecha',[$ini,$fin]);
-                $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin){
-                    $query->where('liquidacion','1');
-                });
-            })->get();
-        }
+        if($opcion=='TODOS LOS PENDIENTES'||$opcion=='TODOS LOS URGENTES'){
+            $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function ($query) use($id,$ini,$fin,$boton){
+                $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin,$boton){
+                    if($boton=='pagado')
+                        $query->where('liquidacion','2')->where('liquidacion_id',$id);
+                    elseif($boton=='guardado')
+                        $query->where('liquidacion','1');
 
+                });
+            })->get();
+        }
+        elseif($opcion=='ENTRE DOS FECHAS'||$opcion=='ENTRE DOS FECHAS URGENTES'){
+            $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function ($query) use($id,$ini,$fin,$boton){
+                $query->whereBetween('fecha',[$ini,$fin]);
+                $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin,$boton){
+                    if($boton=='pagado')
+                        $query->where('liquidacion','2')->where('liquidacion_id',$id);
+                    elseif($boton=='guardado')
+                        $query->where('liquidacion','1');
+                });
+            })->get();
+        }
+//        return dd($cotizacion);
 //        return dd($opcion);
 //        $opcion=$request->input('opcion');
 //        $ini =$request->input('ini');
@@ -1825,7 +1833,7 @@ class ContabilidadController extends Controller
 //        $grupo=$request->input('grupo');
 //        $cotizacion=Cotizacion::get();
         $proveedores=Proveedor::where('grupo','ENTRANCES')->get();
-        return view('admin.contabilidad.lista-entrada-pendiente-guardado-pagado',compact(['cotizacion', 'ini', 'fin','proveedores','liquidacion','opcion','id']));
+        return view('admin.contabilidad.lista-entrada-pendiente-guardado-pagado',compact(['cotizacion', 'ini', 'fin','proveedores','liquidacion','opcion','id','boton']));
     }
     public function pagos_pendientes_entradas_pagar(Request $request)
     {
@@ -1915,6 +1923,7 @@ class ContabilidadController extends Controller
                 $entradas=ItinerarioServicios::where('liquidacion_id',$liquidacion_id)->get();
                 foreach ($entradas as $entradas_){
                     $temp=ItinerarioServicios::Find($entradas_->id);
+                    $temp->liquidacion=1;
                     $temp->liquidacion_id=0;
                     $temp->save();
                 }
@@ -1927,6 +1936,19 @@ class ContabilidadController extends Controller
             }
         }
         return redirect()->route('pagos_pendientes_rango_fecha_path','ENTRANCES');
+    }
+    public function consulta_entradas_pdf($liquidacion_id)
+    {
+        $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones',function($query)use($liquidacion_id){
+            $query->whereHas('itinerario_cotizaciones',function($query)use($liquidacion_id){
+                $query->whereHas('itinerario_servicios',function($query)use($liquidacion_id){
+                    $query->where('liquidacion_id',$liquidacion_id);
+                });
+            });
+        })->get();
+        $liquidacion=Liquidacion::Find($liquidacion_id);
+        $pdf = \PDF::loadView('admin.contabilidad.reporte-entradas-pdf',compact(['cotizaciones','liquidacion']))->setPaper('a4','landscape')->setWarnings(true);
+        return $pdf->download('Reporte_entradas_'.$liquidacion_id.'.pdf');
     }
 
 }

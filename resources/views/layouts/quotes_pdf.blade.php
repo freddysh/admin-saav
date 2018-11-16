@@ -16,6 +16,12 @@
             font-size: 08px;
             margin: 1rem 0.5rem 1rem 0.8rem;
         }
+        .rojo{
+            color: #dd060f;
+        }
+        .azul{
+            color: #0063d1;
+        }
         .text-08{
             font-size: 08px;
         }

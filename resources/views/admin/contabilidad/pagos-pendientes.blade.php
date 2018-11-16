@@ -394,7 +394,7 @@ use Carbon\Carbon;
                                                             <option value="TODOS LOS PENDIENTES">TODOS LOS PENDIENTES</option>
                                                             <option value="TODOS LOS URGENTES">TODOS LOS URGENTES</option>
                                                             <option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS</option>
-                                                            {{--<option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS URGENTES</option>--}}
+                                                            <option value="ENTRE DOS FECHAS URGENTES">ENTRE DOS FECHAS URGENTES</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -486,7 +486,7 @@ use Carbon\Carbon;
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    <a href="{{route('descargar_consulta_s_path',[$liquidaciones_->id,'ENTRANCES'])}}" class="text-danger"><i class="fas fa-file-pdf"></i></a>
+                                                                    <a href="{{route('descargar_consulta_entradas_path',$liquidaciones_->id)}}" class="text-danger"><i class="fas fa-file-pdf"></i></a>
                                                                 </td>
                                                                 <td>
                                                                     <a href="#!" class="text-danger" onclick="eliminar_consulta('{{$liquidaciones_->id}}','s')"><i class="fa fa-trash"></i></a>

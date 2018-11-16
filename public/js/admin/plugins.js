@@ -6432,3 +6432,19 @@ function mostrar_filtro_reservas(valor,tipo){
 
     $('#'+valor).removeClass('d-none');
 }
+function eliminar_servicio_consulta(id,servicio){
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Estas seguro de eliminar el servcio <b class='text-primary'>"+servicio+"</b> de la lista?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $('#item-entrada-'+id).fadeOut();
+        $('#item-entrada-'+id).remove();
+        calcular();
+    })
+
+}

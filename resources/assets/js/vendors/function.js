@@ -5660,11 +5660,11 @@ function mostrar_ventas_expedia(anio,mes,page){
 }
 
 function mostrar_opcion(opcion){
-    if(opcion=='TODOS LOS PENDIENTES'){
+    if(opcion=='TODOS LOS PENDIENTES' || opcion=='TODOS LOS URGENTES'){
         $('#from').addClass('d-none');
         $('#to').addClass('d-none');
     }
-    else if(opcion=='ENTRE DOS FECHAS'){
+    else if(opcion=='ENTRE DOS FECHAS' || opcion=='ENTRE DOS FECHAS URGENTES'){
         $('#from').removeClass('d-none');
         $('#to').removeClass('d-none');
     }
@@ -5691,7 +5691,19 @@ function mostrar_filtro_reservas(valor,tipo){
 
     $('#'+valor).removeClass('d-none');
 }
-function eliminar_servicio_consulta(id){
-    $('#item-entrada-'+id).fadeOut();
+function eliminar_servicio_consulta(id,servicio){
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Estas seguro de eliminar el servcio <b class='text-primary'>"+servicio+"</b> de la lista?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $('#item-entrada-'+id).fadeOut();
+        $('#item-entrada-'+id).remove();
+        calcular();
+    })
 
 }
