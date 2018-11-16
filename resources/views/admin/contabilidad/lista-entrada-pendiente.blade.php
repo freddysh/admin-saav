@@ -27,6 +27,7 @@
                         <th width="50px">$ AD</th>
                         <th width="50px">TOTAL</th>
                         <th width="50px">PRIORIDAD</th>
+                        <th width="50px">OPERACIONES</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,7 +35,7 @@
                     @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
                         @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                             @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','0') as $itinerario_servicios)
+                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
                                     @if($opcion=='ENTRE DOS FECHAS')
                                         @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                             @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
@@ -69,6 +70,7 @@
                                                             {{$itinerario_servicios->prioridad}}
                                                         </b>
                                                     </td>
+
                                                 </tr>
                                             @endif
                                         @endif
@@ -105,6 +107,7 @@
                                                         {{$itinerario_servicios->prioridad}}
                                                     </b>
                                                 </td>
+                                                <td><button onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}')"><i class="fa fa-trash"></i></button> </td>
                                             </tr>
                                         @endif
                                     @endif
@@ -128,7 +131,7 @@
                     @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
                         @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                             @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','0') as $itinerario_servicios)
+                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
                                     @if($opcion=='ENTRE DOS FECHAS')
                                         @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                             @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
@@ -222,7 +225,7 @@
                     @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
                         @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                             @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','0') as $itinerario_servicios)
+                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
                                     @if($opcion=='ENTRE DOS FECHAS')
                                         @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                             @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
@@ -316,7 +319,7 @@
                     @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
                         @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                             @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','0') as $itinerario_servicios)
+                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
                                     @if($opcion=='ENTRE DOS FECHAS')
                                         @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                             @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
@@ -410,7 +413,7 @@
                     @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
                         @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                             @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','0') as $itinerario_servicios)
+                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
                                     @if($opcion=='ENTRE DOS FECHAS')
                                         @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                             @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
@@ -504,7 +507,7 @@
                     @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
                         @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                             @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','0') as $itinerario_servicios)
+                                @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
                                     @if($opcion=='ENTRE DOS FECHAS')
                                         @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                             @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')

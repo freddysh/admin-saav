@@ -1168,7 +1168,7 @@ class ContabilidadController extends Controller
         $cotizaciones=Cotizacion::where('liquidacion',1)->get();
         $servicios=M_Servicio::where('grupo','ENTRANCES')->get();
         $servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-        $liquidaciones=Liquidacion::where('estado',1)->get();
+        $liquidaciones=Liquidacion::get();
         $users=User::get();
         $consulta=ConsultaPagoHotel::get();
         $consulta_serv=ConsultaPago::get();
@@ -1794,13 +1794,46 @@ class ContabilidadController extends Controller
         $proveedores=Proveedor::where('grupo',$grupo)->get();
         return view('admin.contabilidad.lista-entrada-pendiente',compact(['cotizacion', 'ini', 'fin','proveedores','grupo','opcion']));
     }
+    public function pagos_pendientes_filtro_datos_servicios_entradas_guardado_pagado($boton,$id)
+    {
+        $liquidacion=Liquidacion::Find($id);
+//        dd($liquidacion);
+        $ini=$liquidacion->ini;
+        $fin=$liquidacion->fin;
+        $cotizacion=null;
+        $opcion=$liquidacion->opcion;
+        if($opcion=='TODOS LOS PENDIENTES'){
+            $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function ($query) use($id,$ini,$fin){
+                $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin){
+                    $query->where('liquidacion','1');
+                });
+            })->get();
+        }
+        elseif($opcion=='ENTRE DOS FECHAS'){
+            $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function ($query) use($id,$ini,$fin){
+                $query->whereBetween('fecha',[$ini,$fin]);
+                $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin){
+                    $query->where('liquidacion','1');
+                });
+            })->get();
+        }
+
+//        return dd($opcion);
+//        $opcion=$request->input('opcion');
+//        $ini =$request->input('ini');
+//        $fin =$request->input('fin');
+//        $grupo=$request->input('grupo');
+//        $cotizacion=Cotizacion::get();
+        $proveedores=Proveedor::where('grupo','ENTRANCES')->get();
+        return view('admin.contabilidad.lista-entrada-pendiente-guardado-pagado',compact(['cotizacion', 'ini', 'fin','proveedores','liquidacion','opcion','id']));
+    }
     public function pagos_pendientes_entradas_pagar(Request $request)
     {
+        $liquidacion_id = $request->input('id');
         $opcion = $request->input('tipo_filtro');
         $ini = $request->input('ini');
         $fin = $request->input('fin');
         $total_entrances = $request->input('total_entrances');
-        $total_entrances=substr($total_entrances,1,strlen($total_entrances));
         $nro_operacion = $request->input('nro_operacion');
         $guardar = $request->input('guardar');
         $pagar = $request->input('pagar');
@@ -1810,40 +1843,87 @@ class ContabilidadController extends Controller
         if($data->month<10)
             $mes='0'.$data->month;
 
-        $created_at=$data->year.'-'.$mes.'-'.$data->day.' '.$data->hour.':'.$data->minute.':'.$data->second;
-//        dd($created_at);
-        if (isset($guardar)) {
-            $liquidacion = new Liquidacion();
-            $liquidacion->ini = $ini;
-            $liquidacion->fin = $fin;
-            $liquidacion->user_id == auth()->guard('admin')->user()->id;
-            $liquidacion->total = $total_entrances;
-            $liquidacion->opcion = $opcion;
-            $liquidacion->nro_operacion = $nro_operacion;
-            $liquidacion->estado = '1';
-//            $liquidacion->created_at=$created_at;
-            $liquidacion->save();
-            foreach ($itinerario_servicio_id as $id) {
-                $temp = ItinerarioServicios::Find($id);
-                $temp->liquidacion_id =$liquidacion->id;
-                $temp->save();
+        if($liquidacion_id==0) {
+            if (isset($guardar)) {
+                $nuevaliquidacion = new Liquidacion();
+                $nuevaliquidacion->ini = $ini;
+                $nuevaliquidacion->fin = $fin;
+                $nuevaliquidacion->user_id = auth()->guard('admin')->user()->id;
+                $nuevaliquidacion->total = $total_entrances;
+                $nuevaliquidacion->opcion = $opcion;
+                $nuevaliquidacion->nro_operacion = $nro_operacion;
+                $nuevaliquidacion->nro_cheque_s = '';
+                $nuevaliquidacion->nro_cheque_c = '';
+                $nuevaliquidacion->created_at = $data->format('Y-m-d h:i:s');
+                $nuevaliquidacion->estado = '1';
+                $nuevaliquidacion->save();
+                foreach ($itinerario_servicio_id as $id) {
+                    $temp = ItinerarioServicios::Find($id);
+                    $temp->liquidacion_id = $nuevaliquidacion->id;
+                    $temp->save();
+                }
+            }elseif (isset($pagar)) {
+                $liquidacion = new Liquidacion();
+                $liquidacion->ini = $ini;
+                $liquidacion->fin = $fin;
+                $liquidacion->user_id = auth()->guard('admin')->user()->id;
+                $liquidacion->total = $total_entrances;
+                $liquidacion->opcion = $opcion;
+                $liquidacion->nro_operacion = $nro_operacion;
+                $liquidacion->nro_cheque_s = '';
+                $liquidacion->nro_cheque_c = '';
+                $liquidacion->updated_at = $data->format('Y-m-d h:i:s');
+                $liquidacion->estado = '2';
+                $liquidacion->save();
+                foreach ($itinerario_servicio_id as $id) {
+                    $temp = ItinerarioServicios::Find($id);
+                    $temp->liquidacion = '2';
+                    $temp->liquidacion_id = $liquidacion->id;
+                    $temp->save();
+                }
             }
         }
-        elseif (isset($pagar)) {
-            $liquidacion = new Liquidacion();
-            $liquidacion->ini = $ini;
-            $liquidacion->fin = $fin;
-            $liquidacion->user_id == auth()->guard('admin')->user()->id;
-            $liquidacion->total = $total_entrances;
-            $liquidacion->opcion = $opcion;
-            $liquidacion->nro_operacion = $nro_operacion;
-            $liquidacion->estado = '2';
-            $liquidacion->save();
-            foreach ($itinerario_servicio_id as $id) {
-                $temp = ItinerarioServicios::Find($id);
-                $temp->liquidacion =2;
-                $temp->liquidacion_id =$liquidacion->id;
-                $temp->save();
+        elseif($liquidacion_id>0){
+            if (isset($guardar)) {
+                $nuevaliquidacion = Liquidacion::Find($liquidacion_id);
+                $nuevaliquidacion->user_id = auth()->guard('admin')->user()->id;
+                $nuevaliquidacion->total = $total_entrances;
+                $nuevaliquidacion->nro_operacion = $nro_operacion;
+                $nuevaliquidacion->nro_cheque_s = '';
+                $nuevaliquidacion->nro_cheque_c = '';
+                $nuevaliquidacion->save();
+                $entradas=ItinerarioServicios::where('liquidacion_id',$liquidacion_id)->get();
+                foreach ($entradas as $entradas_){
+                    $temp=ItinerarioServicios::Find($entradas_->id);
+                    $temp->liquidacion_id=0;
+                    $temp->save();
+                }
+                foreach ($itinerario_servicio_id as $id) {
+                    $temp = ItinerarioServicios::Find($id);
+                    $temp->liquidacion_id = $liquidacion_id;
+                    $temp->save();
+                }
+            }elseif (isset($pagar)) {
+                $liquidacion = Liquidacion::Find($liquidacion_id);
+                $liquidacion->user_id = auth()->guard('admin')->user()->id;
+                $liquidacion->total = $total_entrances;
+                $liquidacion->nro_operacion = $nro_operacion;
+                $liquidacion->nro_cheque_s = '';
+                $liquidacion->nro_cheque_c = '';
+                $liquidacion->estado = '2';
+                $liquidacion->save();
+                $entradas=ItinerarioServicios::where('liquidacion_id',$liquidacion_id)->get();
+                foreach ($entradas as $entradas_){
+                    $temp=ItinerarioServicios::Find($entradas_->id);
+                    $temp->liquidacion_id=0;
+                    $temp->save();
+                }
+                foreach ($itinerario_servicio_id as $id) {
+                    $temp = ItinerarioServicios::Find($id);
+                    $temp->liquidacion = '2';
+                    $temp->liquidacion_id = $liquidacion_id;
+                    $temp->save();
+                }
             }
         }
         return redirect()->route('pagos_pendientes_rango_fecha_path','ENTRANCES');

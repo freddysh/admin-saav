@@ -392,7 +392,7 @@ use Carbon\Carbon;
                                                         <label for="tipo_filtro" class="text-secondary font-weight-bold pr-2">Escoja una opcion </label>
                                                         <select form="form_guardar" name="tipo_filtro" id="tipo_filtro" class="form-control" onchange="mostrar_opcion($(this).val())">
                                                             <option value="TODOS LOS PENDIENTES">TODOS LOS PENDIENTES</option>
-                                                            {{--<option value="TODOS LOS URGENTES">TODOS LOS URGENTES</option>--}}
+                                                            <option value="TODOS LOS URGENTES">TODOS LOS URGENTES</option>
                                                             <option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS</option>
                                                             {{--<option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS URGENTES</option>--}}
                                                         </select>
@@ -405,11 +405,11 @@ use Carbon\Carbon;
                                                     {{csrf_field()}}
                                                     <div class="form-group d-none" id="from">
                                                         <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
-                                                        <input type="date" class="form-control" name="f_ini_ENTRADA" id="f_ini_ENTRADA" value="{{$ToDay->toDateString()}}" required>
+                                                        <input type="date" class="form-control" form="form_guardar" name="f_ini_ENTRADA" id="f_ini_ENTRADA" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group d-none" id="to">
                                                         <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
-                                                        <input type="date" class="form-control" name="f_fin_ENTRADA" id="f_fin_ENTRADA" value="{{$ToDay->toDateString()}}" required>
+                                                        <input type="date" class="form-control" form="form_guardar" name="f_fin_ENTRADA" id="f_fin_ENTRADA" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes_entradas($('#tipo_filtro').val(),$('#f_ini_ENTRADA').val(),$('#f_fin_ENTRADA').val(),'ENTRANCES')">Filtrar</button>
                                                 </div>
@@ -445,44 +445,57 @@ use Carbon\Carbon;
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                @foreach($liquidaciones as $liquidaciones_)
-                                                    <div id="c_s_{{$liquidaciones_->id}}" class="col-md-2 text-center">
-                                                        <form action="{{route('list_fechas_servivios_show_path')}}" method="post">
-                                                            {{csrf_field()}}
-                                                            <input type="hidden" name="grupo" value="ENTRANCES">
-                                                            <input type="hidden" name="txt_codigos" value="{{$liquidaciones_->id}}">
-                                                            <a href="javascript:;" onclick="parentNode.submit();">
-                                                                <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="70px" height="70px">
-                                                                {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-14">Creado:<br>{{fecha_peru1($liquidaciones_->updated_at)}}</span>
-                                                            </a>
-                                                            <p>
-                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
-                                                                <a href="{{route('descargar_consulta_s_path',[$liquidaciones_->id,'ENTRANCES'])}}" class="btn btn-danger"><i class="fas fa-file-pdf"></i></a>
-                                                                <a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$liquidaciones_->id}}','s')"><i class="fa fa-trash"></i></a>
-                                                            </p>
-                                                        </form>
-                                                    </div>
-                                                @endforeach
-                                                {{--@foreach($consulta_serv->where('grupo','TOURS') as $consultas)--}}
-                                                    {{--<div id="c_s_{{$consultas->id}}" class="col-md-2 text-center">--}}
-                                                        {{--<form action="{{route('list_fechas_servivios_show_path')}}" method="post">--}}
-                                                            {{--{{csrf_field()}}--}}
-                                                            {{--<input type="hidden" name="grupo" value="TOURS">--}}
-                                                            {{--<input type="hidden" name="txt_codigos" value="{{$consultas->id}}">--}}
-                                                            {{--<a href="javascript:;" onclick="parentNode.submit();">--}}
-                                                                {{--<img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">--}}
-                                                                {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                {{--<br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>--}}
-                                                            {{--</a>--}}
-                                                            {{--<p>--}}
-                                                                {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
-                                                                {{--<a href="{{route('descargar_consulta_s_path',[$consultas->id,'TOURS'])}}" class="btn btn-danger"><i class="fas fa-file-pdf fa-2x"></i></a>--}}
-                                                                {{--<a href="#" class="btn btn-danger" onclick="eliminar_consulta('{{$consultas->id}}','s')"><i class="fa fa-trash fa-2x"></i></a>--}}
-                                                            {{--</p>--}}
-                                                        {{--</form>--}}
-                                                    {{--</div>--}}
-                                                {{--@endforeach--}}
+                                                <div class="col">
+                                                    <table class="table table-condensed table-responsive table-striped table-hover">
+                                                        <thead>
+                                                            <th>
+                                                                <td>FECHA</td>
+                                                                <td>LIQUIDACION</td>
+                                                                <td>TOTAL</td>
+                                                                <td>ESTADO</td>
+                                                                <td>OPERACIONES</td>
+                                                                <td>DESCARGAR</td>
+                                                                <td>ELIMINAR</td>
+                                                            </th>
+                                                        </thead>
+                                                        <tbody>
+                                                        @php
+                                                            $pos=0;
+                                                        @endphp
+                                                        @foreach($liquidaciones as $liquidaciones_)
+                                                            @php
+                                                                $pos++;
+                                                            @endphp
+                                                            <tr id="c_s_{{$liquidaciones_->id}}">
+                                                                <td>{{$pos}}</td>
+                                                                <td>{{fecha_peru1($liquidaciones_->created_at)}}</td>
+                                                                <td>LIQUIDACION</td>
+                                                                <td><span><sup>$</sup>{{$liquidaciones_->total}}</span></td>
+                                                                <td>
+                                                                    @if($liquidaciones_->estado=='1')
+                                                                        <span class="badge badge-warning">PENDIENTE <i class="fas fa-eye"></i></span>
+                                                                    @elseif($liquidaciones_->estado=='2')
+                                                                        <span class="badge badge-success">PAGADO <i class="fas fa-check"></i></span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if($liquidaciones_->estado=='1')
+                                                                        <a href="{{route('pagos_pendientes_rango_fecha_filtro_servicios_entrada_guardado_pagado_path',['guardado',$liquidaciones_->id])}}" class="btn btn-warning btn-sm">Pagar</a>
+                                                                    @elseif($liquidaciones_->estado=='2')
+                                                                        <a href="{{route('pagos_pendientes_rango_fecha_filtro_servicios_entrada_guardado_pagado_path',['pagado',$liquidaciones_->id])}}" class="btn btn-primary btn-sm">Revisar</a>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <a href="{{route('descargar_consulta_s_path',[$liquidaciones_->id,'ENTRANCES'])}}" class="text-danger"><i class="fas fa-file-pdf"></i></a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#!" class="text-danger" onclick="eliminar_consulta('{{$liquidaciones_->id}}','s')"><i class="fa fa-trash"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

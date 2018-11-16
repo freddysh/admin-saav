@@ -801,7 +801,7 @@ class PackageCotizacionController extends Controller
         $cliente_id=0;
         $estrela = $request->input('estrellas_from');
         $date = date_create($request->input('txt_date1'));
-        $fecha =strftime("%d %B, %Y", strtotime(str_replace('-','/', $date)));
+//        $fecha =strftime("%d %B, %Y", strtotime(str_replace('-','/', $date)));
         if($plan=='0') {
             $cliente = new Cliente();
             $cliente->nombres = strtoupper($request->input('txt_name1'));
@@ -812,7 +812,7 @@ class PackageCotizacionController extends Controller
 
             //-- Datos de la cotizacion
             $cotizacion = new Cotizacion();
-            $cotizacion->nombre = strtoupper($request->input('txt_name1')) . ' X ' . $request->input('txt_travelers1') . ' ' . $fecha;
+//            $cotizacion->nombre = strtoupper($request->input('txt_name1')) . ' X ' . $request->input('txt_travelers1') . ' ' . $fecha;
             $cotizacion->nropersonas = $request->input('txt_travelers1');
             $cotizacion->duracion = $request->input('txt_days1');
             $cotizacion->fecha = $request->input('txt_date1');
@@ -1206,7 +1206,7 @@ class PackageCotizacionController extends Controller
         $notas = $request->input('notas_');
         $estrela = $request->input('estrellas_from_');
         $date = date_create($request->input('txt_date1_'));
-        $fecha =strftime("%d %B, %Y", strtotime(str_replace('-','/', $date)));
+//        $fecha =strftime("%d %B, %Y", strtotime(str_replace('-','/', $date)));
         $acomodacion_s=0;
         if($request->input('a_s_'))
             $acomodacion_s=$request->input('a_s_');
@@ -1234,7 +1234,7 @@ class PackageCotizacionController extends Controller
             //-- Datos de la cotizacion
 
             $cotizacion_plantilla = new Cotizacion();
-            $cotizacion_plantilla->nombre = strtoupper($request->input('txt_name1_')) . ' X ' . $request->input('txt_travelers1_') . ' ' . $fecha;
+//            $cotizacion_plantilla->nombre = strtoupper($request->input('txt_name1_')) . ' X ' . $request->input('txt_travelers1_') . ' ' . $fecha;
             $cotizacion_plantilla->nropersonas = $request->input('txt_travelers1_');
             $cotizacion_plantilla->duracion = $request->input('txt_days1_');
             $cotizacion_plantilla->fecha = $request->input('txt_date1_');

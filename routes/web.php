@@ -1264,3 +1264,7 @@ Route::post('/admin/contabilidad/pagos/entradas/pendientes/pagar', [
     'uses' => 'ContabilidadController@pagos_pendientes_entradas_pagar',
     'as' => 'pagar_entradas_path',
 ]);
+Route::get('/admin/contabilidad/pagos/entradas/pendientes/filtrar/{opcion}/{id}', [
+    'uses' => 'ContabilidadController@pagos_pendientes_filtro_datos_servicios_entradas_guardado_pagado',
+    'as' => 'pagos_pendientes_rango_fecha_filtro_servicios_entrada_guardado_pagado_path',
+]);

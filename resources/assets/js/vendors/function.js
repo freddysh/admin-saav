@@ -5691,3 +5691,7 @@ function mostrar_filtro_reservas(valor,tipo){
 
     $('#'+valor).removeClass('d-none');
 }
+function eliminar_servicio_consulta(id){
+    $('#item-entrada-'+id).fadeOut();
+
+}
