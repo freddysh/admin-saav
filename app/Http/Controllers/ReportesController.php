@@ -32,7 +32,7 @@ class ReportesController extends Controller
         $desde = $request->input('desde');
         $hasta = $request->input('hasta');
         $array_profit=[];
-        $cotis=Cotizacion::where('estado','2')->get();
+        $cotis=Cotizacion::where('estado','2')->whereBetween('fecha',[$desde,$hasta])->get();
 
         foreach ($cotis as $coti) {
             foreach ($coti->paquete_cotizaciones->where('estado', '2') as $pqt) {

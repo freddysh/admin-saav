@@ -920,7 +920,10 @@ class BookController extends Controller
         return view('admin.book.list-paquetes',compact('cotizacion_cat'));
     }
     public function situacion_servicios(){
+        return 'hola';
         return view('admin.book.situacion-pqt');
+
+
     }
     public function situacion_servicios_hoteles(Request $request)
     {

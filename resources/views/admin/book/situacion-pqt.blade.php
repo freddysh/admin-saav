@@ -62,7 +62,7 @@
                                 </div>
                                 <input type="text" class="form-control" id="codigo" placeholder="Codigo/nombre">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" onclick="mostrar_busqueda_situacion_servicios($('#opcion').val()),$('#codigo').val()),''"><i class="fas fa-search"></i></button>
+                                    <button class="btn btn-primary" onclick="mostrar_busqueda_situacion_servicios($('#opcion').val(),$('#codigo').val(),'')"><i class="fas fa-search"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                                 <input type="date" class="form-control" name="ini" id="ini" value="{{date("Y")}}">
                                 <input type="date" class="form-control" name="fin" id="fin" value="{{date("Y")}}">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" onclick="mostrar_busqueda_situacion_servicios($('#opcion').val()),$('#ini').val(),$('#fin').val())"><i class="fas fa-search"></i></button>
+                                    <button class="btn btn-primary" onclick="mostrar_busqueda_situacion_servicios($('#opcion').val(),$('#ini').val(),$('#fin').val())"><i class="fas fa-search"></i></button>
                                 </div>
                             </div>
                         </div>
