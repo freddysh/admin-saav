@@ -398,7 +398,7 @@ use Carbon\Carbon;
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-5 form-inline">
+                                                <div class="col-5 form-inline mx-5">
                                                     @php
                                                         $ToDay=new Carbon();
                                                     @endphp
@@ -466,7 +466,7 @@ use Carbon\Carbon;
                                                             @php
                                                                 $pos++;
                                                             @endphp
-                                                            <tr id="c_s_{{$liquidaciones_->id}}">
+                                                            <tr id="lista_liquidaciones_{{$liquidaciones_->id}}">
                                                                 <td>{{$pos}}</td>
                                                                 <td>{{fecha_peru1($liquidaciones_->created_at)}}</td>
                                                                 <td>LIQUIDACION</td>
@@ -489,7 +489,7 @@ use Carbon\Carbon;
                                                                     <a href="{{route('descargar_consulta_entradas_path',$liquidaciones_->id)}}" class="text-danger"><i class="fas fa-file-pdf"></i></a>
                                                                 </td>
                                                                 <td>
-                                                                    <a href="#!" class="text-danger" onclick="eliminar_consulta('{{$liquidaciones_->id}}','s')"><i class="fa fa-trash"></i></a>
+                                                                    <a href="#!" class="text-danger" onclick="eliminar_liquidacion('{{$liquidaciones_->id}}','{{fecha_peru1($liquidaciones_->created_at)}}')"><i class="fa fa-trash"></i></a>
                                                                 </td>
                                                             </tr>
                                                         @endforeach

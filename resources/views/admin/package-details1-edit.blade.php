@@ -354,13 +354,13 @@
 
                                         @if($servicios->precio_grupo==1)
                                         @php
-                                            $precio_iti+=round($servicios->precio/$cotizacion->nropersonas,1);
-                                                $preciom=round($servicios->precio/$cotizacion->nropersonas,1);
+                                            $precio_iti+=round($servicios->precio/$cotizacion->nropersonas,2);
+                                                $preciom=round($servicios->precio/$cotizacion->nropersonas,2);
                                         @endphp
                                         @else
                                             @php
-                                                $precio_iti+=round($servicios->precio,1);
-                                                $preciom=round($servicios->precio,1);
+                                                $precio_iti+=round($servicios->precio,2);
+                                                $preciom=round($servicios->precio,2);
                                             @endphp
                                         @endif
                                         {{--@endif--}}
@@ -633,31 +633,31 @@
                     <div class="col-12">
                         <div class="row bg-g-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>COST</b></div>
-                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s)}}</span></b></div>
-                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d)}}</span></b></div>
-                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m)}}</span></b></div>
-                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t)}}</span></b></div>
-                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{ceil($precio_iti)}}</span></b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s,2)}}</span></b></div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_d,2)}}</span></b></div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_m,2)}}</span></b></div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($precio_hotel_t,2)}}</span></b></div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($precio_iti,2)}}</span></b></div>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="row bg-g-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>PROFIT</b></div>
-                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($utilidad_s)}}</span></b></div>
-                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($utilidad_d)}}</span></b></div>
-                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($utilidad_m)}}</span></b></div>
-                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($utilidad_t)}}</span></b></div>
-                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{ceil($utilidad)}}</span></b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($utilidad_s,2)}}</span></b></div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($utilidad_d,2)}}</span></b></div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($utilidad_m,2)}}</span></b></div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($utilidad_t,2)}}</span></b></div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($utilidad,2)}}</span></b></div>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="row bg-g-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>SALE</b></div>
-                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{ceil($precio_hotel_s+$utilidad_s)}}</span></b></div>
-                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_d+$utilidad_d)}}</span></b></div>
-                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{ceil($precio_hotel_m+$utilidad_m)}}</span></b></div>
-                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{ceil($precio_hotel_t+$utilidad_t)}}</span></b></div>
-                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{ceil($precio_iti+$utilidad)}}</span></b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s+$utilidad_s,2)}}</span></b></div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_d+$utilidad_d,2)}}</span></b></div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_m+$utilidad_m,2)}}</span></b></div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($precio_hotel_t+$utilidad_t,2)}}</span></b></div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($precio_iti+$utilidad,2)}}</span></b></div>
                         </div>
                         <div class="row">
                             <div class="col text-right">PRICE PER PERSON</div>

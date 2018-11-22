@@ -31,7 +31,6 @@ class ReportesController extends Controller
     {
         $desde = $request->input('desde');
         $hasta = $request->input('hasta');
-
         $array_profit=[];
         $cotis=Cotizacion::where('estado','2')->get();
 
@@ -51,13 +50,13 @@ class ReportesController extends Controller
                             $uti+=$precio->utilidad_s*$precio->personas_s;
                         }
                         if($precio->personas_d>0){
-                            $uti+=$precio->utilidad_d*$precio->personas_d;
+                            $uti+=$precio->utilidad_d*$precio->personas_d*2;
                         }
                         if($precio->personas_m>0){
-                            $uti+=$precio->utilidad_m*$precio->personas_m;
+                            $uti+=$precio->utilidad_m*$precio->personas_m*2;
                         }
                         if($precio->personas_t>0){
-                            $uti+=$precio->utilidad_t*$precio->personas_t;
+                            $uti+=$precio->utilidad_t*$precio->personas_t*3;
                         }
                     }
                     if (!array_key_exists($coti->web, $array_profit)) {

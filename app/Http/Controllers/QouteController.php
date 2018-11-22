@@ -435,10 +435,15 @@ class QouteController extends Controller
                         if ($ppaquete->duracion > 1)
                             $estrellas = $value->stars;
 
+                        //-- creamos el codigo autogenerado
+
+                        $nro_codigo=Cotizacion::where('web','expedia.com')->count()+1;
+                        $codigo_auto='E'.$nro_codigo;
                         // buscamos el paquete para crear la cotizacion
                         $ppaquete = P_Paquete::where('codigo', $codigo)->first();
                         $coti = new Cotizacion();
-                        $coti->codigo = $codigo;
+                        $coti->codigo = $codigo_auto;
+                        $coti->codigo_pqt = $codigo;
                         $coti->nropersonas = $totaltravelers;
                         $coti->duracion = $ppaquete->duracion;
                         $coti->precioventa = $ppaquete->precio_venta;
@@ -493,14 +498,14 @@ class QouteController extends Controller
                         $pqt->duracion = $ppaquete->duracion;
                         $pqt->preciocosto = $ppaquete->preciocosto;
                         $pqt->utilidad = $ppaquete->utilidad;
-                        $pqt->estado = 0;
+                        $pqt->estado = 1;
                         $pqt->precioventa = $ppaquete->precio_venta;
                         $pqt->descripcion = $ppaquete->descripcion;
                         $pqt->incluye = $ppaquete->incluye;
                         $pqt->noincluye = $ppaquete->noincluye;
 //                        $pqt->opcional ='';
 //                        $pqt->imagen ='';
-                        $pqt->posibilidad = '100';
+                        $pqt->posibilidad = '0';
                         $pqt->cotizaciones_id = $coti->id;
                         $pqt->plan = 'A';
                         $pqt->proceso_complete = 1;
@@ -676,6 +681,8 @@ class QouteController extends Controller
 //        return redirect()->back();
         $anio=date("Y");
         $mes=date("m");
-        return view('admin.expedia.expedia-import-vista-previa-rpt',compact([$anio,$mes]));
+        return view('admin.expedia.expedia-import-vista-previa-rpt',compact(['anio','mes']));
+
+//        return redirect()->route('current_quote_page_path','expedia.com');
     }
 }

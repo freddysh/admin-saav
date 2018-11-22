@@ -30,7 +30,10 @@
     @endif
     @if(session()->get('menu')=='reservas')
         {{--menu lateral para operaciones--}}
-        <li class="active">
+        <li>
+            <a href="{{route('situacion_servicios_path')}}">Situacion de servicios</a>
+        </li>
+        <li>
             <a href="{{route('crear_liquidacion_path')}}">Crear Liquidacion</a>
         </li>
         <li>

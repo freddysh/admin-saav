@@ -2905,25 +2905,27 @@ function poner_dias(web,dias) {
     buscar_pqts(web,dias);
 }
 
-function variar_profit(acom) {
+function variar_profit(acom){
     var dias=$('#dias').val();
     var valor=parseFloat($('#cost_'+acom).html());
     var pro=parseFloat($('#pro_'+acom).val());
-    var sale=Math.round(valor+pro,2);
+    var sale=valor+pro;
+    sale=sale.toFixed(2);
     $('#sale_'+acom).val(sale);
-    var profit_por=Math.round((pro/sale)*100,2);
-    $('#porc_'+acom).html(profit_por);
-    $('#porc_'+acom).val(profit_por);
+    var profit_por=(pro/sale)*100;
+    profit_por=profit_por.toFixed(2);
+    $('#porc_'+acom).html(profit_por.toFixed(2));
+    $('#porc_'+acom).val(profit_por.toFixed(2));
     var sale_s=parseFloat($('#sale_s').val());
     var sale_d=parseFloat($('#sale_d').val());
     var sale_m=parseFloat($('#sale_m').val());
     var sale_t=parseFloat($('#sale_t').val());
     var sale_sh=parseFloat($('#sale_sh').val());
     if(dias>1) {
-        $('#total_profit').html(sale_s + sale_d + sale_m + sale_t);
+        $('#total_profit').html((sale_s+sale_d+sale_m+sale_t).toFixed(2));
     }
     else if(dias==1){
-        $('#total_profit').html(sale_sh);
+        $('#total_profit').html(sale_sh.toFixed(2));
     }
     var pro_s=parseFloat($('#pro_s').val());
     var pro_d=parseFloat($('#pro_d').val());
@@ -2965,12 +2967,12 @@ function variar_sales(acom){
     var dias=$('#dias').val();
     var valor=parseFloat($('#cost_'+acom).html());
     var sale=parseFloat($('#sale_'+acom).val());
-    var pro=Math.round(sale-valor);
-    $('#pro_'+acom).val(pro);
+    var pro=(sale-valor);
+    $('#pro_'+acom).val(pro.toFixed(2));
     var profit_por=Math.round((pro/sale)*100,2);
-    $('#porc_'+acom).html(profit_por);
-    $('#porc_'+acom).val(profit_por);
-    $('#sale_'+acom).val(sale);
+    $('#porc_'+acom).html(profit_por.toFixed(2));
+    $('#porc_'+acom).val(profit_por.toFixed(2));
+    $('#sale_'+acom).val(sale.toFixed(2));
 
     var sale_s=0;
     var sale_d=0;
@@ -2988,10 +2990,10 @@ function variar_sales(acom){
     }
 
     if(dias>1) {
-        $('#total_profit').html(sale_s + sale_d + sale_m + sale_t);
+        $('#total_profit').html((sale_s+ sale_d + sale_m + sale_t).toFixed(2));
     }
     else if(dias==1){
-        $('#total_profit').html(sale_sh);
+        $('#total_profit').html(sale_sh.toFixed(2));
 
     }
     var pro_s = parseFloat($('#pro_s').val());
@@ -5013,10 +5015,10 @@ function guardar_cta_c() {
     // });
 }
 
-function eliminar_liquidacion(id,ini,fin) {
+function eliminar_liquidacion(id,fecha) {
     swal({
         title: 'MENSAJE DEL SISTEMA',
-        text: "¿Estas seguro de eliminar la liquidacion (Desde:"+ini+" - Hasta:"+fin+"?",
+        text: "¿Estas seguro de eliminar la liquidacion creada "+fecha+"?",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -5031,7 +5033,7 @@ function eliminar_liquidacion(id,ini,fin) {
         $.post('/admin/contabilidad/operaciones/pagos-pendientes/delete', 'id='+id, function(data) {
             if(data==1){
                 // $("#lista_destinos_"+id).remove();
-                $("#lista_liquidaciones_"+id).fadeOut( "slow");
+                $("#lista_liquidaciones_"+id).remove();
             }
         }).fail(function (data) {
 
@@ -6401,11 +6403,11 @@ function mostrar_ventas_expedia(anio,mes,page){
 }
 
 function mostrar_opcion(opcion){
-    if(opcion=='TODOS LOS PENDIENTES'){
+    if(opcion=='TODOS LOS PENDIENTES' || opcion=='TODOS LOS URGENTES'){
         $('#from').addClass('d-none');
         $('#to').addClass('d-none');
     }
-    else if(opcion=='ENTRE DOS FECHAS'){
+    else if(opcion=='ENTRE DOS FECHAS' || opcion=='ENTRE DOS FECHAS URGENTES'){
         $('#from').removeClass('d-none');
         $('#to').removeClass('d-none');
     }
@@ -6435,7 +6437,7 @@ function mostrar_filtro_reservas(valor,tipo){
 function eliminar_servicio_consulta(id,servicio){
     swal({
         title: 'MENSAJE DEL SISTEMA',
-        text: "¿Estas seguro de eliminar el servcio <b class='text-primary'>"+servicio+"</b> de la lista?",
+        text: '¿Estas seguro de eliminar el servicio <b class="text-primary">'+servicio+'</b> de la lista?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -6446,5 +6448,29 @@ function eliminar_servicio_consulta(id,servicio){
         $('#item-entrada-'+id).remove();
         calcular();
     })
+}
 
+function mostrar_filtros(opcion){
+    $('#file').addClass('d-none');
+    $('#fechas').addClass('d-none');
+    $('#'+opcion).removeClass('d-none');
+}
+function mostrar_busqueda_situacion_servicios(opcion,dato1,dato2){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../book/traer-situacion-servicios',
+        data: 'opcion='+opcion+'&dato1='+dato1+'&dato2='+dato2,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#rpt_situacion_servicios').html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data) {
+            $('#rpt_situacion_servicios').html(data);
+        }
+    })
 }

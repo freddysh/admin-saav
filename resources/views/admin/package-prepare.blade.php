@@ -303,28 +303,28 @@
                                 @if($hotel->personas_s>0)
                                     @php
                                         $precio_hotel_s=$hotel->precio_s;
-                                        $utilidad_s=intval($hotel->utilidad_s);
+                                        $utilidad_s=$hotel->utilidad_s;
                                         $utilidad_por_s=$hotel->utilidad_por_s;
                                     @endphp
                                 @endif
                                 @if($hotel->personas_d>0)
                                     @php
                                         $precio_hotel_d=$hotel->precio_d/2;
-                                        $utilidad_d=intval($hotel->utilidad_d);
+                                        $utilidad_d=$hotel->utilidad_d;
                                         $utilidad_por_d=$hotel->utilidad_por_d;
                                     @endphp
                                 @endif
                                 @if($hotel->personas_m>0)
                                     @php
                                         $precio_hotel_m=$hotel->precio_m/2;
-                                        $utilidad_m=intval($hotel->utilidad_m);
+                                        $utilidad_m=$hotel->utilidad_m;
                                         $utilidad_por_m=$hotel->utilidad_por_m;
                                     @endphp
                                 @endif
                                 @if($hotel->personas_t>0)
                                     @php
                                         $precio_hotel_t=$hotel->precio_t/3;
-                                        $utilidad_t=intval($hotel->utilidad_t);
+                                        $utilidad_t=$hotel->utilidad_t;
                                         $utilidad_por_t=$hotel->utilidad_por_t;
                                     @endphp
                                 @endif
@@ -335,11 +335,11 @@
                             @foreach($itinerario->itinerario_servicios as $servicios)
                                 @if($servicios->precio_grupo==1)
                                     @php
-                                        $precio+=round($servicios->precio/$cotizacion->nropersonas,1);
+                                        $precio+=round($servicios->precio/$cotizacion->nropersonas,2);
                                     @endphp
                                 @else
                                     @php
-                                        $precio+=round($servicios->precio,1);
+                                        $precio+=round($servicios->precio,2);
                                     @endphp
                                 @endif
                             @endforeach
@@ -561,7 +561,7 @@
                                 <button class="btn btn-g-yellow" type="submit" name="create" value="create">GUARDAR {{$plan[$pos_plan]}}</button>
                                 <button class="btn btn-success" type="submit" name="create" value="create_template">GUARDAR {{$plan[$pos_plan]}} y CREAR TEMPLATE</button>
                             @else
-                                <button class="btn btn-g-yellow" type="submit" name="create">EDITAR {{$plan[$pos_plan]}}</button>
+                                <button class="btn btn-g-yellow" type="submit" name="create" value="create">EDITAR {{$plan[$pos_plan]}}</button>
                                 @if($imprimir=='si_create')
                                     <p><b class="text-success text-20">Gracias. Su paquete fue creado correctamente!!!</b></p>
                                 @else

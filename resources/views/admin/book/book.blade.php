@@ -135,7 +135,7 @@
                             @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
                                 @if($clientes->estado==1)
                                     @php
-                                        $dato_cliente=$clientes->cliente->nombres.' '.$clientes->cliente->apellidos;
+                                        $dato_cliente=$clientes->cliente->nombres;
                                     @endphp
                                 @endif
                             @endforeach
@@ -324,7 +324,7 @@
                             @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
                                 @if($clientes->estado==1)
                                     @php
-                                        $dato_cliente=$clientes->cliente->nombres.' '.$clientes->cliente->apellidos;
+                                        $dato_cliente=$clientes->cliente->nombres;
                                     @endphp
                                 @endif
                             @endforeach
@@ -513,7 +513,7 @@
                             @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
                                 @if($clientes->estado==1)
                                     @php
-                                        $dato_cliente=$clientes->cliente->nombres.' '.$clientes->cliente->apellidos;
+                                        $dato_cliente=$clientes->cliente->nombres;
                                     @endphp
                                 @endif
                             @endforeach

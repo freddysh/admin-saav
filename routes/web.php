@@ -537,7 +537,7 @@ Route::post('/ventas/new-cotizacion', [
     'uses' => 'PackageCotizacionController@editar_cotizacion1',
     'as' => 'editar_cotizacion1_path',
 ]);
-Route::post('/ventas/save-new-package', [
+Route::post('/ventas/save-new-package',[
     'uses' => 'PackageCotizacionController@guardar_paquete',
     'as' => 'save_new_package_path',
 ]);
@@ -767,7 +767,7 @@ Route::post('/admin/cost/hotel/proveedor/delete', [
     'uses' => 'HotelProveedorController@delete',
     'as' => 'hotel_proveedor_delete_path',
 ]);
-Route::get('admin/reportes', [
+Route::get('admin/reportes',[
     'uses' => 'ReportesController@index',
     'as' => 'reportes_path',
 ]);
@@ -1271,4 +1271,12 @@ Route::get('/admin/contabilidad/pagos/entradas/pendientes/filtrar/{opcion}/{id}'
 Route::get('admin/contabilidad/pagos/pendientes/serv/consulta/pdf/{id}', [
     'uses' => 'ContabilidadController@consulta_entradas_pdf',
     'as' => 'descargar_consulta_entradas_path',
+]);
+Route::get('/admin/reservas/situacion-servicios', [
+    'uses' => 'BookController@situacion_servicios_hoteles',
+    'as' => 'situacion_servicios_busqueda_path',
+]);
+Route::get('/admin/book/traer-situacion-servicios', [
+    'uses' => 'BookController@situacion_servicios',
+    'as' => 'situacion_servicios_path',
 ]);

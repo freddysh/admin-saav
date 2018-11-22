@@ -900,8 +900,6 @@ class BookController extends Controller
                     });
                 })->get();
             }
-
-
             return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
         }
         elseif($campo=='FECHAS'){
@@ -921,4 +919,21 @@ class BookController extends Controller
 //        dd($anio);
         return view('admin.book.list-paquetes',compact('cotizacion_cat'));
     }
+    public function situacion_servicios(){
+        return view('admin.book.situacion-pqt');
+    }
+    public function situacion_servicios_hoteles(Request $request)
+    {
+        $opcion = $request->input('opcion');
+        $dato1 = $request->input('dato1');
+        $dato2 = $request->input('dato2');
+
+        if($opcion=='')
+            $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones',function($query)use($dato1){
+        })->get();
+
+//        $cotizacion_cat =Cotizacion::where('codigo',$codigo)->get();
+//        return view('admin.book.list-paquetes',compact('cotizacion_cat'));
+    }
+
 }

@@ -102,8 +102,6 @@
         @endforeach
         </tbody>
     </table>
-
-
     {{--<div class="row margin-top-5 hide">--}}
         {{--<div class="col-md-6 no-padding">--}}
             {{--<div class="box-header-book">--}}
@@ -116,9 +114,9 @@
             {{--</div>--}}
         {{--</div>--}}
     {{--</div>--}}
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        } );
-    </script>
+    {{--<script>--}}
+        {{--$(document).ready(function() {--}}
+            {{--$('#example').DataTable();--}}
+        {{--} );--}}
+    {{--</script>--}}
 @stop

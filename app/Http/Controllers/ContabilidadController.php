@@ -1259,8 +1259,16 @@ class ContabilidadController extends Controller
     {
         $id = $request->input('id');
         $liquidacion =Liquidacion::FindOrFail($id);
-        if ($liquidacion->delete())
+        if ($liquidacion->delete()) {
+            $temp=ItinerarioServicios::where('liquidacion_id',$id)->get();
+            foreach ($temp as $temp_){
+                $servicio=ItinerarioServicios::Find($temp_->id);
+                $servicio->liquidacion=1;
+                $servicio->liquidacion_id=0;
+                $servicio->save();
+            }
             return 1;
+        }
         else
             return 0;
     }

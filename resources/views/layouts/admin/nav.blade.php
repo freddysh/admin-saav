@@ -10,19 +10,16 @@
                                 {{auth()->guard('admin')->user()->name}}
                                 <a href="#" class="popover-dismiss"
                                    data-toggle="popover" data-trigger="focus" data-placement="bottom"
-                                   data-content="
-                                    <ul class='list-style-none text-left p-0'>
+                                   data-content="<ul class='list-style-none text-left p-0'>
                                         <li><a href=''><i class='fas fa-user-circle'></i> <span class='pl-2'>Profile</span></a></li>
                                         <li><a href='{{route('logout_path')}}'><i class='fas fa-sign-out-alt'></i> <span class='pl-2'>Logout</span></a></li>
-                                    </ul>
-                                "
+                                    </ul>"
                                 ><i class="fas fa-caret-down"></i></a>
                                 <span class="d-block text-info">(Administrador)</span>
                             </p>
                         </div>
                     </div>
                 </div>
-
                 <ul class="list-unstyled components">
                     {{--<p>VENTAS</p>--}}
                     @include('layouts.menu-lateral')

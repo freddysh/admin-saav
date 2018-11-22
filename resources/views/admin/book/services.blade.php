@@ -339,7 +339,6 @@
                                     <th class="text-center">EDAD</th>
                                     <th class="text-center">RESTRICCIONES</th>
                                     <th class="text-center">IDIOMA</th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -375,7 +374,7 @@
                                                 @endforeach
                                             </td>
                                             <td>{{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años</td>
-                                            <td>{{strtoupper($cotizacion->restricciones)}}</td>
+                                            <td><span class="text-11">{{strtoupper($cliente->restricciones)}}</span> </td>
                                             <td>{{strtoupper($cotizacion->idioma_pasajeros)}}</td>
                                         </tr>
                                     @endforeach
@@ -1478,8 +1477,8 @@
                                                                                                         <input class="grupo" onchange="dato_producto_hotel('{{$hotel_proveedor_->id}}','{{$hotel_proveedor_->proveedor_id}}','{{$hotel->id}}','{{$itinerario->id}}')" type="radio" name="precio" value="{{$cotizacion->id}}_{{$hotel->id}}_{{$hotel_proveedor_->proveedor_id}}_{{$hotel_proveedor_->id}}" {!! $valor_class !!}>
                                                                                                         <b>{{$hotel_proveedor_->proveedor->nombre_comercial}} | {{$hotel_proveedor_->estrellas}}<i class="fa fa-star text-warning" aria-hidden="true"></i></b>
                                                                                                         <span class="d-none" id="proveedor_servicio_hotel_{{$hotel_proveedor_->id}}">
-                                                                                                    {{$hotel_proveedor_->proveedor->nombre_comercial}}
-                                                                                                </span>
+                                                                                                            {{$hotel_proveedor_->proveedor->nombre_comercial}}
+                                                                                                        </span>
                                                                                                     </label>
 
                                                                                                     @if($hotel->personas_s>0)
@@ -1532,7 +1531,7 @@
                                                                                         <div class="col-md-6">
                                                                                             <div class="form-group" id="rpt_book_proveedor_fecha_h_{{$hotel->id}}">
                                                                                                 <label for="exampleInputEmail1">Fecha a pagar</label>
-                                                                                                <input type="date" class="form-control" name="fecha_pagar">
+                                                                                                <input type="date" class="form-control" name="fecha_pagar" value="{{$hotel->fecha_venc}}">
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-6">
@@ -1541,9 +1540,9 @@
                                                                                             </label>
                                                                                             <div class="row mt-3">
                                                                                                 <div class="col-md-6">
-                                                                                                    <div class="form-check ">
+                                                                                                    <div class="form-check">
                                                                                                         <label class="form-check-label">
-                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="NORMAL" checked="checked">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="NORMAL" @if($hotel->prioridad=='NORMAL')checked="checked"@endif>
                                                                                                             NORMAL
                                                                                                         </label>
                                                                                                     </div>
@@ -1551,7 +1550,7 @@
                                                                                                 <div class="col-md-6">
                                                                                                     <div class="form-check">
                                                                                                         <label class="form-check-label">
-                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="URGENTE">
+                                                                                                            <input type="radio" class="form-check-input" name="prioridad_{{$hotel->id}}[]" value="URGENTE"@if($hotel->prioridad=='URGENTE')checked="checked"@endif>
                                                                                                             URGENTE
                                                                                                         </label>
                                                                                                     </div>

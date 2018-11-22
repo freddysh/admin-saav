@@ -25,9 +25,9 @@ class OperacionesController extends Controller
             ->get();
 //        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
         $clientes2 = Cliente::get();
-        $array_datos_coti= [];
-        $array_datos_cotizacion= [];
-        $array_hotel=[];
+        $array_datos_coti= array();
+        $array_datos_cotizacion= array();
+        $array_hotel=array();
 
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
             $clientes_ ='';
@@ -126,12 +126,13 @@ class OperacionesController extends Controller
         }
 //        $array_datos_cotizacion[$key]=substr($array_datos_cotizacion[$key],0,strlen($array_datos_cotizacion[$key])-1);
 //            dd($array_hotel);
-
+        $sort=array();
         foreach ($array_datos_coti as $key => $part) {
             $sort[$key] = strtotime($part['fecha']);
         }
         array_multisort($sort, SORT_ASC, $array_datos_coti);
         //-- ordenamos el multiarray
+        $sort1=array();
         foreach ($array_datos_cotizacion as $key => $part) {
             $sort1[$key] = strtotime($part['dates']);
         }
@@ -150,9 +151,9 @@ class OperacionesController extends Controller
             ->get();
 //        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
         $clientes2 = Cliente::get();
-        $array_datos_coti= [];
-        $array_datos_cotizacion= [];
-        $array_hotel=[];
+        $array_datos_coti = array();
+        $array_datos_cotizacion = array();
+        $array_hotel= array();
 
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
             $clientes_ ='';
@@ -251,12 +252,13 @@ class OperacionesController extends Controller
         }
 //        $array_datos_cotizacion[$key]=substr($array_datos_cotizacion[$key],0,strlen($array_datos_cotizacion[$key])-1);
 //            dd($array_hotel);
-
+        $sort=array();
         foreach ($array_datos_coti as $key => $part) {
             $sort[$key] = strtotime($part['fecha']);
         }
         array_multisort($sort, SORT_ASC, $array_datos_coti);
         //-- ordenamos el multiarray
+        $sort1=array();
         foreach ($array_datos_cotizacion as $key => $part) {
             $sort1[$key] = strtotime($part['dates']);
         }
@@ -388,11 +390,13 @@ class OperacionesController extends Controller
 //        dd($array_datos_coti);
 //        dd($array_datos_cotizacion);
 //        dd($array_hotel);
+        $sort=array();
         foreach ($array_datos_coti as $key => $part) {
             $sort[$key] = strtotime($part['fecha']);
         }
         array_multisort($sort, SORT_ASC, $array_datos_coti);
         //-- ordenamos el multiarray
+        $sort1=array();
         foreach ($array_datos_cotizacion as $key => $part) {
             $sort1[$key] = strtotime($part['dates']);
         }
