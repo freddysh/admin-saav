@@ -499,9 +499,9 @@ class QouteController extends Controller
                         $pqt->duracion = $ppaquete->duracion;
                         $pqt->preciocosto = $ppaquete->preciocosto;
 //                        $pqt->utilidad =$ppaquete->utilidad;
-                        $pqt->utilidad =($total-$ppaquete->preciocosto);
+                        $pqt->utilidad =number_format(number_format($total,2, '.', '')-number_format($ppaquete->preciocosto,2, '.', ''),2, '.', '');
                         $pqt->estado = 1;
-                        $pqt->precioventa = $ppaquete->precio_venta;
+                        $pqt->precioventa = number_format($total,2, '.', '');
                         $pqt->descripcion = $ppaquete->descripcion;
                         $pqt->incluye = $ppaquete->incluye;
                         $pqt->noincluye = $ppaquete->noincluye;
