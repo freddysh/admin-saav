@@ -2166,6 +2166,7 @@ function poner_dias(web,dias) {
 
 function variar_profit(acom){
     var dias=$('#dias').val();
+    console.log('pqt de :'+dias);
     var valor=parseFloat($('#cost_'+acom).html());
     var pro=parseFloat($('#pro_'+acom).val());
     var sale=valor+pro;
@@ -2173,15 +2174,26 @@ function variar_profit(acom){
     $('#sale_'+acom).val(sale);
     var profit_por=(pro/sale)*100;
     profit_por=profit_por.toFixed(2);
-    $('#porc_'+acom).html(profit_por.toFixed(2));
-    $('#porc_'+acom).val(profit_por.toFixed(2));
-    var sale_s=parseFloat($('#sale_s').val());
-    var sale_d=parseFloat($('#sale_d').val());
-    var sale_m=parseFloat($('#sale_m').val());
-    var sale_t=parseFloat($('#sale_t').val());
-    var sale_sh=parseFloat($('#sale_sh').val());
+    $('#porc_'+acom).html(profit_por);
+    $('#porc_'+acom).val(profit_por);
+    var sale_s=0;
+    var sale_d=0;
+    var sale_m=0;
+    var sale_t=0;
+    var sale_sh=0;
+
     if(dias>1) {
-        $('#total_profit').html((sale_s+sale_d+sale_m+sale_t).toFixed(2));
+        sale_s=parseFloat($('#sale_s').val());
+        sale_d=parseFloat($('#sale_d').val());
+        sale_m=parseFloat($('#sale_m').val());
+        sale_t=parseFloat($('#sale_t').val());
+    }
+    else if(dias==1){
+        sale_sh=parseFloat($('#sale_sh').val());
+    }
+
+    if(dias>1) {
+        $('#total_profit').html((sale_s+ sale_d + sale_m + sale_t).toFixed(2));
     }
     else if(dias==1){
         $('#total_profit').html(sale_sh.toFixed(2));
@@ -2239,10 +2251,10 @@ function variar_sales(acom){
     var sale_t=0;
     var sale_sh=0;
     if(dias>1) {
-        var sale_s=parseFloat($('#sale_s').val());
-        var sale_d=parseFloat($('#sale_d').val());
-        var sale_m=parseFloat($('#sale_m').val());
-        var sale_t=parseFloat($('#sale_t').val());
+        sale_s=parseFloat($('#sale_s').val());
+        sale_d=parseFloat($('#sale_d').val());
+        sale_m=parseFloat($('#sale_m').val());
+        sale_t=parseFloat($('#sale_t').val());
     }
     else if(dias==1){
         sale_sh=parseFloat($('#sale_sh').val());
@@ -5722,8 +5734,8 @@ function mostrar_busqueda_situacion_servicios(opcion,dato1,dato2){
     });
     $.ajax({
         type: 'POST',
-        url: '../book/traer-situacion-servicios',
         data: 'opcion='+opcion+'&dato1='+dato1+'&dato2='+dato2,
+        url: '../traer-situacion-servicios',
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data1){
             $('#rpt_situacion_servicios').html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');

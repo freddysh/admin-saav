@@ -672,6 +672,7 @@
                         <input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">
                         <input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">
                         <input type="hidden" name="imprimir" value="si">
+                        <input type="hidden" name="origen" value="{{$msj}}">
                         <input type="hidden" name="itis" value="{{$itis}}">
                         <button class="btn btn-success btn-lg" type="submit">EDIT</button>
                     </form>

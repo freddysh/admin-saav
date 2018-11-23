@@ -446,7 +446,8 @@ class QouteController extends Controller
                         $coti->codigo_pqt = $codigo;
                         $coti->nropersonas = $totaltravelers;
                         $coti->duracion = $ppaquete->duracion;
-                        $coti->precioventa = $ppaquete->precio_venta;
+//                        $coti->precioventa = $ppaquete->precio_venta;
+                        $coti->precioventa = $total;
                         $coti->fecha = $fecha_llegada;
                         $coti->posibilidad = 0;
                         $coti->estado = 1;
@@ -497,7 +498,8 @@ class QouteController extends Controller
                         $pqt->titulo = $ppaquete->titulo;
                         $pqt->duracion = $ppaquete->duracion;
                         $pqt->preciocosto = $ppaquete->preciocosto;
-                        $pqt->utilidad = $ppaquete->utilidad;
+//                        $pqt->utilidad =$ppaquete->utilidad;
+                        $pqt->utilidad =($total-$ppaquete->preciocosto);
                         $pqt->estado = 1;
                         $pqt->precioventa = $ppaquete->precio_venta;
                         $pqt->descripcion = $ppaquete->descripcion;

@@ -1623,6 +1623,9 @@ class PackageCotizacionController extends Controller
 
     }
     public function guardar_paquete(Request $request){
+
+
+        $origen=$request->input('origen');
         $cotizacion_id=$request->input('cotizacion_id');
         $paquete_id=$request->input('paquete_id');
         $paquete_precio_id=$request->input('paquete_precio_id');
@@ -1641,7 +1644,8 @@ class PackageCotizacionController extends Controller
         $profit_por_t=$request->input('profit_por_t');
 
         $cotizacion=Cotizacion::findOrFail($cotizacion_id);
-        $cotizacion->estado=1;
+        if($origen!='editar')
+            $cotizacion->estado=1;
         $cotizacion->save();
 
         $paquete=PaqueteCotizaciones::FindOrFail($paquete_id);
@@ -1651,7 +1655,8 @@ class PackageCotizacionController extends Controller
         $paquete->descripcion=$descripcion;
         $paquete->incluye=$incluye;
         $paquete->noincluye=$no_incluye;
-        $paquete->estado=1;
+        if($origen!='editar')
+            $paquete->estado=1;
         $paquete->proceso_complete=2;
         $paquete->save();
 
@@ -1692,7 +1697,7 @@ class PackageCotizacionController extends Controller
 //        dd($btn);
 
         if($btn=='create'){
-            return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_id,'imprimir'=>$imprimir]);
+            return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_id,'imprimir'=>$imprimir,'origen'=>$origen]);
         }
         elseif($btn=='create_template'){
             $imprimir='si_create_temp';
@@ -1800,7 +1805,7 @@ class PackageCotizacionController extends Controller
                     }
                 }
             }
-            return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_id,'imprimir'=>$imprimir]);
+            return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_id,'imprimir'=>$imprimir,'origen'=>$origen]);
         }
 
     }
@@ -1926,7 +1931,7 @@ class PackageCotizacionController extends Controller
         $destinations=M_Destino::get();
         $categorias=M_Category::get();
         $hoteles=Hotel::where('localizacion','CUSCO')->get();
-        return view('admin.package-details1',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id,'msj'=>$msj,'destinations'=>$destinations,'categorias'=>$categorias,'hoteles'=>$hoteles]);
+        return view('admin.package-details1',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id,'msj'=>$msj,'destinations'=>$destinations,'categorias'=>$categorias,'hoteles'=>$hoteles,'origen'=>'nuevo']);
     }
     public function show_step1_editar($cliente_id, $cotizacion_id,$pqt_id,$msj)
     {
@@ -2370,13 +2375,14 @@ class PackageCotizacionController extends Controller
         foreach ($cotizaciones_clientes as $cli){
             $cliente_id=$cli->clientes_id;
         }
-        return redirect()->route('show_step1_editar_path',[$cliente_id,$cotizacion_id,$pqt_id,'nuevo']);
+        return redirect()->route('show_step1_editar_path',[$cliente_id,$cotizacion_id,$pqt_id,'editar']);
     }
     public function show_step2_post(Request $request)
     {
         $cotizacion_id=$request->input('cotizacion_id');
         $paquete_precio_id=$request->input('paquete_precio_id');
         $imprimir=$request->input('imprimir');
+        $origen=$request->input('origen');
 
         $cotizaciones=Cotizacion::where('id',$cotizacion_id)->get();
         $pqt=PaqueteCotizaciones::FindOrFail($paquete_precio_id);
@@ -2390,7 +2396,7 @@ class PackageCotizacionController extends Controller
             $temp->save();
         }
 
-        return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_precio_id,'imprimir'=>$imprimir]);
+        return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_precio_id,'imprimir'=>$imprimir,'origen'=>$origen]);
     }
     public function ask_information(Request $request){
 //        $cliente_estado=$request->input('estado');

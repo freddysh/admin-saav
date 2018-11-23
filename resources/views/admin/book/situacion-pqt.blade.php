@@ -44,13 +44,15 @@
             <div class="card w-100">
                 <div class="card-body">
                     <div class="row">
+                        {{csrf_field()}}
                         <div class="col-3">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">FILTRO</span>
                                 </div>
                                 <select name="opcion" id="opcion" class="form-control" onchange="mostrar_filtros($(this).val())">
-                                    <option value="file">Por codigo o  nombre</option>
+                                    <option value="codigo">Por codigo</option>
+                                    <option value="nombre">Por nombre</option>
                                     <option value="fechas">Entre fechas</option>
                                 </select>
                             </div>

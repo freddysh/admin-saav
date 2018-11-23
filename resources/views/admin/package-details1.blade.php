@@ -665,6 +665,7 @@
                             <input type="hidden" name="paquete_precio_id" value="{{$paquete_precio_id}}">
                             <input type="hidden" name="imprimir" value="no">
                             <input type="hidden" name="itis" value="{{$itis}}">
+                            <input type="hidden" name="origen" value="{{$origen}}">
                             <button class="btn btn-warning" type="submit">CREATE</button>
     {{--                        <a href="{{route('show_step2_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" class="btn btn-warning btn-lg" type="submit" name="create">CREATE</a>--}}
                         </form>

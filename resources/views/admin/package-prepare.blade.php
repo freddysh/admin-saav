@@ -556,6 +556,9 @@
                             <input type="hidden" name="profit_por_t" id="profit_por_t" value="40">
                             <input type="hidden" name="profit_por_sh" id="profit_por_sh" value="40">
                             <input type="hidden" name="profit_sh" id="profit_sh" value="{{$utilidad}}">
+                            <input type="hidden" name="impri" id="impri" value="{{$imprimir}}">
+                            <input type="hidden" name="origen" id="origen" value="{{$origen}}">
+
                             {{csrf_field()}}
                             @if($imprimir=='no')
                                 <button class="btn btn-g-yellow" type="submit" name="create" value="create">GUARDAR {{$plan[$pos_plan]}}</button>

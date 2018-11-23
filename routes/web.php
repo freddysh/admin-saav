@@ -1272,11 +1272,11 @@ Route::get('admin/contabilidad/pagos/pendientes/serv/consulta/pdf/{id}', [
     'uses' => 'ContabilidadController@consulta_entradas_pdf',
     'as' => 'descargar_consulta_entradas_path',
 ]);
-Route::get('/admin/reservas/situacion-servicios', [
+Route::post('/admin/book/traer-situacion-servicios', [
     'uses' => 'BookController@situacion_servicios_hoteles',
     'as' => 'situacion_servicios_busqueda_path',
 ]);
-Route::get('/admin/book/traer-situacion-servicios', [
+Route::get('/admin/book/situacion/traer-servicios',[
     'uses' => 'BookController@situacion_servicios',
     'as' => 'situacion_servicios_path',
 ]);

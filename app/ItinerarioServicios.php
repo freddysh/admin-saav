@@ -28,5 +28,8 @@ class ItinerarioServicios extends Model
     {
         return $this->hasMany(ItinerarioServiciosPagos::class, 'itinerario_servicios_id');
     }
-
+    public function liquidacion()
+    {
+        return $this->belongsToMany(Liquidacion::class, 'liquidacion_id');
+    }
 }

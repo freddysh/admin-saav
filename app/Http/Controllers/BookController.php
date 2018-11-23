@@ -920,20 +920,43 @@ class BookController extends Controller
         return view('admin.book.list-paquetes',compact('cotizacion_cat'));
     }
     public function situacion_servicios(){
-        return 'hola';
         return view('admin.book.situacion-pqt');
-
-
     }
     public function situacion_servicios_hoteles(Request $request)
     {
         $opcion = $request->input('opcion');
-        $dato1 = $request->input('dato1');
-        $dato2 = $request->input('dato2');
-
-        if($opcion=='')
+        $dato1 = $request->input('dato1');//-- nombre, codigo, fecha-desde
+        $dato2 = $request->input('dato2');//-- fecha-hasta
+        $cotizaciones=null;
+        if($opcion=='codigo'){
+            $cotizaciones = Cotizacion::where('codigo', $dato1)->get();
+        }
+        elseif($opcion=='nombre'){
             $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones',function($query)use($dato1){
-        })->get();
+                $query->whereHas('cotizaciones_cliente',function($query)use($dato1){
+                    $query->whereHas('cliente',function($query)use($dato1){
+                        $query->where('nombres','like',$dato1);
+                    });
+                });
+            })->get();
+
+        }
+        elseif($opcion=='fecha'){
+            $cotizaciones=Cotizacion::where ('paquete_cotizaciones',function($query)use($dato1,$dato2){
+                $query->whereHas('itinerario_cotizaciones',function($query)use($dato1,$dato2){
+                    //-- para buscar por fecha de uso
+                    $query->whereBetween('fecha',[$dato1,$dato2]);
+                    $query->whereHas('itinerario_servicios',function($query)use($dato1,$dato2){
+                        //-- para buscar por fecha de vencimiento
+                        $query->whereBetween('fecha_venc',[$dato1,$dato2]);
+                    });
+                });
+            })->get();
+
+        }
+        $liquidaciones=Liquidacion::get();
+        return view('admin.book.situacion-x-pqt',compact(['cotizaciones','liquidaciones']));
+//        return dd($cotizaciones);
 
 //        $cotizacion_cat =Cotizacion::where('codigo',$codigo)->get();
 //        return view('admin.book.list-paquetes',compact('cotizacion_cat'));
