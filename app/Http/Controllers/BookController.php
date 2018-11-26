@@ -927,35 +927,72 @@ class BookController extends Controller
         $opcion = $request->input('opcion');
         $dato1 = $request->input('dato1');//-- nombre, codigo, fecha-desde
         $dato2 = $request->input('dato2');//-- fecha-hasta
+//        dd($dato1.'_'.$dato2);
         $cotizaciones=null;
+        $liquidaciones=Liquidacion::get();
         if($opcion=='codigo'){
-            $cotizaciones = Cotizacion::where('codigo', $dato1)->get();
+//            $cotizaciones = Cotizacion::where('codigo', $dato1)->get();
+//            return view('admin.book.situacion-x-pqt',compact(['cotizaciones','liquidaciones']));
         }
         elseif($opcion=='nombre'){
-            $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones',function($query)use($dato1){
-                $query->whereHas('cotizaciones_cliente',function($query)use($dato1){
-                    $query->whereHas('cliente',function($query)use($dato1){
-                        $query->where('nombres','like',$dato1);
-                    });
-                });
-            })->get();
-
+//            $cotizaciones=Cotizacion::whereHas('cotizaciones_cliente',function($query)use($dato1){
+//                    $query->whereHas('cliente',function($query)use($dato1){
+//                        $query->where('nombres',$dato1);
+//                    });
+//            })->get();
+//            return view('admin.book.situacion-x-pqt',compact(['cotizaciones','liquidaciones']));
         }
-        elseif($opcion=='fecha'){
-            $cotizaciones=Cotizacion::where ('paquete_cotizaciones',function($query)use($dato1,$dato2){
-                $query->whereHas('itinerario_cotizaciones',function($query)use($dato1,$dato2){
+        elseif($opcion=='fechas'){
+
+            $cotizaciones=Cotizacion::with('paquete_cotizaciones',function($query3)use($dato1,$dato2){
+                $query3->with('itinerario_cotizaciones',function($query2)use($dato1,$dato2){
                     //-- para buscar por fecha de uso
-                    $query->whereBetween('fecha',[$dato1,$dato2]);
-                    $query->whereHas('itinerario_servicios',function($query)use($dato1,$dato2){
+//                    $query->whereBetween('fecha',[$dato1,$dato2]);
+//                    $query2->with('itinerario_servicios')
+                    $query2->whereHas('itinerario_servicios',function($query1)use($dato1,$dato2){
                         //-- para buscar por fecha de vencimiento
-                        $query->whereBetween('fecha_venc',[$dato1,$dato2]);
+
+                        $query1->whereNotNull('fecha_venc')
+                            ->whereBetween('fecha_venc',[new Carbon($dato1),new Carbon($dato2)]);
+//                        $dato1<=$itinerario_servicio->fecha_venc && $itinerario_servicio->fecha_venc<=$dato2
+//                        $query1->where('fecha_venc','>=', $dato1)->where('fecha_venc','<=', $dato2);
+//                        $query->whereBetween('fecha_venc',[$dato1,$dato2]);
+//                        return $query1->whereNotNull('fecha_venc')->where('fecha_venc','<=', $dato2);
                     });
                 });
             })->get();
+//            $total=0;
+//            $total2=0;
 
+//            dd($cotizaciones->paquete_cotizaciones->itinerario_cotizaciones->itinerario_servicios->count());
+
+//            return dd($total);
+//            $cotizaciones=Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones.itinerario_servicios'],function($query)use($dato1,$dato2) {
+////                $query->where('fecha_venc','!=',NULL);
+////                $query->whereBetween('fecha_venc', [$dato1, $dato2]);
+//                $query->where('fecha_venc','>=', $dato1)->where('fecha_venc','<=', $dato2);
+//            })->get();
+//            foreach ($cotizaciones)
+//            foreach ($cotizaciones as $cotizacion){
+//                foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
+//                    foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){
+//                        foreach ($itinerario_cotizaciones->itinerario_servicios as $itinerario_servicio){
+//                            $total=$total+1;
+////                            if($dato1<=$itinerario_servicio->fecha_venc&&$itinerario_servicio->fecha_venc<=$dato2){
+////                                $total=$total+1;
+////                            }
+////                            else{
+////                                $total2=$total2+1;
+////                            }
+//                        }
+//                    }
+//                }
+//            }
+//            return dd($total);
+
+            return view('admin.book.situacion-x-pqt-fechas',compact(['cotizaciones','liquidaciones','dato1','dato2']));
         }
-        $liquidaciones=Liquidacion::get();
-        return view('admin.book.situacion-x-pqt',compact(['cotizaciones','liquidaciones']));
+
 //        return dd($cotizaciones);
 
 //        $cotizacion_cat =Cotizacion::where('codigo',$codigo)->get();

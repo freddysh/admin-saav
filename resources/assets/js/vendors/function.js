@@ -5724,7 +5724,11 @@ function eliminar_servicio_consulta(id,servicio){
 function mostrar_filtros(opcion){
     $('#file').addClass('d-none');
     $('#fechas').addClass('d-none');
-    $('#'+opcion).removeClass('d-none');
+    if(opcion=='codigo'||opcion=='nombre')
+        $('#file').removeClass('d-none');
+    else
+        $('#'+opcion).removeClass('d-none');
+
 }
 function mostrar_busqueda_situacion_servicios(opcion,dato1,dato2){
     $.ajaxSetup({

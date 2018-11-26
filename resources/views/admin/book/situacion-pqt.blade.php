@@ -73,8 +73,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">FECHAS</span>
                                 </div>
-                                <input type="date" class="form-control" name="ini" id="ini" value="{{date("Y")}}">
-                                <input type="date" class="form-control" name="fin" id="fin" value="{{date("Y")}}">
+                                <input type="date" class="form-control" name="ini" id="ini" value="{{date("Y-m-d")}}">
+                                <input type="date" class="form-control" name="fin" id="fin" value="{{date("Y-m-d")}}">
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" onclick="mostrar_busqueda_situacion_servicios($('#opcion').val(),$('#ini').val(),$('#fin').val())"><i class="fas fa-search"></i></button>
                                 </div>
