@@ -26,7 +26,6 @@
 @stop
 @section('content')
     @php
-
     $todo_destinos='';
     @endphp
     @foreach($destinations as $destination)
@@ -176,25 +175,6 @@
                                                     </div>
                                                 </div>
                                             @endif
-                                            {{--@if($categoria->nombre=='HOTELS')--}}
-                                                {{--<div class="col-6">--}}
-                                                    {{--<div class="form-group">--}}
-                                                        {{--<label for="txt_codigo" class="text-secondary font-weight-bold">Location</label>--}}
-                                                        {{--<input type="text" class="form-control" id="txt_localizacion_0" name="txt_localizacion_0" placeholder="Location">--}}
-                                                        {{--<select class="form-control" id="txt_localizacion_{{$pos}}" name="txt_localizacion_{{$pos}}">--}}
-                                                            {{--<option value="0">Escoja el destino</option>--}}
-                                                            {{--@foreach($destinations as $destination)--}}
-                                                                {{--@if(!in_array($destination->destino,$destinos_usados))--}}
-                                                                    {{--<option value="{{$destination->destino}}">{{$destination->destino}}</option>--}}
-                                                                {{--@else--}}
-                                                                    {{--<option value="{{$destination->destino}}" disabled="disabled">{{$destination->destino}}</option>--}}
-                                                                {{--@endif--}}
-                                                            {{--@endforeach--}}
-                                                        {{--</select>--}}
-                                                        {{--<input type="hidden" name="tipoServicio_{{$pos}}" id="tipoServicio_{{$pos}}" value="{{$categoria->nombre}}">--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                            {{--@endif--}}
                                             @if($categoria->nombre=='MOVILID')
                                                 <div class="col-6">
                                                     <label for="txt_type" class="font-weight-bold text-secondary">Clase</label>
@@ -658,16 +638,20 @@
                                     <div class="row">
                                         <div id="lista_proveedores_{{$pos}}_{{$categoria->id}}" class="col">
                                             @if($categoria->nombre!='TRAINS')
-                                                @foreach($proveedores->where('grupo',$categoria->nombre) as $proveedor)
+                                                @foreach($proveedores as $proveedor)
                                                     @php
-                                                       $destino_id=$destinations->where('destino','CUSCO')->first();
-                                                       $destino_operado=$destino_operados->where('proveedor_id',$proveedor->id)->where('m_destinos_id',$destino_id->id)->count();
+                                                       $grupos_operado=$proveedor->grupos_operados->where('m_category_id',$categoria->id)->count();
                                                     @endphp
-                                                    @if($destino_operado>0)
-                                                    <label class="text-primary display-block">
-                                                        <input class="proveedores_{{$pos}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
-                                                        {{ucwords(strtolower($proveedor->nombre_comercial))}}
-                                                    </label>
+                                                    @if($grupos_operado>0)
+                                                        <label class="text-primary display-block">
+                                                            <input class="proveedores_{{$pos}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
+                                                            {{strtoupper($proveedor->nombre_comercial)}}
+                                                        </label>
+                                                    @elseif($proveedor->grupo==$categoria->nombre)
+                                                        <label class="text-primary display-block">
+                                                            <input class="proveedores_{{$pos}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
+                                                            {{strtoupper($proveedor->nombre_comercial)}}
+                                                        </label>
                                                     @endif
                                                 @endforeach
                                             @endif
@@ -679,32 +663,7 @@
                                         </div>
                                         <div  class="col-lg">
                                             <div id="lista_costos_{{$categoria->id}}_0_{{$pos}}" class="sticky-top">
-
                                             </div>
-                                            {{--@if($categoria->nombre=='TRAINS')--}}
-                                            {{--@php--}}
-                                            {{--$vision=0;--}}
-                                            {{--@endphp--}}
-                                            {{--@foreach($proveedores->where('grupo',$categoria->nombre) as $prove)--}}
-                                            {{--@php--}}
-                                            {{--$vision++;--}}
-                                            {{--@endphp--}}
-                                            {{--<div id="fila_{{$prove->id}}" class="row @if($vision>1){{'d-none'}} @endif">--}}
-                                            {{--<div class="col-lg-8">--}}
-                                            {{--{{$prove->nombre_comercial}}--}}
-                                            {{--</div>--}}
-                                            {{--<div class="col-lg-2">--}}
-                                            {{--<input type="number" class="form-control" style="width: 80px" step="0.01" min="0" value="0.00"></td>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="col-lg-2">--}}
-                                            {{--<button type="button" class="btn btn-danger" onclick="eliminar_proveedor('{{$prove->id}}','{{$prove->nombre_comercial}}')">--}}
-                                            {{--<i class="fa fa-trash-o" aria-hidden="true"></i>--}}
-                                            {{--</button>--}}
-                                            {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--@endforeach--}}
-                                            {{--@endif--}}
-
                                         </div>
 
                                     </div>
@@ -718,9 +677,7 @@
                     $pos++;
                     ?>
                 @endforeach
-
             </div>
-
             <div class="row pb-4">
                 <div class="col text-right">
                     <div class="btn-save-fixed">
@@ -731,12 +688,9 @@
                 </div>
             </div>
             {{csrf_field()}}
-
         </form>
         </div>
-
     </div>
-
     <script>
         $(document).ready(function() {
             @foreach($destinations as $destination)
@@ -763,29 +717,17 @@
                     success:  function (response) {
                     var datox=response.split('_');
                     console.log(datox);
-// if(response==1){
-//                            $('#result_'+id).removeClass('text-danger');
-//                            $('#result_'+id).addClass('text-success');
                             $('#result_'+id).html('producto guardado Correctamente!');
                         if(grupo=='MOVILID')
                             $('#tipo_'+id).html(datox[0]+' ['+datox[1]+'-'+datox[2]+']');
                         else
                             $('#tipo_'+id).html(datox[0]);
-
                         if(grupo=='TRAINS')
                             $('#horario_'+id).html(datox[2]);
                         $('#precio_'+id).html(datox[3]);
                         $('#nombre_'+id).html(datox[4]);
-
-//                        }
-//                        else{
-//                            $('#result_'+id).removeClass('text-success');
-//                            $('#result_'+id).addClass('text-danger');
-//                            $('#result_'+id).html('Error al guardar la imagen, intentelo de nuevo');
-//                        }
                     }
                 })
-                // esto es para que no se reenvie el formulario
                 return false;
             });
         }

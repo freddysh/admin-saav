@@ -174,7 +174,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2 text-left">
+                <div class="col-2 text-left ">
                     <div class="row ">
                         <div class="col  text-30">
                             <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_h" onclick="mostrarservicios()">

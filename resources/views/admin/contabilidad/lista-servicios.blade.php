@@ -1,4 +1,4 @@
-<table id="tb_'{{$destino[0]}}_{{$destino[1]}}" class="{{$destino[1]}} table table-striped table-bordered table-sm mt-3"  width="100%" cellspacing="0">
+<table id="tb_{{$destino[0]}}_{{$destino[1]}}" class="{{$destino[1]}} table table-striped table-bordered table-sm mt-3"  width="100%" cellspacing="0">
     <thead>
     <tr>
         <th>Localizacion</th>
@@ -56,7 +56,7 @@
     @php
         $pos = 0;
     @endphp
-    @if($filtro=='Normal')
+    @if($filtro=='normal')
         @foreach ($sericios as $servicio)
             <tr class="{{$servicio->localizacion}}" id="lista_services_{{$servicio->id}}">
                 <td class="text-g-green">{{ucwords(strtolower($servicio->localizacion))}}</td>
@@ -275,7 +275,6 @@
                                                         @if ($servicio->grupo == 'MOVILID')
                                                             <div class="col-6">
                                                                 <div class="form-group"><label for="txt_type" class="text-secondary font-weight-bold"> Type</label >
-
                                                                     <select class="form-control" id = "txt_type_{{$servicio->id}}" name = "txt_type_{{$servicio->id}}" >
                                                                         <option value = "AUTO"
                                                                         @if ($servicio->tipoServicio == "AUTO")
@@ -876,19 +875,13 @@
                                                     <div class="row align-items-center">
                                                         <div id="lista_proveedores_{{$servicio->id}}_{{$destino[0]}}" class="col">
                                                             @if($destino[1]!='TRAINS')
-                                                                @foreach ($proveedores->where('grupo',$destino[1]) as $proveedor)
-                                                                    @php
-                                                                        $destino_id=$destinations->where('destino',$destino[2])->first();
-                                                                        $destino_operado=$destino_operados->where('proveedor_id',$proveedor->id)->where('m_destinos_id',$destino_id->id)->count();
-                                                                    @endphp
-                                                                    @if($destino_operado>0)
-                                                                        <div class="">
-                                                                            <label class="text-primary">
-                                                                                <input class="proveedores_{{$servicio->id}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
-                                                                                {{ucwords(strtolower($proveedor->nombre_comercial))}}
-                                                                            </label>
-                                                                        </div>
-                                                                    @endif
+                                                                @foreach($proveedores as $proveedor)
+                                                                    <div class="">
+                                                                        <label class="text-primary">
+                                                                            <input class="proveedores_{{$servicio->id}}" type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
+                                                                             {{strtoupper($proveedor->nombre_comercial)}}
+                                                                        </label>
+                                                                    </div>
                                                                 @endforeach
                                                             @endif
                                                         </div>
@@ -1782,19 +1775,13 @@
                                                     <div class="row align-items-center">
                                                         <div id="lista_proveedores_{{$servicio->id}}_{{$destino[0]}}" class="col">
                                                             @if($destino[1]!='TRAINS')
-                                                                @foreach ($proveedores->where('grupo',$destino[1]) as $proveedor)
-                                                                    @php
-                                                                        $destino_id=$destinations->where('destino',$destino[2])->first();
-                                                                        $destino_operado=$destino_operados->where('proveedor_id',$proveedor->id)->where('m_destinos_id',$destino_id->id)->count();
-                                                                    @endphp
-                                                                    @if($destino_operado>0)
-                                                                        <div class="">
-                                                                            <label class="text-primary">
-                                                                                <input class="proveedores_{{$servicio->id}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
-                                                                                {{ucwords(strtolower($proveedor->nombre_comercial))}}
-                                                                            </label>
-                                                                        </div>
-                                                                    @endif
+                                                                @foreach ($proveedores as $proveedor)
+                                                                    <div class="">
+                                                                        <label class="text-primary">
+                                                                            <input class="proveedores_{{$servicio->id}}" type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
+                                                                            {{strtoupper($proveedor->nombre_comercial)}}
+                                                                        </label>
+                                                                    </div>
                                                                 @endforeach
                                                             @endif
                                                         </div>
@@ -2688,19 +2675,13 @@
                                                     <div class="row align-items-center">
                                                         <div id="lista_proveedores_{{$servicio->id}}_{{$destino[0]}}" class="col">
                                                             @if($destino[1]!='TRAINS')
-                                                                @foreach ($proveedores->where('grupo',$destino[1]) as $proveedor)
-                                                                    @php
-                                                                        $destino_id=$destinations->where('destino',$destino[2])->first();
-                                                                        $destino_operado=$destino_operados->where('proveedor_id',$proveedor->id)->where('m_destinos_id',$destino_id->id)->count();
-                                                                    @endphp
-                                                                    @if($destino_operado>0)
-                                                                        <div class="">
-                                                                            <label class="text-primary">
-                                                                                <input class="proveedores_{{$servicio->id}}"  type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
-                                                                                {{ucwords(strtolower($proveedor->nombre_comercial))}}
-                                                                            </label>
-                                                                        </div>
-                                                                    @endif
+                                                                @foreach ($proveedores as $proveedor)
+                                                                    <div class="">
+                                                                        <label class="text-primary">
+                                                                            <input class="proveedores_{{$servicio->id}}" type="checkbox" aria-label="..." name="proveedores_[]" value="{{$proveedor->id}}_{{$proveedor->nombre_comercial}}">
+                                                                            {{strtoupper($proveedor->nombre_comercial)}}
+                                                                        </label>
+                                                                    </div>
                                                                 @endforeach
                                                             @endif
                                                         </div>

@@ -240,6 +240,28 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @if($provider->grupo!='HOTELS')
+                                                    <div class="row mt-3 text-left">
+                                                        <div class="col">
+                                                            <div class="card p-3 bg-light">
+                                                                <div class="form-group">
+                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Destinos que opera</label>
+                                                                </div>
+                                                                <div class="row padding-10">
+                                                                    @foreach($m_categories as $m_category)
+                                                                        @php
+                                                                            $nrocoincidencias=$grupos_opera->where('proveedor_id',$provider->id)->where('m_category_id',$m_category->id)->count();
+                                                                        @endphp
+                                                                        <div class="col-2 form-group form-check">
+                                                                            <input type="checkbox" class="form-check-input" id="grupos_opera_{{$provider->id}}_{{$m_category->id}}" name="grupos_opera_[]" value="{{$m_category->id}}" @if($nrocoincidencias>0) {{'checked'}} @endif>
+                                                                            <label class="form-check-label" for="grupos_opera_{{$provider->id}}_{{$m_category->id}}">{{$m_category->nombre}}</label>
+                                                                        </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

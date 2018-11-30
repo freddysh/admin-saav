@@ -35,7 +35,8 @@ class ReportesController extends Controller
 //        $cotis=Cotizacion::where('estado','2')->whereBetween('created_at',[$desde,$hasta])->get();
         $cotis=Cotizacion::where('estado','2')->whereBetween('fecha_venta',[$desde,$hasta])->get();
         foreach ($cotis as $coti) {
-            foreach ($coti->paquete_cotizaciones->where('estado', '2') as $pqt) {
+//            if($desde<=$coti->fecha_venta&&$coti->fecha_venta<=$hasta){
+                foreach ($coti->paquete_cotizaciones->where('estado', '2') as $pqt) {
                 if ($pqt->duracion == 1) {
                     if (!array_key_exists($coti->web, $array_profit)) {
                         $array_profit[$coti->web]=$pqt->utilidad*$coti->nropersonas;
@@ -66,9 +67,15 @@ class ReportesController extends Controller
                     }
                 }
             }
+//            }
         }
 //        return dd($array_profit);
         return view('admin.reportes.profit-buscar',compact(['desde','hasta','array_profit']));
+    }
+    public function lista_cotizaciones($web,$desde,$hasta)
+    {
+        $cotizaciones = Cotizacion::where('web',$web)->where('estado','2')->whereBetween('fecha_venta',[$desde,$hasta])->get();
+        return view('admin.reportes.cotizacion-detalle',compact(['cotizaciones','desde','hasta']));
     }
 
 }

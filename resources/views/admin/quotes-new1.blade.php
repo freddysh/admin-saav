@@ -3,123 +3,143 @@
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 @stop
 @section('archivos-js')
-    <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+    {{--<script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>--}}
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white m-0">
+        <ol class="breadcrumb bg-white mt-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
             <li class="breadcrumb-item" aria-current="page"><a href="/">Qoutes</a></li>
             <li class="breadcrumb-item active">New</li>
         </ol>
     </nav>
     <hr>
-    {{--<form action="{{route('package_cotizacion_save_path')}}" method="post" id="package_new_path_id">--}}
     <div class="row">
         <div class="col-9">
             <div class="row">
                 <div class="col-12">
-
-                    <div class="row align-items-start">
-                        <div class="col-4">
-                            <div class="form-group">
-                                {{csrf_field()}}
-                                <label for="txt_travel_date" class="font-weight-bold text-secondary">Pagina de origen</label>
-                                <select name="web" id="web" class="form-control" onchange="generar_codigo($(this).val())">
-                                    <option value="gotoperu.com" @if($web=='gotoperu.com') selected @endif>gotoperu.com</option>
-                                    <option value="llama.tours" @if($web=='llama.tours') selected @endif>llama.tours</option>
-                                    <option value="gotoperu.com.pe" @if($web=='gotoperu.com.pe') selected @endif>gotoperu.com.pe</option>
-                                    <option value="andesviagens.com" @if($web=='andesviagens.com') selected @endif>andesviagens.com</option>
-                                    <option value="machupicchu-galapagos.com" @if($web=='machupicchu-galapagos.com') selected @endif>machupicchu-galapagos.com</option>
-                                    <option value="gotolatinamerica.com" @if($web=='gotolatinamerica.com') selected @endif>gotolatinamerica.com</option>
-                                    <option value="expedia.com" @if($web=='expedia.com') selected @endif>expedia.com</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
-                                <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="txt_codigo" class="font-weight-bold text-secondary">Idioma</label>
-                                <select class="form-control" id="txt_idioma_pasajeros" name="txt_idioma_pasajeros">
-                                    <option value="SIN IDIOMA">Escoja un idioma</option>
-                                    <option value="INGLES" @if($idioma_pasajeros=='INGLES') {{'selected'}} @endif>INGLES</option>
-                                    <option value="PORTUGUES" @if($idioma_pasajeros=='PORTUGUES') {{'selected'}} @endif>PORTUGUES</option>
-                                    <option value="ESPAÑOL" @if($idioma_pasajeros=='ESPAÑOL') {{'selected'}} @endif>ESPAÑOL</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="txt_name" class="font-weight-bold text-secondary">Name</label>
-                                <input type="text" class="form-control" id="txt_name" name="txt_name" placeholder="Ingrese el nombre" onkeypress="return runScript(event)" value="{{$nombres}}" required>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="txt_email" class="font-weight-bold text-secondary">Email</label>
-                                <input type="email" class="form-control" id="txt_email" name="txt_email" placeholder="Email" value="{{$email}}">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="txt_country" class="font-weight-bold text-secondary">Country</label>
-                                <input type="text" class="form-control" id="txt_country" name="txt_country" placeholder="Country" value="{{$nacionalidad}}">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="txt_phone" class="font-weight-bold text-secondary">Phone</label>
-                                <input type="text" class="form-control" id="txt_phone" name="txt_phone" placeholder="Phone" value="{{$telefono}}">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="txt_notas" class="font-weight-bold text-secondary">Notas</label>
-                                <textarea  class="form-control" name="txt_notas" id="txt_notas" cols="30" rows="5"></textarea>
-                            </div>
-                        </div>
-
-                    </div>
-                    <hr>
                     <div class="row">
                         <div class="col">
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-6">
                                     <div class="form-group">
-                                        <label for="txt_travellers" class="font-weight-bold text-g-yellow">#Pax</label>
-                                        <input type="number" class="form-control" id="txt_travellers" name="txt_travellers" min="1" onchange="calcular_sumar_servicios($('#txt_travellers').val())" value="{{$travelers}}">
-                                        {{--<span class="input-group-addon" id="basic-addon2">#Pax</span>--}}
+                                        <label for="txt_name" class="font-weight-bold text-secondary">Name</label>
+                                        <input type="text" class="form-control" id="txt_name" name="txt_name" placeholder="Ingrese el nombre" onkeypress="return runScript(event)" value="{{$nombres}}" required>
                                     </div>
                                 </div>
-                                <div class="col-auto pt-4">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_email" class="font-weight-bold text-secondary">Email</label>
+                                        <input type="email" class="form-control" id="txt_email" name="txt_email" placeholder="Email" value="{{$email}}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_country" class="font-weight-bold text-secondary">Country</label>
+                                        <input type="text" class="form-control" id="txt_country" name="txt_country" placeholder="Country" value="{{$nacionalidad}}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_phone" class="font-weight-bold text-secondary">Phone</label>
+                                        <input type="text" class="form-control" id="txt_phone" name="txt_phone" placeholder="Phone" value="{{$telefono}}">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="txt_notas" class="font-weight-bold text-secondary">Notas</label>
+                                        <textarea  class="form-control" name="txt_notas" id="txt_notas" cols="30" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        {{csrf_field()}}
+                                        <label for="web" class="font-weight-bold text-secondary">Pagina de origen</label>
+                                        <select name="web" id="web" class="form-control" onchange="generar_codigo($(this).val())">
+                                            <option value="gotoperu.com" @if($web=='gotoperu.com') selected @endif>gotoperu.com</option>
+                                            <option value="llama.tours" @if($web=='llama.tours') selected @endif>llama.tours</option>
+                                            <option value="gotoperu.com.pe" @if($web=='gotoperu.com.pe') selected @endif>gotoperu.com.pe</option>
+                                            <option value="andesviagens.com" @if($web=='andesviagens.com') selected @endif>andesviagens.com</option>
+                                            <option value="machupicchu-galapagos.com" @if($web=='machupicchu-galapagos.com') selected @endif>machupicchu-galapagos.com</option>
+                                            <option value="gotolatinamerica.com" @if($web=='gotolatinamerica.com') selected @endif>gotolatinamerica.com</option>
+                                            <option value="expedia.com" @if($web=='expedia.com') selected @endif>expedia.com</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
+                                        <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_idioma_pasajeros" class="font-weight-bold text-secondary">Idioma</label>
+                                        <select class="form-control" id="txt_idioma_pasajeros" name="txt_idioma_pasajeros">
+                                            <option value="SIN IDIOMA">Escoja un idioma</option>
+                                            <option value="INGLES" @if($idioma_pasajeros=='INGLES') {{'selected'}} @endif>INGLES</option>
+                                            <option value="PORTUGUES" @if($idioma_pasajeros=='PORTUGUES') {{'selected'}} @endif>PORTUGUES</option>
+                                            <option value="ESPAÑOL" @if($idioma_pasajeros=='ESPAÑOL') {{'selected'}} @endif>ESPAÑOL</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txt_travellers" class="font-weight-bold text-secondary">Travelers</label>
+                                        <input type="number" class="form-control" id="txt_travellers" name="txt_travellers" min="1" onchange="calcular_sumar_servicios($('#txt_travellers').val())" value="{{$travelers}}">
+                                    </div>
+                                </div>
+                                <div class="col-3 d-none">
                                     <span id="human"></span>
                                 </div>
-                                <div class="col">
-                                    <label class="font-weight-bold text-g-yellow d-block pb-1">Accommodation</label>
-                                    <div class="custom-control custom-radio custom-control-inline">
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="txt_days" class="font-weight-bold text-secondary">Days</label>
+                                        <input type="number" class="form-control" id="txt_days" name="txt_days" placeholder="Days" min="1" onchange="poner_dias($('#web').val(),$(this).val())" value="{{$days}}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_travel_date" class="font-weight-bold text-secondary">Travel date</label>
+                                        <input type="date" class="form-control" id="txt_travel_date" name="txt_travel_date" placeholder="Travel date" value="{{$fecha}}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="hotel" class="font-weight-bold text-secondary">Hotel</label>
+                                        <select class="form-control" name="hotel" id="hotel" onchange="mostrar_acomodacion($(this).val())">
+                                            <option value="0">Sin hotel</option>
+                                            <option value="2">2 Stars</option>
+                                            <option value="3">3 Stars</option>
+                                            <option value="4">4 Stars</option>
+                                            <option value="5">5 Stars</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="custom-control custom-radio custom-control-inline d-none">
+                                        <input type="radio" id="strellas_0" name="strellas[]" class="custom-control-input" value="0" checked="checked" onchange="filtrar_estrellas1('0')">
+                                        <label class="custom-control-label" for="strellas_0">Sin Hotel</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline d-none">
                                         <input type="radio" id="strellas_2" name="strellas[]" class="custom-control-input" value="2" checked="checked" onchange="filtrar_estrellas1('2')">
-                                        <label class="custom-control-label" for="strellas_2">2</label>
+                                        <label class="custom-control-label" for="strellas_2">2 <i class="fas fa-star text-warning"></i></label>
                                     </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
+                                    <div class="custom-control custom-radio custom-control-inline d-none">
                                         <input type="radio" id="strellas_3" name="strellas[]" class="custom-control-input" value="3" onchange="filtrar_estrellas1('3')">
-                                        <label class="custom-control-label" for="strellas_3">3</label>
+                                        <label class="custom-control-label" for="strellas_3">3 <i class="fas fa-star text-warning"></i></label>
                                     </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
+                                    <div class="custom-control custom-radio custom-control-inline d-none">
                                         <input type="radio" id="strellas_4" name="strellas[]" class="custom-control-input" value="4" onchange="filtrar_estrellas1('4')">
-                                        <label class="custom-control-label" for="strellas_4">4</label>
+                                        <label class="custom-control-label" for="strellas_4">4 <i class="fas fa-star text-warning"></i></label>
                                     </div>
-                                    <div class="custom-control custom-radio custom-control-inline">
+                                    <div class="custom-control custom-radio custom-control-inline d-none">
                                         <input type="radio" id="strellas_5" name="strellas[]" class="custom-control-input" value="5" onchange="filtrar_estrellas1('5')">
-                                        <label class="custom-control-label" for="strellas_5">5</label>
+                                        <label class="custom-control-label" for="strellas_5">5 <i class="fas fa-star text-warning"></i></label>
                                     </div>
                                     {{--<label class="text-orange-goto">--}}
                                     {{--<input type="radio" name="strellas[]" id="strellas_2" value="2" checked="checked" onchange="filtrar_estrellas1('2')">2--}}
@@ -134,124 +154,44 @@
                                     {{--<input type="radio" name="strellas[]" id="strellas_5" value="5" onchange="filtrar_estrellas1('5')">5--}}
                                     {{--</label>--}}
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-bed" aria-hidden="true"></i></span>
-                                                </div>
+                                <div class="col-12">
+                                    <div id="acomodacion" class="row  d-none">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold text-secondary" for="exampleInputEmail1"><i class="fa fa-bed" aria-hidden="true"></i></label>
                                                 <input type="number" class="form-control" name="a_s_1" id="a_s_1" value="0" min="0" onchange="aumentar_acom('s')">
                                             </div>
-                                            <div class="caja no-padding no-margin d-none">
-                                                <div class="row ">
-                                                    <div class="col-lg-12">
-                                                        <b class="text-20" id="a_s_1l">0</b>
-                                                        <b class="text-20px"><i class="fa fa-bed fa-2x" aria-hidden="true"></i></b>
-                                                    </div>
-                                                </div>
-                                                <div class="row ">
-                                                    <div class="col-lg-6">
-                                                        <a href="#!" onclick="aumentar_acom('s','-')"><i class="fa fa-minus-circle fa-2x" aria-hidden="true"></i></a>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <a href="#!" onclick="aumentar_acom('s','+')"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold text-secondary" for="exampleInputEmail1">
+                                                    <i class="fa fa-bed" aria-hidden="true"></i>
+                                                    <i class="fa fa-bed" aria-hidden="true"></i>
+                                                </label>
+                                                <input type="number" class="form-control" name="a_d_1" id="a_d_1" value="0" min="0" onchange="aumentar_acom('s')">
                                             </div>
                                         </div>
-                                        <div class="col">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon2">
-                                                    <i class="fa fa-bed mx-1" aria-hidden="true"></i>
-                                                    <i class="fa fa-bed mx-1" aria-hidden="true"></i>
-                                                </span>
-                                                </div>
-                                                <input type="number" class="form-control" name="a_d_1" id="a_d_1" value="0" min="0" onchange="aumentar_acom('d')">
-                                            </div>
-                                            <div class="caja d-none">
-                                                {{--<input class="destinospack" type="checkbox" name="acomodacion_s" id="acomodacion_s" value="1">--}}
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <b class="text-20" id="a_d_1l">0</b>
-                                                        <b class="text-20px"><i class="fa fa-bed fa-2x" aria-hidden="true"></i> <i class="fa fa-bed fa-2x" aria-hidden="true"></i></b>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <a href="#!" onclick="aumentar_acom('d','-')"><i class="fa fa-minus-circle fa-2x" aria-hidden="true"></i></a>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <a href="#!" onclick="aumentar_acom('d','+')"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="input-group">
-                                                {{--<span class="input-group-addon" id="basic-addon2"><i class="fa fa-venus-mars" aria-hidden="true"></i></span>--}}
-                                                <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon2">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold text-secondary" for="exampleInputEmail1">
                                                     <i class="fa fa-venus-mars" aria-hidden="true"></i>
-                                                </span>
-                                                </div>
+                                                    </label>
                                                 <input type="number" class="form-control" name="a_m_1" id="a_m_1" min="0" value="0" onchange="aumentar_acom('m')">
                                             </div>
-                                            <div class="caja d-none">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <b class="text-20" id="a_m_1l">0</b>
-                                                        <b class="text-20px"><i class="fa fa-venus-mars fa-2x" aria-hidden="true"></i></b>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <a href="#!" onclick="aumentar_acom('m','-')"><i class="fa fa-minus-circle fa-2x" aria-hidden="true"></i></a>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <a href="#!" onclick="aumentar_acom('m','+')"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
-                                        <div class="col">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon2">
-                                                    <i class="fa fa-bed mx-1" aria-hidden="true"></i>
-                                                    <i class="fa fa-bed mx-1" aria-hidden="true"></i>
-                                                    <i class="fa fa-bed mx-1" aria-hidden="true"></i>
-                                                </span>
-                                                </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold text-secondary" for="exampleInputEmail1">
+                                                    <i class="fa fa-bed" aria-hidden="true"></i>
+                                                    <i class="fa fa-bed" aria-hidden="true"></i>
+                                                    <i class="fa fa-bed" aria-hidden="true"></i>
+                                                    </label>
                                                 <input type="number" class="form-control" name="a_t_1" id="a_t_1" min="0" value="0" onchange="aumentar_acom('t')">
                                             </div>
-                                            <div class="caja d-none">
-                                                {{--<input class="destinospack" type="checkbox" name="acomodacion_s" id="acomodacion_s" value="1">--}}
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <b class="text-20" id="a_t_1l">0</b>
-                                                        <b class="text-20px"><i class="fa fa-bed fa-2x" aria-hidden="true"></i> <i class="fa fa-bed fa-2x" aria-hidden="true"></i> <i class="fa fa-bed fa-2x" aria-hidden="true"></i></b>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <a href="#!" onclick="aumentar_acom('t','-')"><i class="fa fa-minus-circle fa-2x" aria-hidden="true"></i></a>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <a href="#!" onclick="aumentar_acom('t','+')"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                     @php
@@ -338,51 +278,7 @@
                     <input type="hidden" name="h5_d" id="h5_d" value="{{$h5_d}}">
                     <input type="hidden" name="h5_m" id="h5_m" value="{{$h5_m}}">
                     <input type="hidden" name="h5_t" id="h5_t" value="{{$h5_t}}">
-
-                    <hr>
-
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="txt_days" class="font-weight-bold text-secondary">Days</label>
-                                <input type="number" class="form-control" id="txt_days" name="txt_days" placeholder="Days" min="1" onchange="poner_dias($('#web').val(),$(this).val())" value="{{$days}}">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="txt_travel_date" class="font-weight-bold text-secondary">Travel date</label>
-                                <input type="date" class="form-control" id="txt_travel_date" name="txt_travel_date" placeholder="Travel date" value="{{$fecha}}">
-                            </div>
-                        </div>
-
-                        {{--<div class="col-lg-11">--}}
-                            {{--@php--}}
-                                {{--$deti='';--}}
-                            {{--@endphp--}}
-                            {{--@foreach($destinos as $destino)--}}
-                                {{--<div class="col-lg-3">--}}
-                                    {{--<div class="checkbox1">--}}
-                                        {{--<label class=" text-unset">--}}
-                                            {{--<input class="destinospack" type="checkbox" name="destinos[]" value="{{$destino->id.'_'.$destino->destino}}" onchange="filtrar_itinerarios1()">--}}
-                                            {{--{{$destino->destino}}--}}
-                                        {{--</label>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--@php--}}
-                                    {{--$deti.=$destino->id.'/';--}}
-                                {{--@endphp--}}
-                            {{--@endforeach--}}
-                            {{--@php--}}
-                                {{--$deti=substr($deti,0,strlen($deti)-1);--}}
-                            {{--@endphp--}}
-                        {{--</div>--}}
-                    </div>
-                    <hr>
                 </div>
-                {{--<input type="hidden" id="desti" value="{{$deti}}">--}}
-
-
-
                 <div class="col-lg-4 d-none">
                     <b class="text-center text-30">ITINERARIES</b>
                     <div class="col-lg-12 hide">
@@ -417,7 +313,6 @@
                     </div>
 
                 </div>
-
                 <div class="d-none">
                     <div class="row">
                         <div class="col-lg-12">
@@ -627,9 +522,9 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-3">
             <label class="font-weight-bold text-g-dark d-block pb-1">Destinations</label>
-            <div class="swiper-container">
+            <div class="swiper-container-1">
                 <div class="swiper-wrapper p-2">
                     <div class="swiper-slide">
                         @php
@@ -637,7 +532,7 @@
                         @endphp
                         @foreach($destinos->sortBy('destino') as $destino)
                             <div class="">
-                                <div class="">
+                                <div class="text-13">
                                     <label class="m-0">
                                         <input class="destinospack" type="checkbox" name="destinos[]" value="{{$destino->id.'_'.$destino->destino}}" onchange="poner_dias($('#web').val(),$('#txt_days').val())">
                                         {{ucwords(strtolower($destino->destino))}}
@@ -684,7 +579,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col">
             <div class="row justify-content-start">
@@ -735,7 +629,6 @@
                                             <input type="hidden" name="codigo_" id="codigo_" value="{{$codigo}}">
                                             <input type="hidden" name="notas_" id="notas_" value="">
                                             <input type="hidden" name="txt_idioma2" id="txt_idioma2" value="{{$idioma_pasajeros}}">
-
                                         </div>
                                     </div>
                                     <div class="row">
@@ -868,13 +761,8 @@
         </div>
 
     </div>
-
-
-    {{--</form>--}}
     <script>
-
         calcular_resumen();
-
         $(function()
         {
             $( "#txt_name" ).autocomplete({
@@ -885,8 +773,6 @@
                 }
             });
         });
-
-
     </script>
     <script>
         var adjustment;
@@ -908,32 +794,31 @@
                 var pos=(index+1);
                 $(element).html('Dia '+pos+':');
             });
-
         }
-        $("ol.simple_with_animation").sortable({
-            group: 'simple_with_animation',
-            pullPlaceholder: false,
-            tolerance: 6,
-            // animation on drop
-            onDrop: function  ($item, container, _super) {
+        {{--$("ol.simple_with_animation").sortable({--}}
+            {{--group: 'simple_with_animation',--}}
+            {{--pullPlaceholder: false,--}}
+            {{--tolerance: 6,--}}
+            {{--// animation on drop--}}
+            {{--onDrop: function  ($item, container, _super) {--}}
 
-                var $clonedItem = $('<li/>').css({height: 0});
-                $item.before($clonedItem);
-                $clonedItem.animate({'height': $item.height()});
+                {{--var $clonedItem = $('<li/>').css({height: 0});--}}
+                {{--$item.before($clonedItem);--}}
+                {{--$clonedItem.animate({'height': $item.height()});--}}
 
-                var s_cotizacion = $item.val();
-                var s_porcentaje = $item.parent().parent().val();
+                {{--var s_cotizacion = $item.val();--}}
+                {{--var s_porcentaje = $item.parent().parent().val();--}}
 
 
-                $item.animate($clonedItem.position(), function  () {
-                    $clonedItem.detach();
-                    _super($item, container);
-                });
+                {{--$item.animate($clonedItem.position(), function  () {--}}
+                    {{--$clonedItem.detach();--}}
+                    {{--_super($item, container);--}}
+                {{--});--}}
 
-                var datos = {
-                    "txt_cotizacion" : s_cotizacion,
-                    "txt_porcentaje" : s_porcentaje
-                };
+                {{--var datos = {--}}
+                    {{--"txt_cotizacion" : s_cotizacion,--}}
+                    {{--"txt_porcentaje" : s_porcentaje--}}
+                {{--};--}}
                 {{--$.ajaxSetup({--}}
                     {{--headers: {--}}
                         {{--'X-CSRF-TOKEN': $('[name="_token"]').val()--}}
@@ -945,34 +830,33 @@
                     {{--type:  'post',--}}
 
                 {{--});--}}
-                var cont=1;
-                $(".dias_iti_c2").each(function (index) {
-                    $(this).html('Dia '+cont+':');
-                    cont++;
-                });
-            },
+                {{--var cont=1;--}}
+                {{--$(".dias_iti_c2").each(function (index) {--}}
+                    {{--$(this).html('Dia '+cont+':');--}}
+                    {{--cont++;--}}
+                {{--});--}}
+            {{--},--}}
+            {{--// set $item relative to cursor position--}}
+            {{--onDragStart: function ($item, container, _super) {--}}
 
-            // set $item relative to cursor position
-            onDragStart: function ($item, container, _super) {
+                {{--var offset = $item.offset(),--}}
+                    {{--pointer = container.rootGroup.pointer;--}}
 
-                var offset = $item.offset(),
-                    pointer = container.rootGroup.pointer;
+                {{--adjustment = {--}}
+                    {{--left: pointer.left - offset.left,--}}
+                    {{--top: pointer.top - offset.top--}}
+                {{--};--}}
 
-                adjustment = {
-                    left: pointer.left - offset.left,
-                    top: pointer.top - offset.top
-                };
+                {{--_super($item, container);--}}
 
-                _super($item, container);
+            {{--},--}}
+            {{--onDrag: function ($item, position) {--}}
+                {{--$item.css({--}}
+                    {{--left: position.left - adjustment.left,--}}
+                    {{--top: position.top - adjustment.top--}}
+                {{--});--}}
 
-            },
-            onDrag: function ($item, position) {
-                $item.css({
-                    left: position.left - adjustment.left,
-                    top: position.top - adjustment.top
-                });
-
-            }
-        });
+            {{--}--}}
+        {{--});--}}
     </script>
 @stop

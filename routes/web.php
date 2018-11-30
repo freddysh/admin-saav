@@ -256,7 +256,7 @@ Route::get('/admin/current-quote', [
 
 //
 
-Route::get('/admin/current-quote/{page}', [
+Route::get('/admin/current-quoadmin/quotes/new/step2/{page}', [
     'uses' => 'PackageCotizacionController@current_cotizacion_page',
     'as' => 'current_quote_page_path',
 ]);
@@ -1279,4 +1279,8 @@ Route::post('/admin/book/traer-situacion-servicios', [
 Route::get('/admin/book/situacion/traer-servicios',[
     'uses' => 'BookController@situacion_servicios',
     'as' => 'situacion_servicios_path',
+]);
+Route::get('/admin/reportes/lista-de-cotizaciones/{web}/{desde}/{hasta}',[
+    'uses' => 'ReportesController@lista_cotizaciones',
+    'as' => 'lista_de_cotizaciones_path',
 ]);

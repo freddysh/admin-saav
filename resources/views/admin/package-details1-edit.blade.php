@@ -45,14 +45,12 @@
                 $utilidad_d=0;
                 $utilidad_m=0;
                 $utilidad_t=0;
-
             @endphp
             @foreach($cotizaciones as $cotizacion)
                 @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
                     @php
                         $duracion=$paquete->duracion;
                         $utilidad=$paquete->utilidad;
-
                     @endphp
                     <p class="text-18">Web:<b class="text-info">{{$cotizacion->web}}</b> | Codigo:<b class="text-info">{{$cotizacion->codigo}}</b> | Idioma:<b class="text-info">{{$cotizacion->idioma_pasajeros}}</b></p>
                     <b class="text-secondary h2">{{$cotizacion->nropersonas}} PAXS</b><b class="text-warning h2"> | </b><b class="text-secondary h2">@if($duracion>1) {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} STARS @else SIN HOTEL @endif</b><b class="text-warning h2"> | </b>
@@ -179,7 +177,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-2 text-left">
+        <div class="col-2 text-left @if(($s+$d+$m+$t)==0) nada @endif">
             <div class="row ">
                 <div class="col  text-30">
                     <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_h" onclick="mostrarservicios()">

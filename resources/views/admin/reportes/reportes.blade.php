@@ -21,7 +21,7 @@
     </nav>
     <hr>
     <div class="row">
-        <div class="col-6">
+        <div class="col">
             <div class="card">
                 <h5 class="card-header bg-primary text-white"><i class="fas fa-coins"></i> PROFIT</h5>
                 <div class="card-body">

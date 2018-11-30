@@ -34,6 +34,7 @@
                         <th>#</th>
                         <th>Página</th>
                         <th>Profit</th>
+                        <th>Detalle</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,6 +47,7 @@
                         <td>{{$pos}}</td>
                         <td>{{$key}}</td>
                         <td>{{$array_profit_}}</td>
+                        <td><a href="{{route('lista_de_cotizaciones_path',[$key,$desde,$hasta])}}"><i class="fas fa-eye text-warning"></i> </a></td>
                     </tr>
                     @php
                         $pos++;

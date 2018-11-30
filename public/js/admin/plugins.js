@@ -2862,15 +2862,23 @@ function enviar_form1(){
         var a_d=parseInt($('#a_d').val());
         var a_m=parseInt($('#a_m').val());
         var a_t=parseInt($('#a_t').val());
-
+        var hotel=$('#hotel').val();
         var a_total_=a_s+a_d+a_m+a_t;
-        if(a_total_==0){
-            swal(
-                'Oops...',
-                'Escoja la acomodacion!',
-                'error'
-            )
-            return false;
+        if(hotel==0){
+            $('#a_s').val(0);
+            $('#a_d').val(0);
+            $('#a_m').val(0);
+            $('#a_t').val(0);
+        }
+        else{
+            if(a_total_==0){
+                swal(
+                    'Oops...',
+                    'Escoja la acomodacion!',
+                    'error'
+                )
+                return false;
+            }
         }
 
         var lista_it='';
@@ -2991,18 +2999,31 @@ function variar_sales(acom){
     var sale_m=0;
     var sale_t=0;
     var sale_sh=0;
+    sale_s=parseFloat($('#sale_s').val());
+    sale_d=parseFloat($('#sale_d').val());
+    sale_m=parseFloat($('#sale_m').val());
+    sale_t=parseFloat($('#sale_t').val());
+    var todos_sales=sale_s+ sale_d + sale_m + sale_t;
     if(dias>1) {
-        sale_s=parseFloat($('#sale_s').val());
-        sale_d=parseFloat($('#sale_d').val());
-        sale_m=parseFloat($('#sale_m').val());
-        sale_t=parseFloat($('#sale_t').val());
+        if(todos_sales==0){
+            sale_sh=parseFloat($('#sale_sh').val());
+        }
     }
     else if(dias==1){
         sale_sh=parseFloat($('#sale_sh').val());
     }
 
+    console.log('dias:'+dias);
+    console.log('sale_sh:'+sale_sh);
+    console.log('todos_sales:'+todos_sales+':');
+
     if(dias>1) {
-        $('#total_profit').html((sale_s+ sale_d + sale_m + sale_t).toFixed(2));
+        if(todos_sales==0){
+            $('#total_profit').html(sale_sh.toFixed(2));
+        }
+        else{
+            $('#total_profit').html((sale_s+ sale_d + sale_m + sale_t).toFixed(2));
+        }
     }
     else if(dias==1){
         $('#total_profit').html(sale_sh.toFixed(2));
@@ -3020,20 +3041,26 @@ function variar_sales(acom){
     var uti_por_t=0;
     var uti_por_sh=0;
 
-    if(dias>1) {
-        if (sale_s != 0)
-            uti_por_d = Math.round((pro_s / sale_s) * 100, 2);
-        if (sale_d != 0)
-            uti_por_d = Math.round((pro_d / sale_d) * 100, 2);
-        if (sale_m != 0)
-            uti_por_m = Math.round((pro_m / sale_m) * 100, 2);
-        if (sale_t != 0)
-            uti_por_t = Math.round((pro_t / sale_t) * 100, 2);
+    if(dias>1){
+        if(sale_s==0 && sale_d==0 && sale_m==0 && sale_t==0){
+            uti_por_sh=Math.round((pro_sh/sale_sh)*100,2);
+            $('#profit_por_sh').val(uti_por_sh);
+        }
+        else{
+            if (sale_s != 0)
+                uti_por_d = Math.round((pro_s / sale_s) * 100, 2);
+            if (sale_d != 0)
+                uti_por_d = Math.round((pro_d / sale_d) * 100, 2);
+            if (sale_m != 0)
+                uti_por_m = Math.round((pro_m / sale_m) * 100, 2);
+            if (sale_t != 0)
+                uti_por_t = Math.round((pro_t / sale_t) * 100, 2);
 
-        $('#profit_por_s').val(uti_por_s);
-        $('#profit_por_d').val(uti_por_d);
-        $('#profit_por_m').val(uti_por_m);
-        $('#profit_por_t').val(uti_por_t);
+            $('#profit_por_s').val(uti_por_s);
+            $('#profit_por_d').val(uti_por_d);
+            $('#profit_por_m').val(uti_por_m);
+            $('#profit_por_t').val(uti_por_t);
+        }
     }
     else if(dias==1){
         uti_por_sh=Math.round((pro_sh/sale_sh)*100,2);
@@ -3296,17 +3323,26 @@ function enviar_form2(){
         var a_d_=parseInt($('#a_d_').val());
         var a_m_=parseInt($('#a_m_').val());
         var a_t_=parseInt($('#a_t_').val());
-
+        var hotel=$('#hotel').val();
         var a_total=a_s_+a_d_+a_m_+a_t_;
-        if(a_total==0){
-
-            swal(
-                'Oops...',
-                'Escoja la acomodacion!',
-                'error'
-            )
-            return false;
+        if(hotel==0){
+            $('#a_s_').val(0);
+            $('#a_d_').val(0);
+            $('#a_m_').val(0);
+            $('#a_t_').val(0);
         }
+        else{
+            if(a_total==0){
+                swal(
+                    'Oops...',
+                    'Escoja la acomodacion!',
+                    'error'
+                )
+                return false;
+            }
+        }
+
+
         var pqt_id=parseInt($('#pqt_id').val());
         if(pqt_id==0) {
             swal(
@@ -3433,14 +3469,7 @@ function sumar_servicios_itinerario(pqt_pos){
         return false;
     }
     var icon_human='';
-    if(traveles<=7){
-        for (var i=1;i<=traveles;i++){
-            icon_human+='<i class="fa fa-male fa-2x" aria-hidden="true"></i> ';
-        }
-    }
-    else{
-        icon_human='<i class="fa fa-male fa-2x" aria-hidden="true"></i> x '+traveles;
-    }
+    icon_human='<i class="fa fa-male fa-2x" aria-hidden="true"></i> x '+traveles;
     $('#human').html(icon_human);
     console.log('hola');
     var pqt=$('#pqt_id').val();
@@ -3524,7 +3553,7 @@ function escojer_pqt(id) {
 }
 
 function mostrar_tabla_destino(grupo,id){
-    var  destino=$("#Destinos_"+grupo).val();
+    var destino=$("#Destinos_"+grupo).val();
     console.log('mostrar_tabla_destino:'+destino);
     $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.ajaxSetup({
@@ -3532,7 +3561,7 @@ function mostrar_tabla_destino(grupo,id){
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-    $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&filtro=Normal', function(data) {
+    $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&filtro=normal', function(data) {
         $("#tb_datos_"+grupo).html(data);
 
     }).fail(function (data) {
@@ -5521,7 +5550,7 @@ function mostrar_tabla_destino_ruta(grupo,id,pos,xruta,xtipo,consulta){
     });
     if(consulta=='normal'){
         $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
-        $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&filtro=Normal', function(data) {
+        $.post('../../admin/productos/lista', 'destino='+destino+'&id='+id+'&filtro=normal', function(data) {
                 $("#tb_datos_"+grupo).html(data);
 
         }).fail(function (data) {
@@ -6489,4 +6518,16 @@ function mostrar_busqueda_situacion_servicios(opcion,dato1,dato2){
             $('#rpt_situacion_servicios').html(data);
         }
     })
+}
+function mostrar_acomodacion(estrellas){
+    filtrar_estrellas1(estrellas);
+    if(estrellas==0) {
+        $('#acomodacion').addClass('d-none');
+        // $('#a_s_1').val('0');
+        // $('#a_d_1').val('0');
+        // $('#a_m_1').val('0');
+        // $('#a_t_1').val('0');
+    }
+    else
+        $('#acomodacion').removeClass('d-none');
 }

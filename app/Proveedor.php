@@ -33,4 +33,8 @@ class Proveedor extends Model
     {
         return $this->hasMany(DestinosOpera::class, 'proveedor_id');
     }
+    public function grupos_operados()
+    {
+        return $this->hasMany(GrupoOpera::class, 'proveedor_id');
+    }
 }

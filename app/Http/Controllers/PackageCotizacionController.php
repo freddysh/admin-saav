@@ -817,6 +817,8 @@ class PackageCotizacionController extends Controller
             $cotizacion->duracion = $request->input('txt_days1');
             $cotizacion->fecha = $request->input('txt_date1');
             $cotizacion->idioma_pasajeros= $request->input('txt_idioma1');
+            if($estrela==0)
+                $cotizacion->star_0=0;
             if($estrela==2)
                 $cotizacion->star_2=2;
             if($estrela==3)
@@ -1240,6 +1242,8 @@ class PackageCotizacionController extends Controller
             $cotizacion_plantilla->fecha = $request->input('txt_date1_');
             $cotizacion_plantilla->idioma_pasajeros = $request->input('txt_idioma2');
 
+            if ($estrela == 0)
+                $cotizacion_plantilla->star_2 = 0;
             if ($estrela == 2)
                 $cotizacion_plantilla->star_2 = 2;
             if ($estrela == 3)
@@ -1623,8 +1627,6 @@ class PackageCotizacionController extends Controller
 
     }
     public function guardar_paquete(Request $request){
-
-
         $origen=$request->input('origen');
         $cotizacion_id=$request->input('cotizacion_id');
         $paquete_id=$request->input('paquete_id');
@@ -1652,6 +1654,8 @@ class PackageCotizacionController extends Controller
         $paquete->titulo=$txt_titulo;
         if($cotizacion->duracion==1)
             $paquete->utilidad=$request->input('pro_sh');
+        elseif($cotizacion->duracion>1&&$paquete_precio_id==0)
+            $paquete->utilidad=$request->input('pro_sh');
         $paquete->descripcion=$descripcion;
         $paquete->incluye=$incluye;
         $paquete->noincluye=$no_incluye;
@@ -1661,18 +1665,19 @@ class PackageCotizacionController extends Controller
         $paquete->save();
 
         if($cotizacion->duracion>1) {
-            $paquete_precio = PaquetePrecio::FindOrFail($paquete_precio_id);
-            $paquete_precio->utilidad_s = $pro_s;
-            $paquete_precio->utilidad_d = $pro_d;
-            $paquete_precio->utilidad_m = $pro_m;
-            $paquete_precio->utilidad_t = $pro_t;
-
-            $paquete_precio->utilidad_por_s = $profit_por_s;
-            $paquete_precio->utilidad_por_d = $profit_por_d;
-            $paquete_precio->utilidad_por_m = $profit_por_m;
-            $paquete_precio->utilidad_por_t = $profit_por_t;
-            $paquete_precio->save();
-
+            if($paquete_precio_id>0){
+                $paquete_precio = PaquetePrecio::FindOrFail($paquete_precio_id);
+                $paquete_precio->utilidad_s = $pro_s;
+                $paquete_precio->utilidad_d = $pro_d;
+                $paquete_precio->utilidad_m = $pro_m;
+                $paquete_precio->utilidad_t = $pro_t;
+                $paquete_precio->utilidad_por_s = $profit_por_s;
+                $paquete_precio->utilidad_por_d = $profit_por_d;
+                $paquete_precio->utilidad_por_m = $profit_por_m;
+                $paquete_precio->utilidad_por_t = $profit_por_t;
+                $paquete_precio->save();
+                
+            }
             $itinerarios = ItinerarioCotizaciones::where('paquete_cotizaciones_id', $paquete_id)->get();
             foreach ($itinerarios as $itinerario) {
                 foreach ($itinerario->hotel as $hotel) {
@@ -1681,16 +1686,16 @@ class PackageCotizacionController extends Controller
                     $hotel1->utilidad_d = $pro_d;
                     $hotel1->utilidad_m = $pro_m;
                     $hotel1->utilidad_t = $pro_t;
-
                     $hotel1->utilidad_por_s = $profit_por_s;
                     $hotel1->utilidad_por_d = $profit_por_d;
                     $hotel1->utilidad_por_m = $profit_por_m;
                     $hotel1->utilidad_por_t = $profit_por_t;
                     $hotel1->save();
+                    //dd($hotel1);
                 }
             }
         }
-        $paquete_precio_id=$request->input('paquete_precio_id');
+//        $paquete_precio_id=$request->input('paquete_precio_id');
         $cotizaciones=Cotizacion::where('id',$cotizacion_id)->get();
         $imprimir='si_create';
         $btn=$request->input('create');
@@ -2042,7 +2047,8 @@ class PackageCotizacionController extends Controller
             return 0;
     }
     public function escojer_pqt(Request $request){
-
+        $hoy=Carbon::now();
+        $hoy->subHour(5);
         $id= $request->input('id');
         $valor= $request->input('valor');
         $coti_pqt=PaqueteCotizaciones::FindORFail($id);
@@ -2085,7 +2091,7 @@ class PackageCotizacionController extends Controller
         $coti->estado=$valor;
         $coti->categorizado='C';
         $coti->posibilidad=100;
-        $coti->fecha_venta=date("Y-m-d");
+        $coti->fecha_venta=$hoy->toDateString();
         $coti->save();
         $pqt=PaqueteCotizaciones::FindOrFail($id);
         $pqt->estado=$valor;
