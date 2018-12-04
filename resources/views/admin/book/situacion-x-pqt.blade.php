@@ -37,6 +37,7 @@
                         <th>HOTEL</th>
                         <th>ACOM</th>
                         <th>PAX</th>
+                        <th>PROVEEDOR</th>
                         <th>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
@@ -44,7 +45,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="9"><b>HOTEL</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>HOTEL</b></td></tr>
                     @php
                         $total_hotel=0;
                     @endphp
@@ -94,6 +95,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($hotel->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$hotel->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>             
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td>
                                                 @if($hotel->personas_s>0)
@@ -200,6 +208,7 @@
                         <th>CLASE</th>
                         <th>AD</th>
                         <th>PAX</th>
+                        <th>PROVEEDOR</th>
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
@@ -208,7 +217,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>TOURS</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>TOURS</b></td></tr>
                     @php
                         $total_tours=0;
                     @endphp
@@ -237,6 +246,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($itinerario_servicios->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                             <td class="text-success"><sup>$</sup>
@@ -296,6 +312,7 @@
                         <th>CLASE</th>
                         <th>AD</th>
                         <th>PAX</th>
+                        <th>PROVEEDOR</th>
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
@@ -304,7 +321,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>MOVILID</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>MOVILID</b></td></tr>
                     @php
                         $total_movilid=0;
                     @endphp
@@ -338,6 +355,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($itinerario_servicios->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                             <td class="text-success"><sup>$</sup>
@@ -397,6 +421,7 @@
                         <th>CLASE</th>
                         <th>AD</th>
                         <th>PAX</th>
+                        <th>PROVEEDOR</th>
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
@@ -405,7 +430,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>REPRESENT</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>REPRESENT</b></td></tr>
                     @php
                         $total_represent=0;
                     @endphp
@@ -434,6 +459,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($itinerario_servicios->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                             <td class="text-success"><sup>$</sup>
@@ -493,6 +525,7 @@
                             <th>ENTRADA</th>
                             <th>AD</th>
                             <th>PAX</th>
+                            <th>PROVEEDOR</th>
                             <th><sup>$</sup>AD</th>
                             <th>TOTAL</th>
                             <th>SITUACION</th>
@@ -501,7 +534,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-dark text-white text-15" ><td colspan="10"><b>LIQUIDACION DE BOLETOS TURISTICOS</b></td></tr>
+                        <tr class="bg-dark text-white text-15" ><td colspan="11"><b>LIQUIDACION DE BOLETOS TURISTICOS</b></td></tr>
                         @php
                             $total_btg=0;
                         @endphp
@@ -522,6 +555,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b>{{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($itinerario_servicios->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                             <td class="text-success"><sup>$</sup>{{number_format($itinerario_servicios->precio*$cotizacion->nropersonas,2)}}</td>
@@ -559,7 +599,7 @@
                             <td colspan="4"  class="text-dark"><b><sup>$</sup>{{number_format($total_btg,2)}}</b></td>
                         </tr>
 
-                        <tr class="bg-dark text-white text-15" ><td colspan="10"><b>LIQUIDACION DE INGRESO A CATEDRAL</b></td></tr>
+                        <tr class="bg-dark text-white text-15" ><td colspan="11"><b>LIQUIDACION DE INGRESO A CATEDRAL</b></td></tr>
                         @php
                             $total_cat=0;
                         @endphp
@@ -580,6 +620,13 @@
                                                     @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                         <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                     @endforeach
+                                                </td>
+                                                <td>
+                                                    @if($itinerario_servicios->proveedor_id>0)  
+                                                        @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                            <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                                 <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                                 <td class="text-success"><sup>$</sup>{{number_format($itinerario_servicios->precio*$cotizacion->nropersonas,2)}}</td>
@@ -617,7 +664,7 @@
                             <td colspan="4"  class="text-dark"><b><sup>$</sup>{{number_format($total_cat,2)}}</b></td>
                         </tr>
 
-                        <tr class="bg-dark text-white text-15" ><td colspan="10"><b>LIQUIDACION DE INGRESO AL KORICANCHA</b></td></tr>
+                        <tr class="bg-dark text-white text-15" ><td colspan="11"><b>LIQUIDACION DE INGRESO AL KORICANCHA</b></td></tr>
                         @php
                             $total_kori=0;
                         @endphp
@@ -638,6 +685,13 @@
                                                     @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                         <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                     @endforeach
+                                                </td>
+                                                <td>
+                                                    @if($itinerario_servicios->proveedor_id>0)  
+                                                        @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                            <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                                 <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                                 <td class="text-success"><sup>$</sup>{{number_format($itinerario_servicios->precio*$cotizacion->nropersonas,2)}}</td>
@@ -675,7 +729,7 @@
                             <td colspan="4"  class="text-dark"><b><sup>$</sup>{{number_format($total_kori,2)}}</b></td>
                         </tr>
 
-                        <tr class="bg-dark text-white text-15" ><td colspan="10"><b>LIQUIDACION DE INGRESO A MACHUPICCHU</b></td></tr>
+                        <tr class="bg-dark text-white text-15" ><td colspan="11"><b>LIQUIDACION DE INGRESO A MACHUPICCHU</b></td></tr>
                         @php
                             $total_mapi=0;
                         @endphp
@@ -696,6 +750,13 @@
                                                     @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                         <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                     @endforeach
+                                                </td>
+                                                <td>
+                                                    @if($itinerario_servicios->proveedor_id>0)  
+                                                        @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                            <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                                 <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                                 <td class="text-success"><sup>$</sup>{{number_format($itinerario_servicios->precio*$cotizacion->nropersonas,2)}}</td>
@@ -733,7 +794,7 @@
                             <td colspan="4"  class="text-dark"><b><sup>$</sup>{{number_format($total_mapi,2)}}</b></td>
                         </tr>
 
-                        <tr class="bg-dark text-white text-15" ><td colspan="10"><b>ENTRADAS OTROS</b></td></tr>
+                        <tr class="bg-dark text-white text-15" ><td colspan="11"><b>ENTRADAS OTROS</b></td></tr>
                         @php
                             $total_otros=0;
                         @endphp
@@ -754,6 +815,13 @@
                                                     @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                         <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                     @endforeach
+                                                </td>
+                                                <td>
+                                                    @if($itinerario_servicios->proveedor_id>0)  
+                                                        @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                            <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                                 <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                                 <td class="text-success"><sup>$</sup>{{number_format($itinerario_servicios->precio*$cotizacion->nropersonas,2)}}</td>
@@ -791,7 +859,7 @@
                             <td colspan="4"  class="text-dark"><b><sup>$</sup>{{number_format($total_otros,2)}}</b></td>
                         </tr>
 
-                        <tr class="bg-dark text-white text-15" ><td colspan="10"><b>ENTRADAS BUSES</b></td></tr>
+                        <tr class="bg-dark text-white text-15" ><td colspan="11"><b>ENTRADAS BUSES</b></td></tr>
                         @php
                             $total_buses=0;
                         @endphp
@@ -812,6 +880,13 @@
                                                     @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                         <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                     @endforeach
+                                                </td>
+                                                <td>
+                                                    @if($itinerario_servicios->proveedor_id>0)  
+                                                        @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                            <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                                 <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                                 <td class="text-success"><sup>$</sup>{{number_format($itinerario_servicios->precio*$cotizacion->nropersonas,2)}}</td>
@@ -865,6 +940,7 @@
                         <th>CLASE</th>
                         <th>AD</th>
                         <th>PAX</th>
+                        <th>PROVEEDOR</th>
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
@@ -873,7 +949,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>FOOD</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>FOOD</b></td></tr>
                     @php
                         $total_food=0;
                     @endphp
@@ -902,6 +978,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($itinerario_servicios->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                             <td class="text-success"><sup>$</sup>
@@ -961,6 +1044,7 @@
                         <th>SAL - LLEG</th>
                         <th>AD</th>
                         <th>PAX</th>
+                        <th>PROVEEDOR</th>
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
@@ -969,7 +1053,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>ENTRADAS DE TRENES</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>ENTRADAS DE TRENES</b></td></tr>
                     @php
                         $total_train=0;
                     @endphp
@@ -997,6 +1081,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($itinerario_servicios->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                             <td class="text-success"><sup>$</sup>
@@ -1057,6 +1148,7 @@
                         <th>CLASE</th>
                         <th>AD</th>
                         <th>PAX</th>
+                        <th>PROVEEDOR</th>
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
@@ -1065,7 +1157,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>FLIGHTS</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>FLIGHTS</b></td></tr>
                     @php
                         $total_flight=0;
                     @endphp
@@ -1094,6 +1186,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($itinerario_servicios->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                             <td class="text-success"><sup>$</sup>
@@ -1153,6 +1252,7 @@
                         <th>CLASE</th>
                         <th>AD</th>
                         <th>PAX</th>
+                        <th>PROVEEDOR</th>
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
@@ -1161,7 +1261,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>SERVICIO</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>SERVICIO</b></td></tr>
                     @php
                         $total_others=0;
                     @endphp
@@ -1190,6 +1290,13 @@
                                                 @foreach($cotizacion->cotizaciones_cliente->where('estado',1) as $cotizaciones_cliente)
                                                     <b><span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}} x{{$cotizacion->nropersonas}} {{fecha_peru($cotizacion->fecha)}}</b>
                                                 @endforeach
+                                            </td>
+                                            <td>
+                                                @if($itinerario_servicios->proveedor_id>0)  
+                                                    @foreach ($proveedores->where('id',$itinerario_servicios->proveedor_id)  as $proveedor_)
+                                                        <span class="text-info"><i class="fas fa-user"></i>{{$proveedor_->nombre_comercial}} | <i class="fas fa-phone"></i>{{$proveedor_->r_telefono}}</span>                
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td><sup>$</sup>{{$itinerario_servicios->precio}}</td>
                                             <td class="text-success"><sup>$</sup>

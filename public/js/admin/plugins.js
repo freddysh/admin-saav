@@ -5142,7 +5142,7 @@ function escojer_servicio(){
                 else if($grupo == 'OTHERS')
                     iti_temp += '<i class = "fa fa-question text-success" aria-hidden="true"></i>';
 
-                iti_temp += itinerario[4]+'<span class="text-warning"> ('+destino_escoj_titulo+')</span><input type="hidden" name="servicios_esc[]" value="'+itinerario[2]+'"><input type="hidden" name="destinos_esc[]" value="'+destino_escoj+'"></div>'+
+                iti_temp += itinerario[4]+'<span class="text-success"> | </span>'+itinerario[7]+'<span class="text-success"> | </span>'+destino_escoj_titulo+'<span class="text-success"> | <sup>$</sup></span>'+itinerario[8]+'<input type="hidden" name="servicios_esc[]" value="'+itinerario[2]+'"><input type="hidden" name="destinos_esc[]" value="'+destino_escoj+'"></div>'+
             '<div class="col-lg-1 small puntero"><span class="text-danger float-right text-right" onclick="borrar_servicios_esc(\''+itinerario[2]+'\',\''+itinerario[4]+'\')"><i class="fas fa-trash" aria-hidden="true"></i></span></div>'+
                 '</div>'+
                 '</div>';
@@ -5153,15 +5153,6 @@ function escojer_servicio(){
         }
     });
     $('#nroServicios').val(total_serv);
-
-    // if(!existe_destino('#txt_destino_foco option',destino_escoj)) {
-    //     var destino_foco = '<option value="' + destino_escoj + '">' + destino_escoj_titulo + '</option>';
-    //     $('#txt_destino_foco').append(destino_foco);
-    // }
-    // if(!existe_destino('#txt_destino_duerme option',destino_escoj)) {
-    //     var destino_duerme = '<option value="' + destino_escoj + '">' + destino_escoj_titulo + '</option>';
-    //     $('#txt_destino_duerme').append(destino_duerme);
-    // }
 }
 function existe_destino(cb,clave){
     var existe=false;

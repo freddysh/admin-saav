@@ -16,6 +16,7 @@ class OperacionesController extends Controller
     //
     public function index()
     {
+        set_time_limit(0);
         $desde=date('Y-m-d');
         $hasta=date('Y-m-d');
         $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {

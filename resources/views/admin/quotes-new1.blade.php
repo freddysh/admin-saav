@@ -15,7 +15,7 @@
         </ol>
     </nav>
     <hr>
-    <div class="row">
+    <div class="row m-0 p-0">
         <div class="col-9">
             <div class="row">
                 <div class="col-12">
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col ">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -120,51 +120,20 @@
                                             <option value="5">5 Stars</option>
                                         </select>
                                     </div>
-
-                                    <div class="custom-control custom-radio custom-control-inline d-none">
-                                        <input type="radio" id="strellas_0" name="strellas[]" class="custom-control-input" value="0" checked="checked" onchange="filtrar_estrellas1('0')">
-                                        <label class="custom-control-label" for="strellas_0">Sin Hotel</label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline d-none">
-                                        <input type="radio" id="strellas_2" name="strellas[]" class="custom-control-input" value="2" checked="checked" onchange="filtrar_estrellas1('2')">
-                                        <label class="custom-control-label" for="strellas_2">2 <i class="fas fa-star text-warning"></i></label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline d-none">
-                                        <input type="radio" id="strellas_3" name="strellas[]" class="custom-control-input" value="3" onchange="filtrar_estrellas1('3')">
-                                        <label class="custom-control-label" for="strellas_3">3 <i class="fas fa-star text-warning"></i></label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline d-none">
-                                        <input type="radio" id="strellas_4" name="strellas[]" class="custom-control-input" value="4" onchange="filtrar_estrellas1('4')">
-                                        <label class="custom-control-label" for="strellas_4">4 <i class="fas fa-star text-warning"></i></label>
-                                    </div>
-                                    <div class="custom-control custom-radio custom-control-inline d-none">
-                                        <input type="radio" id="strellas_5" name="strellas[]" class="custom-control-input" value="5" onchange="filtrar_estrellas1('5')">
-                                        <label class="custom-control-label" for="strellas_5">5 <i class="fas fa-star text-warning"></i></label>
-                                    </div>
-                                    {{--<label class="text-orange-goto">--}}
-                                    {{--<input type="radio" name="strellas[]" id="strellas_2" value="2" checked="checked" onchange="filtrar_estrellas1('2')">2--}}
-                                    {{--</label>--}}
-                                    {{--<label class="text-orange-goto">--}}
-                                    {{--<input type="radio" name="strellas[]" id="strellas_3" value="3" onchange="filtrar_estrellas1('3')">3--}}
-                                    {{--</label>--}}
-                                    {{--<label class="text-orange-goto">--}}
-                                    {{--<input type="radio" name="strellas[]" id="strellas_4" value="4" onchange="filtrar_estrellas1('4')">4--}}
-                                    {{--</label>--}}
-                                    {{--<label class="text-orange-goto">--}}
-                                    {{--<input type="radio" name="strellas[]" id="strellas_5" value="5" onchange="filtrar_estrellas1('5')">5--}}
-                                    {{--</label>--}}
                                 </div>
                                 <div class="col-12">
-                                    <div id="acomodacion" class="row  d-none">
+                                    <div id="acomodacion" class="row d-none">
                                         <div class="col-3">
                                             <div class="form-group">
-                                                <label class="font-weight-bold text-secondary" for="exampleInputEmail1"><i class="fa fa-bed" aria-hidden="true"></i></label>
+                                                <label class="font-weight-bold text-secondary" for="a_s_1">
+                                                    <i class="fa fa-bed" aria-hidden="true"></i>
+                                                </label>
                                                 <input type="number" class="form-control" name="a_s_1" id="a_s_1" value="0" min="0" onchange="aumentar_acom('s')">
                                             </div>
                                         </div>
                                         <div class="col-3">
                                             <div class="form-group">
-                                                <label class="font-weight-bold text-secondary" for="exampleInputEmail1">
+                                                <label class="font-weight-bold text-secondary" for="a_d_1">
                                                     <i class="fa fa-bed" aria-hidden="true"></i>
                                                     <i class="fa fa-bed" aria-hidden="true"></i>
                                                 </label>
@@ -175,17 +144,17 @@
                                             <div class="form-group">
                                                 <label class="font-weight-bold text-secondary" for="exampleInputEmail1">
                                                     <i class="fa fa-venus-mars" aria-hidden="true"></i>
-                                                    </label>
+                                                </label>
                                                 <input type="number" class="form-control" name="a_m_1" id="a_m_1" min="0" value="0" onchange="aumentar_acom('m')">
                                             </div>
                                         </div>
                                         <div class="col-3">
                                             <div class="form-group">
-                                                <label class="font-weight-bold text-secondary" for="exampleInputEmail1">
+                                                <label class="font-weight-bold text-secondary" for="a_t_1">
                                                     <i class="fa fa-bed" aria-hidden="true"></i>
                                                     <i class="fa fa-bed" aria-hidden="true"></i>
                                                     <i class="fa fa-bed" aria-hidden="true"></i>
-                                                    </label>
+                                                </label>
                                                 <input type="number" class="form-control" name="a_t_1" id="a_t_1" min="0" value="0" onchange="aumentar_acom('t')">
                                             </div>
                                         </div>
@@ -238,7 +207,6 @@
                                 $hotel_id_3=$hotels->id;
                             @endphp
                         @endif
-
                         @if($hotels->estrellas=='4')
                             @php
                                 $h4_s=$hotels->single;
@@ -248,7 +216,6 @@
                                 $hotel_id_4=$hotels->id;
                             @endphp
                         @endif
-
                         @if($hotels->estrellas=='5')
                             @php
                                 $h5_s=$hotels->single;
@@ -354,25 +321,24 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-2">
+                        <div class="col-2">
                             <div class="form-group">
                                 <label for="txt_travellers">Travellers</label>
                                 <input type="number" class="form-control" id="txt_travellers" name="txt_travellers" placeholder="Travellers" min="1">
                             </div>
                         </div>
-                        <div class="col-lg-2 ">
+                        <div class="col-2 ">
                             <div class="form-group">
                                 <label for="txt_days">Days</label>
                                 <input type="number" class="form-control" id="txt_days" name="txt_days" placeholder="Days" min="1" onchange="pasar_dias()">
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-3">
                             <div class="form-group">
                                 <label for="txt_travel_date">Travel date</label>
                                 <input type="date" class="form-control" id="txt_travel_date" name="txt_travel_date" placeholder="Travel date">
                             </div>
                         </div>
-
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
@@ -415,13 +381,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-12">
                             <h4 class="font-montserrat text-primary"><span class="label bg-primary">4</span> Acomodacion</h4>
                             <div class="divider margin-bottom-20"></div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-2">
+                        <div class="col-2">
                             <div class="checkbox1">
                                 <label class=" text-unset">
                                     <input class="destinospack5" type="checkbox" name="acomodacion_s" id="acomodacion_s" value="1">
@@ -429,7 +395,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-2">
                             <div class="checkbox1">
                                 <label class=" text-unset">
                                     <input class="destinospack5" type="checkbox" name="acomodacion_d" id="acomodacion_d" value="2">
@@ -437,7 +403,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-2">
                             <div class="checkbox1">
                                 <label class=" text-unset">
                                     <input class="destinospack5" type="checkbox" name="acomodacion_m" id="acomodacion_m" value="2">
@@ -445,7 +411,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-2">
                             <div class="checkbox1">
                                 <label class=" text-unset">
                                     <input class="destinospack5" type="checkbox" name="acomodacion_t" id="acomodacion_t" value="3">
@@ -454,10 +420,9 @@
                                 </label>
                             </div>
                         </div>
-
                     </div>
                     <div id="list-package"  class="row hide">
-                        <div class="col-lg-3">
+                        <div class="col-3">
                             <div class="portada-pdf">
                                 <img src="{{asset('img/portada/new-proposal.jpg')}}" alt="" class="img-responsive">
                                 <div class="box-dowload">
@@ -469,7 +434,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 hide">
+                        <div class="col-3 hide">
                             <div class="portada-pdf">
                                 <img src="{{asset('img/portada/proposal-martin-pdf.jpg')}}" alt="" class="img-responsive">
                                 <div class="box-dowload">
@@ -481,7 +446,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 hide">
+                        <div class="col-3 hide">
                             <div class="portada-pdf">
                                 <img src="{{asset('img/portada/proposal-martin-pdf.jpg')}}" alt="" class="img-responsive">
                                 <div class="box-dowload">
@@ -503,7 +468,7 @@
                     <div class="row">
                         {{csrf_field()}}
                         @foreach($destinos as $destino)
-                            <div class="col-lg-3">
+                            <div class="col-3">
                                 <div class="checkbox1">
                                     <label class=" text-unset">
                                         <input class="destinospack" type="checkbox" name="destinos[]" value="{{$destino->destino}}">
@@ -573,32 +538,29 @@
                         {{--@endphp--}}
                     </div>
                 </div>
-                <!-- Add Scroll Bar -->
                 <div class="swiper-scrollbar"></div>
                 <input type="hidden" id="desti" value="{{$deti}}">
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row m-0 p-0">
         <div class="col">
             <div class="row justify-content-start">
-                <div class="col-9">
+                <div class="col">
                     <ul class="nav nav-tabs nav-fill" role="tablist">
                         <li role="presentation" class="nav-item active"><a href="#database" class="nav-link active" aria-controls="database" role="tab" data-toggle="tab">PACKAGES</a></li>
                         <li role="presentation" class="nav-item"><a href="#new" class="nav-link" aria-controls="new" role="tab" data-toggle="tab">NEW</a></li>
                     </ul>
-                    </div>
                 </div>
+            </div>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="database">
-                    {{--<div class="row caja_itinerario" style="height: 600px; overflow-y: auto;">--}}
                     <div class="row">
                         <div class="col-9">
                             <div class="row" id="pqts">
-
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-3">
                             <form action="{{route('nuevo_paquete_plantilla_path')}}" method="post" id="form_nuevo_pqt_" name="form_nuevo_pqt_" class="sticky-top pt-1">
                                 <div class="card bg-light mt-3 p-3">
                                     <div class="row">
@@ -636,7 +598,9 @@
                                             {{--<div class="col-lg-3"><b class="text-20">New</b></div>--}}
                                             {{--<div class="col-lg-3"><b class="text-20" id="dias_html_0">{{$days}} days</b></div>--}}
                                             <p class="h1 text-g-yellow"><sup>$</sup><b id="precio_plantilla">0</b></p>
-                                            <div class="col-lg-12 margin-top-5 margin-bottom-5"><button type="submit" class="btn btn-green btn-block" onclick="enviar_form2()">GO</button></div>
+                                            <div class="col-lg-12 margin-top-5 margin-bottom-5">
+                                                <button type="submit" class="btn btn-green btn-block" onclick="enviar_form2()">GO</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -646,7 +610,7 @@
                 </div>
                 <div role="tabpanel" class="tab-pane" id="new">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col">
                             <div class="row">
                                 <div class="col margin-top-25">
                                     <select class="form-control" name="destinos_busqueda" id="destinos_busqueda" onclick="buscar_day_by_day_quotes($(this).val())">
@@ -666,7 +630,6 @@
                                     <div class="row">
                                         <form action="{{route('nuevo_paquete_path')}}" method="post" id="form_nuevo_pqt" name="form_nuevo_pqt" class="w-100 col">
                                             <div class="card bg-light mt-3 p-3 sticky-top pt-1 w-100">
-                                                {{--<span  id="estrellas">2 STARS</span>--}}
                                                 <div class="row">
                                                     <div class="col">
                                                         <p class="h5 text-secondary">
@@ -724,12 +687,6 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col text-center">
-                                                        {{--<div class="col-lg-3"><b class="text-20" id="dias_html">{{$days}}d</b></div>--}}
-                                                        {{--<p class="h1 text-g-yellow"><sup>$</sup><b id="st_new">0</b></p>--}}
-                                                        {{--<div class="col-lg-12 margin-top-5 margin-bottom-5"><button type="submit" class="btn btn-green btn-block" onclick="enviar_form2()">GO</button></div>--}}
-                                                        {{--<div class="col-lg-3">$<b class="text-20" id="st_new">0</b></div>--}}
-                                                        {{--<div class="col-12 text-right margin-top-5 margin-bottom-5"><button type="submit" class="btn btn-green btn-block" onclick="enviar_form()">GO</button></div>--}}
-
                                                         <p class="h1 text-g-yellow"><sup>$</sup><b id="st_new">0</b></p>
                                                         <div class="col-lg-12 text-right margin-top-5 margin-bottom-5">
                                                             <button type="submit" class="btn btn-green btn-block" onclick="enviar_form1()">GO</button>
@@ -741,25 +698,19 @@
                                                 <div class='col-lg-12 box-list-book2'>
                                                     <li value="0" class="borar_stetica">
                                                         <ol id="Lista_itinerario_g" class='simple_with_animation vertical no-padding no-margin caja_sort'>
-
                                                         </ol>
                                                     </li>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
-
         </div>
-
     </div>
     <script>
         calcular_resumen();
@@ -773,20 +724,16 @@
                 }
             });
         });
-    </script>
-    <script>
+    
         var adjustment;
         $('.caja_sort').sortable({
             connectWith:'.caja_sort',
-            // handle:'.title',
-            // placeholder: ....,
             tolerance:'intersect',
             stop:function(){
                 calcular_ancho($(this));
             },
         });
         function calcular_ancho(obj){
-            console.log('se cojio el:'+$(obj).attr('id'));
             var titles =$(obj).children('.content-list-book').children('.content-list-book-s').children().children().children('.dias_iti_c2');
             $(titles).each(function(index, element){
                 var elto=$(element).html();
@@ -795,68 +742,5 @@
                 $(element).html('Dia '+pos+':');
             });
         }
-        {{--$("ol.simple_with_animation").sortable({--}}
-            {{--group: 'simple_with_animation',--}}
-            {{--pullPlaceholder: false,--}}
-            {{--tolerance: 6,--}}
-            {{--// animation on drop--}}
-            {{--onDrop: function  ($item, container, _super) {--}}
-
-                {{--var $clonedItem = $('<li/>').css({height: 0});--}}
-                {{--$item.before($clonedItem);--}}
-                {{--$clonedItem.animate({'height': $item.height()});--}}
-
-                {{--var s_cotizacion = $item.val();--}}
-                {{--var s_porcentaje = $item.parent().parent().val();--}}
-
-
-                {{--$item.animate($clonedItem.position(), function  () {--}}
-                    {{--$clonedItem.detach();--}}
-                    {{--_super($item, container);--}}
-                {{--});--}}
-
-                {{--var datos = {--}}
-                    {{--"txt_cotizacion" : s_cotizacion,--}}
-                    {{--"txt_porcentaje" : s_porcentaje--}}
-                {{--};--}}
-                {{--$.ajaxSetup({--}}
-                    {{--headers: {--}}
-                        {{--'X-CSRF-TOKEN': $('[name="_token"]').val()--}}
-                    {{--}--}}
-                {{--});--}}
-                {{--$.ajax({--}}
-                    {{--data:  datos,--}}
-                    {{--url:   "{{route('agregar_probabilidad_path')}}",--}}
-                    {{--type:  'post',--}}
-
-                {{--});--}}
-                {{--var cont=1;--}}
-                {{--$(".dias_iti_c2").each(function (index) {--}}
-                    {{--$(this).html('Dia '+cont+':');--}}
-                    {{--cont++;--}}
-                {{--});--}}
-            {{--},--}}
-            {{--// set $item relative to cursor position--}}
-            {{--onDragStart: function ($item, container, _super) {--}}
-
-                {{--var offset = $item.offset(),--}}
-                    {{--pointer = container.rootGroup.pointer;--}}
-
-                {{--adjustment = {--}}
-                    {{--left: pointer.left - offset.left,--}}
-                    {{--top: pointer.top - offset.top--}}
-                {{--};--}}
-
-                {{--_super($item, container);--}}
-
-            {{--},--}}
-            {{--onDrag: function ($item, position) {--}}
-                {{--$item.css({--}}
-                    {{--left: position.left - adjustment.left,--}}
-                    {{--top: position.top - adjustment.top--}}
-                {{--});--}}
-
-            {{--}--}}
-        {{--});--}}
     </script>
 @stop

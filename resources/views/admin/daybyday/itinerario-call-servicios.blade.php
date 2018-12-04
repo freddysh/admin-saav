@@ -94,8 +94,24 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}}
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>                     
                                 </label>
                             </div>
                         </div>
@@ -108,8 +124,24 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}}
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span> 
                                 </label>
                             </div>
                         </div>
@@ -124,8 +156,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
 
@@ -139,8 +188,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -154,8 +220,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -168,8 +251,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -182,8 +282,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -196,8 +313,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -211,8 +345,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -225,8 +376,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -239,8 +407,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">[{{ $servicio->min_personas }}-{{ $servicio->max_personas }}]</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -254,8 +439,24 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}}
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -268,8 +469,24 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}}
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -283,8 +500,24 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}}
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -297,8 +530,24 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}}
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -311,8 +560,24 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}}
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -326,8 +591,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -340,8 +622,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -354,8 +653,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -368,8 +684,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -382,8 +715,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -397,8 +747,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -413,8 +780,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
 
@@ -428,8 +812,25 @@
                         <div id="service_{{$servicio->id}}" class="col small">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} | 
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>
@@ -443,8 +844,26 @@
                         <div id="service_{{$servicio->id}}" class="col-md-12 text-11">
                             <div class="checkbox11">
                                 <label class="text-primary">
-                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}">
-                                    {{ucwords(strtolower($servicio->nombre))}} <span class="text-10 bg-primary"></span>  <small class="text-g-yellow font-weight-bold"><sup>$</sup>@if($servicio->precio_grupo==1){{$servicio->precio_venta/2}} @else {{$servicio->precio_venta}}@endif p.p</small>
+                                    @php
+                                        $precio_p_p=0;
+                                    @endphp
+                                    @if($servicio->precio_grupo==1)
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta/2,2);
+                                        @endphp
+                                    @else 
+                                        @php
+                                            $precio_p_p=round($servicio->precio_venta,2);
+                                        @endphp
+                                    @endif
+                                    <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                    {{ucwords(strtolower($servicio->nombre))}} |
+                                    <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span> | 
+                                    <span class="text-success">{{ $servicio->min_personas }}-{{ $servicio->max_personas }}</span>
+                                    <span class="text-g-yellow font-weight-bold">
+                                        <sup>$</sup>
+                                        {{$precio_p_p}} p.p
+                                    </span>
                                 </label>
                             </div>
                         </div>

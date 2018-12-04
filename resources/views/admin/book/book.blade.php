@@ -21,7 +21,7 @@
                         <b class="text-16 text-white">TODOS LOS FILES</b>
                     </div>
                     <div class="col-3">
-                        <input form="nuevo_buscar_codigo" name="todos_codigo" id="todos_codigo" class="form-control" type="text" placeholder="Codigo Ó Nombre">
+                        <input form="nuevo_buscar_codigo" name="todos_codigo" id="todos_codigo" class="form-control" type="text" placeholder="Codigo o Nombre">
                     </div>
                     <div class="col-1">
                         {{csrf_field()}}

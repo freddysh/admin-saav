@@ -2466,7 +2466,13 @@ class PackageCotizacionController extends Controller
         $pagina=$request->input('pagina');
         $estrellas=$request->input('estrellas');
         $destinos=explode('/',$destinos);
-        $ppaquetes =P_Paquete::where('pagina',$pagina)->where('duracion',$duracion)->get();
+        $ppaquetes=null;
+        if($pagina=='gotoperu.com'){
+            $ppaquetes =P_Paquete::whereIn('pagina',[$pagina,'expedia.com'])->where('duracion',$duracion)->get();
+        }
+        else{
+            $ppaquetes =P_Paquete::where('pagina',$pagina)->where('duracion',$duracion)->get();
+        }
 //        return dd($ppaquetes);
         return view('admin.lista-paquetes-duracion-pagina',compact('ppaquetes','destinos','estrellas'));
     }
