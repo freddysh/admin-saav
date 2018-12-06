@@ -404,7 +404,7 @@
                                 @endphp
                                 @foreach($cotizacion->paquete_cotizaciones as $paquete)
                                     @if($paquete->estado==2)
-                                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                                        @foreach($paquete->itinerario_cotizaciones->sortBy('dias') as $itinerario)
                                             @php
                                                 $nro_servicios=0;
                                             @endphp

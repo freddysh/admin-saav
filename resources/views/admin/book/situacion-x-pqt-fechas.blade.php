@@ -214,12 +214,12 @@
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
-                        <th>NRO OPERACION</th>
+                        {{--  <th>NRO OPERACION</th>  --}}
                         <th>PRIORIDAD</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>TOURS</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>TOURS</b></td></tr>
                     @php
                         $total_tours=0;
                     @endphp
@@ -320,12 +320,12 @@
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
-                        <th>NRO OPERACION</th>
+                        {{--  <th>NRO OPERACION</th>  --}}
                         <th>PRIORIDAD</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>MOVILID</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>MOVILID</b></td></tr>
                     @php
                         $total_movilid=0;
                     @endphp
@@ -431,12 +431,12 @@
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
-                        <th>NRO OPERACION</th>
+                        {{--  <th>NRO OPERACION</th>  --}}
                         <th>PRIORIDAD</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>REPRESENT</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>REPRESENT</b></td></tr>
                     @php
                         $total_represent=0;
                     @endphp
@@ -537,7 +537,7 @@
                             <th><sup>$</sup>AD</th>
                             <th>TOTAL</th>
                             <th>SITUACION</th>
-                            <th>NRO OPERACION</th>
+                            {{--  <th>NRO OPERACION</th>  --}}
                             <th>PRIORIDAD</th>
                         </tr>
                     </thead>
@@ -964,12 +964,12 @@
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
-                        <th>NRO OPERACION</th>
+                        {{--  <th>NRO OPERACION</th>  --}}
                         <th>PRIORIDAD</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>FOOD</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>FOOD</b></td></tr>
                     @php
                         $total_food=0;
                     @endphp
@@ -1070,12 +1070,12 @@
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
-                        <th>NRO OPERACION</th>
+                        {{--  <th>NRO OPERACION</th>  --}}
                         <th>PRIORIDAD</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>ENTRADAS DE TRENES</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>ENTRADAS DE TRENES</b></td></tr>
                     @php
                         $total_train=0;
                     @endphp
@@ -1176,12 +1176,12 @@
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
-                        <th>NRO OPERACION</th>
+                        {{--  <th>NRO OPERACION</th>  --}}
                         <th>PRIORIDAD</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>FLIGHTS</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>FLIGHTS</b></td></tr>
                     @php
                         $total_flight=0;
                     @endphp
@@ -1282,12 +1282,12 @@
                         <th><sup>$</sup>AD</th>
                         <th>TOTAL</th>
                         <th>SITUACION</th>
-                        <th>NRO OPERACION</th>
+                        {{--  <th>NRO OPERACION</th>  --}}
                         <th>PRIORIDAD</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="bg-dark text-white text-15" ><td colspan="12"><b>SERVICIO</b></td></tr>
+                    <tr class="bg-dark text-white text-15" ><td colspan="11"><b>SERVICIO</b></td></tr>
                     @php
                         $total_others=0;
                     @endphp
