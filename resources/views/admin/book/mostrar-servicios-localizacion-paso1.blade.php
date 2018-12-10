@@ -13,9 +13,9 @@
             <div class="tab-content">
                 <div id="private_{{$servicios_id}}" class="tab-pane fade show active">
                     <div class="row mt-3">
-                        @foreach($m_servicios as $m_servicio)
+                        @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                             @if($m_servicio->tipoServicio=='PRIVATE' || $m_servicio->tipoServicio=='PV')
-                                <div class="col-4 estilo_form">
+                                <div class="col-4 estilo_form mx-0">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -28,9 +28,9 @@
                 </div>
                 <div id="group_{{$servicios_id}}" class="tab-pane fade">
                     <div class="row mt-3">
-                        @foreach($m_servicios as $m_servicio)
+                        @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                             @if($m_servicio->tipoServicio=='GROUP' || $m_servicio->tipoServicio=='SIC')
-                                <div class="col-4 estilo_form">
+                                <div class="col-4 estilo_form mx-0">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -58,9 +58,9 @@
             <div class="tab-content">
                 <div id="auto_{{$servicios_id}}" class="tab-pane fade show active">
                     <div class="row">
-                        @foreach($m_servicios as $m_servicio)
+                        @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                             @if($m_servicio->tipoServicio=='AUTO')
-                                <div class="col-4 estilo_form ">
+                                <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -73,9 +73,9 @@
                 </div>
                 <div id="suv_{{$servicios_id}}" class="tab-pane fade">
                     <div class="row">
-                        @foreach($m_servicios as $m_servicio)
+                        @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                             @if($m_servicio->tipoServicio=='SUV')
-                                <div class="col-4 estilo_form ">
+                                <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -88,9 +88,9 @@
                 </div>
                 <div id="van_{{$servicios_id}}" class="tab-pane fade">
                     <div class="row">
-                        @foreach($m_servicios as $m_servicio)
+                        @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                             @if($m_servicio->tipoServicio=='VAN')
-                                <div class="col-4 estilo_form ">
+                                <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -102,9 +102,9 @@
                     </div>
                 </div>
                 <div id="h1_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='H1')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -115,9 +115,9 @@
                     @endforeach
                 </div>
                 <div id="sprinter_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='SPRINTER')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -128,9 +128,9 @@
                     @endforeach
                 </div>
                 <div id="bus_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='BUS')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -151,9 +151,9 @@
             </ul>
             <div class="tab-content">
                 <div id="guide_{{$servicios_id}}" class="tab-pane fade show active">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='GUIDE')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -164,9 +164,9 @@
                     @endforeach
                 </div>
                 <div id="tranfer_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='TRANSFER')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -177,9 +177,9 @@
                     @endforeach
                 </div>
                 <div id="assistance_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='ASSISTANCE')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -199,9 +199,9 @@
             </ul>
             <div class="tab-content">
                 <div id="extranjero_{{$servicios_id}}" class="tab-pane fade show active">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='EXTRANJERO')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -212,9 +212,9 @@
                     @endforeach
                 </div>
                 <div id="national_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='NATIONAL')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -235,9 +235,9 @@
             </ul>
             <div class="tab-content">
                 <div id="lunch_{{$servicios_id}}" class="tab-pane fade show active">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='LUNCH')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -248,9 +248,9 @@
                     @endforeach
                 </div>
                 <div id="dinner_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='DINNER')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -261,9 +261,9 @@
                     @endforeach
                 </div>
                 <div id="box_lunch_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='BOX LUNCH')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -294,9 +294,9 @@
                 @endphp
                 @foreach($clases as $clase)
                     <div id="{{str_replace(' ','_',$clase->clase)}}_{{$servicios_id}}" class="tab-pane fade show {{$activo}}">
-                        @foreach($m_servicios as $m_servicio)
+                        @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                             @if($m_servicio->tipoServicio==$clase->clase)
-                                <div class="col-4 no-padding">
+                                <div class="col-4 no-padding" mx-0>
                                     <div class="estilo_form clearfix small">
                                         <label class="">
                                             <input type="radio" name="op_services" id="servicio_cambiar_{{$itinerario_id}}_{{$grupo}}_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
@@ -322,9 +322,9 @@
             </ul>
             <div class="tab-content">
                 <div id="national_{{$servicios_id}}" class="tab-pane fade show active">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='NATIONAL')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -335,9 +335,9 @@
                     @endforeach
                 </div>
                 <div id="international_{{$servicios_id}}" class="tab-pane fade">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         @if($m_servicio->tipoServicio=='INTERNATIONAL')
-                            <div class="col-4 estilo_form ">
+                            <div class="col-4 estilo_form mx-0 ">
                                     <label class="small">
                                         <input type="radio" name="op_services" id="serv_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                         {{$m_servicio->nombre}}
@@ -356,9 +356,9 @@
             </ul>
             <div class="tab-content">
                 <div id="others_{{$servicios_id}}" class="tab-pane fade show active">
-                    @foreach($m_servicios as $m_servicio)
+                    @foreach($m_servicios->sortBy('nombre') as $m_servicio)
                         <div class="col-4 no-padding">
-                            <div class="estilo_form clearfix small">
+                            <div class="estilo_form clear mx-0fix small">
                                 <label class="">
                                     <input type="radio" name="op_services" id="servicio_cambiar_{{$itinerario_id}}_{{$grupo}}_{{$m_servicio->id}}" value="{{$m_servicio->id}}">
                                     {{$m_servicio->nombre}} {{$m_servicio->precio_venta}}$)

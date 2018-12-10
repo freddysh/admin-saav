@@ -5694,17 +5694,33 @@ function mostrar_ventas_expedia(anio,mes,page){
 }
 
 function mostrar_opcion(opcion){
-    if(opcion=='TODOS LOS PENDIENTES' || opcion=='TODOS LOS URGENTES'){
+    if(opcion=='POR CODIGO'){
         $('#from').addClass('d-none');
         $('#to').addClass('d-none');
+        $('#nombre').addClass('d-none');
+        $('#codigo').removeClass('d-none');
+    }
+    else if(opcion=='POR CODIGO'){
+        $('#from').addClass('d-none');
+        $('#to').addClass('d-none');
+        $('#codigo').addClass('d-none');
+        $('#nombre').removeClass('d-none');
+    }
+    else if(opcion=='TODOS LOS PENDIENTES' || opcion=='TODOS LOS URGENTES'){
+        $('#from').addClass('d-none');
+        $('#to').addClass('d-none');
+        $('#codigo').removeClass('d-none');
+        $('#nombre').removeClass('d-none');
     }
     else if(opcion=='ENTRE DOS FECHAS' || opcion=='ENTRE DOS FECHAS URGENTES'){
         $('#from').removeClass('d-none');
         $('#to').removeClass('d-none');
+        $('#codigo').removeClass('d-none');
+        $('#nombre').removeClass('d-none');
     }
 }
 function buscar_servicios_pagos_pendientes_entradas(opcion,ini,fin,servicio) {
-    console.log('ini:' + ini + ' - fin:' + fin + ' - servicio:' + servicio);
+    console.log('opcion:'+opcion+',ini:' + ini + ' - fin:' + fin + ' - servicio:' + servicio);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()

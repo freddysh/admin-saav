@@ -71,7 +71,7 @@
                                             <p>{{$array_['personas_d']}} <i class="fas fa-bed"></i><i class="fas fa-bed"></i></p>
                                         @endif
                                         @if ($array_['personas_m']!='0')
-                                            <p>{{$array_['personas_m']}} <i class="fas fa-bed"></i></p>
+                                            <p>{{$array_['personas_m']}} <i class="fas fa-venus-mars"></i></p>
                                         @endif
                                         @if ($array_['personas_t']!='0')
                                             <p>{{$array_['personas_t']}} <i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></p>
@@ -108,10 +108,10 @@
                                 @endif    
                             </td>    
                             <td>
-                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                             </td>    
                             <td>
-                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                             </td>
                         </tr>
                     @endforeach
@@ -165,10 +165,10 @@
                             <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                             <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                             </td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                             </td>      
                         </tr>
                     @endforeach
@@ -226,10 +226,10 @@
                             <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                             <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                             </td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                             </td>      
                         </tr>
                     @endforeach
@@ -282,10 +282,10 @@
                         <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                         <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                         <td class="px-0 text-center">
-                            <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                            <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                         </td>    
                         <td class="px-0 text-center">
-                            <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                            <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                         </td>
                     </tr>
                     @endforeach
@@ -337,10 +337,10 @@
                                     <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                                     <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                                     </td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                                     </td>
                                 </tr>
                             @endif         
@@ -369,10 +369,10 @@
                                     <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                                     <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                                     </td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                                     </td>
                                 </tr>
                             @endif         
@@ -401,10 +401,10 @@
                                     <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                                     <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                                     </td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                                     </td>    
                                 </tr>
                             @endif         
@@ -433,10 +433,10 @@
                                     <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                                     <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                                     </td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                                     </td>          
                                 </tr>
                             @endif         
@@ -465,10 +465,10 @@
                                     <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                                     <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                                     </td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                                     </td>           
                                 </tr>
                             @endif         
@@ -497,10 +497,10 @@
                                     <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                                     <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                        <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                                     </td>    
                                     <td class="px-0 text-center">
-                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                        <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                                     </td>           
                                 </tr>
                             @endif         
@@ -555,10 +555,10 @@
                             <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                             <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                             </td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                             </td>             
                         </tr>
                     @endforeach
@@ -612,10 +612,10 @@
                             <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                             <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                             </td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                             </td>        
                         </tr>
                     @endforeach
@@ -665,10 +665,10 @@
                             <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                             <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                             </td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                             </td>           
                         </tr>
                     @endforeach
@@ -718,10 +718,10 @@
                             <td class="px-1 text-right"><b><sup>$</sup>{{$array_['ads']}}</b></td>    
                             <td class="px-1 text-right alert-success"><b><sup>$</sup>{{$array_['total']}}</b></td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}}) @elseif($array_['situacion']=='POR PAGAR') {{'badge-success'}} @endif">{{$array_['situacion']}}</span>
+                                <span class="badge @if($array_['situacion']=='NO ENVIADO') {{'badge-dark'}}@elseif($array_['situacion']=='PAGADO') {{'badge-success'}} @elseif($array_['situacion']=='POR PAGAR') {{'badge-warning'}} @endif">{{$array_['situacion']}}</span>
                             </td>    
                             <td class="px-0 text-center">
-                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}}) @endif">{{$array_['proridad']}}</span>       
+                                <span class="badge @if($array_['proridad']=='NORMAL') {{'badge-dark'}}@elseif($array_['proridad']=='URGENTE') {{'badge-danger'}} @endif">{{$array_['proridad']}}</span>       
                             </td>        
                         </tr>
                     @endforeach

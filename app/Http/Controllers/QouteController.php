@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Expr\Array_;
+use App\Helpers\MisFunciones;
 
 class QouteController extends Controller
 {
@@ -204,19 +205,8 @@ class QouteController extends Controller
     }
     public function generar_codigo(Request $request)
     {
-        $precodigo=array(
-            "gotoperu.com"=>"G",
-            "llama.tours"=>"LLA",
-            "gotoperu.com.pe"=>"GP",
-            "andesviagens.com"=>"AV",
-            "machupicchu-galapagos.com"=>"MP",
-            "gotolatinamerica.com"=>"GL",
-            "expedia.com"=>"E",
-
-        );
         $web=$request->input('web');
-        $nro_codigo=Cotizacion::where('web',$web)->count()+1;
-        $codigo=$precodigo[$web].$nro_codigo;
+        $codigo= MisFunciones::generar_codigo($web);
         return $codigo;
     }
     public function cambiar_fecha(Request $request)
@@ -429,16 +419,18 @@ class QouteController extends Controller
                             if ($estrellas == '') {
                                 $estrellas = '<b class="text-danger">Falta</b>';
                             }
-                        } else
+                        }
+                        else
                             $estrellas = 'No necesita';
 
                         if ($ppaquete->duracion > 1)
                             $estrellas = $value->stars;
 
-                        //-- creamos el codigo autogenerado
+                        //-- creamos el codigo autogenerado                        
+                        // $nro_codigo=Cotizacion::where('web','expedia.com')->count()+1;
+                        // $codigo_auto='E'.$nro_codigo;
 
-                        $nro_codigo=Cotizacion::where('web','expedia.com')->count()+1;
-                        $codigo_auto='E'.$nro_codigo;
+                        $codigo_auto=MisFunciones::generar_codigo('expedia.com');
                         // buscamos el paquete para crear la cotizacion
                         $ppaquete = P_Paquete::where('codigo', $codigo)->first();
                         $coti = new Cotizacion();

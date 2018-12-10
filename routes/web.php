@@ -1284,3 +1284,7 @@ Route::get('/admin/reportes/lista-de-cotizaciones/{web}/{desde}/{hasta}',[
     'uses' => 'ReportesController@lista_cotizaciones',
     'as' => 'lista_de_cotizaciones_path',
 ]);
+Route::patch('/admin/quotes/new/step1/step1_edit_precio_servicios/{id}', [
+    'uses' => 'PackageCotizacionController@step1_edit_precio_servicios',
+    'as' => 'step1_edit_servicio_precio_path'
+]);

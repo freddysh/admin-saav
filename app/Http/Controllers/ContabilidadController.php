@@ -1805,14 +1805,12 @@ class ContabilidadController extends Controller
     public function pagos_pendientes_filtro_datos_servicios_entradas_guardado_pagado($boton,$id)
     {
         $liquidacion=Liquidacion::Find($id);
-//        return dd($liquidacion);
-//        dd($liquidacion);
         $ini=$liquidacion->ini;
         $fin=$liquidacion->fin;
         $cotizacion=null;
         $opcion=$liquidacion->opcion;
         if($opcion=='TODOS LOS PENDIENTES'||$opcion=='TODOS LOS URGENTES'){
-            $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function ($query) use($id,$ini,$fin,$boton){
+            $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones', function ($query) use($id, $ini, $fin, $boton){
                 $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin,$boton){
                     if($boton=='pagado')
                         $query->where('liquidacion','2')->where('liquidacion_id',$id);

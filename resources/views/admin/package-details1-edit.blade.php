@@ -404,7 +404,44 @@
                                             <div class="col @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif">$<input type="hidden" class="precio_servicio_sh" value="{{explode('.00',$preciom)[0]}}">{{explode('.00',$preciom)[0]}}</div>
                                             <div class="col-2">
                                                 <div class="row">
-                                                    <div class="col-6">
+                                                    <div class="col-4">
+                                                        <a class="btn py-0" data-toggle="modal" data-target="#modal_editar_precio_servicio{{$servicios->id}}">
+                                                            <i class="fas fa-pencil-alt text-primary" aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="modal fade bd-example-modal-m" id="modal_editar_precio_servicio{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-m" role="document">
+                                                                <div class="modal-content">
+                                                                    <form action="{{route('step1_edit_servicio_precio_path', $hotel->id)}}" method="post" enctype="multipart/form-data">
+                                                                        <input type="hidden" name="_method" value="patch">
+                                                                        <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
+                                                                        <input type="hidden" name="id_client" value="{{$cliente->id}}">
+                                                                        <input type="hidden" name="id_paquete" value="{{$paquete->id}}">
+                                                                        <input type="hidden" name="id_servicios" value="{{$servicios->id}}">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Editar Precio del servicio</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="col">
+                                                                                    <label for="precio_{{$servicios->id}}">Precio</label>
+                                                                                    <input class="form-control" type="number" name="precio_reserva" id="precio_{{$servicios->id}}" value="@if($servicios->precio_grupo==1){{$servicios->precio}}@else{{round($servicios->precio/$cotizacion->nropersonas,2)}}@endif ">    
+                                                                                </div>    
+                                                                            </div> 
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            {{csrf_field()}}
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4">
                                                         <a class="btn py-0 text-primary" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->servicio->grupo}}','edit')">
                                                             <i class="fas fa-exchange-alt text-success" aria-hidden="true"></i>
                                                         </a>
@@ -437,7 +474,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-6">
+                                                    <div class="col-4">
                                                         <b class="text-danger puntero" onclick="borrar_serv_quot_paso1('{{$servicios->id}}','{{$servicios->nombre}}')">
                                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </b>
@@ -511,10 +548,10 @@
                                                                                     <div class="col-lg-10">Acomodacion</div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="col-lg-2 @if($hotel->personas_s==0) hide @endif">S</div>
-                                                                            <div class="col-lg-2 @if($hotel->personas_d==0) hide @endif">D</div>
-                                                                            <div class="col-lg-2 @if($hotel->personas_m==0) hide @endif">M</div>
-                                                                            <div class="col-lg-2 @if($hotel->personas_t==0) hide @endif">T</div>
+                                                                            <div class="col @if($hotel->personas_s==0) d-none @endif">S</div>
+                                                                            <div class="col @if($hotel->personas_d==0) d-none @endif">D</div>
+                                                                            <div class="col @if($hotel->personas_m==0) d-none @endif">M</div>
+                                                                            <div class="col @if($hotel->personas_t==0) d-none @endif">T</div>
                                                                         </div>
                                                                         <div class="row  caja_detalle_hotel">
                                                                             <div class="col-lg-4">
@@ -522,16 +559,16 @@
                                                                                     <div class="col-lg-10">HOTEL</div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="col-lg-2 @if($hotel->personas_s==0) hide @endif">
+                                                                            <div class="col @if($hotel->personas_s==0) d-none @endif">
                                                                                 <input class="form-control" type="number" name="precio_s" value="{{explode('.00',$hotel->precio_s)[0]/1}}">
                                                                             </div>
-                                                                            <div class="col-lg-2 @if($hotel->personas_d==0) hide @endif">
+                                                                            <div class="col @if($hotel->personas_d==0) d-none @endif">
                                                                                 <input class="form-control" type="number" name="precio_d" value="{{explode('.00',$hotel->precio_d)[0]/2}}">
                                                                             </div>
-                                                                            <div class="col-lg-2 @if($hotel->personas_m==0) hide @endif">
+                                                                            <div class="col @if($hotel->personas_m==0) d-none @endif">
                                                                                 <input class="form-control" type="number" name="precio_m" value="{{explode('.00',$hotel->precio_m)[0]/2}}">
                                                                             </div>
-                                                                            <div class="col-lg-2 @if($hotel->personas_t==0) hide @endif">
+                                                                            <div class="col @if($hotel->personas_t==0) d-none @endif">
                                                                                 <input class="form-control" type="number" name="precio_t" value="{{explode('.00',$hotel->precio_t)[0]/3}}">
                                                                             </div>
                                                                         </div>

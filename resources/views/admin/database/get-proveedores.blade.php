@@ -45,7 +45,6 @@
             <td class="text-center">
                 <b href="!#" class="puntero text-warning"  data-toggle="modal" data-target="#modal_edit_cost_{{$provider->id}}">
                     <i class="fas fa-pencil-alt"></i>
-
                 </b>
                 <div class="modal fade bd-example-modal-lg" id="modal_edit_cost_{{$provider->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">

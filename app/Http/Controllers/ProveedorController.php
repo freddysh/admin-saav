@@ -23,7 +23,8 @@ class ProveedorController extends Controller
         session()->put('menu-lateral', 'Sproviders');
         $entidadBancaria=EntidadBancaria::get();
         $m_categories=M_Category::where('nombre','!=','HOTELS')->get();
-        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria','m_categories'));
+        $m_categoras=M_Category::get(); 
+        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria','m_categories','m_categoras'));
     }
     public function autocomplete()
     {
@@ -221,9 +222,9 @@ class ProveedorController extends Controller
             }
             $destinations=M_Destino::get();
             $providers=Proveedor::get();
-            $categorias=M_Category::get();
+            $m_categories=M_Category::get();
             $entidadBancaria=EntidadBancaria::get();
-            return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria'));
+            return view('admin.database.provider',compact('destinations','providers','m_categories','entidadBancaria'));
         }
     }
     public function edit(Request $request)
@@ -305,7 +306,7 @@ class ProveedorController extends Controller
         return redirect()->route('provider_index_path');
 //        if($proveedor->save()){
 //            dd('Hola');
-            redirect()->route('provider_index_path');
+            // redirect()->route('provider_index_path');
 //            $proveedor->codigo=$txt_grupo_cod.$id;
 //            $destinations=M_Destino::get();
 //            $providers=Proveedor::get();

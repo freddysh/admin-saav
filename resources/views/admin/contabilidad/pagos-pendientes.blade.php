@@ -67,7 +67,6 @@ use Carbon\Carbon;
                                                 <div class="col-12 form-inline">
                                                     @php
                                                         $ToDay=new Carbon();
-
                                                     @endphp
                                                     {{--<form action="{{route('list_fechas_rango_hotel_path')}}" method="post" class="form-inline">--}}
                                                     {{csrf_field()}}
@@ -391,6 +390,8 @@ use Carbon\Carbon;
                                                     <div class="form-group">
                                                         <label for="tipo_filtro" class="text-secondary font-weight-bold pr-2">Escoja una opcion </label>
                                                         <select form="form_guardar" name="tipo_filtro" id="tipo_filtro" class="form-control" onchange="mostrar_opcion($(this).val())">
+                                                            <option value="POR CODIGO">POR CODIGO</option>
+                                                            <option value="POR NOMBRE">POR NOMBRE</option>
                                                             <option value="TODOS LOS PENDIENTES">TODOS LOS PENDIENTES</option>
                                                             <option value="TODOS LOS URGENTES">TODOS LOS URGENTES</option>
                                                             <option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS</option>
@@ -403,6 +404,14 @@ use Carbon\Carbon;
                                                         $ToDay=new Carbon();
                                                     @endphp
                                                     {{csrf_field()}}
+                                                    <div class="form-group d-none" id="nombre">
+                                                        <label for="nombre" class="text-secondary font-weight-bold pr-2">Nombre </label>
+                                                        <input type="text" class="form-control" form="form_guardar" name="nombre" id="nombre" value="" placeholder="Ingrese el nombre de la venta">
+                                                    </div>
+                                                    <div class="form-group" id="codigo">
+                                                        <label for="codigo" class="text-secondary font-weight-bold pr-2">Codigo </label>
+                                                        <input type="text" class="form-control" form="form_guardar" name="codigo" id="codigo" value="" placeholder="Ingrese el codigo de la venta">
+                                                    </div>
                                                     <div class="form-group d-none" id="from">
                                                         <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
                                                         <input type="date" class="form-control" form="form_guardar" name="f_ini_ENTRADA" id="f_ini_ENTRADA" value="{{$ToDay->toDateString()}}" required>

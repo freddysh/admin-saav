@@ -347,7 +347,7 @@
                                         <tr>
                                             <td>{{strtoupper($cliente->nombres)}} {{strtoupper($cliente->apellidos)}}</td>
                                             <td>{{strtoupper($cliente->nacionalidad)}}</td>
-                                            <td>{{strtoupper($cliente->pasaporte)}} <span class="badge badge-g-yellow">{{$cliente->expiracion}}</span> </td>
+                                            <td>{{strtoupper($cliente->pasaporte)}} <span class="badge badge-g-yellow">{{MisFunciones::fecha_peru($cliente->expiracion)}}</span> </td>
                                             <td>{{strtoupper($cliente->sexo)}}</td>
                                             <td>
                                                 @foreach($cotizacion->paquete_cotizaciones as $paquete)
@@ -1381,12 +1381,12 @@
                                                                                                 <span class="margin-bottom-5">
                                                                                                     <b>{{$hotel->personas_m}}</b>
                                                                                                     <span class="stick">
-                                                                                                        <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i>
+                                                                                                        <i class="fa fa-venus-mars" aria-hidden="true"></i>
                                                                                                     </span>
                                                                                                 </span>
                                                                                                 </td>
                                                                                                 <td width="100px">
-                                                                                                    <input type="number" class="form-control" id="book_price_edit_h_m_p_{{$hotel->id}}" name="txt_costo_edit_d" value="{{$hotel->precio_m_r}}">
+                                                                                                    <input type="number" class="form-control" id="book_price_edit_h_m_p_{{$hotel->id}}" name="txt_costo_edit_m" value="{{$hotel->precio_m_r}}">
                                                                                                 </td>
                                                                                             </tr>
                                                                                         @endif

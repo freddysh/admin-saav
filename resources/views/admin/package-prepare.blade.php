@@ -98,7 +98,9 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col caja_paso_noactivo text-30 text-center">
-                            <a href="{{route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete_id,'nuevo'])}}" class="caja_paso_noactivo_ no_stilo">1</a>
+                            <a href="{{route('show_current_paquete_edit_path',$paquete_id)}}" class="caja_paso_noactivo_ no_stilo">1</a>
+                            
+                            {{-- <a href="{{route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete_id,'nuevo'])}}" class="caja_paso_noactivo_ no_stilo">1</a> --}}
                             {{--<b>1</b>--}}
                         </div>
                         <div class="col caja_paso_activo text-30 text-center">

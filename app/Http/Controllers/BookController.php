@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Cliente;
@@ -37,8 +36,7 @@ class BookController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
-	{
+	public function index(){
 		$paquete_cotizacion = PaqueteCotizaciones::where('estado', 2)->get();
 		$cot_cliente = CotizacionesCliente::with('cliente')->where('estado', 1)->get();
 		$cliente = Cliente::get();
@@ -53,8 +51,7 @@ class BookController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function crear_liquidacion()
-	{
+	public function crear_liquidacion(){
 		$fecha_ini=date("Y-m-d");
 		$fecha_fin=date("Y-m-d");
 		$nro_ini=Liquidacion::where('ini','<=',$fecha_ini)->where('fin','>=',$fecha_ini)->count();
@@ -142,11 +139,8 @@ class BookController extends Controller
 	}
 	function asignar_proveedor(Request $request){
 		$id_='prioridad_'.$request->input('id_');
-//        return $id_;
 		$fecha_pagar=$request->input('fecha_pagar');
 		$prioridad=$request->input($id_)[0];
-//        return $fecha_pagar;
-//        dd('fecha_pagar:'.$fecha_pagar.', prioridad:'.$prioridad);
 		$dat=$request->input('precio')[0];
 		$dato=explode('_',$dat);
 		$itinerario=ItinerarioServicios::FindOrFail($dato[1]);
@@ -175,28 +169,15 @@ class BookController extends Controller
 		$itinerario1->fecha_venc=$fecha_pagar;
 		$itinerario1->prioridad=$prioridad;
 		$m_servicio=M_Servicio::find($itinerario1->m_servicios_id);
-//        $iti_coti=ItinerarioCotizaciones::find($itinerario1->itinerario_cotizaciones_id);
 
-		if(($m_servicio->grupo=='MOVILID' && $m_servicio->clase=='BOLETO') || $m_servicio->grupo=='ENTRANCES'){
+		// if(($m_servicio->grupo=='MOVILID' && $m_servicio->clase=='BOLETO') || $m_servicio->grupo=='ENTRANCES'){
 			$itinerario1->liquidacion=1;
-		}
+		// }
 
-//        $liquidacion=Liquidacion::where('ini','<=',$iti_coti->fecha)->where('fin','>=',$iti_coti->fecha)->count();
-//        if($liquidacion>0){
-//            $itinerario1->liquidacion=1;
-//        }
 		if($itinerario1->save())
 			return 1;
 		else
 			return 0;
-
-//        return redirect()->route('book_show_path',$dato[0]);
-
-//        $cotizacion=Cotizacion::FindOrFail($dato[0]);
-//        $productos=M_Producto::get();
-//        $proveedores=Proveedor::get();
-//        $hotel_proveedor=HotelProveedor::get();
-//        return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor]);
 	}
 	function asignar_proveedor_hotel(Request $request){
 		$fecha_pagar=$request->input('fecha_pagar');
@@ -205,25 +186,16 @@ class BookController extends Controller
 		$prioridad=$request->input($id_)[0];
 		$key_dias_afectados='dias_afectados_'.$request->input('id');
 		$dias_afectados=$request->input($key_dias_afectados);
-//        return $dias_afectados;
-
 		$dat=$request->input('precio');
-//        return $dat;
 		$dato=explode('_',$dat);
 		$hotel_proveedor=HotelProveedor::FindOrFail($dato[3]);
-//        return dd($dat);
 		$id=$request->input('id');
 		$precio_s_r=$hotel_proveedor->single;
 		$precio_d_r=$hotel_proveedor->doble;
 		$precio_m_r=$hotel_proveedor->matrimonial;
 		$precio_t_r=$hotel_proveedor->triple;
 
-//        $precio_s_r=$request->input('txt_costo_edit_s');
-//        $precio_d_r=$request->input('txt_costo_edit_d');
-//        $precio_m_r=$request->input('txt_costo_edit_m');
-//        $precio_t_r=$request->input('txt_costo_edit_t');
 		$itinerario_cotizaciones=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)->get();
-//        return  dd($itinerario_cotizaciones);
 		foreach ($dias_afectados as $dias_afectados_){
 			foreach($itinerario_cotizaciones->where('dias',$dias_afectados_) as $itinerario_cotizaciones_){
 				foreach($itinerario_cotizaciones_->hotel as $hotel_){
@@ -241,35 +213,14 @@ class BookController extends Controller
 						$hotel->prioridad=$prioridad;
 						$hotel->fecha_venc=$fecha_pagar;
 						$hotel->proveedor_id=$hotel_proveedor->proveedor_id;
+						$hotel->liquidacion=1;
 						$hotel->save();
 					}
 				}
 			}
 		}
 		return redirect()->back();
-//        return 1;
-
-//        $dat=$request->input('precio')[0];
-//        $dato=explode('_',$dat);
-//        $hotel_proveedor=HotelProveedor::FindOrFail($dato[3]);
-//        $hotel_reservado=PrecioHotelReserva::FindOrFail($dato[1]);
-//        $hotel_reservado->precio_s_r=$hotel_proveedor->single;
-//        $hotel_reservado->precio_d_r=$hotel_proveedor->doble;
-//        $hotel_reservado->precio_m_r=$hotel_proveedor->matrimonial;
-//        $hotel_reservado->precio_t_r=$hotel_proveedor->triple;
-//        $hotel_reservado->proveedor_id=$dato[2];
-//        if($hotel_reservado->save())
-//            return 1;
-//        else
-//            return 0;
-
-//        $cotizacion=Cotizacion::FindOrFail($dato[0]);
-//        $productos=M_Producto::get();
-//        $proveedores=Proveedor::get();
-//        $hotel_proveedor=HotelProveedor::get();
-//        $m_servicios=M_Servicio::get();
-//        return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios]);
-	}
+}
 	function asignar_proveedor_costo(Request $request){
 		$txt_costo_edit=$request->input('txt_costo_edit');
 		$txt_justificacion=$request->input('txt_justificacion');
@@ -394,17 +345,13 @@ class BookController extends Controller
 				}
 			}
 		}
-//        dd($array_servicios);
 		$pqt_coti=0;
 		foreach ($paquete_cotizacion as $paquete_cotizacion_){
 			$pqt_coti=$paquete_cotizacion_->id;
 		}
-//        dd($pqt_coti);
 		//-- agregarmos para itinerario_servicios_acum_pago
 		$id='';
 
-//        dd($array_servicios);
-//        dd($array_hotel);
 		foreach ($array_servicios as $key => $array_servicio) {
 			$proveedor_id = explode('_', $key);
 			if($proveedor_id[1]> 0) {
@@ -478,8 +425,6 @@ class BookController extends Controller
 				}
 			}
 		}
-//        dd($array_servicios);
-//        return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios]);
 		return redirect()->route('book_show_path',$cotizacion_id);
 	}
 	function crear_liquidacion_storage(Request $request){
@@ -500,7 +445,6 @@ class BookController extends Controller
 	function guardar_liquidacion_storage(Request $request){
 		$cotis=$request->input('cotis');
 		$cotizaciones_ids=explode('_',$cotis);
-//        dd($cotizaciones_ids);
 		if(count($cotizaciones_ids)>0) {
 			//-- se guardara el rango de fechas donde se envia la liquidacion semanal
 			$fecha_ini = $request->input('desde');
@@ -941,476 +885,17 @@ class BookController extends Controller
 		$array_cotizaciones_flights = array();
 		$array_cotizaciones_others = array();
 		$liquidaciones=Liquidacion::get();
-		if($opcion=='codigo'){
-			$cotizaciones = Cotizacion::where('codigo', $dato1)->get();
-			$datos_cliente='';
-			foreach($cotizaciones as $cotizacion){
-				$datos_cliente='';
-				foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $coti_cliente){
-					$datos_cliente=$coti_cliente->cliente->nombres.'X'.$cotizacion->nropersonas.' '.MisFunciones::fecha_peru($cotizacion->fecha);
-				}
-				foreach($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
-					foreach($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){
-						$proveedor='';
-						foreach($itinerario_cotizaciones->hotel->where('anulado',0) as $hotel){
-							if($hotel->proveedor_id>0){
-								$proveedor=Proveedor::Find($hotel->proveedor_id)->nombre_comercial;  
-							}
-							$personas_s=0;
-							$personas_d=0;
-							$personas_m=0;
-							$personas_t=0;
-							
-							$precio_s=0;
-							$precio_d=0;
-							$precio_m=0;
-							$precio_t=0;
-
-							$precio_total_=0;	
-							if($hotel->personas_s>0){
-								$personas_s=$hotel->personas_s;
-								if($hotel->precio_s_r>0){
-									$precio_s=$hotel->precio_s_r;
-								}
-							}
-							if($hotel->personas_d>0){
-								$personas_d=$hotel->personas_d;
-								if($hotel->precio_d_r>0){
-									$precio_d=$hotel->precio_d_r;
-								}
-							}
-							if($hotel->personas_m>0){
-								$personas_m=$hotel->personas_m;
-								if($hotel->precio_m_r>0){
-									$precio_m=$hotel->precio_m_r;
-								}
-							}
-							if($hotel->personas_t>0){
-								$personas_t=$hotel->personas_t;
-								if($hotel->precio_t_r>0){
-									$precio_t=$hotel->precio_t_r;
-								}
-							}
-							$situacion='';
-							if($hotel->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($hotel->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($hotel->liquidacion==0)
-									$situacion='NO ENVIADO';
-
-							$fecha_venc='';
-							if(trim($hotel->fecha_venc)!='')
-								$fecha_venc=$hotel->fecha_venc;	
-							$array_cotizaciones_hotel[]=array(
-								'estrellas'=>$hotel->estrellas,
-								'fecha_uso'=>$itinerario_cotizaciones->fecha,
-								'fecha_venc'=>$fecha_venc,
-								'personas_s'=>$personas_s,
-								'personas_d'=>$personas_d,
-								'personas_m'=>$personas_m,
-								'personas_t'=>$personas_t,
-								'precio_s'=>$precio_s,
-								'precio_d'=>$precio_d,
-								'precio_m'=>$precio_m,
-								'precio_t'=>$precio_t,
-								'pax'=>$datos_cliente,
-								'proveedor'=>$proveedor,
-								'situacion'=>$situacion,
-								'proridad'=>$hotel->prioridad);	
-								
-						}
-						foreach($itinerario_cotizaciones->itinerario_servicios as $itinerario_servicios){
-							if($itinerario_servicios->servicio->grupo=='TOURS'){
-								if($itinerario_servicios->proveedor_id>0){
-									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
-								}
-								$precio=0;
-								$precio_ads=0;
-								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio;
-										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
-								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
-										$precio_ads=$itinerario_servicios->precio;
-								}
-								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
-									$situacion='NO ENVIADO';
-
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_tours[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
-							}
-							elseif($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='DEFAULT'){
-								if($itinerario_servicios->proveedor_id>0){
-									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
-								}
-								$precio=0;
-								$precio_ads=0;
-								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio;
-										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
-								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
-										$precio_ads=$itinerario_servicios->precio;
-								}
-								
-								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
-									$situacion='NO ENVIADO';
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-									$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_movilid[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
-							}
-							elseif($itinerario_servicios->servicio->grupo=='REPRESENT'){
-								if($itinerario_servicios->proveedor_id>0){
-									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
-								}
-								$precio=0;
-								$precio_ads=0;
-								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio;
-										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
-								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
-										$precio_ads=$itinerario_servicios->precio;
-								}
-								
-								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
-									$situacion='NO ENVIADO';
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-									$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_represent[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
-							}
-							elseif($itinerario_servicios->servicio->grupo=='ENTRANCES'||($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')){
-								$proveedor='';
-								if($itinerario_servicios->proveedor_id>0){
-									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
-								}
-								$precio=0;
-								$precio_ads=0;
-								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio;
-										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
-								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
-										$precio_ads=$itinerario_servicios->precio;
-								}
-								
-								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
-									$situacion='NO ENVIADO';
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-									$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_entrances[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->clase,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
-							}
-							elseif($itinerario_servicios->servicio->grupo=='FOOD'){
-								if($itinerario_servicios->proveedor_id>0){
-									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
-								}
-								$precio=0;
-								$precio_ads=0;
-								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio;
-										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
-								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
-										$precio_ads=$itinerario_servicios->precio;
-								}
-								
-								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
-									$situacion='NO ENVIADO';
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-									$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_food[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
-							}
-							elseif($itinerario_servicios->servicio->grupo=='TRAINS'){
-								if($itinerario_servicios->proveedor_id>0){
-									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
-								}
-								$precio=0;
-								$precio_ads=0;
-								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio;
-										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
-								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
-										$precio_ads=$itinerario_servicios->precio;
-								}
-								
-								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
-									$situacion='NO ENVIADO';
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-									$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_trains[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'horario'=>$itinerario_servicios->salida.'_'.$itinerario_servicios->llegada,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
-							}
-							elseif($itinerario_servicios->servicio->grupo=='FLIGHTS'){
-								if($itinerario_servicios->proveedor_id>0){
-									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
-								}
-								$precio=0;
-								$precio_ads=0;
-								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio;
-										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
-								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
-										$precio_ads=$itinerario_servicios->precio;
-								}
-								
-								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
-									$situacion='NO ENVIADO';
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-									$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_flights[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'aerolinea'=>$itinerario_servicios->aerolinea.'_'.$itinerario_servicios->nro_vuelo,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
-							}
-							elseif($itinerario_servicios->servicio->grupo=='OTHERS'){
-								if($itinerario_servicios->proveedor_id>0){
-									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
-								}
-								$precio=0;
-								$precio_ads=0;
-								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio;
-										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
-								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
-									if($itinerario_servicios->precio>0)
-										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
-										$precio_ads=$itinerario_servicios->precio;
-								}
-								
-								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
-									$situacion='NO ENVIADO';
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-									$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_others[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->clase,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
-							}
-						}
-					}
-				}
+		if($opcion=='codigo'||$opcion=='nombre'){
+			if($opcion=='codigo'){
+				$cotizaciones = Cotizacion::where('codigo', $dato1)->get();
 			}
-			
-			$sort_hotel=array();
-			foreach ($array_cotizaciones_hotel as $key => $part) {
-				$sort_hotel[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_hotel, SORT_ASC, $array_cotizaciones_hotel);
-
-			$sort_tours=array();
-			foreach ($array_cotizaciones_tours as $key => $part) {
-				$sort_tours[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_tours, SORT_ASC, $array_cotizaciones_tours);
-
-			$sort_movilid=array();
-			foreach ($array_cotizaciones_movilid as $key => $part) {
-				$sort_movilid[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_movilid, SORT_ASC, $array_cotizaciones_movilid);
-		
-			$sort_represent=array();
-			foreach ($array_cotizaciones_represent as $key => $part) {
-				$sort_represent[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_represent, SORT_ASC, $array_cotizaciones_represent);
-
-			$sort_entrances=array();
-			foreach ($array_cotizaciones_entrances as $key => $part) {
-				$sort_entrances[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_entrances, SORT_ASC, $array_cotizaciones_entrances);
-
-			$sort_food=array();
-			foreach ($array_cotizaciones_food as $key => $part) {
-				$sort_food[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_food, SORT_ASC, $array_cotizaciones_food);
-		
-			$sort_trains=array();
-			foreach ($array_cotizaciones_trains as $key => $part) {
-				$sort_trains[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_trains, SORT_ASC, $array_cotizaciones_trains);
-
-			$sort_flights=array();
-			foreach ($array_cotizaciones_flights as $key => $part) {
-				$sort_flights[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_flights, SORT_ASC, $array_cotizaciones_flights);
-
-			$sort_others=array();
-			foreach ($array_cotizaciones_others as $key => $part) {
-				$sort_others[$key] = strtotime($part['fecha_venc']);
-			}
-			array_multisort($sort_others, SORT_ASC, $array_cotizaciones_others);
-			// dd($array_cotizaciones_tours);
-			return view('admin.book.situacion-x-pqt',compact(['array_cotizaciones_hotel','array_cotizaciones_tours','array_cotizaciones_movilid',
-			'array_cotizaciones_represent','array_cotizaciones_represent','array_cotizaciones_entrances','array_cotizaciones_food',
-			'array_cotizaciones_trains','array_cotizaciones_flights','array_cotizaciones_others']));
-		}
-		elseif($opcion=='nombre'){
-            $cotizaciones=Cotizacion::whereHas('cotizaciones_cliente',function($query)use($dato1){
+			elseif($opcion=='nombre'){
+				$cotizaciones=Cotizacion::whereHas('cotizaciones_cliente',function($query)use($dato1){
                     $query->whereHas('cliente',function($query)use($dato1){
                         $query->where('nombres',$dato1);
                     });
-			})->get();
+				})->get();
+			}
 			$datos_cliente='';
 			foreach($cotizaciones as $cotizacion){
 				$datos_cliente='';
@@ -1460,12 +945,16 @@ class BookController extends Controller
 								}
 							}
 							$situacion='';
-							if($hotel->liquidacion==2)
-									$situacion='PAGADO';
+							if($hotel->primera_confirmada==0)
+								$situacion='NO ENVIADO';
+							elseif($hotel->primera_confirmada==1){
+								if($hotel->liquidacion==0)
+									$situacion='NO ENVIADO';
 								elseif($hotel->liquidacion==1)
 									$situacion='POR PAGAR';
-								elseif($hotel->liquidacion==0)
-									$situacion='NO ENVIADO';
+								elseif($hotel->liquidacion==2)
+									$situacion='PAGADO';
+							}
 
 							$fecha_venc='';
 							if(trim($hotel->fecha_venc)!='')
@@ -1507,27 +996,31 @@ class BookController extends Controller
 										$precio_ads=$itinerario_servicios->precio;
 								}
 								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
+								if($itinerario_servicios->primera_confirmada==0)
 									$situacion='NO ENVIADO';
+								elseif($itinerario_servicios->primera_confirmada==1){
+									if($itinerario_servicios->liquidacion==0)
+										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->liquidacion==1)
+										$situacion='POR PAGAR';
+									elseif($itinerario_servicios->liquidacion==2)
+										$situacion='PAGADO';
+								}
 
-									$fecha_venc='';
-									if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-									$array_cotizaciones_tours[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																'fecha_venc'=>$fecha_venc,
-																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio,
-																'ad'=>$cotizacion->nropersonas,
-																'pax'=>$datos_cliente,
-																'proveedor'=>$proveedor,
-																'ads'=>number_format($precio_ads,2),
-																'total'=>number_format($precio_total_,2),
-																'situacion'=>$situacion,
-																'proridad'=>$itinerario_servicios->prioridad);
+								$fecha_venc='';
+								if(trim($itinerario_servicios->fecha_venc)!='')
+									$fecha_venc=$itinerario_servicios->fecha_venc;
+								$array_cotizaciones_tours[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+															'fecha_venc'=>$fecha_venc,
+															'nombre'=>$itinerario_servicios->nombre,
+															'clase'=>$itinerario_servicios->servicio->tipoServicio,
+															'ad'=>$cotizacion->nropersonas,
+															'pax'=>$datos_cliente,
+															'proveedor'=>$proveedor,
+															'ads'=>number_format($precio_ads,2),
+															'total'=>number_format($precio_total_,2),
+															'situacion'=>$situacion,
+															'proridad'=>$itinerario_servicios->prioridad);
 							}
 							elseif($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='DEFAULT'){
 								if($itinerario_servicios->proveedor_id>0){
@@ -1548,12 +1041,16 @@ class BookController extends Controller
 								}
 								
 								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
+								if($itinerario_servicios->primera_confirmada==0)
 									$situacion='NO ENVIADO';
+								elseif($itinerario_servicios->primera_confirmada==1){
+									if($itinerario_servicios->liquidacion==0)
+										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->liquidacion==1)
+										$situacion='POR PAGAR';
+									elseif($itinerario_servicios->liquidacion==2)
+										$situacion='PAGADO';
+								}
 									$fecha_venc='';
 									if(trim($itinerario_servicios->fecha_venc)!='')
 									$fecha_venc=$itinerario_servicios->fecha_venc;
@@ -1588,12 +1085,16 @@ class BookController extends Controller
 								}
 								
 								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
+								if($itinerario_servicios->primera_confirmada==0)
 									$situacion='NO ENVIADO';
+								elseif($itinerario_servicios->primera_confirmada==1){
+									if($itinerario_servicios->liquidacion==0)
+										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->liquidacion==1)
+										$situacion='POR PAGAR';
+									elseif($itinerario_servicios->liquidacion==2)
+										$situacion='PAGADO';
+								}
 									$fecha_venc='';
 									if(trim($itinerario_servicios->fecha_venc)!='')
 									$fecha_venc=$itinerario_servicios->fecha_venc;
@@ -1629,12 +1130,16 @@ class BookController extends Controller
 								}
 								
 								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
+								if($itinerario_servicios->primera_confirmada==0)
 									$situacion='NO ENVIADO';
+								elseif($itinerario_servicios->primera_confirmada==1){
+									if($itinerario_servicios->liquidacion==0)
+										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->liquidacion==1)
+										$situacion='POR PAGAR';
+									elseif($itinerario_servicios->liquidacion==2)
+										$situacion='PAGADO';
+								}
 									$fecha_venc='';
 									if(trim($itinerario_servicios->fecha_venc)!='')
 									$fecha_venc=$itinerario_servicios->fecha_venc;
@@ -1669,12 +1174,16 @@ class BookController extends Controller
 								}
 								
 								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
+								if($itinerario_servicios->primera_confirmada==0)
 									$situacion='NO ENVIADO';
+								elseif($itinerario_servicios->primera_confirmada==1){
+									if($itinerario_servicios->liquidacion==0)
+										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->liquidacion==1)
+										$situacion='POR PAGAR';
+									elseif($itinerario_servicios->liquidacion==2)
+										$situacion='PAGADO';
+								}
 									$fecha_venc='';
 									if(trim($itinerario_servicios->fecha_venc)!='')
 									$fecha_venc=$itinerario_servicios->fecha_venc;
@@ -1709,12 +1218,16 @@ class BookController extends Controller
 								}
 								
 								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
+								if($itinerario_servicios->primera_confirmada==0)
 									$situacion='NO ENVIADO';
+								elseif($itinerario_servicios->primera_confirmada==1){
+									if($itinerario_servicios->liquidacion==0)
+										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->liquidacion==1)
+										$situacion='POR PAGAR';
+									elseif($itinerario_servicios->liquidacion==2)
+										$situacion='PAGADO';
+								}
 									$fecha_venc='';
 									if(trim($itinerario_servicios->fecha_venc)!='')
 									$fecha_venc=$itinerario_servicios->fecha_venc;
@@ -1749,12 +1262,16 @@ class BookController extends Controller
 								}
 								
 								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
+								if($itinerario_servicios->primera_confirmada==0)
 									$situacion='NO ENVIADO';
+								elseif($itinerario_servicios->primera_confirmada==1){
+									if($itinerario_servicios->liquidacion==0)
+										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->liquidacion==1)
+										$situacion='POR PAGAR';
+									elseif($itinerario_servicios->liquidacion==2)
+										$situacion='PAGADO';
+								}
 									$fecha_venc='';
 									if(trim($itinerario_servicios->fecha_venc)!='')
 									$fecha_venc=$itinerario_servicios->fecha_venc;
@@ -1789,12 +1306,16 @@ class BookController extends Controller
 								}
 								
 								$situacion='';
-								if($itinerario_servicios->liquidacion==2)
-									$situacion='PAGADO';
-								elseif($itinerario_servicios->liquidacion==1)
-									$situacion='POR PAGAR';
-								elseif($itinerario_servicios->liquidacion==0)
+								if($itinerario_servicios->primera_confirmada==0)
 									$situacion='NO ENVIADO';
+								elseif($itinerario_servicios->primera_confirmada==1){
+									if($itinerario_servicios->liquidacion==0)
+										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->liquidacion==1)
+										$situacion='POR PAGAR';
+									elseif($itinerario_servicios->liquidacion==2)
+										$situacion='PAGADO';
+								}
 									$fecha_venc='';
 									if(trim($itinerario_servicios->fecha_venc)!='')
 									$fecha_venc=$itinerario_servicios->fecha_venc;
@@ -1868,12 +1389,10 @@ class BookController extends Controller
 				$sort_others[$key] = strtotime($part['fecha_venc']);
 			}
 			array_multisort($sort_others, SORT_ASC, $array_cotizaciones_others);
-			// dd($array_cotizaciones_tours);
 			return view('admin.book.situacion-x-pqt',compact(['array_cotizaciones_hotel','array_cotizaciones_tours','array_cotizaciones_movilid',
 			'array_cotizaciones_represent','array_cotizaciones_represent','array_cotizaciones_entrances','array_cotizaciones_food',
 			'array_cotizaciones_trains','array_cotizaciones_flights','array_cotizaciones_others']));
 
-            // return view('admin.book.situacion-x-pqt',compact(['cotizaciones','liquidaciones','proveedores']));
 		}
 		elseif($opcion=='fechas'){
 			$cotizaciones=Cotizacion::whereHas('paquete_cotizaciones',function($query3)use($dato1,$dato2){
@@ -1939,13 +1458,16 @@ class BookController extends Controller
 									}
 								}
 								$situacion='';
-								if($hotel->liquidacion==2)
-										$situacion='PAGADO';
+								if($hotel->primera_confirmada==0)
+									$situacion='NO ENVIADO';
+								elseif($hotel->primera_confirmada==1){
+									if($hotel->liquidacion==0)
+										$situacion='NO ENVIADO';
 									elseif($hotel->liquidacion==1)
 										$situacion='POR PAGAR';
-									elseif($hotel->liquidacion==0)
-										$situacion='NO ENVIADO';
-
+									elseif($hotel->liquidacion==2)
+										$situacion='PAGADO';
+								}
 								$fecha_venc='';
 								if(trim($hotel->fecha_venc)!='')
 									$fecha_venc=$hotel->fecha_venc;
@@ -1989,27 +1511,31 @@ class BookController extends Controller
 											$precio_ads=$itinerario_servicios->precio;
 									}
 									$situacion='';
-									if($itinerario_servicios->liquidacion==2)
-										$situacion='PAGADO';
-									elseif($itinerario_servicios->liquidacion==1)
-										$situacion='POR PAGAR';
-									elseif($itinerario_servicios->liquidacion==0)
+									if($itinerario_servicios->primera_confirmada==0)
 										$situacion='NO ENVIADO';
+									elseif($itinerario_servicios->primera_confirmada==1){
+										if($itinerario_servicios->liquidacion==0)
+											$situacion='NO ENVIADO';
+										elseif($itinerario_servicios->liquidacion==1)
+											$situacion='POR PAGAR';
+										elseif($itinerario_servicios->liquidacion==2)
+											$situacion='PAGADO';
+									}
+									$fecha_venc='';
+									if(trim($itinerario_servicios->fecha_venc)!='')
+										$fecha_venc=$itinerario_servicios->fecha_venc;
 
-										$fecha_venc='';
-										if(trim($itinerario_servicios->fecha_venc)!='')
-											$fecha_venc=$itinerario_servicios->fecha_venc;
-										$array_cotizaciones_tours[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																	'fecha_venc'=>$fecha_venc,
-																	'nombre'=>$itinerario_servicios->nombre,
-																	'clase'=>$itinerario_servicios->servicio->tipoServicio,
-																	'ad'=>$cotizacion->nropersonas,
-																	'pax'=>$datos_cliente,
-																	'proveedor'=>$proveedor,
-																	'ads'=>number_format($precio_ads,2),
-																	'total'=>number_format($precio_total_,2),
-																	'situacion'=>$situacion,
-																	'proridad'=>$itinerario_servicios->prioridad);
+									$array_cotizaciones_tours[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+																'fecha_venc'=>$fecha_venc,
+																'nombre'=>$itinerario_servicios->nombre,
+																'clase'=>$itinerario_servicios->servicio->tipoServicio,
+																'ad'=>$cotizacion->nropersonas,
+																'pax'=>$datos_cliente,
+																'proveedor'=>$proveedor,
+																'ads'=>number_format($precio_ads,2),
+																'total'=>number_format($precio_total_,2),
+																'situacion'=>$situacion,
+																'proridad'=>$itinerario_servicios->prioridad);
 								}
 								elseif($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='DEFAULT'){
 									if($itinerario_servicios->proveedor_id>0){
@@ -2030,26 +1556,30 @@ class BookController extends Controller
 									}
 									
 									$situacion='';
-									if($itinerario_servicios->liquidacion==2)
-										$situacion='PAGADO';
-									elseif($itinerario_servicios->liquidacion==1)
-										$situacion='POR PAGAR';
-									elseif($itinerario_servicios->liquidacion==0)
+									if($itinerario_servicios->primera_confirmada==0)
 										$situacion='NO ENVIADO';
-										$fecha_venc='';
-										if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-										$array_cotizaciones_movilid[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																	'fecha_venc'=>$fecha_venc,
-																	'nombre'=>$itinerario_servicios->nombre,
-																	'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
-																	'ad'=>$cotizacion->nropersonas,
-																	'pax'=>$datos_cliente,
-																	'proveedor'=>$proveedor,
-																	'ads'=>number_format($precio_ads,2),
-																	'total'=>number_format($precio_total_,2),
-																	'situacion'=>$situacion,
-																	'proridad'=>$itinerario_servicios->prioridad);
+									elseif($itinerario_servicios->primera_confirmada==1){
+										if($itinerario_servicios->liquidacion==0)
+											$situacion='NO ENVIADO';
+										elseif($itinerario_servicios->liquidacion==1)
+											$situacion='POR PAGAR';
+										elseif($itinerario_servicios->liquidacion==2)
+											$situacion='PAGADO';
+									}		
+									$fecha_venc='';
+									if(trim($itinerario_servicios->fecha_venc)!='')
+									$fecha_venc=$itinerario_servicios->fecha_venc;
+									$array_cotizaciones_movilid[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+																'fecha_venc'=>$fecha_venc,
+																'nombre'=>$itinerario_servicios->nombre,
+																'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
+																'ad'=>$cotizacion->nropersonas,
+																'pax'=>$datos_cliente,
+																'proveedor'=>$proveedor,
+																'ads'=>number_format($precio_ads,2),
+																'total'=>number_format($precio_total_,2),
+																'situacion'=>$situacion,
+																'proridad'=>$itinerario_servicios->prioridad);
 								}
 								elseif($itinerario_servicios->servicio->grupo=='REPRESENT'){
 									if($itinerario_servicios->proveedor_id>0){
@@ -2070,26 +1600,30 @@ class BookController extends Controller
 									}
 									
 									$situacion='';
-									if($itinerario_servicios->liquidacion==2)
-										$situacion='PAGADO';
-									elseif($itinerario_servicios->liquidacion==1)
-										$situacion='POR PAGAR';
-									elseif($itinerario_servicios->liquidacion==0)
+									if($itinerario_servicios->primera_confirmada==0)
 										$situacion='NO ENVIADO';
-										$fecha_venc='';
-										if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-										$array_cotizaciones_represent[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																	'fecha_venc'=>$fecha_venc,
-																	'nombre'=>$itinerario_servicios->nombre,
-																	'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
-																	'ad'=>$cotizacion->nropersonas,
-																	'pax'=>$datos_cliente,
-																	'proveedor'=>$proveedor,
-																	'ads'=>number_format($precio_ads,2),
-																	'total'=>number_format($precio_total_,2),
-																	'situacion'=>$situacion,
-																	'proridad'=>$itinerario_servicios->prioridad);
+									elseif($itinerario_servicios->primera_confirmada==1){
+										if($itinerario_servicios->liquidacion==0)
+											$situacion='NO ENVIADO';
+										elseif($itinerario_servicios->liquidacion==1)
+											$situacion='POR PAGAR';
+										elseif($itinerario_servicios->liquidacion==2)
+											$situacion='PAGADO';
+									}
+									$fecha_venc='';
+									if(trim($itinerario_servicios->fecha_venc)!='')
+									$fecha_venc=$itinerario_servicios->fecha_venc;
+									$array_cotizaciones_represent[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+																'fecha_venc'=>$fecha_venc,
+																'nombre'=>$itinerario_servicios->nombre,
+																'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
+																'ad'=>$cotizacion->nropersonas,
+																'pax'=>$datos_cliente,
+																'proveedor'=>$proveedor,
+																'ads'=>number_format($precio_ads,2),
+																'total'=>number_format($precio_total_,2),
+																'situacion'=>$situacion,
+																'proridad'=>$itinerario_servicios->prioridad);
 								}
 								elseif($itinerario_servicios->servicio->grupo=='ENTRANCES'||($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')){
 									$proveedor='';
@@ -2111,26 +1645,30 @@ class BookController extends Controller
 									}
 									
 									$situacion='';
-									if($itinerario_servicios->liquidacion==2)
-										$situacion='PAGADO';
-									elseif($itinerario_servicios->liquidacion==1)
-										$situacion='POR PAGAR';
-									elseif($itinerario_servicios->liquidacion==0)
+									if($itinerario_servicios->primera_confirmada==0)
 										$situacion='NO ENVIADO';
-										$fecha_venc='';
-										if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-										$array_cotizaciones_entrances[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																	'fecha_venc'=>$fecha_venc,
-																	'nombre'=>$itinerario_servicios->nombre,
-																	'clase'=>$itinerario_servicios->clase,
-																	'ad'=>$cotizacion->nropersonas,
-																	'pax'=>$datos_cliente,
-																	'proveedor'=>$proveedor,
-																	'ads'=>number_format($precio_ads,2),
-																	'total'=>number_format($precio_total_,2),
-																	'situacion'=>$situacion,
-																	'proridad'=>$itinerario_servicios->prioridad);
+									elseif($itinerario_servicios->primera_confirmada==1){
+										if($itinerario_servicios->liquidacion==0)
+											$situacion='NO ENVIADO';
+										elseif($itinerario_servicios->liquidacion==1)
+											$situacion='POR PAGAR';
+										elseif($itinerario_servicios->liquidacion==2)
+											$situacion='PAGADO';
+									}
+									$fecha_venc='';
+									if(trim($itinerario_servicios->fecha_venc)!='')
+									$fecha_venc=$itinerario_servicios->fecha_venc;
+									$array_cotizaciones_entrances[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+																'fecha_venc'=>$fecha_venc,
+																'nombre'=>$itinerario_servicios->nombre,
+																'clase'=>$itinerario_servicios->clase,
+																'ad'=>$cotizacion->nropersonas,
+																'pax'=>$datos_cliente,
+																'proveedor'=>$proveedor,
+																'ads'=>number_format($precio_ads,2),
+																'total'=>number_format($precio_total_,2),
+																'situacion'=>$situacion,
+																'proridad'=>$itinerario_servicios->prioridad);
 								}
 								elseif($itinerario_servicios->servicio->grupo=='FOOD'){
 									if($itinerario_servicios->proveedor_id>0){
@@ -2151,26 +1689,30 @@ class BookController extends Controller
 									}
 									
 									$situacion='';
-									if($itinerario_servicios->liquidacion==2)
-										$situacion='PAGADO';
-									elseif($itinerario_servicios->liquidacion==1)
-										$situacion='POR PAGAR';
-									elseif($itinerario_servicios->liquidacion==0)
+									if($itinerario_servicios->primera_confirmada==0)
 										$situacion='NO ENVIADO';
-										$fecha_venc='';
-										if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-										$array_cotizaciones_food[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																	'fecha_venc'=>$fecha_venc,
-																	'nombre'=>$itinerario_servicios->nombre,
-																	'clase'=>$itinerario_servicios->servicio->tipoServicio,
-																	'ad'=>$cotizacion->nropersonas,
-																	'pax'=>$datos_cliente,
-																	'proveedor'=>$proveedor,
-																	'ads'=>number_format($precio_ads,2),
-																	'total'=>number_format($precio_total_,2),
-																	'situacion'=>$situacion,
-																	'proridad'=>$itinerario_servicios->prioridad);
+									elseif($itinerario_servicios->primera_confirmada==1){
+										if($itinerario_servicios->liquidacion==0)
+											$situacion='NO ENVIADO';
+										elseif($itinerario_servicios->liquidacion==1)
+											$situacion='POR PAGAR';
+										elseif($itinerario_servicios->liquidacion==2)
+											$situacion='PAGADO';
+									}
+									$fecha_venc='';
+									if(trim($itinerario_servicios->fecha_venc)!='')
+									$fecha_venc=$itinerario_servicios->fecha_venc;
+									$array_cotizaciones_food[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+																'fecha_venc'=>$fecha_venc,
+																'nombre'=>$itinerario_servicios->nombre,
+																'clase'=>$itinerario_servicios->servicio->tipoServicio,
+																'ad'=>$cotizacion->nropersonas,
+																'pax'=>$datos_cliente,
+																'proveedor'=>$proveedor,
+																'ads'=>number_format($precio_ads,2),
+																'total'=>number_format($precio_total_,2),
+																'situacion'=>$situacion,
+																'proridad'=>$itinerario_servicios->prioridad);
 								}
 								elseif($itinerario_servicios->servicio->grupo=='TRAINS'){
 									if($itinerario_servicios->proveedor_id>0){
@@ -2191,26 +1733,30 @@ class BookController extends Controller
 									}
 									
 									$situacion='';
-									if($itinerario_servicios->liquidacion==2)
-										$situacion='PAGADO';
-									elseif($itinerario_servicios->liquidacion==1)
-										$situacion='POR PAGAR';
-									elseif($itinerario_servicios->liquidacion==0)
+									if($itinerario_servicios->primera_confirmada==0)
 										$situacion='NO ENVIADO';
-										$fecha_venc='';
-										if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-										$array_cotizaciones_trains[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																	'fecha_venc'=>$fecha_venc,
-																	'nombre'=>$itinerario_servicios->nombre,
-																	'horario'=>$itinerario_servicios->salida.'_'.$itinerario_servicios->llegada,
-																	'ad'=>$cotizacion->nropersonas,
-																	'pax'=>$datos_cliente,
-																	'proveedor'=>$proveedor,
-																	'ads'=>number_format($precio_ads,2),
-																	'total'=>number_format($precio_total_,2),
-																	'situacion'=>$situacion,
-																	'proridad'=>$itinerario_servicios->prioridad);
+									elseif($itinerario_servicios->primera_confirmada==1){
+										if($itinerario_servicios->liquidacion==0)
+											$situacion='NO ENVIADO';
+										elseif($itinerario_servicios->liquidacion==1)
+											$situacion='POR PAGAR';
+										elseif($itinerario_servicios->liquidacion==2)
+											$situacion='PAGADO';
+									}
+									$fecha_venc='';
+									if(trim($itinerario_servicios->fecha_venc)!='')
+									$fecha_venc=$itinerario_servicios->fecha_venc;
+									$array_cotizaciones_trains[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+																'fecha_venc'=>$fecha_venc,
+																'nombre'=>$itinerario_servicios->nombre,
+																'horario'=>$itinerario_servicios->salida.'_'.$itinerario_servicios->llegada,
+																'ad'=>$cotizacion->nropersonas,
+																'pax'=>$datos_cliente,
+																'proveedor'=>$proveedor,
+																'ads'=>number_format($precio_ads,2),
+																'total'=>number_format($precio_total_,2),
+																'situacion'=>$situacion,
+																'proridad'=>$itinerario_servicios->prioridad);
 								}
 								elseif($itinerario_servicios->servicio->grupo=='FLIGHTS'){
 									if($itinerario_servicios->proveedor_id>0){
@@ -2231,26 +1777,30 @@ class BookController extends Controller
 									}
 									
 									$situacion='';
-									if($itinerario_servicios->liquidacion==2)
-										$situacion='PAGADO';
-									elseif($itinerario_servicios->liquidacion==1)
-										$situacion='POR PAGAR';
-									elseif($itinerario_servicios->liquidacion==0)
+									if($itinerario_servicios->primera_confirmada==0)
 										$situacion='NO ENVIADO';
-										$fecha_venc='';
-										if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-										$array_cotizaciones_flights[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																	'fecha_venc'=>$fecha_venc,
-																	'nombre'=>$itinerario_servicios->nombre,
-																	'aerolinea'=>$itinerario_servicios->aerolinea.'_'.$itinerario_servicios->nro_vuelo,
-																	'ad'=>$cotizacion->nropersonas,
-																	'pax'=>$datos_cliente,
-																	'proveedor'=>$proveedor,
-																	'ads'=>number_format($precio_ads,2),
-																	'total'=>number_format($precio_total_,2),
-																	'situacion'=>$situacion,
-																	'proridad'=>$itinerario_servicios->prioridad);
+									elseif($itinerario_servicios->primera_confirmada==1){
+										if($itinerario_servicios->liquidacion==0)
+											$situacion='NO ENVIADO';
+										elseif($itinerario_servicios->liquidacion==1)
+											$situacion='POR PAGAR';
+										elseif($itinerario_servicios->liquidacion==2)
+											$situacion='PAGADO';
+									}
+									$fecha_venc='';
+									if(trim($itinerario_servicios->fecha_venc)!='')
+									$fecha_venc=$itinerario_servicios->fecha_venc;
+									$array_cotizaciones_flights[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+																'fecha_venc'=>$fecha_venc,
+																'nombre'=>$itinerario_servicios->nombre,
+																'aerolinea'=>$itinerario_servicios->aerolinea.'_'.$itinerario_servicios->nro_vuelo,
+																'ad'=>$cotizacion->nropersonas,
+																'pax'=>$datos_cliente,
+																'proveedor'=>$proveedor,
+																'ads'=>number_format($precio_ads,2),
+																'total'=>number_format($precio_total_,2),
+																'situacion'=>$situacion,
+																'proridad'=>$itinerario_servicios->prioridad);
 								}
 								elseif($itinerario_servicios->servicio->grupo=='OTHERS'){
 									if($itinerario_servicios->proveedor_id>0){
@@ -2271,26 +1821,30 @@ class BookController extends Controller
 									}
 									
 									$situacion='';
-									if($itinerario_servicios->liquidacion==2)
-										$situacion='PAGADO';
-									elseif($itinerario_servicios->liquidacion==1)
-										$situacion='POR PAGAR';
-									elseif($itinerario_servicios->liquidacion==0)
+									if($itinerario_servicios->primera_confirmada==0)
 										$situacion='NO ENVIADO';
-										$fecha_venc='';
-										if(trim($itinerario_servicios->fecha_venc)!='')
-										$fecha_venc=$itinerario_servicios->fecha_venc;
-										$array_cotizaciones_others[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
-																	'fecha_venc'=>$fecha_venc,
-																	'nombre'=>$itinerario_servicios->nombre,
-																	'clase'=>$itinerario_servicios->clase,
-																	'ad'=>$cotizacion->nropersonas,
-																	'pax'=>$datos_cliente,
-																	'proveedor'=>$proveedor,
-																	'ads'=>number_format($precio_ads,2),
-																	'total'=>number_format($precio_total_,2),
-																	'situacion'=>$situacion,
-																	'proridad'=>$itinerario_servicios->prioridad);
+									elseif($itinerario_servicios->primera_confirmada==1){
+										if($itinerario_servicios->liquidacion==0)
+											$situacion='NO ENVIADO';
+										elseif($itinerario_servicios->liquidacion==1)
+											$situacion='POR PAGAR';
+										elseif($itinerario_servicios->liquidacion==2)
+											$situacion='PAGADO';
+									}
+									$fecha_venc='';
+									if(trim($itinerario_servicios->fecha_venc)!='')
+									$fecha_venc=$itinerario_servicios->fecha_venc;
+									$array_cotizaciones_others[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
+																'fecha_venc'=>$fecha_venc,
+																'nombre'=>$itinerario_servicios->nombre,
+																'clase'=>$itinerario_servicios->clase,
+																'ad'=>$cotizacion->nropersonas,
+																'pax'=>$datos_cliente,
+																'proveedor'=>$proveedor,
+																'ads'=>number_format($precio_ads,2),
+																'total'=>number_format($precio_total_,2),
+																'situacion'=>$situacion,
+																'proridad'=>$itinerario_servicios->prioridad);
 								}
 							}
 						}

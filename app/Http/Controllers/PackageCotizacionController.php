@@ -2344,7 +2344,8 @@ class PackageCotizacionController extends Controller
         $precio_hotel_reserva->precio_m=ceil($precio_m*2);
         $precio_hotel_reserva->precio_t=ceil($precio_t*3);
         $precio_hotel_reserva->save();
-        return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
+        // return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
+        return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
     }
     public function editar_daybyday($id){
         $destinations=M_Destino::get();
@@ -2640,5 +2641,21 @@ class PackageCotizacionController extends Controller
 
         return '<label for="exampleInputEmail1">Fecha a pagar</label>
                 <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">';
+    }
+    public function step1_edit_precio_servicios(Request $request, $id){
+        $id_cotizacion = $request->get('id_cotizacion');
+        $id_client = $request->get('id_client');
+        $id_paquete = $request->get('id_paquete');
+        $id_paquete = $request->get('id_paquete');
+        $precio_s=$request->input('precio_reserva');
+
+        $precio_hotel_reserva=PrecioHotelReserva::FindOrFail($id);
+        $precio_hotel_reserva->precio_s=$precio_s;
+        $precio_hotel_reserva->precio_d=ceil($precio_d*2);
+        $precio_hotel_reserva->precio_m=ceil($precio_m*2);
+        $precio_hotel_reserva->precio_t=ceil($precio_t*3);
+        $precio_hotel_reserva->save();
+        // return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
+        return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
     }
 }
