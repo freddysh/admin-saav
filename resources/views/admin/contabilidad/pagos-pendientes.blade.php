@@ -382,7 +382,7 @@ use Carbon\Carbon;
                                     <div class="card w-100">
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-3 form-inline">
+                                                <div class="col-2">
                                                     @php
                                                         $ToDay=new Carbon();
                                                     @endphp
@@ -399,28 +399,32 @@ use Carbon\Carbon;
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-5 form-inline mx-5">
-                                                    @php
-                                                        $ToDay=new Carbon();
-                                                    @endphp
-                                                    {{csrf_field()}}
-                                                    <div class="form-group d-none" id="nombre">
-                                                        <label for="nombre" class="text-secondary font-weight-bold pr-2">Nombre </label>
-                                                        <input type="text" class="form-control" form="form_guardar" name="nombre" id="nombre" value="" placeholder="Ingrese el nombre de la venta">
+                                                <div id=bloque_filtros class="col-4">
+                                                    <div class="row">
+                                                        @php
+                                                            $ToDay=new Carbon();
+                                                        @endphp
+                                                        {{csrf_field()}}
+                                                        <div class="col d-none" id="nombre">
+                                                            <label for="nombre_form" class="text-secondary font-weight-bold pr-2">Nombre </label>
+                                                            <input type="text" class="form-control" form="form_guardar" name="nombre_form" id="nombre_form" value="" placeholder="Ingrese el nombre de la venta">
+                                                        </div>
+                                                        <div class="col " id="codigo">
+                                                            <label for="codigo_form" class="text-secondary font-weight-bold pr-2">Codigo </label>
+                                                            <input type="text" class="form-control" form="form_guardar" name="codigo_form" id="codigo_form" value="" placeholder="Ingrese el codigo de la venta">
+                                                        </div>
+                                                        <div class="col-6 d-none" id="from">
+                                                            <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
+                                                            <input type="date" class="form-control" form="form_guardar" name="f_ini_ENTRADA" id="f_ini_ENTRADA" value="{{$ToDay->toDateString()}}" required>
+                                                        </div>
+                                                        <div class="col-6 d-none" id="to">
+                                                            <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
+                                                            <input type="date" class="form-control" form="form_guardar" name="f_fin_ENTRADA" id="f_fin_ENTRADA" value="{{$ToDay->toDateString()}}" required>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group" id="codigo">
-                                                        <label for="codigo" class="text-secondary font-weight-bold pr-2">Codigo </label>
-                                                        <input type="text" class="form-control" form="form_guardar" name="codigo" id="codigo" value="" placeholder="Ingrese el codigo de la venta">
-                                                    </div>
-                                                    <div class="form-group d-none" id="from">
-                                                        <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
-                                                        <input type="date" class="form-control" form="form_guardar" name="f_ini_ENTRADA" id="f_ini_ENTRADA" value="{{$ToDay->toDateString()}}" required>
-                                                    </div>
-                                                    <div class="form-group d-none" id="to">
-                                                        <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
-                                                        <input type="date" class="form-control" form="form_guardar" name="f_fin_ENTRADA" id="f_fin_ENTRADA" value="{{$ToDay->toDateString()}}" required>
-                                                    </div>
-                                                    <button type="button" class="btn btn-default mx-2" onclick="buscar_servicios_pagos_pendientes_entradas($('#tipo_filtro').val(),$('#f_ini_ENTRADA').val(),$('#f_fin_ENTRADA').val(),'ENTRANCES')">Filtrar</button>
+                                                </div>
+                                                <div class="col-2 mt-4">
+                                                    <button type="button" class="btn btn-primary mt-2 mx-2 btn-block" onclick="buscar_servicios_pagos_pendientes_entradas($('#tipo_filtro').val(),$('#nombre_form').val(),$('#codigo_form').val(),$('#f_ini_ENTRADA').val(),$('#f_fin_ENTRADA').val(),'ENTRANCES')"><i class="fas fa-search"></i> Filtrar</button>
                                                 </div>
                                             </div>
                                         </div>

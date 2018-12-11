@@ -27,14 +27,12 @@
     <h1>LISTADO DE ENTRADAS A COMPRAR</h1>
     <p>
         <b>
-            @if($liquidacion->opcion=='TODOS LOS PENDIENTES')
-                {{$liquidacion->opcion}}
-            @elseif($liquidacion->opcion=='TODOS LOS URGENTES')
-                {{$liquidacion->opcion}}
-            @elseif($liquidacion->opcion=='ENTRE DOS FECHAS')
+            @if($liquidacion->opcion=='ENTRE DOS FECHAS')
                 {{$liquidacion->opcion}} DESDE:{{$liquidacion->ini}} HASTA:{{$liquidacion->fin}}
             @elseif($liquidacion->opcion=='ENTRE DOS FECHAS URGENTES')
                 {{$liquidacion->opcion}} DESDE:{{$liquidacion->ini}} HASTA:{{$liquidacion->fin}}
+            @else
+                {{$liquidacion->opcion}}
             @endif
         </b>
     </p>
@@ -59,7 +57,7 @@
         @foreach($cotizaciones->sortBy('fecha') as $cotizacion_)
             @foreach($cotizacion_->paquete_cotizaciones as $pqts)
                 @foreach($pqts->itinerario_cotizaciones->sortBy('fecha') as $itinerarios)
-                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2))->where('liquidacion_id',$liquidacion_id) as $itinerario_servicios)
                         @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
                             <tr>
                                 <td>{{fecha_peru($itinerarios->fecha)}}</td>
@@ -95,7 +93,7 @@
         @foreach($cotizaciones->sortBy('fecha') as $cotizacion_)
             @foreach($cotizacion_->paquete_cotizaciones as $pqts)
                 @foreach($pqts->itinerario_cotizaciones->sortBy('fecha') as $itinerarios)
-                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2))->where('liquidacion_id',$liquidacion_id) as $itinerario_servicios)
                         @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
                             <tr>
                                 <td>{{fecha_peru($itinerarios->fecha)}}</td>
@@ -106,8 +104,8 @@
                                 <td>
                                     <b>
                                         @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{fecha_peru($cotizacion_->fecha)}}
-                                    @endforeach
+                                          {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{fecha_peru($cotizacion_->fecha)}}
+                                        @endforeach
                                     </b>
                                 </td>
                                 <td class="text-center">{{$itinerario_servicios->precio}}</td>
@@ -131,7 +129,7 @@
         @foreach($cotizaciones->sortBy('fecha') as $cotizacion_)
             @foreach($cotizacion_->paquete_cotizaciones as $pqts)
                 @foreach($pqts->itinerario_cotizaciones->sortBy('fecha') as $itinerarios)
-                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2))->where('liquidacion_id',$liquidacion_id) as $itinerario_servicios)
                         @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
                             <tr>
                                 <td>{{fecha_peru($itinerarios->fecha)}}</td>
@@ -168,7 +166,7 @@
         @foreach($cotizaciones->sortBy('fecha') as $cotizacion_)
             @foreach($cotizacion_->paquete_cotizaciones as $pqts)
                 @foreach($pqts->itinerario_cotizaciones->sortBy('fecha') as $itinerarios)
-                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2))->where('liquidacion_id',$liquidacion_id) as $itinerario_servicios)
                         @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
                             <tr>
                                 <td>{{fecha_peru($itinerarios->fecha)}}</td>
@@ -204,7 +202,7 @@
         @foreach($cotizaciones->sortBy('fecha') as $cotizacion_)
             @foreach($cotizacion_->paquete_cotizaciones as $pqts)
                 @foreach($pqts->itinerario_cotizaciones->sortBy('fecha') as $itinerarios)
-                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2))->where('liquidacion_id',$liquidacion_id) as $itinerario_servicios)
                         @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
                             <tr>
                                 <td>{{fecha_peru($itinerarios->fecha)}}</td>
@@ -240,7 +238,7 @@
         @foreach($cotizaciones->sortBy('fecha') as $cotizacion_)
             @foreach($cotizacion_->paquete_cotizaciones as $pqts)
                 @foreach($pqts->itinerario_cotizaciones->sortBy('fecha') as $itinerarios)
-                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                    @foreach($itinerarios->itinerario_servicios->whereIn('liquidacion',array(1,2))->where('liquidacion_id',$liquidacion_id) as $itinerario_servicios)
                         @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
                             <tr>
                                 <td>{{fecha_peru($itinerarios->fecha)}}</td>

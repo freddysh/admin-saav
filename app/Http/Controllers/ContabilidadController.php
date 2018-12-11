@@ -1795,12 +1795,27 @@ class ContabilidadController extends Controller
     public function pagos_pendientes_filtro_datos_servicios_entradas(Request $request)
     {
         $opcion=$request->input('opcion');
+        $nombre=$request->input('nombre');
+        $codigo=$request->input('codigo');
         $ini =$request->input('ini');
         $fin =$request->input('fin');
         $grupo=$request->input('grupo');
+        $cotizacion_codigo_o_nombre=null;
         $cotizacion=Cotizacion::get();
         $proveedores=Proveedor::where('grupo',$grupo)->get();
-        return view('admin.contabilidad.lista-entrada-pendiente',compact(['cotizacion', 'ini', 'fin','proveedores','grupo','opcion']));
+
+        if($opcion=='POR CODIGO'){
+            $cotizacion_codigo_o_nombre=Cotizacion::where('codigo',$codigo)->get();
+        }
+        elseif($opcion=='POR NOMBRE'){
+            $cotizacion_codigo_o_nombre=Cotizacion::whereHas('cotizaciones_cliente',function($query)use($nombre){
+                $query->whereHas('cliente',function($query1)use($nombre){
+                    $query1->where('nombres','like','%'.$nombre.'%');
+                });
+            })->get();
+        }
+        // dd($cotizacion_codigo_o_nombre);
+        return view('admin.contabilidad.lista-entrada-pendiente',compact(['cotizacion', 'cotizacion_codigo_o_nombre', 'ini', 'fin','proveedores','grupo','opcion']));
     }
     public function pagos_pendientes_filtro_datos_servicios_entradas_guardado_pagado($boton,$id)
     {
@@ -1809,6 +1824,16 @@ class ContabilidadController extends Controller
         $fin=$liquidacion->fin;
         $cotizacion=null;
         $opcion=$liquidacion->opcion;
+
+        $prioridad='';
+        if($opcion=='TODOS LOS PENDIENTES'){
+            $prioridad='NORMAL';
+        }
+        elseif($opcion=='TODOS LOS URGENTES'){
+            $prioridad='URGENTE';
+        }
+
+
         if($opcion=='TODOS LOS PENDIENTES'||$opcion=='TODOS LOS URGENTES'){
             $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones', function ($query) use($id, $ini, $fin, $boton){
                 $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin,$boton){
@@ -1839,7 +1864,7 @@ class ContabilidadController extends Controller
 //        $grupo=$request->input('grupo');
 //        $cotizacion=Cotizacion::get();
         $proveedores=Proveedor::where('grupo','ENTRANCES')->get();
-        return view('admin.contabilidad.lista-entrada-pendiente-guardado-pagado',compact(['cotizacion', 'ini', 'fin','proveedores','liquidacion','opcion','id','boton']));
+        return view('admin.contabilidad.lista-entrada-pendiente-guardado-pagado',compact(['cotizacion', 'ini', 'fin','proveedores','liquidacion','opcion','id','boton','prioridad']));
     }
     public function pagos_pendientes_entradas_pagar(Request $request)
     {
@@ -1953,7 +1978,7 @@ class ContabilidadController extends Controller
             });
         })->get();
         $liquidacion=Liquidacion::Find($liquidacion_id);
-        $pdf = \PDF::loadView('admin.contabilidad.reporte-entradas-pdf',compact(['cotizaciones','liquidacion']))->setPaper('a4','landscape')->setWarnings(true);
+        $pdf = \PDF::loadView('admin.contabilidad.reporte-entradas-pdf',compact(['cotizaciones','liquidacion','liquidacion_id']))->setPaper('a4','landscape')->setWarnings(true);
         return $pdf->download('Reporte_entradas_'.$liquidacion_id.'.pdf');
     }
 
