@@ -1,16 +1,16 @@
 @php
-use Carbon\Carbon;
-    function fecha_peru($fecha){
-    $fecha=explode('-',$fecha);
-    return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
-    }
-    function fecha_peru1($fecha_){
-        $f1=explode(' ',$fecha_);
-        $hora=$f1[1];
-        $f2=explode('-',$f1[0]);
-        $fecha1=$f2[2].'-'.$f2[1].'-'.$f2[0];
-        return $fecha1.' a las '.$hora;
-    }
+    use Carbon\Carbon;
+    // function fecha_peru($fecha){
+    // $fecha=explode('-',$fecha);
+    // return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
+    // }
+    // function MisFunciones::fecha_peru_hora($fecha_){
+    //     $f1=explode(' ',$fecha_);
+    //     $hora=$f1[1];
+    //     $f2=explode('-',$f1[0]);
+    //     $fecha1=$f2[2].'-'.$f2[1].'-'.$f2[0];
+    //     return $fecha1.' a las '.$hora;
+    // }
 @endphp
 @extends('layouts.admin.contabilidad')
 @section('archivos-css')
@@ -122,7 +122,7 @@ use Carbon\Carbon;
                                                             <a href="javascript:;" onclick="parentNode.submit();">
                                                                 <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{MisFunciones::fecha_peru_hora($consultas->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
@@ -201,7 +201,7 @@ use Carbon\Carbon;
                                                             <a href="javascript:;" onclick="parentNode.submit();">
                                                                 <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{MisFunciones::fecha_peru_hora($consultas->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
@@ -280,7 +280,7 @@ use Carbon\Carbon;
                                                             <a href="javascript:;" onclick="parentNode.submit();">
                                                                 <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{MisFunciones::fecha_peru_hora($consultas->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
@@ -360,7 +360,7 @@ use Carbon\Carbon;
                                                             <a href="javascript:;" onclick="parentNode.submit();">
                                                                 <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{MisFunciones::fecha_peru_hora($consultas->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
@@ -481,7 +481,7 @@ use Carbon\Carbon;
                                                             @endphp
                                                             <tr id="lista_liquidaciones_{{$liquidaciones_->id}}">
                                                                 <td>{{$pos}}</td>
-                                                                <td>{{fecha_peru1($liquidaciones_->created_at)}}</td>
+                                                                <td>{{MisFunciones::fecha_peru_hora($liquidaciones_->created_at)}}</td>
                                                                 <td>LIQUIDACION</td>
                                                                 <td><span><sup>$</sup>{{$liquidaciones_->total}}</span></td>
                                                                 <td>
@@ -502,7 +502,7 @@ use Carbon\Carbon;
                                                                     <a href="{{route('descargar_consulta_entradas_path',$liquidaciones_->id)}}" class="text-danger"><i class="fas fa-file-pdf"></i></a>
                                                                 </td>
                                                                 <td>
-                                                                    <a href="#!" class="text-danger" onclick="eliminar_liquidacion('{{$liquidaciones_->id}}','{{fecha_peru1($liquidaciones_->created_at)}}')"><i class="fa fa-trash"></i></a>
+                                                                    <a href="#!" class="text-danger" onclick="eliminar_liquidacion('{{$liquidaciones_->id}}','{{MisFunciones::fecha_peru_hora($liquidaciones_->created_at)}}')"><i class="fa fa-trash"></i></a>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -576,8 +576,8 @@ use Carbon\Carbon;
                                         @endforeach
                                         <tr id="lista_liquidaciones_{{$liquidacion->id}}">
                                             <td class="d-none">{{$liquidacion->id}}</td>
-                                            <td>{{fecha_peru($liquidacion->ini)}}</td>
-                                            <td>{{fecha_peru($liquidacion->fin)}}</td>
+                                            <td>{{MisFunciones::fecha_peru($liquidacion->ini)}}</td>
+                                            <td>{{MisFunciones::fecha_peru($liquidacion->fin)}}</td>
                                             <td>
                                                 @foreach($users->where('id',$liquidacion->user_id) as $user)
                                                     {{$user->name}} {{$liquidacion->tipo_user}}
@@ -705,7 +705,7 @@ use Carbon\Carbon;
                                                             <a href="javascript:;" onclick="parentNode.submit();">
                                                                 <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{MisFunciones::fecha_peru_hora($consultas->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
@@ -784,7 +784,7 @@ use Carbon\Carbon;
                                                             <a href="javascript:;" onclick="parentNode.submit();">
                                                                 <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{MisFunciones::fecha_peru_hora($consultas->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
@@ -864,7 +864,7 @@ use Carbon\Carbon;
                                                             <a href="javascript:;" onclick="parentNode.submit();">
                                                                 <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{MisFunciones::fecha_peru_hora($consultas->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}
@@ -944,7 +944,7 @@ use Carbon\Carbon;
                                                             <a href="javascript:;" onclick="parentNode.submit();">
                                                                 <img src="{{asset('images/database.png')}}" alt="" class="img-responsive" width="100px" height="100px">
                                                                 {{--{{strftime("%B, %d", strtotime(str_replace('-','/', $disponibilidad->fecha_disponibilidad)))}} <span class="blue-text">${{$disponibilidad->precio_d}}</span>--}}
-                                                                <br><span class="font-weight-bold text-18">Creado:{{fecha_peru1($consultas->updated_at)}}</span>
+                                                                <br><span class="font-weight-bold text-18">Creado:{{MisFunciones::fecha_peru_hora($consultas->updated_at)}}</span>
                                                             </a>
                                                             <p>
                                                                 {{--<a href="#" class="display-block text-danger" data-toggle="modal" data-target="#eliminar_{{$consultas->id}}"><i class="fa fa-trash fa-2x"></i></a>--}}

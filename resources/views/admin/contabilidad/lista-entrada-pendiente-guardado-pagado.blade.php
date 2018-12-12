@@ -1,27 +1,3 @@
-{{-- @php
-    use Carbon\Carbon;
-    function fecha_peru($fecha){
-        if(trim($fecha)!=''){
-            $fecha=explode('-',$fecha);
-            return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
-        }
-        else{
-            return '0000-00-00';
-        }
-    }
-    function fecha_peru1($fecha_){
-        if(trim($fecha)!=''){
-            $f1=explode(' ',$fecha_);
-            $hora=$f1[1];
-            $f2=explode('-',$f1[0]);
-            $fecha1=$f2[2].'-'.$f2[1].'-'.$f2[0];
-            return $fecha1.' a las '.$hora;
-        }
-        else{
-            return '0000-00-00';
-        }
-    }
-@endphp --}}
 @extends('layouts.admin.contabilidad')
 @section('archivos-css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css">
@@ -63,68 +39,68 @@
                                     @php
                                         $total=0;
                                     @endphp
-                                    <table  class="table table-bordered table-striped table-responsive table-hover table-condensed">
+                                    <table class="table table-bordered table-striped table-responsive table-hover table-condensed">
                                         <thead>
-                                        <tr>
-                                            <th width="150px">FECHA USO</th>
-                                            <th width="150px">FECHA DE PAGO</th>
-                                            <th width="40px">CLASE</th>
-                                            <th width="250px">SERVICIO</th>
-                                            <th width="30px">AD</th>
-                                            <th width="300px">PAX</th>
-                                            <th width="50px">$ AD</th>
-                                            <th width="50px">TOTAL</th>
-                                            <th width="50px">PRIORIDAD</th>
-                                            <th width="50px">OPER.</th>
-                                        </tr>
+                                            <tr>
+                                                <th width="150px">FECHA USO</th>
+                                                <th width="150px">FECHA DE PAGO</th>
+                                                <th width="40px">CLASE</th>
+                                                <th width="250px">SERVICIO</th>
+                                                <th width="30px">AD</th>
+                                                <th width="300px">PAX</th>
+                                                <th width="50px">$ AD</th>
+                                                <th width="50px">TOTAL</th>
+                                                <th width="50px">PRIORIDAD</th>
+                                                <th width="50px">OPER.</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         <tr><td colspan="9" class="bg-grey-goto text-white"><b>LIQUIDACION DE BOLETOS TURISTICOS</b></td></tr>
-                                        @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
-                                            @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
-                                                @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                                    @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
-                                                            @if($boton=='pagado')
-                                                                @if($itinerario_servicios->liquidacion_id==$id)
-                                                                    @php
-                                                                        $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
-                                                                    @endphp
-                                                                    <tr id="item-entrada-{{$itinerario_servicios->id}}">
-                                                                        <td>
-                                                                            <label class="text-primary">
-                                                                                <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
-                                                                                <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
-                                                                                <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
-                                                                            </label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
-                                                                        </td>
-                                                                        <td>{{$itinerario_servicios->servicio->clase}}</td>
-                                                                        <td>{{$itinerario_servicios->nombre}}</td>
-                                                                        <td>{{$cotizacion_->nropersonas}}</td>
-                                                                        <td>
-                                                                            <b>
-                                                                                @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                                                                                    {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
-                                                                                @endforeach
-                                                                            </b>
-                                                                        </td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio}}</td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
-                                                                        <td class="text-right">
-                                                                            <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
-                                                                                {{$itinerario_servicios->prioridad}}
-                                                                            </b>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endif
-                                                            @elseif($boton=='guardado')
-                                                                @if ($itinerario_servicios->prioridad== $prioridad)
+                                        @if($opcion=='POR CODIGO'|| $opcion=='POR NOMBRE')
+                                            @foreach($cotizacion_codigo_o_nombre->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
                                                                     @php
                                                                         $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                     @endphp
@@ -162,11 +138,99 @@
                                                                     </tr>
                                                                 @endif
                                                             @endif
-                                                        @endif
+                                                        @endforeach
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
-                                        @endforeach
+                                        @else
+                                            @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
+                                                                    @if ($itinerario_servicios->prioridad== $prioridad)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+                                        @endif
                                         <tr>
                                             <td colspan="7">
                                                 <b>TOTAL</b>
@@ -180,13 +244,51 @@
                                         @php
                                             $total=0;
                                         @endphp
-                                        @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
-                                            @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
-                                                @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                                    @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
-                                                            @if($boton=='pagado')
-                                                                @if($itinerario_servicios->liquidacion_id==$id)
+                                        @if($opcion=='POR CODIGO'|| $opcion=='POR NOMBRE')
+                                            @foreach($cotizacion_codigo_o_nombre->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
                                                                     @php
                                                                         $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                     @endphp
@@ -223,50 +325,101 @@
                                                                         </td>
                                                                     </tr>
                                                                 @endif
-                                                            @elseif($boton=='guardado')
-                                                                @if ($itinerario_servicios->prioridad== $prioridad)  
-                                                                    @php
-                                                                        $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
-                                                                    @endphp
-                                                                    <tr id="item-entrada-{{$itinerario_servicios->id}}">
-                                                                        <td>
-                                                                            <label class="text-primary">
-                                                                                <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
-                                                                                <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
-                                                                                <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
-                                                                            </label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
-                                                                        </td>
-                                                                        <td>{{$itinerario_servicios->servicio->clase}}</td>
-                                                                        <td>{{$itinerario_servicios->nombre}}</td>
-                                                                        <td>{{$cotizacion_->nropersonas}}</td>
-                                                                        <td>
-                                                                            <b>
-                                                                                @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                                                                                    {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
-                                                                                @endforeach
-                                                                            </b>
-                                                                        </td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio}}</td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
-                                                                        <td class="text-right">
-                                                                            <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
-                                                                                {{$itinerario_servicios->prioridad}}
-                                                                            </b>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endif
+                                                                
                                                             @endif
-                                                        @endif
+                                                        @endforeach
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
-                                        @endforeach
+                                        @else
+                                            @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
+                                                                    @if ($itinerario_servicios->prioridad== $prioridad)  
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+                                        @endif
                                         <tr>
                                             <td colspan="7">
                                                 <b>TOTAL</b>
@@ -280,13 +433,51 @@
                                         @php
                                             $total=0;
                                         @endphp
-                                        @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
-                                            @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
-                                                @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                                    @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
-                                                            @if($boton=='pagado')
-                                                                @if($itinerario_servicios->liquidacion_id==$id)
+                                        @if($opcion=='POR CODIGO'|| $opcion=='POR NOMBRE')
+                                            @foreach($cotizacion_codigo_o_nombre->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
                                                                     @php
                                                                         $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                     @endphp
@@ -322,51 +513,101 @@
                                                                             <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
                                                                         </td>
                                                                     </tr>
-                                                                @endif
-                                                            @elseif($boton=='guardado')
-                                                                @if ($itinerario_servicios->prioridad== $prioridad)
-                                                                    @php
-                                                                        $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
-                                                                    @endphp
-                                                                    <tr id="item-entrada-{{$itinerario_servicios->id}}">
-                                                                        <td>
-                                                                            <label class="text-primary">
-                                                                                <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
-                                                                                <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
-                                                                                <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
-                                                                            </label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
-                                                                        </td>
-                                                                        <td>{{$itinerario_servicios->servicio->clase}}</td>
-                                                                        <td>{{$itinerario_servicios->nombre}}</td>
-                                                                        <td>{{$cotizacion_->nropersonas}}</td>
-                                                                        <td>
-                                                                            <b>
-                                                                                @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                                                                                    {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
-                                                                                @endforeach
-                                                                            </b>
-                                                                        </td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio}}</td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
-                                                                        <td class="text-right">
-                                                                            <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
-                                                                                {{$itinerario_servicios->prioridad}}
-                                                                            </b>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endif
+                                                                @endif    
                                                             @endif
-                                                        @endif
+                                                        @endforeach
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
-                                        @endforeach
+                                        @else
+                                            @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
+                                                                    @if ($itinerario_servicios->prioridad== $prioridad)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+                                        @endif
                                         <tr>
                                             <td colspan="7">
                                                 <b>TOTAL</b>
@@ -380,13 +621,51 @@
                                         @php
                                             $total=0;
                                         @endphp
-                                        @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
-                                            @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
-                                                @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                                    @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
-                                                            @if($boton=='pagado')
-                                                                @if($itinerario_servicios->liquidacion_id==$id)
+                                        @if($opcion=='POR CODIGO'|| $opcion=='POR NOMBRE')
+                                            @foreach($cotizacion_codigo_o_nombre->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
                                                                     @php
                                                                         $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                     @endphp
@@ -423,50 +702,101 @@
                                                                         </td>
                                                                     </tr>
                                                                 @endif
-                                                            @elseif($boton=='guardado')
-                                                                @if ($itinerario_servicios->prioridad== $prioridad)
-                                                                    @php
-                                                                        $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
-                                                                    @endphp
-                                                                    <tr id="item-entrada-{{$itinerario_servicios->id}}">
-                                                                        <td>
-                                                                            <label class="text-primary">
-                                                                                <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
-                                                                                <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
-                                                                                <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
-                                                                            </label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
-                                                                        </td>
-                                                                        <td>{{$itinerario_servicios->servicio->clase}}</td>
-                                                                        <td>{{$itinerario_servicios->nombre}}</td>
-                                                                        <td>{{$cotizacion_->nropersonas}}</td>
-                                                                        <td>
-                                                                            <b>
-                                                                                @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                                                                                    {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
-                                                                                @endforeach
-                                                                            </b>
-                                                                        </td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio}}</td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
-                                                                        <td class="text-right">
-                                                                            <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
-                                                                                {{$itinerario_servicios->prioridad}}
-                                                                            </b>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endif
+                                                                
                                                             @endif
-                                                        @endif
+                                                        @endforeach
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
-                                        @endforeach
+                                        @else
+                                            @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
+                                                                    @if ($itinerario_servicios->prioridad== $prioridad)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+                                        @endif
                                         <tr>
                                             <td colspan="7">
                                                 <b>TOTAL</b>
@@ -480,13 +810,51 @@
                                         @php
                                             $total=0;
                                         @endphp
-                                        @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
-                                            @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
-                                                @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                                    @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
-                                                            @if($boton=='pagado')
-                                                                @if($itinerario_servicios->liquidacion_id==$id)
+                                        @if($opcion=='POR CODIGO'|| $opcion=='POR NOMBRE')
+                                            @foreach($cotizacion_codigo_o_nombre->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif  
+                                                                @elseif($boton=='guardado')
                                                                     @php
                                                                         $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                     @endphp
@@ -522,51 +890,101 @@
                                                                             <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
                                                                         </td>
                                                                     </tr>
-                                                                @endif
-                                                            @elseif($boton=='guardado')
-                                                                @if ($itinerario_servicios->prioridad== $prioridad)
-                                                                    @php
-                                                                        $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
-                                                                    @endphp
-                                                                    <tr id="item-entrada-{{$itinerario_servicios->id}}">
-                                                                        <td>
-                                                                            <label class="text-primary">
-                                                                                <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
-                                                                                <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
-                                                                                <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
-                                                                            </label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
-                                                                        </td>
-                                                                        <td>{{$itinerario_servicios->servicio->clase}}</td>
-                                                                        <td>{{$itinerario_servicios->nombre}}</td>
-                                                                        <td>{{$cotizacion_->nropersonas}}</td>
-                                                                        <td>
-                                                                            <b>
-                                                                                @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                                                                                    {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
-                                                                                @endforeach
-                                                                            </b>
-                                                                        </td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio}}</td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
-                                                                        <td class="text-right">
-                                                                            <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
-                                                                                {{$itinerario_servicios->prioridad}}
-                                                                            </b>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endif
+                                                                @endif                                                                
                                                             @endif
-                                                        @endif
+                                                        @endforeach
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
-                                        @endforeach
+                                        @else    
+                                            @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
+                                                                    @if ($itinerario_servicios->prioridad== $prioridad)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+                                        @endif
                                         <tr>
                                             <td colspan="7">
                                                 <b>TOTAL</b>
@@ -580,93 +998,183 @@
                                         @php
                                             $total=0;
                                         @endphp
-                                        @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
-                                            @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
-                                                @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
-                                                    @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
-                                                        @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
-                                                            @if($boton=='pagado')
-                                                                @if($itinerario_servicios->liquidacion_id==$id)
-                                                                    @php
-                                                                        $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
-                                                                    @endphp
-                                                                    <tr id="item-entrada-{{$itinerario_servicios->id}}">
-                                                                        <td>
-                                                                            <label class="text-primary">
-                                                                                <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
-                                                                                <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
-                                                                                <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
-                                                                            </label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
-                                                                        </td>
-                                                                        <td>{{$itinerario_servicios->servicio->clase}}</td>
-                                                                        <td>{{$itinerario_servicios->nombre}}</td>
-                                                                        <td>{{$cotizacion_->nropersonas}}</td>
-                                                                        <td>
-                                                                            <b>
-                                                                                @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                                                                                    {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
-                                                                                @endforeach
-                                                                            </b>
-                                                                        </td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio}}</td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
-                                                                        <td class="text-right">
-                                                                            <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
-                                                                                {{$itinerario_servicios->prioridad}}
-                                                                            </b>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endif
-                                                            @elseif($boton=='guardado')
-                                                                @if ($itinerario_servicios->prioridad== $prioridad)
-                                                                    @php
-                                                                        $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
-                                                                    @endphp
-                                                                    <tr id="item-entrada-{{$itinerario_servicios->id}}">
-                                                                        <td>
-                                                                            <label class="text-primary">
-                                                                                <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
-                                                                                <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
-                                                                                <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
-                                                                            </label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
-                                                                        </td>
-                                                                        <td>{{$itinerario_servicios->servicio->clase}}</td>
-                                                                        <td>{{$itinerario_servicios->nombre}}</td>
-                                                                        <td>{{$cotizacion_->nropersonas}}</td>
-                                                                        <td>
-                                                                            <b>
-                                                                                @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                                                                                    {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
-                                                                                @endforeach
-                                                                            </b>
-                                                                        </td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio}}</td>
-                                                                        <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
-                                                                        <td class="text-right">
-                                                                            <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
-                                                                                {{$itinerario_servicios->prioridad}}
-                                                                            </b>
-                                                                        </td>
-                                                                        <td>
-                                                                            <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
-                                                                        </td>
-                                                                    </tr>
+                                        @if($opcion=='POR CODIGO'|| $opcion=='POR NOMBRE')
+                                            @foreach($cotizacion_codigo_o_nombre->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
+                                                                    {{--  @if ($itinerario_servicios->prioridad== $prioridad)  --}}
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {{--  @endif  --}}
                                                                 @endif
                                                             @endif
-                                                        @endif
+                                                        @endforeach
                                                     @endforeach
                                                 @endforeach
                                             @endforeach
-                                        @endforeach
+                                        @else
+                                            @foreach($cotizacion->sortBy('fecha') as $cotizacion_)
+                                                @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
+                                                    @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
+                                                        @foreach($itinerario_cotizaciones->itinerario_servicios->whereIn('liquidacion',array(1,2)) as $itinerario_servicios)
+                                                            @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
+                                                                @if($boton=='pagado')
+                                                                    @if($itinerario_servicios->liquidacion_id==$id)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @elseif($boton=='guardado')
+                                                                    @if ($itinerario_servicios->prioridad== $prioridad)
+                                                                        @php
+                                                                            $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
+                                                                        @endphp
+                                                                        <tr id="item-entrada-{{$itinerario_servicios->id}}">
+                                                                            <td>
+                                                                                <label class="text-primary">
+                                                                                    <input type="checkbox" form="form_guardar" class="mis-checkboxes" name="itinerario_servicio_id[]" value="{{$itinerario_servicios->id}}" @if($itinerario_servicios->liquidacion_id==$id){{'checked="checked"'}}@endif>
+                                                                                    <input type="hidden" id="precio_{{$itinerario_servicios->id}}" value="{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}">
+                                                                                    <b>{{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</b>
+                                                                                </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <b>{{MisFunciones::fecha_peru($itinerario_servicios->fecha_venc)}}</b>
+                                                                            </td>
+                                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                            <td>{{$itinerario_servicios->nombre}}</td>
+                                                                            <td>{{$cotizacion_->nropersonas}}</td>
+                                                                            <td>
+                                                                                <b>
+                                                                                    @foreach($cotizacion_->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
+                                                                                        {{$cotizaciones_cliente->cliente->nombres}} {{$cotizaciones_cliente->cliente->apellidos}}x{{$cotizacion_->nropersonas}} {{MisFunciones::fecha_peru($cotizacion_->fecha)}}
+                                                                                    @endforeach
+                                                                                </b>
+                                                                            </td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio}}</td>
+                                                                            <td class="text-right">{{$itinerario_servicios->precio*$cotizacion_->nropersonas}}</td>
+                                                                            <td class="text-right">
+                                                                                <b class="@if($itinerario_servicios->prioridad=='NORMAL') {{'badge badge-success'}} @elseif($itinerario_servicios->prioridad=='URGENTE') {{'badge badge-danger'}} @endif">
+                                                                                    {{$itinerario_servicios->prioridad}}
+                                                                                </b>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-danger btn-sm" onclick="eliminar_servicio_consulta('{{$itinerario_servicios->id}}','{{$itinerario_servicios->nombre}}')"><i class="fa fa-trash"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+                                        @endif
                                         <tr>
                                             <td colspan="7">
                                                 <b>TOTAL</b>

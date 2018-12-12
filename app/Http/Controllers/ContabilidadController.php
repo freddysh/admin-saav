@@ -1802,20 +1802,20 @@ class ContabilidadController extends Controller
         $grupo=$request->input('grupo');
         $cotizacion_codigo_o_nombre=null;
         $cotizacion=Cotizacion::get();
-        $proveedores=Proveedor::where('grupo',$grupo)->get();
+        $proveedores=Proveedor::where('grupo', $grupo)->get();
 
         if($opcion=='POR CODIGO'){
-            $cotizacion_codigo_o_nombre=Cotizacion::where('codigo',$codigo)->get();
+            $cotizacion_codigo_o_nombre=Cotizacion::where('codigo', $codigo)->get();
         }
         elseif($opcion=='POR NOMBRE'){
-            $cotizacion_codigo_o_nombre=Cotizacion::whereHas('cotizaciones_cliente',function($query)use($nombre){
-                $query->whereHas('cliente',function($query1)use($nombre){
+            $cotizacion_codigo_o_nombre=Cotizacion::whereHas('cotizaciones_cliente', function($query)use($nombre){
+                $query->whereHas('cliente', function($query1)use($nombre){
                     $query1->where('nombres','like','%'.$nombre.'%');
                 });
             })->get();
         }
         // dd($cotizacion_codigo_o_nombre);
-        return view('admin.contabilidad.lista-entrada-pendiente',compact(['cotizacion', 'cotizacion_codigo_o_nombre', 'ini', 'fin','proveedores','grupo','opcion']));
+        return view('admin.contabilidad.lista-entrada-pendiente',compact(['cotizacion', 'cotizacion_codigo_o_nombre', 'ini', 'fin','proveedores','grupo','opcion','nombre','codigo']));
     }
     public function pagos_pendientes_filtro_datos_servicios_entradas_guardado_pagado($boton,$id)
     {
@@ -1823,8 +1823,11 @@ class ContabilidadController extends Controller
         $ini=$liquidacion->ini;
         $fin=$liquidacion->fin;
         $cotizacion=null;
+        $cotizacion_codigo_o_nombre=null;
         $opcion=$liquidacion->opcion;
-
+        $codigo=$liquidacion->nombre_codigo;
+        
+        // dd($codigo);
         $prioridad='';
         if($opcion=='TODOS LOS PENDIENTES'){
             $prioridad='NORMAL';
@@ -1833,8 +1836,33 @@ class ContabilidadController extends Controller
             $prioridad='URGENTE';
         }
 
-
-        if($opcion=='TODOS LOS PENDIENTES'||$opcion=='TODOS LOS URGENTES'){
+        if($opcion=='POR CODIGO'){
+            $cotizacion_codigo_o_nombre=Cotizacion::where('codigo',$codigo)
+            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones', function ($query) use($id, $ini, $fin, $boton){
+                $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin,$boton){
+                    if($boton=='pagado')
+                        $query->where('liquidacion','2')->where('liquidacion_id',$id);
+                    elseif($boton=='guardado')
+                        $query->where('liquidacion','1');
+                });
+            })->get();
+        }
+        elseif($opcion=='POR NOMBRE'){
+            $cotizacion_codigo_o_nombre=Cotizacion::whereHas('cotizaciones_cliente', function ($query) use($codigo){
+                $query->where('estado','1')->whereHas('cliente',function($query1)use($codigo){
+                    $query1->where('nombres',$codigo);
+                });
+            })
+            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones', function ($query) use($id, $ini, $fin, $boton){
+                $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin,$boton){
+                    if($boton=='pagado')
+                        $query->where('liquidacion','2')->where('liquidacion_id',$id);
+                    elseif($boton=='guardado')
+                        $query->where('liquidacion','1');
+                });
+            })->get();
+        }
+        elseif($opcion=='TODOS LOS PENDIENTES'||$opcion=='TODOS LOS URGENTES'){
             $cotizacion=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones', function ($query) use($id, $ini, $fin, $boton){
                 $query->whereHas('itinerario_servicios',function($query)use($id,$ini,$fin,$boton){
                     if($boton=='pagado')
@@ -1856,7 +1884,7 @@ class ContabilidadController extends Controller
                 });
             })->get();
         }
-//        return dd($cotizacion);
+    //    return dd($cotizacion);
 //        return dd($opcion);
 //        $opcion=$request->input('opcion');
 //        $ini =$request->input('ini');
@@ -1864,7 +1892,7 @@ class ContabilidadController extends Controller
 //        $grupo=$request->input('grupo');
 //        $cotizacion=Cotizacion::get();
         $proveedores=Proveedor::where('grupo','ENTRANCES')->get();
-        return view('admin.contabilidad.lista-entrada-pendiente-guardado-pagado',compact(['cotizacion', 'ini', 'fin','proveedores','liquidacion','opcion','id','boton','prioridad']));
+        return view('admin.contabilidad.lista-entrada-pendiente-guardado-pagado',compact(['cotizacion', 'ini', 'fin','proveedores','liquidacion','opcion','id','boton','prioridad','cotizacion_codigo_o_nombre']));
     }
     public function pagos_pendientes_entradas_pagar(Request $request)
     {
@@ -1872,6 +1900,8 @@ class ContabilidadController extends Controller
         $opcion = $request->input('tipo_filtro');
         $ini = $request->input('ini');
         $fin = $request->input('fin');
+        $codigo=$request->input('codigo');
+        $nombre=$request->input('nombre');
         $total_entrances = $request->input('total_entrances');
         $nro_operacion = $request->input('nro_operacion');
         $guardar = $request->input('guardar');
@@ -1879,6 +1909,12 @@ class ContabilidadController extends Controller
         $itinerario_servicio_id = $request->input('itinerario_servicio_id');
         $data=Carbon::now()->subHour(5);
         $mes='00';
+        $nombre_codigo='';
+        if($opcion=='POR NOMBRE')
+            $nombre_codigo=$nombre;
+        else
+            $nombre_codigo=$codigo;
+        
         if($data->month<10)
             $mes='0'.$data->month;
 
@@ -1887,6 +1923,7 @@ class ContabilidadController extends Controller
                 $nuevaliquidacion = new Liquidacion();
                 $nuevaliquidacion->ini = $ini;
                 $nuevaliquidacion->fin = $fin;
+                $nuevaliquidacion->nombre_codigo = $nombre_codigo;
                 $nuevaliquidacion->user_id = auth()->guard('admin')->user()->id;
                 $nuevaliquidacion->total = $total_entrances;
                 $nuevaliquidacion->opcion = $opcion;
@@ -1905,6 +1942,7 @@ class ContabilidadController extends Controller
                 $liquidacion = new Liquidacion();
                 $liquidacion->ini = $ini;
                 $liquidacion->fin = $fin;
+                $liquidacion->nombre_codigo = $nombre_codigo;
                 $liquidacion->user_id = auth()->guard('admin')->user()->id;
                 $liquidacion->total = $total_entrances;
                 $liquidacion->opcion = $opcion;
@@ -1930,6 +1968,7 @@ class ContabilidadController extends Controller
                 $nuevaliquidacion->nro_operacion = $nro_operacion;
                 $nuevaliquidacion->nro_cheque_s = '';
                 $nuevaliquidacion->nro_cheque_c = '';
+                $nuevaliquidacion->nombre_codigo = $nombre_codigo;
                 $nuevaliquidacion->save();
                 $entradas=ItinerarioServicios::where('liquidacion_id',$liquidacion_id)->get();
                 foreach ($entradas as $entradas_){
@@ -1949,6 +1988,7 @@ class ContabilidadController extends Controller
                 $liquidacion->nro_operacion = $nro_operacion;
                 $liquidacion->nro_cheque_s = '';
                 $liquidacion->nro_cheque_c = '';
+                $liquidacion->nombre_codigo = $nombre_codigo;
                 $liquidacion->estado = '2';
                 $liquidacion->save();
                 $entradas=ItinerarioServicios::where('liquidacion_id',$liquidacion_id)->get();

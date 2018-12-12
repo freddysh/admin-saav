@@ -257,54 +257,54 @@ class BookController extends Controller
 		foreach ($paquete_cotizacion as $pqt){
 			foreach ($pqt->itinerario_cotizaciones as $itinerario_cotizaciones){
 				foreach ($itinerario_cotizaciones->itinerario_servicios as $itinerario_servicios){
-					if($itinerario_servicios->servicio->grupo!='ENTRANCES'){
-						if($itinerario_servicios->servicio->grupo=='MOVILID'){
-							if($itinerario_servicios->servicio->clase!='BOLETO'){
-								$ids=$itinerario_servicios->servicio->grupo.'_'.$itinerario_servicios->proveedor_id;
+					if($itinerario_servicios->grupo!='ENTRANCES'){
+						if($itinerario_servicios->grupo=='MOVILID'){
+							if($itinerario_servicios->clase!='BOLETO'){
+								$ids=$itinerario_servicios->grupo.'_'.$itinerario_servicios->proveedor_id;
 								if(!array_key_exists($ids,$array_servicios)) {
 									if ($itinerario_servicios->precio_grupo == 1) {
 										$array_servicios[$ids] = $itinerario_servicios->precio_proveedor;
-										$array_servicios_grupo[$ids]=$itinerario_servicios->servicio->grupo;
+										$array_servicios_grupo[$ids]=$itinerario_servicios->grupo;
 									}
 									elseif ($itinerario_servicios->precio_grupo == 0) {
 										$array_servicios[$ids] = $itinerario_servicios->precio_proveedor;/* * $coti->nropersonas;*/
-										$array_servicios_grupo[$ids]=$itinerario_servicios->servicio->grupo;
+										$array_servicios_grupo[$ids]=$itinerario_servicios->grupo;
 									}
 									$array_servicios_fecha[$ids]=$itinerario_cotizaciones->fecha;
 								}
 								else{
 									if ($itinerario_servicios->precio_grupo == 1) {
 										$array_servicios[$ids] += $itinerario_servicios->precio_proveedor;
-										$array_servicios_grupo[$ids]=$itinerario_servicios->servicio->grupo;
+										$array_servicios_grupo[$ids]=$itinerario_servicios->grupo;
 									}
 									elseif ($itinerario_servicios->precio_grupo == 0) {
 										$array_servicios[$ids] += $itinerario_servicios->precio_proveedor;/* * $coti->nropersonas;*/
-										$array_servicios_grupo[$ids]=$itinerario_servicios->servicio->grupo;
+										$array_servicios_grupo[$ids]=$itinerario_servicios->grupo;
 									}
 								}
 							}
 						}
 						else{
-							$ids=$itinerario_servicios->servicio->grupo.'_'.$itinerario_servicios->proveedor_id;
+							$ids=$itinerario_servicios->grupo.'_'.$itinerario_servicios->proveedor_id;
 							if(!array_key_exists($ids,$array_servicios)) {
 								if ($itinerario_servicios->precio_grupo == 1) {
 									$array_servicios[$ids] = $itinerario_servicios->precio_proveedor;
-									$array_servicios_grupo[$ids]=$itinerario_servicios->servicio->grupo;
+									$array_servicios_grupo[$ids]=$itinerario_servicios->grupo;
 								}
 								elseif ($itinerario_servicios->precio_grupo == 0) {
 									$array_servicios[$ids] = $itinerario_servicios->precio_proveedor;/* * $coti->nropersonas;*/
-									$array_servicios_grupo[$ids]=$itinerario_servicios->servicio->grupo;
+									$array_servicios_grupo[$ids]=$itinerario_servicios->grupo;
 								}
 								$array_servicios_fecha[$ids]=$itinerario_cotizaciones->fecha;
 							}
 							else{
 								if ($itinerario_servicios->precio_grupo == 1) {
 									$array_servicios[$ids] += $itinerario_servicios->precio_proveedor;
-									$array_servicios_grupo[$ids]=$itinerario_servicios->servicio->grupo;
+									$array_servicios_grupo[$ids]=$itinerario_servicios->grupo;
 								}
 								elseif ($itinerario_servicios->precio_grupo == 0) {
 									$array_servicios[$ids] += $itinerario_servicios->precio_proveedor; /* * $coti->nropersonas;*/
-									$array_servicios_grupo[$ids]=$itinerario_servicios->servicio->grupo;
+									$array_servicios_grupo[$ids]=$itinerario_servicios->grupo;
 								}
 							}
 						}

@@ -63,7 +63,7 @@ class OperacionesController extends Controller
                         }
                         if(array_key_exists($key,$array_datos_cotizacion)){
                             $horario='';
-                            if($servicio->servicio->grupo=='TRAINS'){
+                            if($servicio->grupo=='TRAINS'){
                                 $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
                             }
                             $clase='';
@@ -74,7 +74,7 @@ class OperacionesController extends Controller
                         }
                         else{
                             $horario='';
-                            if($servicio->servicio->grupo=='TRAINS'){
+                            if($servicio->grupo=='TRAINS'){
                                 $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
                             }
                             $clase='';
@@ -143,6 +143,7 @@ class OperacionesController extends Controller
     }
     public function Lista_fechas(Request $request)
     {
+        set_time_limit(0);
         $desde = $request->input('txt_desde');
         $hasta = $request->input('txt_hasta');
         $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
@@ -173,7 +174,7 @@ class OperacionesController extends Controller
                             $hora=str_replace(':','.',$servicio->hora_llegada);
                         }
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
-                        $serv = M_Servicio::Find($servicio->m_servicios_id);
+                        // $serv = M_Servicio::Find($servicio->m_servicios_id);
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
@@ -189,24 +190,24 @@ class OperacionesController extends Controller
                         }
                         if(array_key_exists($key,$array_datos_cotizacion)){
                             $horario='';
-                            if($servicio->servicio->grupo=='TRAINS'){
+                            if($servicio->grupo=='TRAINS'){
                                 $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
                             }
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
                             $array_datos_cotizacion[$key]['dates']= $itinerario->fecha.'_'.$hora;
-                            $array_datos_cotizacion[$key]['servicio'].= $serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
+                            $array_datos_cotizacion[$key]['servicio'].= $servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
                         }
                         else{
                             $horario='';
-                            if($servicio->servicio->grupo=='TRAINS'){
+                            if($servicio->grupo=='TRAINS'){
                                 $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
                             }
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'servicio'=>$serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
+                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
 //
 //                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
                         }
@@ -308,7 +309,7 @@ class OperacionesController extends Controller
                             $hora=str_replace(':','.',$servicio->hora_llegada);
                         }
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
-                        $serv = M_Servicio::Find($servicio->m_servicios_id);
+                        // $serv = M_Servicio::Find($servicio->m_servicios_id);
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
@@ -324,24 +325,24 @@ class OperacionesController extends Controller
                         }
                         if(array_key_exists($key,$array_datos_cotizacion)){
                             $horario='';
-                            if($servicio->servicio->grupo=='TRAINS'){
+                            if($servicio->grupo=='TRAINS'){
                                 $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
                             }
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
                             $array_datos_cotizacion[$key]['dates']= $itinerario->fecha.'_'.$hora;
-                            $array_datos_cotizacion[$key]['servicio'].= $serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
+                            $array_datos_cotizacion[$key]['servicio'].= $servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
                         }
                         else{
                             $horario='';
-                            if($servicio->servicio->grupo=='TRAINS'){
+                            if($servicio->grupo=='TRAINS'){
                                 $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
                             }
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'servicio'=>$serv->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$serv->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
+                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
 //
 //                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
                         }

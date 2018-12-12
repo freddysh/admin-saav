@@ -1437,6 +1437,8 @@
             </div>
             <input type="hidden" name="ini" value="{{$ini}}">
             <input type="hidden" name="fin" value="{{$fin}}">
+            <input type="hidden" name="codigo" value="{{$codigo}}">
+            <input type="hidden" name="nombre" value="{{$nombre}}">
             {{csrf_field()}}
             <button type="submit" name="guardar" class="form-control btn btn-success btn-block" value="Guardar"><i class="fas fa-save"></i> Guardar para despues</button>
             <button type="submit" name="pagar" class="form-control btn btn-primary btn-block" value="Pagar"><i class="fas fa-coin"></i> Pagar</button>

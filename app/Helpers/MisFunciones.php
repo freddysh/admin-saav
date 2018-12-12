@@ -12,9 +12,11 @@ class MisFunciones{
     }
     public static function fecha_peru_hora($fecha_hora){
         if(trim($fecha_hora)!=''){
-            $fecha=explode(' ',$fecha_hora);
-            $fecha1=explode('-',$fecha[0]);
-            return $fecha1[2].'-'.$fecha1[1].'-'.$fecha1[0].' '.$fecha;
+            $f1=explode(' ',$fecha_hora);
+            $hora=$f1[1];
+            $f2=explode('-',$f1[0]);
+            $fecha1=$f2[2].'-'.$f2[1].'-'.$f2[0];
+            return $fecha1.' a las '.$hora;
         }
     }
     public static function fecha_string($fecha){

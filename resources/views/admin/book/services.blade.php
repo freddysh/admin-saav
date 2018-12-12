@@ -465,26 +465,38 @@
                                                         </div>
                                                     </div>
                                                 </td>
-
                                             </tr>
-
                                             @foreach($itinerario->itinerario_servicios->sortBy('pos') as $servicios)
                                                 <tr id="servicio_{{$servicios->id}}" class="@if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
                                                     <td class="text-center">
                                                         @php
                                                             $grupe='ninguno';
-                                                            $destino='';
-                                                            $tipoServicio='';
-                                                            $clase='';
+                                                            $destino='ninguno';
+                                                            $tipoServicio='ninguno';
+                                                            $clase='ninguno';
                                                         @endphp
-                                                        @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser)
-                                                            @php
-                                                                $grupe=$m_ser->grupo;
-                                                                $destino=$m_ser->localizacion;
-                                                                $tipoServicio=$m_ser->tipoServicio;
-                                                                $clase=$m_ser->clase;
-                                                            @endphp
-                                                        @endforeach
+                                                        {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
+                                                            @if($servicios->grupo)
+                                                                @php
+                                                                    $grupe=$servicios->grupo;
+                                                                @endphp
+                                                            @endif
+                                                            @if($servicios->localizacion)
+                                                                @php
+                                                                    $destino=$servicios->localizacion;
+                                                                @endphp
+                                                            @endif
+                                                            @if($servicios->tipoServicio)
+                                                                @php
+                                                                    $tipoServicio=$servicios->tipoServicio;
+                                                                @endphp
+                                                            @endif
+                                                            @if($servicios->clase)
+                                                                @php
+                                                                    $clase=$servicios->clase;
+                                                                @endphp
+                                                            @endif
+                                                        {{-- @endforeach --}}
                                                         @if($grupe=='TOURS')
                                                             <i class="fas fa-map text-info" aria-hidden="true"></i>
                                                         @endif
@@ -704,15 +716,20 @@
                                                                 {{$servicios->itinerario_proveedor->nombre_comercial}}
                                                             @endif
                                                         </b>
+                                                        @php
+                                                            $grupe='ninguno';
+                                                        @endphp
+                                                            
                                                         @if(!$servicios->itinerario_proveedor)
                                                             @php
                                                                 $grupe='ninguno';
+                                                                $grupe=$servicios->grupo;
                                                             @endphp
-                                                            @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser)
+                                                            {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser)
                                                                 @php
                                                                     $grupe=$m_ser->grupo;
                                                                 @endphp
-                                                            @endforeach
+                                                            @endforeach --}}
                                                             <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_{{$servicios->id}}">
                                                                 <i class="fa fa-plus-circle fa-2x"></i>
                                                             </a>
@@ -751,19 +768,22 @@
                                                                             </div>
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
-                                                                                    @if($productos->where('m_servicios_id',$servicios->m_servicios_id)->count()==0)
+                                                                                    @if($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()==0)
                                                                                         <b class="text-danger">No tenemos proveedores disponibles!</b>
-                                                                                    @elseif($servicios->servicio)
-                                                                                        <p class="d-none">{{$productos->where('m_servicios_id',$servicios->m_servicios_id)->count()}} - {{$servicios->m_servicios_id}}</p>
+                                                                                    @else
+                                                                                    {{-- if($servicios->servicio) --}}
+                                                                                        <p class="d-none1">
+                                                                                            {{$productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()}}
+                                                                                        </p>
                                                                                         <div class="row">
                                                                                             <div class="col-lg-12 bg-green-goto">
-                                                                                                <b class="small text-white">{{$servicios->servicio->nombre}}</b> |
-                                                                                                <span class="small badge badge-g-yellow">{{$servicios->servicio->tipoServicio}}</span> |
-                                                                                                <span class="small badge badge-g-yellow">{{$servicios->servicio->localizacion}}</span>
+                                                                                                <b class="small text-white">{{$servicios->nombre}}</b> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->tipoServicio}}</span> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        @foreach($productos as $producto)
-                                                                                            @if($producto->m_servicios_id==$servicios->m_servicios_id)
+                                                                                        @foreach($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre) as $producto)
+                                                                                            {{-- @if($producto->m_servicios_id==$servicios->m_servicios_id) --}}
                                                                                                 @if($producto->precio_grupo==1)
                                                                                                     @php
                                                                                                         $valor=$cotizacion->nropersonas;
@@ -781,14 +801,13 @@
                                                                                                         $precio_book=$producto->precio_costo*$cotizacion->nropersonas;
                                                                                                     @endphp
                                                                                                 @endif
-
                                                                                                 <div class="col-md-12">
                                                                                                     <div class="checkbox11 text-left">
                                                                                                         <div class="row">
                                                                                                             <div class="col-lg-12 caja_current">
                                                                                                                 <label class="text-grey-goto">
                                                                                                                     <p class="text-grey-goto">
-                                                                                                                        <b>{{$producto->proveedor->nombre_comercial}}
+                                                                                                                        <b>{{$producto->proveedor->nombre_comercial}} para {{$producto->tipo_producto}} - {{$producto->clase}}
                                                                                                                         @if($producto->grupo=='TRAINS')
                                                                                                                             <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
                                                                                                                         @endif
@@ -812,7 +831,7 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 {{--@endif--}}
-                                                                                            @endif
+                                                                                            {{-- @endif --}}
                                                                                         @endforeach
                                                                                     @endif
                                                                                 </div>
@@ -908,9 +927,9 @@
                                                                                     @elseif($servicios->servicio)
                                                                                         <div class="row">
                                                                                             <div class="col-lg-12 bg-green-goto">
-                                                                                                <b class="small text-white">{{$servicios->servicio->nombre}}</b> |
-                                                                                                <span class="small badge badge-g-yellow">{{$servicios->servicio->tipoServicio}}</span> |
-                                                                                                <span class="small badge badge-g-yellow">{{$servicios->servicio->localizacion}}</span>
+                                                                                                <b class="small text-white">{{$servicios->nombre}}</b> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->tipoServicio}}</span> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
                                                                                             </div>
                                                                                         </div>
                                                                                         @foreach($productos as $producto)
@@ -1095,20 +1114,22 @@
                                                         @php
                                                             $esServ='false';
                                                         @endphp
-                                                        @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $serv)
-                                                            @if($serv->grupo=='TOURS')
+                                                        {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $serv) --}}
+                                                            
+                                                        @if($servicios->grupo=='TOURS')
+                                                            @php
+                                                                $esServ='true';
+                                                            @endphp
+                                                        @elseif($servicios->grupo=='REPRESENT')
+                                                            @if($servicios->tipoServicio=='TRANSFER')
+
                                                                 @php
                                                                     $esServ='true';
                                                                 @endphp
-                                                            @elseif($serv->grupo=='REPRESENT')
-                                                                @if($serv->tipoServicio=='TRANSFER')
-
-                                                                    @php
-                                                                        $esServ='true';
-                                                                    @endphp
-                                                                @endif
                                                             @endif
-                                                        @endforeach
+                                                        @endif
+
+                                                        {{-- @endforeach --}}
                                                         @if($esServ=='true')
                                                             @if($servicios->s_p=='PC')
                                                                 <a class="btn btn-success" href="{{route('sp_path',[$cotizacion->id,$servicios->id,'SIC'])}}">PC</a>
@@ -1129,12 +1150,12 @@
                                                             $localizacion='';
                                                             $grupo='';
                                                         @endphp
-                                                        @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $res)
-                                                            @php
-                                                                $localizacion=$res->localizacion;
-                                                                $grupo=$res->grupo;
-                                                            @endphp
-                                                        @endforeach
+                                                        {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $res) --}}
+                                                        @php
+                                                            $localizacion=$servicios->localizacion;
+                                                            $grupo=$servicios->grupo;
+                                                        @endphp
+                                                        {{-- @endforeach --}}
                                                         <div class="btn-group">
                                                             <input type="hidden" id="serv_anulado_{{$servicios->id}}" value="@if($servicios->anulado==1){{0}}@else{{1}}@endif">
                                                             <button type="button" class="btn btn-danger btn-sm" onclick="anular_servicio_reservas('{{$servicios->id}}','{{$servicios->nombre}}','S')">
@@ -1933,7 +1954,7 @@
                                             @endphp
 
                                             @foreach($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicios)
-                                                @if($servicios->servicio->grupo!='ENTRANCES'|| ($servicios->servicio->grupo=='MOVILID' &&$servicios->servicio->clase=='BOLETO'))
+                                                @if($servicios->grupo!='ENTRANCES'|| ($servicios->grupo=='MOVILID' &&$servicios->clase=='BOLETO'))
                                                     @php
                                                         $nro_filas=0;
                                                         $nro_filas_hotel=0;
@@ -1941,7 +1962,7 @@
                                                         $recorrido_hotel++;
                                                     @endphp
                                                     @foreach($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicios1)
-                                                        @if($servicios1->servicio->grupo!='ENTRANCES'|| ($servicios1->servicio->grupo=='MOVILID' &&$servicios1->servicio->clase=='BOLETO'))
+                                                        @if($servicios1->grupo!='ENTRANCES'|| ($servicios1->grupo=='MOVILID' &&$servicios1->clase=='BOLETO'))
                                                             @if($servicios->hora_llegada==$servicios1->hora_llegada)
                                                                 @php
                                                                     $nro_filas++;
@@ -2000,44 +2021,44 @@
                                                             <table class="table m-0">
                                                                 <tr>
                                                                     <td width="15px">
-                                                                        @if($servicios->servicio->grupo=='FOOD' ||$servicios->servicio->grupo=='MOVILID' || $servicios->servicio->grupo=='REPRESENT' || $servicios->servicio->grupo=='FLIGHTS' || $servicios->servicio->grupo=='TOURS' || $servicios->servicio->grupo=='TRAINS')
-                                                                            @if($servicios->servicio->grupo=='TOURS')
+                                                                        @if($servicios->grupo=='FOOD' ||$servicios->grupo=='MOVILID' || $servicios->grupo=='REPRESENT' || $servicios->grupo=='FLIGHTS' || $servicios->grupo=='TOURS' || $servicios->grupo=='TRAINS')
+                                                                            @if($servicios->grupo=='TOURS')
                                                                                 <i class="fas fa-map text-info" aria-hidden="true"></i>
                                                                             @endif
-                                                                            @if($servicios->servicio->grupo=='MOVILID' &&$servicios->servicio->clase!='BOLETO')
+                                                                            @if($servicios->grupo=='MOVILID' &&$servicios->clase!='BOLETO')
                                                                                 <i class="fa fa-bus text-warning" aria-hidden="true"></i>
                                                                             @endif
-                                                                            @if($servicios->servicio->grupo=='REPRESENT')
+                                                                            @if($servicios->grupo=='REPRESENT')
                                                                                 <i class="fa fa-users text-success" aria-hidden="true"></i>
                                                                             @endif
-                                                                            @if($servicios->servicio->grupo=='ENTRANCES')
+                                                                            @if($servicios->grupo=='ENTRANCES')
                                                                                 <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                                             @endif
-                                                                            @if($servicios->servicio->grupo=='FOOD')
+                                                                            @if($servicios->grupo=='FOOD')
                                                                                 <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
                                                                             @endif
-                                                                            @if($servicios->servicio->grupo=='TRAINS')
+                                                                            @if($servicios->grupo=='TRAINS')
                                                                                 <i class="fa fa-train text-info" aria-hidden="true"></i>
                                                                             @endif
-                                                                            @if($servicios->servicio->grupo=='FLIGHTS')
+                                                                            @if($servicios->grupo=='FLIGHTS')
                                                                                 <i class="fa fa-plane text-primary" aria-hidden="true"></i>
                                                                             @endif
-                                                                            @if($servicios->servicio->grupo=='OTHERS')
+                                                                            @if($servicios->grupo=='OTHERS')
                                                                                 <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
                                                                             @endif
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        @if($servicios->servicio->grupo=='FOOD'|| ($servicios->servicio->grupo=='MOVILID' &&$servicios->servicio->clase!='BOLETO') || $servicios->servicio->grupo=='REPRESENT' || $servicios->servicio->grupo=='TOURS' || $servicios->servicio->grupo=='TRAINS')
-                                                                            <b>Nom.:</b> {{$servicios->nombre}} <span class="small text-warning">@if($servicios->servicio->grupo=='REPRESENT') ({{$servicios->servicio->tipoServicio}}) @endif</span>         <!-- para transfer,flight,tours,treins --> <br>
+                                                                        @if($servicios->grupo=='FOOD'|| ($servicios->grupo=='MOVILID' &&$servicios->clase!='BOLETO') || $servicios->grupo=='REPRESENT' || $servicios->grupo=='TOURS' || $servicios->grupo=='TRAINS')
+                                                                            <b>Nom.:</b> {{$servicios->nombre}} <span class="small text-warning">@if($servicios->grupo=='REPRESENT') ({{$servicios->tipoServicio}}) @endif</span>         <!-- para transfer,flight,tours,treins --> <br>
                                                                         @endif
-                                                                        @if($servicios->servicio->grupo=='TOURS')
-                                                                            <b>Tipo Servicio:</b> {{$servicios->servicio->tipoServicio}}<!-- para tours --> <br>
+                                                                        @if($servicios->grupo=='TOURS')
+                                                                            <b>Tipo Servicio:</b> {{$servicios->tipoServicio}}<!-- para tours --> <br>
                                                                         @endif
-                                                                        @if($servicios->servicio->grupo=='TRAINS')
+                                                                        @if($servicios->grupo=='TRAINS')
                                                                             <b>Hora:</b> {{$servicios->salida}} {{$servicios->llegada}}<!-- para flights,trains -->
                                                                         @endif
-                                                                        @if($servicios->servicio->grupo=='FLIGHTS')
+                                                                        @if($servicios->grupo=='FLIGHTS')
                                                                                 <b>Ruta.:</b> {{$servicios->nombre}} <span class="small text-warning"></span>
                                                                                 <br>
                                                                                 {{$servicios->aerolinea}} / {{$servicios->nro_vuelo}}</b>
@@ -2046,20 +2067,20 @@
                                                                 </tr>
                                                             </table>
                                                         </td>
-                                                        @if($servicios->servicio->grupo=='TOURS'||($servicios->servicio->grupo=='MOVILID'&&$servicios->servicio->clase!='BOLETO')||$servicios->servicio->grupo=='REPRESENT')
+                                                        @if($servicios->grupo=='TOURS'||($servicios->grupo=='MOVILID'&&$servicios->clase!='BOLETO')||$servicios->grupo=='REPRESENT')
                                                             <td @if($primera_coincidencia==1)  class="{{$color}}" @else class="d-none" @endif>
 
-                                                                @if($servicios->servicio->grupo=='MOVILID')
+                                                                @if($servicios->grupo=='MOVILID')
                                                                     @foreach($proveedores->where('id',$servicios->proveedor_id)  as $proveedor_serv)
                                                                         <i class="fa fa-bus text-warning" aria-hidden="true"></i> {{$proveedor_serv->nombre_comercial}}
                                                                     @endforeach
                                                                 @endif
-                                                                @if($servicios->servicio->grupo=='REPRESENT')
+                                                                @if($servicios->grupo=='REPRESENT')
                                                                     @foreach($proveedores->where('id',$servicios->proveedor_id)  as $proveedor_serv)
                                                                         <i class="fa fa-users text-success" aria-hidden="true"></i> {{$proveedor_serv->nombre_comercial}}
                                                                     @endforeach
                                                                 @endif
-                                                                @if($servicios->servicio->grupo=='TOURS')
+                                                                @if($servicios->grupo=='TOURS')
                                                                     @foreach($proveedores->where('id',$servicios->proveedor_id)  as $proveedor_serv)
                                                                         <i class="fas fa-map text-info" aria-hidden="true"></i> {{$proveedor_serv->nombre_comercial}}
                                                                     @endforeach
@@ -2078,7 +2099,7 @@
                                                                 @endforeach
                                                             @endforeach
                                                         </td>
-                                                        @if($servicios->servicio->grupo=='TOURS'||($servicios->servicio->grupo=='MOVILID'&&$servicios->servicio->clase!='BOLETO')||$servicios->servicio->grupo=='REPRESENT')
+                                                        @if($servicios->grupo=='TOURS'||($servicios->grupo=='MOVILID'&&$servicios->clase!='BOLETO')||$servicios->grupo=='REPRESENT')
                                                             <td @if($primera_coincidencia==1)  class="{{$color}}" @else class="d-none" @endif>
                                                                 <span id="obs_{{$servicios->id}}">{{$servicios->observacion_hoja_ruta}}</span>
                                                                 <a href="#!" id="boton_prove_costo_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_observaciones_r_{{$servicios->id}}">
@@ -2125,7 +2146,7 @@
                                                             <td class="{{$color}}"></td>
                                                         @endif
 
-                                                        @if($servicios->servicio->grupo=='TOURS'||($servicios->servicio->grupo=='MOVILID'&&$servicios->servicio->clase!='BOLETO')||$servicios->servicio->grupo=='REPRESENT')
+                                                        @if($servicios->grupo=='TOURS'||($servicios->grupo=='MOVILID'&&$servicios->clase!='BOLETO')||$servicios->grupo=='REPRESENT')
                                                             <td @if($primera_coincidencia==1)  class="{{$color}} text-center" @else class="d-none" @endif>
                                                                 @if($servicios->confimacion_envio)
                                                                     <input type="hidden" id="estado_send_{{$servicios->id}}" value="0">

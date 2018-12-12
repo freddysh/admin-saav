@@ -366,33 +366,33 @@
                                             <div class="col-6">
                                                 <div class="row">
                                                     <div class="col-10{{$rango}}">
-                                                        @if($servicios->servicio->grupo=='TOURS')
+                                                        @if($servicios->grupo=='TOURS')
                                                             <b class="text-primary text-13"><i class="fa fa-map-o" aria-hidden="true"></i></b>
                                                         @endif
-                                                        @if($servicios->servicio->grupo=='MOVILID')
+                                                        @if($servicios->grupo=='MOVILID')
                                                             <b class="text-primary text-13"><i class="fa fa-bus" aria-hidden="true"></i></b>
                                                         @endif
-                                                        @if($servicios->servicio->grupo=='REPRESENT')
+                                                        @if($servicios->grupo=='REPRESENT')
                                                             <b class="text-primary text-13"><i class="fa fa-users" aria-hidden="true"></i></b>
                                                         @endif
-                                                        @if($servicios->servicio->grupo=='ENTRANCES')
+                                                        @if($servicios->grupo=='ENTRANCES')
                                                             <b class="text-primary text-13"><i class="fa fa-ticket" aria-hidden="true"></i></b>
                                                         @endif
-                                                        @if($servicios->servicio->grupo=='FOOD')
+                                                        @if($servicios->grupo=='FOOD')
                                                             <b class="text-primary text-13"><i class="fa fa-cutlery" aria-hidden="true"></i></b>
                                                         @endif
-                                                        @if($servicios->servicio->grupo=='TRAINS')
+                                                        @if($servicios->grupo=='TRAINS')
                                                             <b class="text-primary text-13"><i class="fa fa-train" aria-hidden="true"></i></b>
                                                         @endif
-                                                        @if($servicios->servicio->grupo=='FLIGHTS')
+                                                        @if($servicios->grupo=='FLIGHTS')
                                                             <b class="text-primary text-13"><i class="fa fa-plane" aria-hidden="true"></i></b>
                                                         @endif
-                                                        @if($servicios->servicio->grupo=='OTHERS')
+                                                        @if($servicios->grupo=='OTHERS')
                                                             <b class="text-primary text-13"><i class="fa fa-question" aria-hidden="true"></i></b>
                                                         @endif
                                                         <span>{{ucwords(strtolower($servicios->nombre))}}</span>
-                                                        @if($servicios->servicio->grupo=='MOVILID')
-                                                                <b class="text-primary text-12">{{$servicios->servicio->tipoServicio}} [{{$servicios->min_personas}} - {{$servicios->max_personas}}] p.p.</b>
+                                                        @if($servicios->grupo=='MOVILID')
+                                                                <b class="text-primary text-12">{{$servicios->tipoServicio}} [{{$servicios->min_personas}} - {{$servicios->max_personas}}] p.p.</b>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -442,7 +442,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
-                                                        <a class="btn py-0 text-primary" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->servicio->grupo}}','edit')">
+                                                        <a class="btn py-0 text-primary" data-toggle="modal" data-target="#modal_new_destination1_{{$servicios->id}}" onclick="traer_servicios_paso1('{{$itinerario->id}}','{{$servicios->id}}','{{$itinerario->destino_foco}}','{{$servicios->grupo}}','edit')">
                                                             <i class="fas fa-exchange-alt text-success" aria-hidden="true"></i>
                                                         </a>
                                                         <!-- Modal -->
