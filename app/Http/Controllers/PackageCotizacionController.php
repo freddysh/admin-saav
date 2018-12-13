@@ -1113,6 +1113,9 @@ class PackageCotizacionController extends Controller
                 $p_servicio->estado=1;
                 $p_servicio->salida=$servicios->itinerario_servicios_servicio->salida;
                 $p_servicio->llegada=$servicios->itinerario_servicios_servicio->llegada;
+                $p_servicio->grupo=$servicios->itinerario_servicios_servicio->grupo;
+                $p_servicio->localizacion=$servicios->itinerario_servicios_servicio->localizacion;
+                $p_servicio->tipoServicio=$servicios->itinerario_servicios_servicio->tipoServicio;
                 $p_servicio->clase=$servicios->itinerario_servicios_servicio->clase;
                 $p_servicio->m_servicios_id=$servicios->m_servicios_id;
                 $p_servicio->pos=$servicios->pos;
@@ -1137,6 +1140,10 @@ class PackageCotizacionController extends Controller
                             $p_servicio1->precio=$servi->precio_venta;
                             $st+=$p_servicio1->precio;
                             $p_servicio1->itinerario_cotizaciones_id=$p_itinerario->id;
+                            $p_servicio1->grupo=$servi->grupo;
+                            $p_servicio1->localizacion=$servi->localizacion;
+                            $p_servicio1->tipoServicio=$servi->tipoServicio;
+                            $p_servicio1->clase=$servi->clase;
                             $p_servicio1->precio_grupo=$servi->precio_grupo;
                             $p_servicio1->min_personas=$servi->min_personas;
                             $p_servicio1->max_personas=$servi->max_personas;
@@ -1529,6 +1536,10 @@ class PackageCotizacionController extends Controller
                     $p_servicio->max_personas=$servicios->max_personas;
                     $p_servicio->salida=$servicios->salida;
                     $p_servicio->llegada=$servicios->llegada;
+                    $p_servicio->grupo=$servicios->grupo;
+                    $p_servicio->localizacion=$servicios->localizacion;
+                    $p_servicio->tipoServicio=$servicios->tipoServicio;
+                    $p_servicio->clase=$servicios->clase;
                     $p_servicio->precio_c=0;
 //                    $p_servicio->user_id=1;
                     $p_servicio->user_id=auth()->guard('admin')->user()->id;
@@ -1556,6 +1567,10 @@ class PackageCotizacionController extends Controller
                                 $p_servicio1->precio_grupo=$servi->precio_grupo;
                                 $p_servicio1->min_personas=$servi->min_personas;
                                 $p_servicio1->max_personas=$servi->max_personas;
+                                $p_servicio1->grupo=$servi->grupo;
+                                $p_servicio1->localizacion=$servi->localizacion;
+                                $p_servicio1->tipoServicio=$servi->tipoServicio;
+                                $p_servicio1->clase=$servi->clase;
                                 $p_servicio1->precio_c=0;
                                 $p_servicio1->estado=1;
                                 $p_servicio1->salida=$servi->salida;
@@ -1792,6 +1807,10 @@ class PackageCotizacionController extends Controller
                         $plantilla_pitis->precio_grupo=$itinerario_servicios->precio_grupo;
                         $plantilla_pitis->min_personas=$itinerario_servicios->min_personas;
                         $plantilla_pitis->max_personas=$itinerario_servicios->max_personas;
+                        $plantilla_pitis->grupo=$itinerario_servicios->grupo;
+                        $plantilla_pitis->localizacion=$itinerario_servicios->localizacion;
+                        $plantilla_pitis->tipoServicio=$itinerario_servicios->tipoServicio;
+                        $plantilla_pitis->clase=$itinerario_servicios->clase;
                         $plantilla_pitis->p_itinerario_id=$plantilla_piti->id;
                         $plantilla_pitis->m_servicios_id=$itinerario_servicios->m_servicios_id;
                         $plantilla_pitis->save();

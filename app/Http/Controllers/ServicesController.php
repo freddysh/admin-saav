@@ -161,74 +161,78 @@ class ServicesController extends Controller
             $txt_codigo = $request->input('txt_codigo_' . $posTipo);
             $txt_clase = $request->input('txt_clase_' . $posTipo);
 
-            if($cate[$posTipo]=='MOVILID') {
-                $rutaAB = $request->input('txt_ruta_salida_' . $posTipo);
-                $rutaAB = explode('-', $rutaAB);
-                $txt_ruta_salida = $rutaAB[0];
-                $txt_ruta_llegada = $rutaAB[1];
-            }
-            if($cate[$posTipo]=='TRAINS') {
-                $provider = $request->input('txt_provider_' . $posTipo);
-                $pro = explode('_', $provider);
-                $txt_pro_id = $pro[0];
-                $txt_pro_nombre= $pro[1];
+            $servicio_buscado=M_Servicio::where('localizacion',$txt_localizacion)
+                                ->where('grupo',$cate[$posTipo])
+                                ->where('tipoServicio',$txt_type)
+                                ->where('nombre',$txt_product)
+                                ->where('clase',$txt_clase)->count('id');
 
-            }
-            $destino = new M_Servicio();
-            $destino->grupo = $cate[$posTipo];
-            $destino->localizacion = $txt_localizacion;
-            $destino->tipoServicio = $txt_type;
-//            $destino->acomodacion = $txt_acomodacion;
-            $destino->nombre = $txt_product;
-            $destino->precio_venta = $txt_price;
-            $destino->salida = $txt_salida;
-            $destino->ruta_salida = $txt_ruta_salida;
-            $destino->llegada = $txt_llegada;
-            $destino->ruta_llegada = $txt_ruta_llegada;
-            $destino->clase = $txt_clase;
-            $destino->min_personas = $txt_min_personas;
-            $destino->max_personas = $txt_max_personas;
-
-            if ($txt_tipo_grupo == 'Absoluto')
-                $destino->precio_grupo = 1;
-            elseif ($txt_tipo_grupo == 'Individual')
-                $destino->precio_grupo = 0;
-//        $found_destino=M_Servicio::where('nombre',$txt_product)->get();
-//        if(count($found_destino)==0)
-            $pro_id= $request->input('pro_id');
-            $pro_val= $request->input('pro_val');
-
-
-
-
-            {
-                $destino->save();
-                $destino->codigo = $txt_codigo;
-                $destino->save();
-
-//                $posTipo=$request->input('posTipo');
-                if($pro_id) {
-                    foreach ($pro_id as $key => $pro_id_) {
-                        $proveedor = Proveedor::FindOrFail($pro_id_);
-                        $new_service = new M_Producto();
-                        $new_service->codigo = $destino->codigo;
-                        $new_service->grupo = $destino->grupo;
-                        $new_service->localizacion = $request->input('txt_localizacion_' . $posTipo);
-                        $new_service->tipo_producto = $request->input('txt_type_' . $posTipo);
-                        $new_service->nombre = $destino->nombre;
-                        $new_service->precio_costo = $pro_val[$key];
-                        $new_service->precio_grupo = $destino->precio_grupo;
-                        $new_service->clase = $destino->clase;
-                        $new_service->salida = $destino->salida;
-                        $new_service->llegada = $destino->llegada;
-                        $new_service->min_personas = $destino->min_personas;
-                        $new_service->max_personas = $destino->max_personas;
-                        $new_service->m_servicios_id = $destino->id;
-                        $new_service->proveedor_id = $proveedor->id;
-                        $new_service->save();
-                    }
+            if($servicio_buscado==0){
+                if($cate[$posTipo]=='MOVILID') {
+                    $rutaAB = $request->input('txt_ruta_salida_' . $posTipo);
+                    $rutaAB = explode('-', $rutaAB);
+                    $txt_ruta_salida = $rutaAB[0];
+                    $txt_ruta_llegada = $rutaAB[1];
                 }
-                return redirect()->route('service_index_path');
+                if($cate[$posTipo]=='TRAINS') {
+                    $provider = $request->input('txt_provider_' . $posTipo);
+                    $pro = explode('_', $provider);
+                    $txt_pro_id = $pro[0];
+                    $txt_pro_nombre= $pro[1];
+
+                }
+                $destino = new M_Servicio();
+                $destino->grupo = $cate[$posTipo];
+                $destino->localizacion = $txt_localizacion;
+                $destino->tipoServicio = $txt_type;
+    //            $destino->acomodacion = $txt_acomodacion;
+                $destino->nombre = $txt_product;
+                $destino->precio_venta = $txt_price;
+                $destino->salida = $txt_salida;
+                $destino->ruta_salida = $txt_ruta_salida;
+                $destino->llegada = $txt_llegada;
+                $destino->ruta_llegada = $txt_ruta_llegada;
+                $destino->clase = $txt_clase;
+                $destino->min_personas = $txt_min_personas;
+                $destino->max_personas = $txt_max_personas;
+
+                if ($txt_tipo_grupo == 'Absoluto')
+                    $destino->precio_grupo = 1;
+                elseif ($txt_tipo_grupo == 'Individual')
+                    $destino->precio_grupo = 0;
+    //        $found_destino=M_Servicio::where('nombre',$txt_product)->get();
+    //        if(count($found_destino)==0)
+                $pro_id= $request->input('pro_id');
+                $pro_val= $request->input('pro_val');
+                {
+                    $destino->save();
+                    $destino->codigo = $txt_codigo;
+                    $destino->save();
+
+    //                $posTipo=$request->input('posTipo');
+                    if($pro_id) {
+                        foreach ($pro_id as $key => $pro_id_) {
+                            $proveedor = Proveedor::FindOrFail($pro_id_);
+                            $new_service = new M_Producto();
+                            $new_service->codigo = $destino->codigo;
+                            $new_service->grupo = $destino->grupo;
+                            $new_service->localizacion = $request->input('txt_localizacion_' . $posTipo);
+                            $new_service->tipo_producto = $request->input('txt_type_' . $posTipo);
+                            $new_service->nombre = $destino->nombre;
+                            $new_service->precio_costo = $pro_val[$key];
+                            $new_service->precio_grupo = $destino->precio_grupo;
+                            $new_service->clase = $destino->clase;
+                            $new_service->salida = $destino->salida;
+                            $new_service->llegada = $destino->llegada;
+                            $new_service->min_personas = $destino->min_personas;
+                            $new_service->max_personas = $destino->max_personas;
+                            $new_service->m_servicios_id = $destino->id;
+                            $new_service->proveedor_id = $proveedor->id;
+                            $new_service->save();
+                        }
+                    }
+                    return redirect()->route('service_index_path');
+                }
             }
         }
     }

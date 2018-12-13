@@ -588,6 +588,11 @@ class QouteController extends Controller
                                 $p_servicio->user_id = auth()->guard('admin')->user()->id;
                                 $p_servicio->m_servicios_id = $servicios->m_servicios_id;
                                 $p_servicio->pos = $servicios->pos;
+                                $p_servicio->grupo = $servicios->grupo;
+                                $p_servicio->localizacion = $servicios->localizacion;
+                                $p_servicio->tipoServicio = $servicios->tipoServicio;
+                                $p_servicio->clase = $servicios->clase;
+                                
                                 $p_servicio->save();
                                 if ($servicios->precio_grupo == 1 && $servicios->grupo == 'MOVILID') {
                                     if ($servicios->min_personas <= $totaltravelers && $totaltravelers <= $servicios->max_personas) {
@@ -606,6 +611,10 @@ class QouteController extends Controller
                                             $p_servicio1->precio = $servi->precio_venta;
                                             $st += $p_servicio1->precio;
                                             $p_servicio1->itinerario_cotizaciones_id = $p_itinerario->id;
+                                            $p_servicio1->grupo = $servi->grupo;
+                                            $p_servicio1->localizacion = $servi->localizacion;
+                                            $p_servicio1->tipoServicio = $servi->tipoServicio;
+                                            $p_servicio1->clase = $servi->clase;
                                             $p_servicio1->precio_grupo = $servi->precio_grupo;
                                             $p_servicio1->min_personas = $servi->min_personas;
                                             $p_servicio1->max_personas = $servi->max_personas;
