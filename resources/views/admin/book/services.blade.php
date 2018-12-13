@@ -772,7 +772,7 @@
                                                                                         <b class="text-danger">No tenemos proveedores disponibles!</b>
                                                                                     @else
                                                                                     {{-- if($servicios->servicio) --}}
-                                                                                        <p class="d-none1">
+                                                                                        <p class="d-none">
                                                                                             {{$productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()}}
                                                                                         </p>
                                                                                         <div class="row">
@@ -922,9 +922,10 @@
                                                                             </div>
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
-                                                                                    @if($productos->where('m_servicios_id',$servicios->m_servicios_id)->count()==0)
+                                                                                    @if($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()==0)
                                                                                         <b class="text-danger">No tenemos proveedores disponibles!</b>
-                                                                                    @elseif($servicios->servicio)
+                                                                                    @else
+                                                                                    {{-- if($servicios->servicio) --}}
                                                                                         <div class="row">
                                                                                             <div class="col-lg-12 bg-green-goto">
                                                                                                 <b class="small text-white">{{$servicios->nombre}}</b> |
@@ -932,7 +933,7 @@
                                                                                                 <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        @foreach($productos as $producto)
+                                                                                        @foreach($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre) as $producto)
                                                                                             @php
                                                                                                 $valor_chk='';
                                                                                             @endphp
@@ -941,7 +942,7 @@
                                                                                                     $valor_chk='checked=\'checked\'';
                                                                                                 @endphp
                                                                                             @endif
-                                                                                            @if($producto->m_servicios_id==$servicios->m_servicios_id)
+                                                                                            {{-- @if($producto->m_servicios_id==$servicios->m_servicios_id) --}}
                                                                                                 @if($producto->precio_grupo==1)
                                                                                                     @php
                                                                                                         $valor=$cotizacion->nropersonas;
@@ -965,11 +966,11 @@
                                                                                                             <div class="col-lg-12 caja_current">
                                                                                                                 <label class="text-grey-goto">
                                                                                                                     <p class="text-grey-goto">
-                                                                                                                       <b>{{$producto->proveedor->nombre_comercial}}
+                                                                                                                       <b>{{$producto->proveedor->nombre_comercial}} para {{$producto->tipo_producto}} - {{$producto->clase}}
                                                                                                                             @if($producto->grupo=='TRAINS')
                                                                                                                                 <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
                                                                                                                             @endif
-                                                                                                                       </b>
+                                                                                                                            </b>
                                                                                                                     </p>
                                                                                                                     <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
                                                                                                                     <input class="grupo" type="radio" onchange="dato_producto('{{$producto->id}}','{{$producto->proveedor_id}}','{{$servicios->id}}','{{$itinerario->id}}')" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>
@@ -989,7 +990,7 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 {{--@endif--}}
-                                                                                            @endif
+                                                                                            {{-- @endif --}}
                                                                                         @endforeach
                                                                                     @endif
                                                                                 </div>
