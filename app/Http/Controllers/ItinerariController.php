@@ -293,7 +293,7 @@ class ItinerariController extends Controller
 
         $destino=explode('_',$request->input('destino'));
         $grupo=$request->input('grupo');
-        $servicios=M_Servicio::where('grupo',$grupo)->where('localizacion',$destino[1])->get();
+        $servicios=M_Servicio::where('grupo',$grupo)->where('localizacion',$destino[1])->where('estado','1')->get();
 //        return dd($servicios);
         return view('admin.daybyday.itinerario-call-servicios',['servicios'=>$servicios,'grupo'=>$grupo,'destino_id'=>$destino[0],'destino'=>$destino[1]]);
     }

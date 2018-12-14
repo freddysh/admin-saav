@@ -1018,6 +1018,13 @@ function eliminar_servicio(local,id,servicio) {
                 // $("#lista_destinos_"+id).remove();
                 $("#lista_services_"+id).fadeOut( "slow");
             }
+            else if(data==2){
+                swal(
+                    'Porque no puedo borar?',
+                    'El servicio esta en uso, solo podra desactivar.',
+                    'warning'
+                )
+            }
         }).fail(function (data) {
 
         });
@@ -1151,6 +1158,7 @@ function eliminar_provider(id,servicio) {
             }
         });
         $.post('/admin/provider/delete', 'id='+id, function(data) {
+            console.log('data:'+data);
             if(data==1){
                 // $("#lista_destinos_"+id).remove();
                 $("#lista_provider_"+id).fadeOut( "slow");
@@ -2284,6 +2292,13 @@ function eliminar_servicio_h(id,servicio) {
             if(data==1){
                 // $("#lista_destinos_"+id).remove();
                 $("#lista_services_h_"+id).fadeOut( "low");
+            }
+            else if(data==2){
+                swal(
+                    'Porque no puedo borar?',
+                    'Este categoria de hotel esta en uso, solo podra desactivar.',
+                    'warning'
+                )
             }
         }).fail(function (data) {
 
@@ -5092,7 +5107,6 @@ function llamar_servicios(destino,grupo){
     });
     $.post('/admin/ventas/call/servicios/grupo', 'destino='+destino+'&grupo='+grupo, function(data) {
         $("#list_servicios_grupo").html(data);
-
     }).fail(function (data) {
 
     });
@@ -6542,4 +6556,39 @@ function mostrar_acomodacion(estrellas){
     }
     else
         $('#acomodacion').removeClass('d-none');
+}
+function mostrar_acomodacion(estrellas){
+    filtrar_estrellas1(estrellas);
+    if(estrellas==0) {
+        $('#acomodacion').addClass('d-none');
+        // $('#a_s_1').val('0');
+        // $('#a_d_1').val('0');
+        // $('#a_m_1').val('0');
+        // $('#a_t_1').val('0');
+    }
+    else
+        $('#acomodacion').removeClass('d-none');
+}
+function cambiar_estado(servicio,parte,id){
+    var estado=$('#'+parte+id).val();
+    console.log('estado:'+estado);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.post('../admin/servicio/cambiar-estado', 'id='+id+'&estado='+estado, function(data) {
+        if(data==1){
+            if(estado=='0'){
+                $('#btn_'+id).html('<i class="fas fa-toggle-on text-success"></i>');
+                $('#'+parte+id).val('1');
+            }
+            else if(estado=='1'){
+                $('#btn_'+id).html('<i class="fas fa-toggle-off text-unset"></i>');
+                $('#'+parte+id).val('0');
+            }
+        }
+    }).fail(function (data) {
+
+    });
 }

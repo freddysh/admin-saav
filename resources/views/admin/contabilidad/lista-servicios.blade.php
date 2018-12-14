@@ -952,6 +952,16 @@
                     <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio('{{$servicio->localizacion}}','{{$servicio->id}}','{{$servicio->nombre}}')">
                         <i class="fa fa-trash"></i>
                     </button>
+                    {{ csrf_field() }}
+                    <input type="hidden" id="estado_servicio_{{$servicio->id}}" value="{{$servicio->estado}}">
+                    <button id="btn_{{$servicio->id}}" type="button" class="btn btn-sm" onclick="cambiar_estado('{{$servicio->nombre}}','estado_servicio_','{{$servicio->id}}')">
+                        @if($servicio->estado==0)
+                            <i class="fas fa-toggle-off text-unset"></i>
+                        @elseif($servicio->estado==1)
+                            <i class="fas fa-toggle-on text-success"></i>
+                        @endif
+                        
+                    </button>
                 </td>
             </tr>
         @endforeach
@@ -1852,6 +1862,16 @@
                     <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio('{{$servicio->localizacion}}','{{$servicio->id}}','{{$servicio->nombre}}')">
                         <i class="fa fa-trash"></i>
                     </button>
+                    {{ csrf_field() }}
+                    <input type="hidden" id="estado_servicio_{{$servicio->id}}" value="{{$servicio->estado}}">
+                    <button id="btn_{{$servicio->id}}" type="button" class="btn btn-sm" onclick="cambiar_estado('{{$servicio->nombre}}','estado_servicio_','{{$servicio->id}}')">
+                        @if($servicio->estado==0)
+                            <i class="fas fa-toggle-off text-unset"></i>
+                        @elseif($servicio->estado==1)
+                            <i class="fas fa-toggle-on text-success"></i>
+                        @endif
+                        
+                    </button>
                 </td>
             </tr>
         @endforeach
@@ -2751,6 +2771,16 @@
                     </div>
                     <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio('{{$servicio->localizacion}}','{{$servicio->id}}','{{$servicio->nombre}}')">
                         <i class="fa fa-trash"></i>
+                    </button>
+                    {{ csrf_field() }}
+                    <input type="hidden" id="estado_servicio_{{$servicio->id}}" value="{{$servicio->estado}}">
+                    <button id="btn_{{$servicio->id}}" type="button" class="btn btn-sm" onclick="cambiar_estado('{{$servicio->nombre}}','estado_servicio_','{{$servicio->id}}')">
+                        @if($servicio->estado==0)
+                            <i class="fas fa-toggle-off text-unset"></i>
+                        @elseif($servicio->estado==1)
+                            <i class="fas fa-toggle-on text-success"></i>
+                        @endif
+                        
                     </button>
                 </td>
             </tr>

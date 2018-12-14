@@ -513,10 +513,10 @@ Route::post('/admin/products-edit', [
     'uses' => 'ServicesController@edit_hotel',
     'as' => 'hotel_edit_path',
 ]);
-Route::post('/admin/services/delete', [
-    'uses' => 'ServicesController@delete',
-    'as' => 'service_delete_path',
-]);
+// Route::post('/admin/services/delete', [
+//     'uses' => 'ServicesController@delete',
+//     'as' => 'service_delete_path',
+// ]);
 Route::post('/admin/costs/edit-hotel', [
     'uses' => 'CostController@edit_hotel',
     'as' => 'costs_edit_hotel_path',
@@ -1288,3 +1288,8 @@ Route::patch('/admin/quotes/new/step1/step1_edit_precio_servicios/{id}', [
     'uses' => 'PackageCotizacionController@step1_edit_precio_servicios',
     'as' => 'step1_edit_servicio_precio_path'
 ]);
+Route::post('/admin/servicio/cambiar-estado', [
+    'uses' => 'ServicesController@cambiar_estado',
+    'as' => 'service_cambiar_estado_path',
+]);
+

@@ -272,12 +272,22 @@ class ServicesController extends Controller
     {
         $id = $request->input('id');
         $servicio = M_Servicio::FindOrFail($id);
-        if ($servicio->delete())
-            return 1;
-        else
-            return 0;
+        $nro_files_serv_usados=ItinerarioServicios::where('grupo',$servicio->grupo)
+                            ->where('localizacion',$servicio->localizacion)
+                            ->where('tipoServicio',$servicio->tipoServicio)
+                            ->where('clase',$servicio->clase)
+                            ->where('nombre',$servicio->nombre)
+                            ->count('id');
+        if($nro_files_serv_usados==0){
+            if ($servicio->delete())
+                return 1;
+            else
+                return 0;
+        }
+        else{
+            return 2;
+        }
     }
-
     public function edit(Request $request)
     {
         $id = $request->input('id');
@@ -436,10 +446,16 @@ class ServicesController extends Controller
     {
         $id = $request->input('id');
         $servicio = Hotel::FindOrFail($id);
-        if ($servicio->delete())
-            return 1;
+        $nro_files_serv_usados=PrecioHotelReserva::where('hotel_id',$id)->count('id');
+        if($nro_files_serv_usados==0){
+            if ($servicio->delete())
+                return 1;
+            else
+                return 0;
+        }
         else
-            return 0;
+            return 2;
+
     }
 
     public function nuevo_producto()
@@ -623,5 +639,20 @@ class ServicesController extends Controller
         $cotizaciones=Cotizacion::where('id',$cotizacion_id)->get();
         $m_servicios=M_Servicio::get();
         return view('admin.agregar-servicio-hotel',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id]);
+    }
+    public function cambiar_estado(Request $request)
+    {
+        $m_servicio_id= $request->input('id');
+        $estado= $request->input('estado');
+        $servicio=M_Servicio::find($m_servicio_id);
+        if($estado==0)
+            $servicio->estado=1;
+        elseif($estado==1)
+            $servicio->estado=0;
+        if($servicio->save())
+            return 1;
+        else
+            return 0;
+
     }
 }
