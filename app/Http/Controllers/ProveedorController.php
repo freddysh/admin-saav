@@ -329,6 +329,7 @@ class ProveedorController extends Controller
         }
     }
     public function call_providers_localizacion(Request $request){
+        set_time_limit(0);
         $destino=explode('_',$request->input('destino'));
         $grupo=$request->input('grupo');
         $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->get();

@@ -535,6 +535,9 @@ class BookController extends Controller
 			$p_servicio->clase=$m_servicio->clase;
 			$p_servicio->m_servicios_id=$m_servicio->id;
 			$p_servicio->justificacion_precio_proveedor='';
+			$p_servicio->grupo=$m_servicio->grupo;
+			$p_servicio->localizacion=$m_servicio->localizacion;
+			$p_servicio->tipoServicio=$m_servicio->tipoServicio;
 			$p_servicio->save();
 		}
 		if($origen=='reservas')
