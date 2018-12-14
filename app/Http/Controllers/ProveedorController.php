@@ -220,11 +220,12 @@ class ProveedorController extends Controller
                     $grupo_opera->save();
                 }
             }
-            $destinations=M_Destino::get();
-            $providers=Proveedor::get();
-            $m_categories=M_Category::get();
-            $entidadBancaria=EntidadBancaria::get();
-            return view('admin.database.provider',compact('destinations','providers','m_categories','entidadBancaria'));
+            return redirect()->route('provider_index_path');
+            // $destinations=M_Destino::get();
+            // $providers=Proveedor::get();
+            // $m_categories=M_Category::get();
+            // $entidadBancaria=EntidadBancaria::get();
+            // return view('admin.database.provider',compact('destinations','providers','m_categories','entidadBancaria'));
         }
     }
     public function edit(Request $request)
