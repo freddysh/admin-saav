@@ -22,7 +22,7 @@
             <i class="fa fa-plus" aria-hidden="true"></i> New
 
         </button>
-        @foreach($m_categories as $categoria)
+        @foreach($m_categoras as $categoria)
             <?php
                 $tipoServicio[]=$categoria->nombre;
             ?>

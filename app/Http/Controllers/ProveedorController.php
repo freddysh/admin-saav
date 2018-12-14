@@ -338,7 +338,9 @@ class ProveedorController extends Controller
         $entidadBancaria=EntidadBancaria::get();
         $grupos_opera=GrupoOpera::get();
         $m_categories=M_Category::where('nombre','!=','HOTELS')->get();
-        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera','entidadBancaria','grupos_opera','m_categories']));
+        
+        $m_categoras=M_Category::get();
+        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera','entidadBancaria','grupos_opera','m_categories','m_categoras']));
     }
     public function call_providers_localizacion_estrellas(Request $request){
         $destino=explode('_',$request->input('destino'));
