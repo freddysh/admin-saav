@@ -35,7 +35,12 @@ return $f[2].'-'.$f[1].'-'.$f[0].' '.$f0[1];
                     Vista previa del archivo
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-bordered table-responsive table-hover table-condensed">
+                    <div class="row  text-center">
+                        <div class="col text-center my-2">
+                            <b class="text-20 badge badge-primary">{{$web}}</b>
+                        </div>   
+                    </div>
+                    <table class="table table-striped table-bordered table-responsive table-hover table-condensed text-12">
                         <thead>
                             <th>
                                 <td>TOTAL TRAVELERS</td>
@@ -78,7 +83,6 @@ return $f[2].'-'.$f[1].'-'.$f[0].' '.$f0[1];
                         @endforeach
                         </tbody>
                     </table>
-
                     <div class="row">
                         <div class="col">
                             <a href="{{route('quotes_new1_expedia_path')}}" class="btn btn-primary btn-block"><i class="fas fa-arrow-alt-circle-left"></i> CARGAR NUEVO ARCHIVO</a>
@@ -86,6 +90,7 @@ return $f[2].'-'.$f[1].'-'.$f[0].' '.$f0[1];
                         <div class="col">
                             <form action="{{route('quotes_new1_expedia_save_path')}}" method="post" enctype="multipart/form-data">
                                 {{csrf_field()}}
+                                <input type="hidden" name="web" value="{{$web}}">
                                 <input type="hidden" name="import_file" value="{{$filename}}">
                                 <button type="submit" class="btn btn-primary btn-block">HACER RESERVA <i class="fas fa-arrow-alt-circle-right"></i></button>
                             </form>

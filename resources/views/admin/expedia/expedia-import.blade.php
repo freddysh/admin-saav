@@ -32,6 +32,16 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="form-group">
+                                    <label for="txt_pagina" class="font-weight-bold text-secondary">Ingrese la pagina</label>
+                                </div>
+                                <select name="web" id="web" class="form-control">
+                                    @foreach ($webs as $item)
+                                        <option value="{{$item->pagina}}">{{$item->pagina}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
                                     <label for="txt_name" class="font-weight-bold text-secondary">Ingrese el archivo</label>
                                 </div>
                                 <input type="file" class="form-control" id="excel" name="import_file" placeholder="Archivo excel" value="{{old('import_file')}}">

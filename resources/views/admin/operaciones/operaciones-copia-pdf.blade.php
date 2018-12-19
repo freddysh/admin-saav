@@ -46,7 +46,7 @@
                         @endphp
                         <td width="50px">{{fecha_peru($valor[0])}}</td>
                         <td width="10px">{{$valor[1]}}</td>
-                        <td width="50px">{{$valor[2]}}</td>
+                        <td width="50px">{!!$valor[2]!!}</td>
                         <td width="50px">
                             {{substr($valor[3],0,8)}}/<br>{{substr($valor[4],0,3)}}
                         </td>

@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\Hotel;
 use App\M_Destino;
-use App\M_Itinerario;
-use App\M_ItinerarioDestino;
-use App\M_Servicio;
-use App\P_Itinerario;
-use App\P_ItinerarioDestino;
-use App\P_ItinerarioServicios;
 use App\P_Paquete;
-use App\P_PaquetePrecio;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-
+use App\M_Servicio;
+use App\M_Itinerario;
+use App\P_Itinerario;
 use Mockery\Exception;
-use PhpParser\Node\Expr\Array_;
+use App\P_PaquetePrecio;
 use Barryvdh\DomPDF\PDF;
-use Illuminate\Support\Facades\Redirect;
+use App\M_ItinerarioDestino;
+
+use App\P_ItinerarioDestino;
+use Illuminate\Http\Request;
+use App\P_ItinerarioServicios;
+use PhpParser\Node\Expr\Array_;
 use Psy\Test\Readline\HoaConsoleTest;
+use Illuminate\Support\Facades\Redirect;
 
 
 
@@ -48,6 +49,7 @@ class PackageController extends Controller
      */
     public function create()
     {
+        $webs=Web::get();
         $destinos=M_Destino::get();
         $itinerarios=M_Itinerario::get();
         $m_servicios=M_Servicio::get();
@@ -55,7 +57,7 @@ class PackageController extends Controller
         $itinerarios_d=M_ItinerarioDestino::get();
         session()->put('menu-lateral', 'sales/iti/new');
 //        dd($itinerarios_d);
-        return view('admin.package',['destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'hotel'=>$hotel,'itinerarios_d'=>$itinerarios_d]);
+        return view('admin.package',compact(['destinos','itinerarios','m_servicios','hotel','itinerarios_d','webs']));
     }
 
     /**
@@ -593,19 +595,21 @@ class PackageController extends Controller
     }
     public function itineraries()
     {
+        $webs=Web::get();
         $itineraries=P_Paquete::get();
         $itinerarios=M_Itinerario::get();
         session()->put('menu-lateral', 'sales/iti/list');
-        return view('admin.show-itineraries',['itineraries'=>$itineraries,'itinerarios'=>$itinerarios]);
+        return view('admin.show-itineraries',compact(['itineraries','itinerarios','webs']));
     }
     public function show_itinerary($id)
     {
+        $webs=Web::get();
         $destinos=M_Destino::get();
         $itinerarios=M_Itinerario::get();
         $m_servicios=M_Servicio::get();
         $itinerary=P_Paquete::FindOrFail($id);
         $itinerarios_d=M_ItinerarioDestino::get();
-        return view('admin.show-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d]);
+        return view('admin.show-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d,'webs'=>$webs]);
     }
     public function duplicate_itinerary($id)
     {

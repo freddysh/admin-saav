@@ -111,7 +111,7 @@
                         @endphp
                         <td>{{fecha_peru($valor[0])}}</td>
                         <td>{{$valor[1]}}</td>
-                        <td>{{$valor[2]}}</td>
+                        <td>{!!$valor[2]!!}</td>
                         {{--<td>{{$valor[3]}}</td>--}}
                         <td>
                             {{substr($valor[3],0,8)}}/<br>{{substr($valor[4],0,3)}}

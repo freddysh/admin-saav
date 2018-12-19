@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Expr\Array_;
 use App\Helpers\MisFunciones;
+use App\Web;
 
 class QouteController extends Controller
 {
@@ -151,6 +152,7 @@ class QouteController extends Controller
     }
     public function nuevo1()
     {
+        $webs=Web::get();
         $destinos=M_Destino::get();
         $itinerarios=M_Itinerario::get();
         $itinerarios_d=M_ItinerarioDestino::get();
@@ -170,8 +172,8 @@ class QouteController extends Controller
         $fecha='';
         $web='gotoperu.com';
         $idioma_pasajeros='';
-        $nro_codigo=Cotizacion::where('web',$web)->count()+1;
-        $codigo='G'.$nro_codigo;
+        $codigo= MisFunciones::generar_codigo($web);
+        // dd($codigo);
         session()->put('menu-lateral', 'quotes/new');
         return view('admin.quotes-new1',['destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'p_paquete'=>$p_paquete, 'itinerarios_d'=>$itinerarios_d,'hotel'=>$hotel,
             'plan'=>$plan,
@@ -186,7 +188,8 @@ class QouteController extends Controller
             'fecha'=>$fecha,
             'web'=>$web,
             'codigo'=>$codigo,
-            'idioma_pasajeros'=>$idioma_pasajeros
+            'idioma_pasajeros'=>$idioma_pasajeros,
+            'webs'=>$webs
             ]);
     }
     public function ordenar_servios_db(Request $request)
@@ -237,7 +240,8 @@ class QouteController extends Controller
     }
     public function expedia()
     {
-        return view('admin.expedia.expedia-import');
+        $webs=Web::get();
+        return view('admin.expedia.expedia-import',compact(['webs']));
     }
     public function import(Request $request)
     {
@@ -260,6 +264,7 @@ class QouteController extends Controller
             return redirect()->back();
         }
         else {
+            $web = $request->input('web');
             $path = $request->file('import_file')->getRealPath();
 //        dd($path);
             $data = Excel::load($path, function ($reader) {
@@ -324,7 +329,7 @@ class QouteController extends Controller
                         trim($total) != '' &&
                         trim($fecha_llegada) != ''
                     ) {
-                        $ppaquete = P_Paquete::where('codigo', $codigo)->first();
+                        $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
                         if(count($ppaquete)) {
                             if ($ppaquete->duracion > 1) {
                                 $estrellas = 'No necesita';
@@ -347,13 +352,14 @@ class QouteController extends Controller
             }
 //        return redirect()->back()->withInput($request->input())->with('arr',$arr);
 //        return $arr;
-            return view('admin.expedia.expedia-import-vista-previa', compact('arr', 'filename'));
+            return view('admin.expedia.expedia-import-vista-previa', compact('arr', 'filename','web'));
         }
     }
     public function expedia_save(Request $request)
     {
         set_time_limit ( 0 );
-        $archivo=$request->input('import_file');
+        $archivo=$request->input('import_file');        
+        $web=$request->input('web');
         $ruta="../storage/app/public/archivos_excel/".$archivo;
 
         $data = Excel::load($ruta,function($reader){})->get();
@@ -411,7 +417,7 @@ class QouteController extends Controller
                     trim($email)!=''&&
                     trim($total)!=''&&
                     trim($fecha_llegada)!='') {
-                    $ppaquete = P_Paquete::where('codigo', $codigo)->first();
+                    $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
                     if (count($ppaquete) > 0) {
                         if ($ppaquete->duracion > 1) {
                             $estrellas = 'No necesita';
@@ -446,7 +452,7 @@ class QouteController extends Controller
                         $coti->fecha_venta = $transactiondatetime;
                         $coti->users_id = auth()->guard('admin')->user()->id;
                         $coti->categorizado = 'N';
-                        $coti->web = 'expedia.com';
+                        $coti->web = $web;
                         $coti->idioma_pasajeros = $idioma;
                         $coti->notas = $notas1;
                         $coti->save();

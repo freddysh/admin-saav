@@ -836,7 +836,7 @@ class PackageCotizacionController extends Controller
             $cotizacion->notas=$notas;
 
             $cotizacion->save();
-            $cotizacionGet=Cotizacion::where('id',$cotizacion->id)->get();
+            $cotizacionGet=Cotizacion::where('id', $cotizacion->id)->get();
             $cotizacion_cliente=new CotizacionesCliente();
             $cotizacion_cliente->cotizaciones_id=$cotizacion->id;
             $cotizacion_cliente->clientes_id=$cliente->id;

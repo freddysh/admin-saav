@@ -34,7 +34,7 @@ class OperacionesController extends Controller
             $clientes_ ='';
             foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
                 foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_= $cliente->nombres . " " . $cliente->apellidos;
+                    $clientes_='<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cliente->nombres . " " . $cliente->apellidos;
                 }
             }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
@@ -161,7 +161,7 @@ class OperacionesController extends Controller
             $clientes_ ='';
             foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
                 foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_= $cliente->nombres . " " . $cliente->apellidos;
+                    $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cliente->nombres . " " . $cliente->apellidos;
                 }
             }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
@@ -296,7 +296,7 @@ class OperacionesController extends Controller
             $clientes_ ='';
             foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
                 foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_= $cliente->nombres . " " . $cliente->apellidos;
+                    $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cliente->nombres . " " . $cliente->apellidos;
                 }
             }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {

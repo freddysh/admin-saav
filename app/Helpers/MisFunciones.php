@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 
+use App\Web;
 use App\Cotizacion;
 
 class MisFunciones{
@@ -27,20 +28,20 @@ class MisFunciones{
     }
     public static function generar_codigo($web)
     {
-        $precodigo=array(
-            "gotoperu.com"=>"G",
-            "llama.tours"=>"LLA",
-            "gotoperu.com.pe"=>"GP",
-            "andesviagens.com"=>"AV",
-            "machupicchu-galapagos.com"=>"MP",
-            "gotolatinamerica.com"=>"GL",
-            "expedia.com"=>"E",
-
-        );
+        $precodigo=array();
+        $webs=Web::get();
+        foreach($webs as $items){
+            $precodigo[$items->pagina]=$items->pre;
+        }
         // $nro_codigo=Cotizacion::where('web',$web)->count()+1;
-        $codigo_db =Cotizacion::where('web',$web)->orderBy('id', 'DESC')->first()->codigo;
+        $nro_codigo=0;
+        if(Cotizacion::where('web',$web)->orderBy('id', 'DESC')->count()>0){
+            $codigo_db =Cotizacion::where('web',$web)->orderBy('id', 'DESC')->first()->codigo;
+            $nro_codigo = str_replace($precodigo[$web], "", $codigo_db);
+        }
+        
         // $codigoo=$codigo_db ->last()->pluck('codigo');
-        $nro_codigo = str_replace($precodigo[$web], "", $codigo_db);
+        
         $nro=intval($nro_codigo)+1;
         $codigo=$precodigo[$web].$nro;
         return $codigo;

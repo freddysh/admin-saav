@@ -43,109 +43,111 @@ class ServicesController extends Controller
         $txt_localizacion = $request->input('txt_localizacion_' . $posTipo);
         if($txt_localizacion==null)
             $txt_localizacion='';
+
+
 //        dd($txt_localizacion);
         if ($posTipo == 0) {
-            $S_2 = $request->input('S_2');
-            $D_2 = $request->input('D_2');
-            $M_2 = $request->input('M_2');
-            $T_2 = $request->input('T_2');
-            $SS_2 = $request->input('SS_2');
-            $SD_2 = $request->input('SD_2');
-            $SU_2 = $request->input('SU_2');
-            $JS_2 = $request->input('JS_2');
+            $nro_existe_hotel=Hotel::where('localizacion', $txt_localizacion)->count('id');
+            if($nro_existe_hotel==0){
+                $S_2 = $request->input('S_2');
+                $D_2 = $request->input('D_2');
+                $M_2 = $request->input('M_2');
+                $T_2 = $request->input('T_2');
+                $SS_2 = $request->input('SS_2');
+                $SD_2 = $request->input('SD_2');
+                $SU_2 = $request->input('SU_2');
+                $JS_2 = $request->input('JS_2');
 
-            $S_3 = $request->input('S_3');
-            $D_3 = $request->input('D_3');
-            $M_3 = $request->input('M_3');
-            $T_3 = $request->input('T_3');
-            $SS_3 = $request->input('SS_3');
-            $SD_3 = $request->input('SD_3');
-            $SU_3 = $request->input('SU_3');
-            $JS_3 = $request->input('JS_3');
+                $S_3 = $request->input('S_3');
+                $D_3 = $request->input('D_3');
+                $M_3 = $request->input('M_3');
+                $T_3 = $request->input('T_3');
+                $SS_3 = $request->input('SS_3');
+                $SD_3 = $request->input('SD_3');
+                $SU_3 = $request->input('SU_3');
+                $JS_3 = $request->input('JS_3');
 
-            $S_4 = $request->input('S_4');
-            $D_4 = $request->input('D_4');
-            $M_4 = $request->input('M_4');
-            $T_4 = $request->input('T_4');
-            $SS_4 = $request->input('SS_4');
-            $SD_4 = $request->input('SD_4');
-            $SU_4 = $request->input('SU_4');
-            $JS_4 = $request->input('JS_4');
+                $S_4 = $request->input('S_4');
+                $D_4 = $request->input('D_4');
+                $M_4 = $request->input('M_4');
+                $T_4 = $request->input('T_4');
+                $SS_4 = $request->input('SS_4');
+                $SD_4 = $request->input('SD_4');
+                $SU_4 = $request->input('SU_4');
+                $JS_4 = $request->input('JS_4');
 
-            $S_5 = $request->input('S_5');
-            $D_5 = $request->input('D_5');
-            $M_5 = $request->input('M_5');
-            $T_5 = $request->input('T_5');
-            $SS_5 = $request->input('SS_5');
-            $SD_5 = $request->input('SD_5');
-            $SU_5 = $request->input('SU_5');
-            $JS_5 = $request->input('JS_5');
+                $S_5 = $request->input('S_5');
+                $D_5 = $request->input('D_5');
+                $M_5 = $request->input('M_5');
+                $T_5 = $request->input('T_5');
+                $SS_5 = $request->input('SS_5');
+                $SD_5 = $request->input('SD_5');
+                $SU_5 = $request->input('SU_5');
+                $JS_5 = $request->input('JS_5');
 
-            //-- GUARDAMOS LOS DATOS DE LOS HOTELES
+                //-- GUARDAMOS LOS DATOS DE LOS HOTELES
 
 
-            $hotel_proveedor = new Hotel();
-            $hotel_proveedor->localizacion = $txt_localizacion;
-            $hotel_proveedor->estrellas = 2;
-            $hotel_proveedor->single = $S_2;
-            $hotel_proveedor->doble = $D_2;
-            $hotel_proveedor->matrimonial = $M_2;
-            $hotel_proveedor->triple = $T_2;
-            $hotel_proveedor->superior_s = $SS_2;
-            $hotel_proveedor->superior_d = $SD_2;
-            $hotel_proveedor->suite = $SU_2;
-            $hotel_proveedor->jr_suite = $JS_2;
-            $hotel_proveedor->estado = 1;
-            $hotel_proveedor->save();
+                $hotel_proveedor = new Hotel();
+                $hotel_proveedor->localizacion = $txt_localizacion;
+                $hotel_proveedor->estrellas = 2;
+                $hotel_proveedor->single = $S_2;
+                $hotel_proveedor->doble = $D_2;
+                $hotel_proveedor->matrimonial = $M_2;
+                $hotel_proveedor->triple = $T_2;
+                $hotel_proveedor->superior_s = $SS_2;
+                $hotel_proveedor->superior_d = $SD_2;
+                $hotel_proveedor->suite = $SU_2;
+                $hotel_proveedor->jr_suite = $JS_2;
+                $hotel_proveedor->estado = 1;
+                $hotel_proveedor->save();
 
-            $hotel_proveedor_3 = new Hotel();
-            $hotel_proveedor_3->localizacion = $txt_localizacion;
-            $hotel_proveedor_3->estrellas = 3;
-            $hotel_proveedor_3->single = $S_3;
-            $hotel_proveedor_3->doble = $D_3;
-            $hotel_proveedor_3->matrimonial = $M_3;
-            $hotel_proveedor_3->triple = $T_3;
-            $hotel_proveedor_3->superior_s = $SS_3;
-            $hotel_proveedor_3->superior_d = $SD_3;
-            $hotel_proveedor_3->suite = $SU_3;
-            $hotel_proveedor_3->jr_suite = $JS_3;
-            $hotel_proveedor_3->estado = 1;
-            $hotel_proveedor_3->save();
+                $hotel_proveedor_3 = new Hotel();
+                $hotel_proveedor_3->localizacion = $txt_localizacion;
+                $hotel_proveedor_3->estrellas = 3;
+                $hotel_proveedor_3->single = $S_3;
+                $hotel_proveedor_3->doble = $D_3;
+                $hotel_proveedor_3->matrimonial = $M_3;
+                $hotel_proveedor_3->triple = $T_3;
+                $hotel_proveedor_3->superior_s = $SS_3;
+                $hotel_proveedor_3->superior_d = $SD_3;
+                $hotel_proveedor_3->suite = $SU_3;
+                $hotel_proveedor_3->jr_suite = $JS_3;
+                $hotel_proveedor_3->estado = 1;
+                $hotel_proveedor_3->save();
 
-            $hotel_proveedor_4 = new Hotel();
-            $hotel_proveedor_4->localizacion = $txt_localizacion;
-            $hotel_proveedor_4->estrellas = 4;
-            $hotel_proveedor_4->single = $S_4;
-            $hotel_proveedor_4->doble = $D_4;
-            $hotel_proveedor_4->matrimonial = $M_4;
-            $hotel_proveedor_4->triple = $T_4;
-            $hotel_proveedor_4->superior_s = $SS_4;
-            $hotel_proveedor_4->superior_d = $SD_4;
-            $hotel_proveedor_4->suite = $SU_4;
-            $hotel_proveedor_4->jr_suite = $JS_4;
-            $hotel_proveedor_4->estado = 1;
-            $hotel_proveedor_4->save();
+                $hotel_proveedor_4 = new Hotel();
+                $hotel_proveedor_4->localizacion = $txt_localizacion;
+                $hotel_proveedor_4->estrellas = 4;
+                $hotel_proveedor_4->single = $S_4;
+                $hotel_proveedor_4->doble = $D_4;
+                $hotel_proveedor_4->matrimonial = $M_4;
+                $hotel_proveedor_4->triple = $T_4;
+                $hotel_proveedor_4->superior_s = $SS_4;
+                $hotel_proveedor_4->superior_d = $SD_4;
+                $hotel_proveedor_4->suite = $SU_4;
+                $hotel_proveedor_4->jr_suite = $JS_4;
+                $hotel_proveedor_4->estado = 1;
+                $hotel_proveedor_4->save();
 
-            $hotel_proveedor_5 = new Hotel();
-            $hotel_proveedor_5->localizacion = $txt_localizacion;
-            $hotel_proveedor_5->estrellas = 5;
-            $hotel_proveedor_5->single = $S_5;
-            $hotel_proveedor_5->doble = $D_5;
-            $hotel_proveedor_5->matrimonial = $M_5;
-            $hotel_proveedor_5->triple = $T_5;
-            $hotel_proveedor_5->superior_s = $SS_5;
-            $hotel_proveedor_5->superior_d = $SD_5;
-            $hotel_proveedor_5->suite = $SU_5;
-            $hotel_proveedor_5->jr_suite = $JS_5;
-            $hotel_proveedor_5->estado = 1;
-            $hotel_proveedor_5->save();
-
-//            $destinations = M_Destino::get();
-//            $servicios = M_Servicio::get();
-//            $categorias = M_Category::get();
-//            $hotel = Hotel::get();
-//            return view('admin.database.services', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel]);
-            return redirect()->route('service_index_path');
+                $hotel_proveedor_5 = new Hotel();
+                $hotel_proveedor_5->localizacion = $txt_localizacion;
+                $hotel_proveedor_5->estrellas = 5;
+                $hotel_proveedor_5->single = $S_5;
+                $hotel_proveedor_5->doble = $D_5;
+                $hotel_proveedor_5->matrimonial = $M_5;
+                $hotel_proveedor_5->triple = $T_5;
+                $hotel_proveedor_5->superior_s = $SS_5;
+                $hotel_proveedor_5->superior_d = $SD_5;
+                $hotel_proveedor_5->suite = $SU_5;
+                $hotel_proveedor_5->jr_suite = $JS_5;
+                $hotel_proveedor_5->estado = 1;
+                $hotel_proveedor_5->save();
+                return redirect()->route('service_index_path');
+            }
+            else{
+                return back();
+            }
         } elseif ($posTipo != 0) {
             $txt_type = $request->input('txt_type_' . $posTipo);
 //            $txt_acomodacion = $request->input('txt_acomodacion_' . $posTipo);
@@ -278,6 +280,20 @@ class ServicesController extends Controller
                             ->where('clase',$servicio->clase)
                             ->where('nombre',$servicio->nombre)
                             ->count('id');
+
+        $nro_m_itinerario_servicios_usados=M_ItinerarioServicio::where('m_servicios_id',$id)->count('id');
+        
+        $nro_templates_serv_usados=P_ItinerarioServicios::where('m_servicios_id',$id)->count('id');
+        
+        $nro_productos_usados=M_Producto::where('grupo',$servicio->grupo)
+                            ->where('localizacion',$servicio->localizacion)
+                            ->where('tipo_producto',$servicio->tipoServicio)
+                            ->where('clase',$servicio->clase)
+                            ->where('nombre',$servicio->nombre)
+                            ->count('id');
+        
+        
+
         if($nro_files_serv_usados==0){
             if ($servicio->delete())
                 return 1;

@@ -18,7 +18,6 @@
     </div>
     <div class="row margin-top-20">
         <form action="{{route('nuevo_servicio_add_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
-
             <div class="row margin-top-20">
                 <div class="col-md-12">
                     <h4 class="font-montserrat text-orange-goto">Lista de servicios para el dia {{$dia}}</h4>
@@ -27,7 +26,6 @@
             </div>
             <div class="row">
                 {{csrf_field()}}
-
                 @foreach($destinations as $destino)
                     <?php $estado=''?>
 

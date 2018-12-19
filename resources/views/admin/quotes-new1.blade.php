@@ -61,13 +61,9 @@
                                         {{csrf_field()}}
                                         <label for="web" class="font-weight-bold text-secondary">Pagina de origen</label>
                                         <select name="web" id="web" class="form-control" onchange="generar_codigo($(this).val())">
-                                            <option value="gotoperu.com" @if($web=='gotoperu.com') selected @endif>gotoperu.com</option>
-                                            <option value="llama.tours" @if($web=='llama.tours') selected @endif>llama.tours</option>
-                                            <option value="gotoperu.com.pe" @if($web=='gotoperu.com.pe') selected @endif>gotoperu.com.pe</option>
-                                            <option value="andesviagens.com" @if($web=='andesviagens.com') selected @endif>andesviagens.com</option>
-                                            <option value="machupicchu-galapagos.com" @if($web=='machupicchu-galapagos.com') selected @endif>machupicchu-galapagos.com</option>
-                                            <option value="gotolatinamerica.com" @if($web=='gotolatinamerica.com') selected @endif>gotolatinamerica.com</option>
-                                            <option value="expedia.com" @if($web=='expedia.com') selected @endif>expedia.com</option>
+                                            @foreach ($webs as $item)
+                                                <option value="{{$item->pagina}}" @if($item->pagina==$web) selected @endif>{{$item->pagina}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -137,7 +133,7 @@
                                                     <i class="fa fa-bed" aria-hidden="true"></i>
                                                     <i class="fa fa-bed" aria-hidden="true"></i>
                                                 </label>
-                                                <input type="number" class="form-control" name="a_d_1" id="a_d_1" value="0" min="0" onchange="aumentar_acom('s')">
+                                                <input type="number" class="form-control" name="a_d_1" id="a_d_1" value="0" min="0" onchange="aumentar_acom('d')">
                                             </div>
                                         </div>
                                         <div class="col-3">
