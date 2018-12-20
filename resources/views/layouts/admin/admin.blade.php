@@ -7,18 +7,21 @@
     <title>Document</title>
 
     {{--estilos--}}
+    
     <link rel="stylesheet" href="{{mix("css/app.css")}}">
     <link rel="stylesheet" href="{{mix("css/admin/admin.css")}}">
+    
+    
     {{--fonts--}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.css">
-
-    <script src="{{asset("js/app.js")}}"></script>
     @yield('archivos-css')
+    <script src="{{asset("js/app.js")}}"></script>
+    
     {{--scripts--}}
     <script src="{{asset("https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.js")}}"></script>
-
     <script src="{{asset("js/admin/plugins.js")}}"></script>
     @yield('archivos-js')
+    
 </head>
 <body data-spy="scroll" data-target="#menu" class="position-relative">
 @php

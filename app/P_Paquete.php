@@ -16,4 +16,8 @@ class P_Paquete extends Model
     {
         return $this->hasMany(P_Itinerario::class,'p_paquete_id');
     }
+    public function paquete_paginas()
+    {
+        return $this->hasMany(PaquetePagina::class, 'p_paquete_id');
+    }
 }

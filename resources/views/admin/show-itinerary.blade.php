@@ -21,15 +21,19 @@
                     <div class="col-1">
                         <span class="font-weight-bold rounded-circle py-2 px-3 bg-g-yellow text-white">1</span>
                     </div>
-                    <div class="col-2">
-                        <div class="form-group">
-                            <label for="txt_pagina" class="text-secondary font-weight-bold">Pagina</label>
-                            <select class="form-control" id="txt_pagina" name="txt_pagina" onchange="mostrar_codigo_($(this).val())">
-                                <option value="0">Escoja una opcion</option>
-                                @foreach ($webs as $item)
-                                    <option value="{{$item->pagina}}" @if($itinerary->pagina==$item->pagina) {{'selected'}} @endif>{{$item->pagina}}</option> 
-                                @endforeach
-                            </select>
+                    <div class="col-5">
+                        <div class="row">  
+                            @foreach ($webs as $key => $item)
+                                @php
+                                    $existe=$paquete_paginas->where('p_paquete_id',$itinerary->id)->where('pagina',$item->pagina)->count('id');
+                                @endphp
+                                <div class="col-6">
+                                    <label class="text-success">
+                                        <input class="destinospack" type="checkbox" name="txt_pagina[]" value="{{$item->pagina}}" @if($existe>0) checked="checked" @endif>
+                                        {{$item->pagina}}
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="col-1">

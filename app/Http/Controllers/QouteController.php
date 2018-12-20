@@ -231,7 +231,7 @@ class QouteController extends Controller
         $user_name=auth()->guard('admin')->user()->name;
         $user_tipo=auth()->guard('admin')->user()->tipo_user;
         if($user_tipo=='ventas')
-            $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('posibilidad','100')->get();
+            $cotizacion=Cotizacion::where('users_id', auth()->guard('admin')->user()->id)->where('web', $page)->whereYear('fecha_venta', $anio)->whereMonth('fecha_venta', $mes)->where('posibilidad', '100')->get();
         else
             $cotizacion=Cotizacion::where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('posibilidad','100')->get();
 //        return dd('cotizacion:'.$cotizacion);
@@ -329,7 +329,16 @@ class QouteController extends Controller
                         trim($total) != '' &&
                         trim($fecha_llegada) != ''
                     ) {
-                        $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
+
+                        
+                        $ppaquete = P_Paquete::where('codigo', $codigo)->whereHas('paquete_paginas',function($query)use($web){
+                            $query->where('pagina',$web);
+                        })->first();
+                        
+                        if(count($ppaquete)==0) {
+                            $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
+                        }    
+                        
                         if(count($ppaquete)) {
                             if ($ppaquete->duracion > 1) {
                                 $estrellas = 'No necesita';
@@ -417,7 +426,13 @@ class QouteController extends Controller
                     trim($email)!=''&&
                     trim($total)!=''&&
                     trim($fecha_llegada)!='') {
-                    $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
+
+                    $ppaquete = P_Paquete::where('codigo', $codigo)->whereHas('paquete_paginas',function($query)use($web){
+                        $query->where('pagina',$web);
+                    })->first();
+                    if(count($ppaquete)==0) {
+                        $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
+                    }
                     if (count($ppaquete) > 0) {
                         if ($ppaquete->duracion > 1) {
                             $estrellas = 'No necesita';

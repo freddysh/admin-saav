@@ -1,10 +1,12 @@
 @extends('layouts.admin.admin')
 @section('archivos-css')
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    {{-- <link rel="stylesheet" href="{{asset("css/jquerydropdown.css")}}"> --}}
 @stop
 @section('archivos-js')
     <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    {{-- <script src="{{asset("js/admin/jquery-dropdown.js")}}"></script> --}}
 @stop
 
 @section('content')
@@ -19,21 +21,21 @@
     <form action="{{route('package_save_new_path')}}" method="post" id="package_new_path_id">
         <input type="hidden" id="tipo_plantilla" value="si">
         <div class="row align-items-center">
-            <div class="col-2 mb-3">
+            <div class="col-1 mb-3">
                 <span class="font-weight-bold rounded-circle py-2 px-3 bg-g-yellow text-white">1</span> <i>Datos</i>
             </div>
-            <div class="col-2">
-                <div class="form-group">
-                    <label for="txt_pagina" class="font-weight-bold text-secondary">Pagina</label>
-                    <select class="form-control" id="txt_pagina" name="txt_pagina" onchange="mostrar_codigo_($(this).val())">
-                        <option value="0">Escoja una opcion</option>
-                        @foreach ($webs as $item)
-                            <option value="{{$item->pagina}}">{{$item->pagina}}</option>
-                        @endforeach
-                    </select>
+            <div class="col-5">
+                <div class="row">  
+                    @foreach ($webs as $key => $item)
+                        <div class="col-6">
+                            <label class="text-success">
+                                <input class="destinospack" type="checkbox" name="txt_pagina[]" value="{{$item->pagina}}">
+                                {{$item->pagina}}
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-
             <div class="col-1">
                 <div class="form-group">
                     <label for="txt_day" class="font-weight-bold text-secondary">Duracion</label>
@@ -46,7 +48,7 @@
                     <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Code" value="">
                 </div>
             </div>
-            <div class="col-md-6 d-none">
+            <div class="col-md-4 d-none">
                 <div class="form-group">
                     <label for="txt_title">Title</label>
                     <input type="text" class="form-control" id="txt_title" name="txt_title" placeholder="Title">
@@ -106,12 +108,10 @@
                     @endphp
                     @foreach($destinos as $destino)
                         <div class="col-3">
-
-                                <label class="text-primary">
-                                    <input class="destinospack" type="checkbox" name="destinos[]" value="{{$destino->id}}_{{$destino->destino}}" onchange="filtrar_itinerarios()">
-                                    {{ucwords(strtolower($destino->destino))}}
-                                </label>
-
+                            <label class="text-primary">
+                                <input class="destinospack" type="checkbox" name="destinos[]" value="{{$destino->id}}_{{$destino->destino}}" onchange="filtrar_itinerarios()">
+                                {{ucwords(strtolower($destino->destino))}}
+                            </label>
                         </div>
                         @php
                             $deti.=$destino->id.'/';
@@ -1626,10 +1626,12 @@
             </div>
         </div>
     </form>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function() {
             filtrar_estrellas();
             calcular_resumen();
+            // $('select[multiple]').multiSelect(); 
+            // $('#txt_pagina').multiSelect();
         } );
     </script>
     <script>

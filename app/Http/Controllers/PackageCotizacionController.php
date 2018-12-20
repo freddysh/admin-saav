@@ -2,47 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Cliente;
-use App\Cotizacion;
-use App\CotizacionArchivos;
-use App\CotizacionesCliente;
-use App\Hotel;
-use App\HotelProveedor;
-use App\ItinerarioCotizaciones;
-use App\ItinerarioDestinos;
-use App\ItinerarioServicios;
-use App\M_Category;
-use App\M_Destino;
-use App\M_Itinerario;
-use App\M_ItinerarioServicio;
-use App\M_Servicio;
-use App\Mail\ContabilidadEmail;
-use App\Mail\ReservasEmail;
-use App\P_Itinerario;
-use App\P_ItinerarioDestino;
-use App\P_ItinerarioServicios;
-use App\P_Paquete;
-use App\P_PaquetePrecio;
-use App\PaqueteCotizaciones;
-use App\PaquetePrecio;
-use App\PrecioHotelReserva;
-
-use App\Proveedor;
+use App\Web;
 use App\User;
+use App\Hotel;
+use App\Cliente;
+use App\M_Destino;
+use App\P_Paquete;
+use App\Proveedor;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Mockery\Exception;
-use PhpParser\Node\Expr\Array_;
-use Barryvdh\DomPDF\PDF;
-use Illuminate\Http\Response;
+use App\Cotizacion;
+use App\M_Category;
+use App\M_Servicio;
+use App\M_Itinerario;
+use App\P_Itinerario;
 use App\Http\Requests;
+use App\PaquetePrecio;
+use Mockery\Exception;
+use App\HotelProveedor;
+use App\P_PaquetePrecio;
+use Barryvdh\DomPDF\PDF;
+use App\CotizacionArchivos;
+use App\ItinerarioDestinos;
+use App\Mail\ReservasEmail;
+use App\PrecioHotelReserva;
+use App\CotizacionesCliente;
+
+use App\ItinerarioServicios;
+use App\M_ItinerarioDestino;
 use App\Mail\AskInformation;
+use App\P_ItinerarioDestino;
+use App\PaqueteCotizaciones;
+use Illuminate\Http\Request;
+use App\M_ItinerarioServicio;
+use Illuminate\Http\Response;
+use App\P_ItinerarioServicios;
+use App\ItinerarioCotizaciones;
+use App\Mail\ContabilidadEmail;
+use PhpParser\Node\Expr\Array_;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Input;
 
-use App\M_ItinerarioDestino;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 class PackageCotizacionController extends Controller
 {
@@ -390,7 +391,8 @@ class PackageCotizacionController extends Controller
             $cotizacion=Cotizacion::where('web', $page)->get();
         session()->put('menu-lateral', 'quotes/current');
 
-        return view('admin.quotes-current-page',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
+        $webs=Web::get();
+        return view('admin.quotes-current-page',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'webs'=>$webs]);
     }
     public function sales_cotizacion_page($page)
     {
@@ -2487,12 +2489,19 @@ class PackageCotizacionController extends Controller
         $estrellas=$request->input('estrellas');
         $destinos=explode('/',$destinos);
         $ppaquetes=null;
-        if($pagina=='gotoperu.com'){
-            $ppaquetes =P_Paquete::whereIn('pagina',[$pagina,'expedia.com'])->where('duracion',$duracion)->get();
+        $ppaquetes =P_Paquete::where('duracion',$duracion)->whereHas('paquete_paginas',function($query)use($pagina){
+            $query->where('pagina',$pagina);
+        })->get();
+        if(count($ppaquetes)==0){
+            $ppaquetes = P_Paquete::where('pagina',$pagina)->where('duracion',$duracion)->get();
         }
-        else{
-            $ppaquetes =P_Paquete::where('pagina',$pagina)->where('duracion',$duracion)->get();
-        }
+                
+        // if($pagina=='gotoperu.com'){
+        //     $ppaquetes =P_Paquete::whereIn('pagina',[$pagina,'expedia.com'])->where('duracion',$duracion)->get();
+        // }
+        // else{
+        //     $ppaquetes =P_Paquete::where('pagina',$pagina)->where('duracion',$duracion)->get();
+        // }
 //        return dd($ppaquetes);
         return view('admin.lista-paquetes-duracion-pagina',compact('ppaquetes','destinos','estrellas'));
     }

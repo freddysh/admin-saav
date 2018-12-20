@@ -1,7 +1,11 @@
 {
     "/js/app.js": "/js/app.js",
+    "/css/jquerydropdown.css": "/css/jquerydropdown.css",
     "/css/app.css": "/css/app.css",
     "/css/admin/admin.css": "/css/admin/admin.css",
     "/js/font-awesome.js": "/js/font-awesome.js",
-    "/js/admin/plugins.js": "/js/admin/plugins.js"
+    "/resources/assets/sass/jquerydropdown.scss": "/resources/assets/sass/jquerydropdown.scss",
+    "/resources/assets/js/vendors/jquery-dropdown.js": "/resources/assets/js/vendors/jquery-dropdown.js",
+    "/js/admin/plugins.js": "/js/admin/plugins.js",
+    "/js/admin/jquery-dropdown.js": "/js/admin/jquery-dropdown.js"
 }

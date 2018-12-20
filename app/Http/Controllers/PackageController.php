@@ -10,11 +10,12 @@ use Carbon\Carbon;
 use App\M_Servicio;
 use App\M_Itinerario;
 use App\P_Itinerario;
+use App\PaquetePagina;
 use Mockery\Exception;
 use App\P_PaquetePrecio;
 use Barryvdh\DomPDF\PDF;
-use App\M_ItinerarioDestino;
 
+use App\M_ItinerarioDestino;
 use App\P_ItinerarioDestino;
 use Illuminate\Http\Request;
 use App\P_ItinerarioServicios;
@@ -174,7 +175,7 @@ class PackageController extends Controller
             $txt_code='GTP'.$txt_day.$numero_con_ceros;
 
         $paquete=new P_Paquete();
-        $paquete->pagina=$txt_pagina;
+        // $paquete->pagina=$txt_pagina;
         $paquete->codigo=$txt_code;
         $paquete->titulo=$txt_title;
         $paquete->duracion=$txt_day;
@@ -186,6 +187,13 @@ class PackageController extends Controller
         $paquete->estado=1;
         $paquete->preciocosto=$totalItinerario;
         $paquete->save();
+
+        foreach($txt_pagina as $txt_pagina_){
+            $pqt_pagina=new PaquetePagina();
+            $pqt_pagina->pagina=$txt_pagina_;
+            $pqt_pagina->p_paquete_id=$paquete->id;
+            $pqt_pagina->save();
+        }
 //dd($paquete);
         if($txt_day>1) {
             $paquete_precio2 = new P_PaquetePrecio();
@@ -341,6 +349,7 @@ class PackageController extends Controller
         $paquete_id=$request->input('paquete_id');
         $txt_day=strtoupper(($request->input('txt_day')));
         $txt_pagina=$request->input('txt_pagina');
+        // dd($txt_pagina);
         $txt_code=strtoupper(($request->input('txt_codigo')));
         $txt_title=strtoupper(($request->input('txt_title')));
         $txta_description=$request->input('txta_description');
@@ -428,7 +437,7 @@ class PackageController extends Controller
 //        dd('profit_2:'.$profit_2.',profit_3:'.$profit_3.',profit_4:'.$profit_4.',profit_5:'.$profit_5);
 //        dd($txta_include.'_'.$txta_notinclude);
         $paquete=P_Paquete::FindOrFail($paquete_id);
-        $paquete->pagina=$txt_pagina;
+        // $paquete->pagina=$txt_pagina;
         $paquete->codigo=$txt_code;
         $paquete->titulo=$txt_title;
         $paquete->duracion=$txt_day;
@@ -441,6 +450,13 @@ class PackageController extends Controller
         $paquete->preciocosto=$totalItinerario;
         $paquete->save();
 
+        $paquete_pagina=PaquetePagina::where('p_paquete_id',$paquete->id)->delete();
+        foreach($txt_pagina as $txt_pagina_){
+            $pqt_pagina=new PaquetePagina();
+            $pqt_pagina->pagina=$txt_pagina_;
+            $pqt_pagina->p_paquete_id=$paquete->id;
+            $pqt_pagina->save();
+        }
         $p_paquete_precio=P_PaquetePrecio::where('p_paquete_id',$paquete_id)->delete();
         $p_paquete_itinerario=P_Itinerario::where('p_paquete_id',$paquete_id)->delete();
         if($txt_day>1) {
@@ -609,7 +625,8 @@ class PackageController extends Controller
         $m_servicios=M_Servicio::get();
         $itinerary=P_Paquete::FindOrFail($id);
         $itinerarios_d=M_ItinerarioDestino::get();
-        return view('admin.show-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d,'webs'=>$webs]);
+        $paquete_paginas=PaquetePagina::get();
+        return view('admin.show-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d,'webs'=>$webs,'paquete_paginas'=>$paquete_paginas]);
     }
     public function duplicate_itinerary($id)
     {
@@ -1102,7 +1119,15 @@ class PackageController extends Controller
     {
         $pagina = $request->input('pagina');
 //        return $pagina;
-        $itineraries =P_Paquete::where('pagina', $pagina)->get();
+        $itineraries = P_Paquete::whereHas('paquete_paginas', function($query) use($pagina) {
+            $query->where('pagina',$pagina);
+        })->get();
+        
+        if(count($itineraries)==0){
+            $itineraries =P_Paquete::where('pagina', $pagina)->get();    
+        }
+        
+        // dd($itineraries);
         return view('admin.show-itinearies-pagina', compact('itineraries'));
     }
 }

@@ -28,10 +28,16 @@
 @stop
 @section('content')
     <div class="row no-gutters mb-2">
-        <div class="col text-center">
-            <a href="{{route('current_quote_page_path', 'gotoperu.com')}}" class="btn btn-block btn-sm @if($page == 'gotoperu.com') btn-success @else btn-light text-secondary  @endif">gotoperu.com</a>
-            @if($page == 'gotoperu.com') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
-        </div>
+        
+        @foreach ($webs as $item)
+            <div class="col text-center">
+                <a href="{{route('current_quote_page_path',$item->pagina)}}" class="btn btn-block btn-sm @if($page == $item->pagina) btn-success @else btn-light text-secondary  @endif">{{$item->pagina}}</a>
+                @if($page == $item->pagina) <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
+            </div>    
+        @endforeach
+        
+
+{{-- 
         <div class="col text-center">
             <a href="{{route('current_quote_page_path', 'llama.tours')}}" class="btn btn-block btn-sm @if($page == 'llama.tours') btn-success @else btn-light text-secondary  @endif">llama.tours</a>
             @if($page == 'llama.tours') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
@@ -55,7 +61,7 @@
         <div class="col text-center">
             <a href="{{route('current_quote_page_path', 'expedia.com')}}" class="btn btn-block btn-sm @if($page == 'expedia.com') btn-success @else  btn-light text-secondary @endif">expedia.com</a>
             @if($page == 'expedia.com') <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>  @endif
-        </div>
+        </div> --}}
     </div>
     <div class="row">
         <div id="leads" class="col">
