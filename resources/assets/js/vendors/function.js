@@ -5216,6 +5216,7 @@ function editar_producto(id){
         data: $('#frm_modal_edit_producto_'+id).serialize(),
         // Mostramos un mensaje con la respuesta de PHP
         success:  function (response) {
+            // console.log('response:'+response);
             var datox=response.split('_');
             console.log(datox);
             $('#result_'+id).removeClass('bg-danger');

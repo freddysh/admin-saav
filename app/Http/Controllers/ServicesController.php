@@ -354,8 +354,9 @@ class ServicesController extends Controller
         elseif ($txt_tipo_grupo == 'Individual')
             $destino->precio_grupo = 0;
         $destino->save();
-
+        // return $destino->tipoServicio;
         $costo_id= $request->input('costo_id');
+        // return $costo_id;
         $costo_val= $request->input('costo_val');
         if($costo_id!=''){
             $costos_bolsa = M_Producto::where('m_servicios_id', $id)->get();
@@ -364,8 +365,11 @@ class ServicesController extends Controller
                     foreach ($costo_id as $key => $costo_id_) {
                         $producto = M_Producto::FindOrFail($costo_id_);
                         $producto->precio_costo = $costo_val[$key];
+                        $producto->nombre = $destino->nombre;
                         $producto->tipo_producto = $txt_type;
                         $producto->save();
+                        // return $producto;
+                        
                     }
                 } else {
                     $producto = M_Producto::FindOrFail($costos_bolsa_->id);

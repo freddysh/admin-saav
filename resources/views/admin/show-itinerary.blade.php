@@ -42,7 +42,8 @@
                             <input type="number" class="form-control" id="txt_day" name="txt_day" placeholder="Days" min="0" onchange="calcular_resumen()"  value="{{$itinerary->duracion}}" >
                         </div>
                     </div>
-                    <div class="col-2 @if($itinerary->pagina!='expedia.com') d-none @endif" id="txt_codigo_">
+                    {{-- <div class="col-2 @if($itinerary->pagina!='expedia.com') d-none @endif" id="txt_codigo_"> --}}
+                    <div class="col-1" id="txt_codigo_">
                         <div class="form-group">
                             <label for="txt_code" class="text-secondary font-weight-bold">Code</label>
                             <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Code" value="{{$itinerary->codigo}}">
@@ -55,7 +56,7 @@
                             <input type="text" class="form-control" id="txt_title" name="txt_title" placeholder="Title"  value="{{$itinerary->titulo}}">
                         </div>
                     </div>
-                    <div class="col-5">
+                    <div class="col-4">
                         <label for="txta_description" class="text-secondary font-weight-bold">Titulo</label>
                         <input type="text" class="form-control" id="txta_description" name="txta_description" placeholder="Descripcion"  value="{{$itinerary->descripcion}}">
                     </div>
@@ -160,7 +161,7 @@
                                     @endphp
                                     @foreach($itinerary->itinerarios as $itinerario)
                                         @php
-                                            $iti_id=0;
+                                            $iti_id=$itinerario->id;
                                             $existextitle=-1;
                                             $existexid=-1;
                                             $existexservicios=-1;
@@ -216,6 +217,7 @@
                                             <div class="content-list-book-s">
                                                 <a href="#!">
                                                     <strong>
+                                                        {{-- {{dd($itinerario)}} --}}
                                                         <input type="hidden" class="servicios_new" name="servicios_new_" value="{{$iti_id}}">
                                                         <img src="https://assets.pipedrive.com/images/icons/profile_120x120.svg" alt="">
                                                         <input type="hidden" name="itinerarios_1[]" value="{{$itinerario_total}}">
@@ -231,6 +233,9 @@
                                                                 <span class="text-danger text-12">Este "Day By day" no existe, cambiar por otro similar</span>
                                                             @elseif($existexservicios==0)
                                                                 <span class="text-warning text-12">El "Day By day" tuvo cambios en sus servicios, revisar</span>
+                                                            @endif
+                                                            @if(trim($itinerario->m_itinerario_id)=='')
+                                                            <span class="text-danger text-12">Vuelva a agregar este dia</span>    
                                                             @endif
                                                         </span>
                                                     </strong>

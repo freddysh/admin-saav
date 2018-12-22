@@ -42,7 +42,7 @@
                     <input type="number" class="form-control" id="txt_day" name="txt_day" placeholder="Days" min="0" value="2" onchange="calcular_resumen()">
                 </div>
             </div>
-            <div class="col-2 d-none" id="txt_codigo_">
+            <div class="col-1" id="txt_codigo_">
                 <div class="form-group">
                     <label for="txt_code" class="font-weight-bold text-secondary">Code</label>
                     <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" placeholder="Code" value="">
@@ -54,7 +54,7 @@
                     <input type="text" class="form-control" id="txt_title" name="txt_title" placeholder="Title">
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <div class="form-group">
                     <label for="txta_description" class="font-weight-bold text-secondary">Titulo</label>
                     <input type="text" class="form-control" id="txta_description" name="txta_description">

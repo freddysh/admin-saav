@@ -145,35 +145,38 @@ class BookController extends Controller
 		$dato=explode('_',$dat);
 		$itinerario=ItinerarioServicios::FindOrFail($dato[1]);
 		$proveedor=Proveedor::FindOrFail($dato[2]);
-		$itinerario_serv_pro=new ItinerarioServicioProveedor();
-		$itinerario_serv_pro->codigo=$proveedor->codigo;
-		$itinerario_serv_pro->grupo=$proveedor->grupo;
-		$itinerario_serv_pro->localizacion=$proveedor->localizacion;
-		$itinerario_serv_pro->nombre=$itinerario->nombre;
-		$itinerario_serv_pro->proveedor_razon_social=$proveedor->razon_social;
-		$itinerario_serv_pro->ruc=$proveedor->ruc;
-		$itinerario_serv_pro->razon_social=$proveedor->razon_social;
-		$itinerario_serv_pro->direccion=$proveedor->direccion;
-		$itinerario_serv_pro->telefono=$proveedor->telefono;
-		$itinerario_serv_pro->celular=$proveedor->celular;
-		$itinerario_serv_pro->email=$proveedor->email;
-		$itinerario_serv_pro->r_nombres=$proveedor->r_nombres;
-		$itinerario_serv_pro->r_telefono=$proveedor->r_telefono;
-		$itinerario_serv_pro->c_nombres=$proveedor->c_nombres;
-		$itinerario_serv_pro->c_telefono=$proveedor->c_telefono;
-		$itinerario_serv_pro->save();
+		// $itinerario_serv_pro=new ItinerarioServicioProveedor();
+		// $itinerario_serv_pro->codigo=$proveedor->codigo;
+		// $itinerario_serv_pro->grupo=$proveedor->grupo;
+		// $itinerario_serv_pro->localizacion=$proveedor->localizacion;
+		// $itinerario_serv_pro->nombre=$itinerario->nombre;
+		// $itinerario_serv_pro->proveedor_razon_social=$proveedor->razon_social;
+		// $itinerario_serv_pro->ruc=$proveedor->ruc;
+		// $itinerario_serv_pro->razon_social=$proveedor->razon_social;
+		// $itinerario_serv_pro->direccion=$proveedor->direccion;
+		// $itinerario_serv_pro->telefono=$proveedor->telefono;
+		// $itinerario_serv_pro->celular=$proveedor->celular;
+		// $itinerario_serv_pro->email=$proveedor->email;
+		// $itinerario_serv_pro->r_nombres=$proveedor->r_nombres;
+		// $itinerario_serv_pro->r_telefono=$proveedor->r_telefono;
+		// $itinerario_serv_pro->c_nombres=$proveedor->c_nombres;
+		// $itinerario_serv_pro->c_telefono=$proveedor->c_telefono;
+		// $itinerario_serv_pro->save();
+
 		$itinerario1=ItinerarioServicios::FindOrFail($dato[1]);
 		$itinerario1->precio_proveedor=$dato[3];
 		$itinerario1->proveedor_id=$dato[2];
-		$itinerario1->proveedor_id_nuevo=$itinerario_serv_pro->id;
+		// $itinerario1->proveedor_id_nuevo=$itinerario_serv_pro->id;
 		$itinerario1->fecha_venc=$fecha_pagar;
 		$itinerario1->prioridad=$prioridad;
-		$m_servicio=M_Servicio::find($itinerario1->m_servicios_id);
+		// $m_servicio=M_Servicio::find($itinerario1->m_servicios_id);
 
 		// if(($m_servicio->grupo=='MOVILID' && $m_servicio->clase=='BOLETO') || $m_servicio->grupo=='ENTRANCES'){
 			$itinerario1->liquidacion=1;
 		// }
 
+		// return $itinerario1->liquidacion;
+		// return $itinerario1->save();
 		if($itinerario1->save())
 			return 1;
 		else
@@ -981,19 +984,19 @@ class BookController extends Controller
 								
 						}
 						foreach($itinerario_cotizaciones->itinerario_servicios as $itinerario_servicios){
-							if($itinerario_servicios->servicio->grupo=='TOURS'){
+							if($itinerario_servicios->grupo=='TOURS'){
 								if($itinerario_servicios->proveedor_id>0){
 									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 								}
 								$precio=0;
 								$precio_ads=0;
 								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
+								if($itinerario_servicios->precio_grupo==1){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio;
 										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
+								elseif($itinerario_servicios->precio_grupo==0){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 										$precio_ads=$itinerario_servicios->precio;
@@ -1016,7 +1019,7 @@ class BookController extends Controller
 								$array_cotizaciones_tours[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
 															'fecha_venc'=>$fecha_venc,
 															'nombre'=>$itinerario_servicios->nombre,
-															'clase'=>$itinerario_servicios->servicio->tipoServicio,
+															'clase'=>$itinerario_servicios->tipoServicio,
 															'ad'=>$cotizacion->nropersonas,
 															'pax'=>$datos_cliente,
 															'proveedor'=>$proveedor,
@@ -1025,19 +1028,19 @@ class BookController extends Controller
 															'situacion'=>$situacion,
 															'proridad'=>$itinerario_servicios->prioridad);
 							}
-							elseif($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='DEFAULT'){
+							elseif($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='DEFAULT'){
 								if($itinerario_servicios->proveedor_id>0){
 									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 								}
 								$precio=0;
 								$precio_ads=0;
 								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
+								if($itinerario_servicios->precio_grupo==1){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio;
 										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
+								elseif($itinerario_servicios->precio_grupo==0){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 										$precio_ads=$itinerario_servicios->precio;
@@ -1060,7 +1063,7 @@ class BookController extends Controller
 									$array_cotizaciones_movilid[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
 																'fecha_venc'=>$fecha_venc,
 																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
+																'clase'=>$itinerario_servicios->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
 																'ad'=>$cotizacion->nropersonas,
 																'pax'=>$datos_cliente,
 																'proveedor'=>$proveedor,
@@ -1069,19 +1072,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 							}
-							elseif($itinerario_servicios->servicio->grupo=='REPRESENT'){
+							elseif($itinerario_servicios->grupo=='REPRESENT'){
 								if($itinerario_servicios->proveedor_id>0){
 									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 								}
 								$precio=0;
 								$precio_ads=0;
 								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
+								if($itinerario_servicios->precio_grupo==1){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio;
 										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
+								elseif($itinerario_servicios->precio_grupo==0){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 										$precio_ads=$itinerario_servicios->precio;
@@ -1104,7 +1107,7 @@ class BookController extends Controller
 									$array_cotizaciones_represent[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
 																'fecha_venc'=>$fecha_venc,
 																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
+																'clase'=>$itinerario_servicios->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
 																'ad'=>$cotizacion->nropersonas,
 																'pax'=>$datos_cliente,
 																'proveedor'=>$proveedor,
@@ -1113,7 +1116,7 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 							}
-							elseif($itinerario_servicios->servicio->grupo=='ENTRANCES'||($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')){
+							elseif($itinerario_servicios->grupo=='ENTRANCES'||($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')){
 								$proveedor='';
 								if($itinerario_servicios->proveedor_id>0){
 									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
@@ -1121,12 +1124,12 @@ class BookController extends Controller
 								$precio=0;
 								$precio_ads=0;
 								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
+								if($itinerario_servicios->precio_grupo==1){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio;
 										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
+								elseif($itinerario_servicios->precio_grupo==0){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 										$precio_ads=$itinerario_servicios->precio;
@@ -1158,19 +1161,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 							}
-							elseif($itinerario_servicios->servicio->grupo=='FOOD'){
+							elseif($itinerario_servicios->grupo=='FOOD'){
 								if($itinerario_servicios->proveedor_id>0){
 									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 								}
 								$precio=0;
 								$precio_ads=0;
 								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
+								if($itinerario_servicios->precio_grupo==1){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio;
 										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
+								elseif($itinerario_servicios->precio_grupo==0){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 										$precio_ads=$itinerario_servicios->precio;
@@ -1193,7 +1196,7 @@ class BookController extends Controller
 									$array_cotizaciones_food[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
 																'fecha_venc'=>$fecha_venc,
 																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio,
+																'clase'=>$itinerario_servicios->tipoServicio,
 																'ad'=>$cotizacion->nropersonas,
 																'pax'=>$datos_cliente,
 																'proveedor'=>$proveedor,
@@ -1202,19 +1205,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 							}
-							elseif($itinerario_servicios->servicio->grupo=='TRAINS'){
+							elseif($itinerario_servicios->grupo=='TRAINS'){
 								if($itinerario_servicios->proveedor_id>0){
 									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 								}
 								$precio=0;
 								$precio_ads=0;
 								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
+								if($itinerario_servicios->precio_grupo==1){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio;
 										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
+								elseif($itinerario_servicios->precio_grupo==0){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 										$precio_ads=$itinerario_servicios->precio;
@@ -1246,19 +1249,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 							}
-							elseif($itinerario_servicios->servicio->grupo=='FLIGHTS'){
+							elseif($itinerario_servicios->grupo=='FLIGHTS'){
 								if($itinerario_servicios->proveedor_id>0){
 									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 								}
 								$precio=0;
 								$precio_ads=0;
 								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
+								if($itinerario_servicios->precio_grupo==1){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio;
 										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
+								elseif($itinerario_servicios->precio_grupo==0){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 										$precio_ads=$itinerario_servicios->precio;
@@ -1290,19 +1293,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 							}
-							elseif($itinerario_servicios->servicio->grupo=='OTHERS'){
+							elseif($itinerario_servicios->grupo=='OTHERS'){
 								if($itinerario_servicios->proveedor_id>0){
 									$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 								}
 								$precio=0;
 								$precio_ads=0;
 								$precio_total_=0;
-								if($itinerario_servicios->servicio->precio_grupo==1){
+								if($itinerario_servicios->precio_grupo==1){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio;
 										$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 								}
-								elseif($itinerario_servicios->servicio->precio_grupo==0){
+								elseif($itinerario_servicios->precio_grupo==0){
 									if($itinerario_servicios->precio>0)
 										$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 										$precio_ads=$itinerario_servicios->precio;
@@ -1496,19 +1499,19 @@ class BookController extends Controller
 						}
 						foreach($itinerario_cotizaciones->itinerario_servicios as $itinerario_servicios){
 							if($dato1<=$itinerario_servicios->fecha_venc&&$itinerario_servicios->fecha_venc<=$dato2){
-								if($itinerario_servicios->servicio->grupo=='TOURS'){
+								if($itinerario_servicios->grupo=='TOURS'){
 									if($itinerario_servicios->proveedor_id>0){
 										$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 									}
 									$precio=0;
 									$precio_ads=0;
 									$precio_total_=0;
-									if($itinerario_servicios->servicio->precio_grupo==1){
+									if($itinerario_servicios->precio_grupo==1){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio;
 											$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 									}
-									elseif($itinerario_servicios->servicio->precio_grupo==0){
+									elseif($itinerario_servicios->precio_grupo==0){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 											$precio_ads=$itinerario_servicios->precio;
@@ -1531,7 +1534,7 @@ class BookController extends Controller
 									$array_cotizaciones_tours[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
 																'fecha_venc'=>$fecha_venc,
 																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio,
+																'clase'=>$itinerario_servicios->tipoServicio,
 																'ad'=>$cotizacion->nropersonas,
 																'pax'=>$datos_cliente,
 																'proveedor'=>$proveedor,
@@ -1540,19 +1543,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 								}
-								elseif($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='DEFAULT'){
+								elseif($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='DEFAULT'){
 									if($itinerario_servicios->proveedor_id>0){
 										$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 									}
 									$precio=0;
 									$precio_ads=0;
 									$precio_total_=0;
-									if($itinerario_servicios->servicio->precio_grupo==1){
+									if($itinerario_servicios->precio_grupo==1){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio;
 											$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 									}
-									elseif($itinerario_servicios->servicio->precio_grupo==0){
+									elseif($itinerario_servicios->precio_grupo==0){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 											$precio_ads=$itinerario_servicios->precio;
@@ -1575,7 +1578,7 @@ class BookController extends Controller
 									$array_cotizaciones_movilid[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
 																'fecha_venc'=>$fecha_venc,
 																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
+																'clase'=>$itinerario_servicios->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
 																'ad'=>$cotizacion->nropersonas,
 																'pax'=>$datos_cliente,
 																'proveedor'=>$proveedor,
@@ -1584,19 +1587,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 								}
-								elseif($itinerario_servicios->servicio->grupo=='REPRESENT'){
+								elseif($itinerario_servicios->grupo=='REPRESENT'){
 									if($itinerario_servicios->proveedor_id>0){
 										$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 									}
 									$precio=0;
 									$precio_ads=0;
 									$precio_total_=0;
-									if($itinerario_servicios->servicio->precio_grupo==1){
+									if($itinerario_servicios->precio_grupo==1){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio;
 											$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 									}
-									elseif($itinerario_servicios->servicio->precio_grupo==0){
+									elseif($itinerario_servicios->precio_grupo==0){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 											$precio_ads=$itinerario_servicios->precio;
@@ -1619,7 +1622,7 @@ class BookController extends Controller
 									$array_cotizaciones_represent[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
 																'fecha_venc'=>$fecha_venc,
 																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
+																'clase'=>$itinerario_servicios->tipoServicio.'_'.$itinerario_servicios->min_personas.'-'.$itinerario_servicios->max_personas,
 																'ad'=>$cotizacion->nropersonas,
 																'pax'=>$datos_cliente,
 																'proveedor'=>$proveedor,
@@ -1628,7 +1631,7 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 								}
-								elseif($itinerario_servicios->servicio->grupo=='ENTRANCES'||($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')){
+								elseif($itinerario_servicios->grupo=='ENTRANCES'||($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')){
 									$proveedor='';
 									if($itinerario_servicios->proveedor_id>0){
 										$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
@@ -1636,12 +1639,12 @@ class BookController extends Controller
 									$precio=0;
 									$precio_ads=0;
 									$precio_total_=0;
-									if($itinerario_servicios->servicio->precio_grupo==1){
+									if($itinerario_servicios->precio_grupo==1){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio;
 											$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 									}
-									elseif($itinerario_servicios->servicio->precio_grupo==0){
+									elseif($itinerario_servicios->precio_grupo==0){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 											$precio_ads=$itinerario_servicios->precio;
@@ -1673,19 +1676,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 								}
-								elseif($itinerario_servicios->servicio->grupo=='FOOD'){
+								elseif($itinerario_servicios->grupo=='FOOD'){
 									if($itinerario_servicios->proveedor_id>0){
 										$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 									}
 									$precio=0;
 									$precio_ads=0;
 									$precio_total_=0;
-									if($itinerario_servicios->servicio->precio_grupo==1){
+									if($itinerario_servicios->precio_grupo==1){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio;
 											$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 									}
-									elseif($itinerario_servicios->servicio->precio_grupo==0){
+									elseif($itinerario_servicios->precio_grupo==0){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 											$precio_ads=$itinerario_servicios->precio;
@@ -1708,7 +1711,7 @@ class BookController extends Controller
 									$array_cotizaciones_food[]=array('fecha_uso'=>$itinerario_cotizaciones->fecha,
 																'fecha_venc'=>$fecha_venc,
 																'nombre'=>$itinerario_servicios->nombre,
-																'clase'=>$itinerario_servicios->servicio->tipoServicio,
+																'clase'=>$itinerario_servicios->tipoServicio,
 																'ad'=>$cotizacion->nropersonas,
 																'pax'=>$datos_cliente,
 																'proveedor'=>$proveedor,
@@ -1717,19 +1720,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 								}
-								elseif($itinerario_servicios->servicio->grupo=='TRAINS'){
+								elseif($itinerario_servicios->grupo=='TRAINS'){
 									if($itinerario_servicios->proveedor_id>0){
 										$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 									}
 									$precio=0;
 									$precio_ads=0;
 									$precio_total_=0;
-									if($itinerario_servicios->servicio->precio_grupo==1){
+									if($itinerario_servicios->precio_grupo==1){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio;
 											$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 									}
-									elseif($itinerario_servicios->servicio->precio_grupo==0){
+									elseif($itinerario_servicios->precio_grupo==0){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 											$precio_ads=$itinerario_servicios->precio;
@@ -1761,19 +1764,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 								}
-								elseif($itinerario_servicios->servicio->grupo=='FLIGHTS'){
+								elseif($itinerario_servicios->grupo=='FLIGHTS'){
 									if($itinerario_servicios->proveedor_id>0){
 										$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 									}
 									$precio=0;
 									$precio_ads=0;
 									$precio_total_=0;
-									if($itinerario_servicios->servicio->precio_grupo==1){
+									if($itinerario_servicios->precio_grupo==1){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio;
 											$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 									}
-									elseif($itinerario_servicios->servicio->precio_grupo==0){
+									elseif($itinerario_servicios->precio_grupo==0){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 											$precio_ads=$itinerario_servicios->precio;
@@ -1805,19 +1808,19 @@ class BookController extends Controller
 																'situacion'=>$situacion,
 																'proridad'=>$itinerario_servicios->prioridad);
 								}
-								elseif($itinerario_servicios->servicio->grupo=='OTHERS'){
+								elseif($itinerario_servicios->grupo=='OTHERS'){
 									if($itinerario_servicios->proveedor_id>0){
 										$proveedor=Proveedor::Find($itinerario_servicios->proveedor_id)->nombre_comercial;  
 									}
 									$precio=0;
 									$precio_ads=0;
 									$precio_total_=0;
-									if($itinerario_servicios->servicio->precio_grupo==1){
+									if($itinerario_servicios->precio_grupo==1){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio;
 											$precio_ads=$itinerario_servicios->precio/$cotizacion->nropersonas;
 									}
-									elseif($itinerario_servicios->servicio->precio_grupo==0){
+									elseif($itinerario_servicios->precio_grupo==0){
 										if($itinerario_servicios->precio>0)
 											$precio_total_=$itinerario_servicios->precio*$cotizacion->nropersonas;
 											$precio_ads=$itinerario_servicios->precio;

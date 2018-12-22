@@ -768,12 +768,17 @@
                                                                             </div>
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
-                                                                                    @if($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()==0)
+                                                                                    @php
+                                                                                        $arregloo[]='GROUP';
+                                                                                        $arregloo[]='SIC';
+                                                                                        $arregloo[]=$servicios->tipoServicio;
+                                                                                    @endphp
+                                                                                    @if($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()==0)
                                                                                         <b class="text-danger">No tenemos proveedores disponibles!</b>
                                                                                     @else
                                                                                     {{-- if($servicios->servicio) --}}
                                                                                         <p class="d-none">
-                                                                                            {{$productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()}}
+                                                                                            {{$productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()}}
                                                                                         </p>
                                                                                         <div class="row">
                                                                                             <div class="col-lg-12 bg-green-goto">
@@ -782,7 +787,7 @@
                                                                                                 <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        @foreach($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre) as $producto)
+                                                                                        @foreach($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre) as $producto)
                                                                                             {{-- @if($producto->m_servicios_id==$servicios->m_servicios_id) --}}
                                                                                                 @if($producto->precio_grupo==1)
                                                                                                     @php

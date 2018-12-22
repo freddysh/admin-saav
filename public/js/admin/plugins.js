@@ -2788,6 +2788,8 @@ function enviar_form1(){
         $('#txt_destinos1').val(destinos);
         $('#txt_codigo1').val($('#txt_codigo').val());
         $('#notas1').val($('#txt_notas').val());
+        $('#estrellas_from').val($('#hotel').val());
+        
         if($('#notas1').val().trim()=='') {
             $('#notas1').focus();
             swal(
@@ -3240,6 +3242,7 @@ function enviar_form2(){
         $('#txt_destinos1_').val(destinos);
         $('#codigo_').val($('#txt_codigo').val());
         $('#notas_').val($('#txt_notas').val());
+        $('#estrellas_from_').val($('#hotel').val());
         if($('#notas_').val().trim()==''){
             $('#notas_').focus();
             swal(
@@ -5954,6 +5957,7 @@ function editar_producto(id){
         data: $('#frm_modal_edit_producto_'+id).serialize(),
         // Mostramos un mensaje con la respuesta de PHP
         success:  function (response) {
+            // console.log('response:'+response);
             var datox=response.split('_');
             console.log(datox);
             $('#result_'+id).removeClass('bg-danger');

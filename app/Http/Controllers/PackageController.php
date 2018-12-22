@@ -74,6 +74,8 @@ class PackageController extends Controller
         $txt_code=strtoupper(($request->input('txt_codigo')));
 //        dd('$txt_code:'.$txt_code);
         $txt_pagina=$request->input('txt_pagina');
+        if(!isset($txt_pagina))
+            return back();
 //        $txt_title=strtoupper(($request->input('txt_title')));
         $txta_description=$request->input('txta_description');
         $txt_title=strtoupper($txta_description);
@@ -81,6 +83,7 @@ class PackageController extends Controller
         $txta_notinclude=$request->input('txta_notinclude');
         $totalItinerario=$request->input('totalItinerario');
         $itinerarios_=$request->input('itinerarios_2');
+
         $txt_sugerencia=$request->input('txt_sugerencia');
         $hotel_id_2=$request->input('hotel_id_2');
         $hotel_id_3=$request->input('hotel_id_3');
@@ -171,8 +174,8 @@ class PackageController extends Controller
         $plantilla_pqt= new P_Paquete();
         $plantilla_pqt->codigo='GTP'.$txt_day.$numero_con_ceros;
 
-        if($txt_pagina!='expedia.com')
-            $txt_code='GTP'.$txt_day.$numero_con_ceros;
+        // if($txt_pagina!='expedia.com')
+        //     $txt_code='GTP'.$txt_day.$numero_con_ceros;
 
         $paquete=new P_Paquete();
         // $paquete->pagina=$txt_pagina;
@@ -285,6 +288,7 @@ class PackageController extends Controller
             $paquete_precio5->save();
         }
         $dia=0;
+        // dd($itinerarios_);
         foreach ($itinerarios_ as $itinerario_id){
             $dia_=$dia+1;
             $m_itineario=M_Itinerario::FindOrFail($itinerario_id);
@@ -349,6 +353,8 @@ class PackageController extends Controller
         $paquete_id=$request->input('paquete_id');
         $txt_day=strtoupper(($request->input('txt_day')));
         $txt_pagina=$request->input('txt_pagina');
+        if(!isset($txt_pagina))
+            return back();
         // dd($txt_pagina);
         $txt_code=strtoupper(($request->input('txt_codigo')));
         $txt_title=strtoupper(($request->input('txt_title')));
@@ -449,16 +455,17 @@ class PackageController extends Controller
         $paquete->estado=1;
         $paquete->preciocosto=$totalItinerario;
         $paquete->save();
-
-        $paquete_pagina=PaquetePagina::where('p_paquete_id',$paquete->id)->delete();
+        // dd($paquete);
+        $paquete_pagina=PaquetePagina::where('p_paquete_id',$paquete_id)->delete();
         foreach($txt_pagina as $txt_pagina_){
             $pqt_pagina=new PaquetePagina();
             $pqt_pagina->pagina=$txt_pagina_;
-            $pqt_pagina->p_paquete_id=$paquete->id;
+            $pqt_pagina->p_paquete_id=$paquete_id;
             $pqt_pagina->save();
         }
         $p_paquete_precio=P_PaquetePrecio::where('p_paquete_id',$paquete_id)->delete();
         $p_paquete_itinerario=P_Itinerario::where('p_paquete_id',$paquete_id)->delete();
+        // dd($txt_day);
         if($txt_day>1) {
             $paquete_precio2 = new P_PaquetePrecio();
             $paquete_precio2->estrellas = 2;
@@ -550,64 +557,73 @@ class PackageController extends Controller
 
         }
         $dia = 0;
-        foreach ($itinerarios_ as $itinerario_id){
-            $dia_=$dia+1;
-            $m_itineario=M_Itinerario::FindOrFail($itinerario_id);
-            $p_itinerario=new P_Itinerario();
-            $p_itinerario->titulo=$m_itineario->titulo;
-            $p_itinerario->descripcion=$m_itineario->descripcion;
-            $p_itinerario->dias=$dia_;
-            $p_itinerario->precio=$m_itineario->precio;
-            $p_itinerario->imagen=$m_itineario->imagen;
-            $p_itinerario->imagenB=$m_itineario->imagenB;
-            $p_itinerario->imagenC=$m_itineario->imagenC;
-            $p_itinerario->destino_foco=$m_itineario->destino_foco;
-            $p_itinerario->destino_duerme=$m_itineario->destino_duerme;
-            $p_itinerario->sugerencia='';
-            $p_itinerario->estado=1;
-            $p_itinerario->m_itinerario_id=$m_itineario->id;
-            $p_itinerario->p_paquete_id=$paquete->id;
-            $p_itinerario->save();
-            $dia++;
-            foreach ($m_itineario->destinos as $m_destinos){
-                $p_destinos=new P_ItinerarioDestino();
-                $p_destinos->codigo=$m_destinos->codigo;
-                $p_destinos->destino=$m_destinos->destino;
-                $p_destinos->region=$m_destinos->region;
-                $p_destinos->pais=$m_destinos->pais;
-                $p_destinos->descripcion=$m_destinos->descripcion;
-                $p_destinos->imagen=$m_destinos->imagen;
-                $p_destinos->estado=1;
-                $p_destinos->p_itinerario_id=$p_itinerario->id;
-                $p_destinos->save();
-            }
-            $st=0;
-            foreach($m_itineario->itinerario_itinerario_servicios as $servicios){
-                $p_servicio=new P_ItinerarioServicios();
-                $p_servicio->nombre=$servicios->itinerario_servicios_servicio->nombre;
-                $p_servicio->min_personas=$servicios->itinerario_servicios_servicio->min_personas;
-                $p_servicio->max_personas=$servicios->itinerario_servicios_servicio->max_personas;
-                $p_servicio->observacion='';
-                if($servicios->itinerario_servicios_servicio->precio_grupo==1) {
-                    $p_servicio->precio = round($servicios->itinerario_servicios_servicio->precio_venta / 2,2);
-                    $p_servicio->precio_grupo = 1;
+        // dd($dia);
+        // dd($itinerarios_);
+        if(count($itinerarios_)>0){
+            foreach ($itinerarios_ as $itinerario_id){
+                $dia_=$dia+1;
+                $m_itineario=M_Itinerario::FindOrFail($itinerario_id);
+                $p_itinerario=new P_Itinerario();
+                $p_itinerario->titulo=$m_itineario->titulo;
+                $p_itinerario->descripcion=$m_itineario->descripcion;
+                $p_itinerario->dias=$dia_;
+                $p_itinerario->precio=$m_itineario->precio;
+                $p_itinerario->imagen=$m_itineario->imagen;
+                $p_itinerario->imagenB=$m_itineario->imagenB;
+                $p_itinerario->imagenC=$m_itineario->imagenC;
+                $p_itinerario->destino_foco=$m_itineario->destino_foco;
+                $p_itinerario->destino_duerme=$m_itineario->destino_duerme;
+                $p_itinerario->sugerencia='';
+                $p_itinerario->estado=1;
+                $p_itinerario->m_itinerario_id=$m_itineario->id;
+                $p_itinerario->p_paquete_id=$paquete->id;
+                $p_itinerario->save();
+                $dia++;
+                foreach ($m_itineario->destinos as $m_destinos){
+                    $p_destinos=new P_ItinerarioDestino();
+                    $p_destinos->codigo=$m_destinos->codigo;
+                    $p_destinos->destino=$m_destinos->destino;
+                    $p_destinos->region=$m_destinos->region;
+                    $p_destinos->pais=$m_destinos->pais;
+                    $p_destinos->descripcion=$m_destinos->descripcion;
+                    $p_destinos->imagen=$m_destinos->imagen;
+                    $p_destinos->estado=1;
+                    $p_destinos->p_itinerario_id=$p_itinerario->id;
+                    $p_destinos->save();
                 }
-                else{
-                    $p_servicio->precio = $servicios->itinerario_servicios_servicio->precio_venta;
-                    $p_servicio->precio_grupo=0;
+                $st=0;
+                foreach($m_itineario->itinerario_itinerario_servicios as $servicios){
+                    $p_servicio=new P_ItinerarioServicios();
+                    $p_servicio->nombre=$servicios->itinerario_servicios_servicio->nombre;
+                    $p_servicio->min_personas=$servicios->itinerario_servicios_servicio->min_personas;
+                    $p_servicio->max_personas=$servicios->itinerario_servicios_servicio->max_personas;
+                    $p_servicio->observacion='';
+                    if($servicios->itinerario_servicios_servicio->precio_grupo==1) {
+                        $p_servicio->precio = round($servicios->itinerario_servicios_servicio->precio_venta / 2,2);
+                        $p_servicio->precio_grupo = 1;
+                    }
+                    else{
+                        $p_servicio->precio = $servicios->itinerario_servicios_servicio->precio_venta;
+                        $p_servicio->precio_grupo=0;
+                    }
+                    $st+=$p_servicio->precio;
+                    $p_servicio->p_itinerario_id=$p_itinerario->id;
+                    $p_servicio->m_servicios_id = $servicios->itinerario_servicios_servicio->id;
+                    $p_servicio->save();
                 }
-                $st+=$p_servicio->precio;
-                $p_servicio->p_itinerario_id=$p_itinerario->id;
-                $p_servicio->m_servicios_id = $servicios->itinerario_servicios_servicio->id;
-                $p_servicio->save();
+                $p_itinerario->precio=$st;
+                $p_itinerario->save();
             }
-            $p_itinerario->precio=$st;
-            $p_itinerario->save();
         }
 //        $itineraries=P_Paquete::get();
 //        return view('admin.show-itineraries',['itineraries'=>$itineraries]);
 //        return redirect()->route('show_itineraries_path');
         return redirect()->route('show_itineraries_path');
+        // $webs=Web::get();
+        // $itineraries=P_Paquete::get();
+        // $itinerarios=M_Itinerario::get();
+        // session()->put('menu-lateral', 'sales/iti/list');
+        // return view('admin.show-itineraries',compact(['itineraries','itinerarios','webs']));
     }
     public function itineraries()
     {
@@ -626,7 +642,7 @@ class PackageController extends Controller
         $itinerary=P_Paquete::FindOrFail($id);
         $itinerarios_d=M_ItinerarioDestino::get();
         $paquete_paginas=PaquetePagina::get();
-        return view('admin.show-itinerary',['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d,'webs'=>$webs,'paquete_paginas'=>$paquete_paginas]);
+        return view('admin.show-itinerary', ['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d,'webs'=>$webs,'paquete_paginas'=>$paquete_paginas]);
     }
     public function duplicate_itinerary($id)
     {
