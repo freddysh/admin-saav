@@ -37,7 +37,7 @@
                                 @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                                     @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
                                         @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
-                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
+                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='BTG')
                                                 @php
                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                 @endphp
@@ -52,7 +52,7 @@
                                                     <td>
                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                     </td>
-                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                     <td>
@@ -87,7 +87,7 @@
                                                 @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                                     @if($opcion=='ENTRE DOS FECHAS URGENTES')
                                                         @if($itinerario_servicios->prioridad=='URGENTE')
-                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
+                                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='BTG')
                                                                 @php
                                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                 @endphp
@@ -102,7 +102,7 @@
                                                                     <td>
                                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                     </td>
-                                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                                     <td>
@@ -126,7 +126,7 @@
                                                             @endif
                                                         @endif
                                                     @elseif($opcion=='ENTRE DOS FECHAS')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='BTG')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -141,7 +141,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -168,7 +168,7 @@
                                             @elseif($opcion=='TODOS LOS PENDIENTES' || $opcion=='TODOS LOS URGENTES')
                                                 @if($opcion=='TODOS LOS URGENTES')
                                                     @if($itinerario_servicios->prioridad=='URGENTE')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='BTG')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -183,7 +183,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -207,7 +207,7 @@
                                                         @endif
                                                     @endif
                                                 @elseif($opcion=='TODOS LOS PENDIENTES')
-                                                    @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='BTG')
+                                                    @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='BTG')
                                                         @php
                                                             $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                         @endphp
@@ -222,7 +222,7 @@
                                                             <td>
                                                                 <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                             </td>
-                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                            <td>{{$itinerario_servicios->clase}}</td>
                                                             <td>{{$itinerario_servicios->nombre}}</td>
                                                             <td>{{$cotizacion_->nropersonas}}</td>
                                                             <td>
@@ -269,7 +269,7 @@
                                 @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                                     @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
                                         @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
-                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
+                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='CAT')
                                                 @php
                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                 @endphp
@@ -284,7 +284,7 @@
                                                     <td>
                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                     </td>
-                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                     <td>
@@ -319,7 +319,7 @@
                                                 @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                                     @if($opcion=='ENTRE DOS FECHAS URGENTES')
                                                         @if($itinerario_servicios->prioridad=='URGENTE')
-                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
+                                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='CAT')
                                                                 @php
                                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                 @endphp
@@ -334,7 +334,7 @@
                                                                     <td>
                                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                     </td>
-                                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                                     <td>
@@ -358,7 +358,7 @@
                                                             @endif
                                                         @endif
                                                     @elseif($opcion=='ENTRE DOS FECHAS')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='CAT')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -373,7 +373,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -400,7 +400,7 @@
                                             @elseif($opcion=='TODOS LOS PENDIENTES' || $opcion=='TODOS LOS URGENTES')
                                                 @if($opcion=='TODOS LOS URGENTES')
                                                     @if($itinerario_servicios->prioridad=='URGENTE')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='CAT')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -415,7 +415,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -439,7 +439,7 @@
                                                         @endif
                                                     @endif
                                                 @elseif($opcion=='TODOS LOS PENDIENTES')
-                                                    @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='CAT')
+                                                    @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='CAT')
                                                         @php
                                                             $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                         @endphp
@@ -454,7 +454,7 @@
                                                             <td>
                                                                 <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                             </td>
-                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                            <td>{{$itinerario_servicios->clase}}</td>
                                                             <td>{{$itinerario_servicios->nombre}}</td>
                                                             <td>{{$cotizacion_->nropersonas}}</td>
                                                             <td>
@@ -501,7 +501,7 @@
                                 @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                                     @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
                                         @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)  
-                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
+                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='KORI')
                                                 @php
                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                 @endphp
@@ -516,7 +516,7 @@
                                                     <td>
                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                     </td>
-                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                     <td>
@@ -551,7 +551,7 @@
                                                 @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                                     @if($opcion=='ENTRE DOS FECHAS URGENTES')
                                                         @if($itinerario_servicios->prioridad=='URGENTE')
-                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
+                                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='KORI')
                                                                 @php
                                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                 @endphp
@@ -566,7 +566,7 @@
                                                                     <td>
                                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                     </td>
-                                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                                     <td>
@@ -590,7 +590,7 @@
                                                             @endif
                                                         @endif
                                                     @elseif($opcion=='ENTRE DOS FECHAS')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='KORI')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -605,7 +605,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -632,7 +632,7 @@
                                             @elseif($opcion=='TODOS LOS PENDIENTES' || $opcion=='TODOS LOS URGENTES')
                                                 @if($opcion=='TODOS LOS URGENTES')
                                                     @if($itinerario_servicios->prioridad=='URGENTE')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='KORI')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -647,7 +647,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -671,7 +671,7 @@
                                                         @endif
                                                     @endif
                                                 @elseif($opcion=='TODOS LOS PENDIENTES')
-                                                    @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='KORI')
+                                                    @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='KORI')
                                                         @php
                                                             $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                         @endphp
@@ -686,7 +686,7 @@
                                                             <td>
                                                                 <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                             </td>
-                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                            <td>{{$itinerario_servicios->clase}}</td>
                                                             <td>{{$itinerario_servicios->nombre}}</td>
                                                             <td>{{$cotizacion_->nropersonas}}</td>
                                                             <td>
@@ -733,7 +733,7 @@
                                 @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                                     @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
                                         @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
-                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
+                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='MAPI')
                                                 @php
                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                 @endphp
@@ -748,7 +748,7 @@
                                                     <td>
                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                     </td>
-                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                     <td>
@@ -783,7 +783,7 @@
                                                 @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                                     @if($opcion=='ENTRE DOS FECHAS URGENTES')
                                                         @if($itinerario_servicios->prioridad=='URGENTE')
-                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
+                                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='MAPI')
                                                                 @php
                                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                 @endphp
@@ -798,7 +798,7 @@
                                                                     <td>
                                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                     </td>
-                                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                                     <td>
@@ -822,7 +822,7 @@
                                                             @endif
                                                         @endif
                                                     @elseif($opcion=='ENTRE DOS FECHAS')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='MAPI')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -837,7 +837,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -864,7 +864,7 @@
                                             @elseif($opcion=='TODOS LOS PENDIENTES' || $opcion=='TODOS LOS URGENTES')
                                                 @if($opcion=='TODOS LOS URGENTES')
                                                     @if($itinerario_servicios->prioridad=='URGENTE')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='MAPI')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -879,7 +879,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -903,7 +903,7 @@
                                                         @endif
                                                     @endif
                                                 @elseif($opcion=='TODOS LOS PENDIENTES')
-                                                    @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='MAPI')
+                                                    @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='MAPI')
                                                         @php
                                                             $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                         @endphp
@@ -918,7 +918,7 @@
                                                             <td>
                                                                 <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                             </td>
-                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                            <td>{{$itinerario_servicios->clase}}</td>
                                                             <td>{{$itinerario_servicios->nombre}}</td>
                                                             <td>{{$cotizacion_->nropersonas}}</td>
                                                             <td>
@@ -965,7 +965,7 @@
                                 @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                                     @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
                                         @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
-                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
+                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='OTROS')
                                                 @php
                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                 @endphp
@@ -980,7 +980,7 @@
                                                     <td>
                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                     </td>
-                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                     <td>
@@ -1015,7 +1015,7 @@
                                                 @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                                     @if($opcion=='ENTRE DOS FECHAS URGENTES')
                                                         @if($itinerario_servicios->prioridad=='URGENTE')
-                                                            @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
+                                                            @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='OTROS')
                                                                 @php
                                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                 @endphp
@@ -1030,7 +1030,7 @@
                                                                     <td>
                                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                     </td>
-                                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                                     <td>
@@ -1054,7 +1054,7 @@
                                                             @endif
                                                         @endif
                                                     @elseif($opcion=='ENTRE DOS FECHAS')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='OTROS')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -1069,7 +1069,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -1096,7 +1096,7 @@
                                             @elseif($opcion=='TODOS LOS PENDIENTES' || $opcion=='TODOS LOS URGENTES')
                                                 @if($opcion=='TODOS LOS URGENTES')
                                                     @if($itinerario_servicios->prioridad=='URGENTE')
-                                                        @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
+                                                        @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='OTROS')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -1111,7 +1111,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -1135,7 +1135,7 @@
                                                         @endif
                                                     @endif
                                                 @elseif($opcion=='TODOS LOS PENDIENTES')
-                                                    @if($itinerario_servicios->servicio->grupo=='ENTRANCES' && $itinerario_servicios->servicio->clase=='OTROS')
+                                                    @if($itinerario_servicios->grupo=='ENTRANCES' && $itinerario_servicios->clase=='OTROS')
                                                         @php
                                                             $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                         @endphp
@@ -1150,7 +1150,7 @@
                                                             <td>
                                                                 <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                             </td>
-                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                            <td>{{$itinerario_servicios->clase}}</td>
                                                             <td>{{$itinerario_servicios->nombre}}</td>
                                                             <td>{{$cotizacion_->nropersonas}}</td>
                                                             <td>
@@ -1197,7 +1197,7 @@
                                 @foreach($cotizacion_->paquete_cotizaciones as $paquete_cotizaciones)
                                     @foreach($paquete_cotizaciones->itinerario_cotizaciones->sortBy('fecha') as $itinerario_cotizaciones)
                                         @foreach($itinerario_cotizaciones->itinerario_servicios->where('liquidacion','1') as $itinerario_servicios)
-                                            @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
+                                            @if($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')
                                                 @php
                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                 @endphp
@@ -1212,7 +1212,7 @@
                                                     <td>
                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                     </td>
-                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                     <td>
@@ -1247,7 +1247,7 @@
                                                 @if($ini<=$itinerario_servicios->fecha_venc && $itinerario_servicios->fecha_venc<=$fin)
                                                     @if($opcion=='ENTRE DOS FECHAS URGENTES')
                                                         @if($itinerario_servicios->prioridad=='URGENTE')
-                                                            @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
+                                                            @if($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')
                                                                 @php
                                                                     $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                                 @endphp
@@ -1262,7 +1262,7 @@
                                                                     <td>
                                                                         <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                     </td>
-                                                                    <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                    <td>{{$itinerario_servicios->clase}}</td>
                                                                     <td>{{$itinerario_servicios->nombre}}</td>
                                                                     <td>{{$cotizacion_->nropersonas}}</td>
                                                                     <td>
@@ -1286,7 +1286,7 @@
                                                             @endif
                                                         @endif
                                                     @elseif($opcion=='ENTRE DOS FECHAS')
-                                                        @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
+                                                        @if($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -1301,7 +1301,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -1328,7 +1328,7 @@
                                             @elseif($opcion=='TODOS LOS PENDIENTES' || $opcion=='TODOS LOS URGENTES')
                                                 @if($opcion=='TODOS LOS URGENTES')
                                                     @if($itinerario_servicios->prioridad=='URGENTE')
-                                                        @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
+                                                        @if($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')
                                                             @php
                                                                 $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                             @endphp
@@ -1343,7 +1343,7 @@
                                                                 <td>
                                                                     <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                                 </td>
-                                                                <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                                <td>{{$itinerario_servicios->clase}}</td>
                                                                 <td>{{$itinerario_servicios->nombre}}</td>
                                                                 <td>{{$cotizacion_->nropersonas}}</td>
                                                                 <td>
@@ -1367,7 +1367,7 @@
                                                         @endif
                                                     @endif
                                                 @elseif($opcion=='TODOS LOS PENDIENTES')
-                                                    @if($itinerario_servicios->servicio->grupo=='MOVILID' && $itinerario_servicios->servicio->clase=='BOLETO')
+                                                    @if($itinerario_servicios->grupo=='MOVILID' && $itinerario_servicios->clase=='BOLETO')
                                                         @php
                                                             $total+=$itinerario_servicios->precio*$cotizacion_->nropersonas;
                                                         @endphp
@@ -1382,7 +1382,7 @@
                                                             <td>
                                                                 <b>{{fecha_peru($itinerario_servicios->fecha_venc)}}</b>
                                                             </td>
-                                                            <td>{{$itinerario_servicios->servicio->clase}}</td>
+                                                            <td>{{$itinerario_servicios->clase}}</td>
                                                             <td>{{$itinerario_servicios->nombre}}</td>
                                                             <td>{{$cotizacion_->nropersonas}}</td>
                                                             <td>

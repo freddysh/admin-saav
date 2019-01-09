@@ -72,13 +72,21 @@ class PackageController extends Controller
 //        dd('hola');
         $txt_day=strtoupper(($request->input('txt_day')));
         $txt_code=strtoupper(($request->input('txt_codigo')));
+        $txta_description=$request->input('txta_description');
+        $txt_title=strtoupper($txta_description);
+        $search_by_code=P_Paquete::where('codigo',$txt_code)->count();
+        $search_by_title=P_Paquete::where('titulo',$txt_title)->count();
+        if($search_by_code>0)
+            return back();
+        if($search_by_title>0)
+            return back();
+            
 //        dd('$txt_code:'.$txt_code);
         $txt_pagina=$request->input('txt_pagina');
         if(!isset($txt_pagina))
             return back();
 //        $txt_title=strtoupper(($request->input('txt_title')));
-        $txta_description=$request->input('txta_description');
-        $txt_title=strtoupper($txta_description);
+        
         $txta_include=$request->input('txta_include');
         $txta_notinclude=$request->input('txta_notinclude');
         $totalItinerario=$request->input('totalItinerario');
@@ -841,7 +849,7 @@ class PackageController extends Controller
     {
         $paquete_id=$request->input('id');
         $eliminar=P_Paquete::FindOrFail($paquete_id)->delete();
-        if($eliminar)
+        if($eliminar==1)
             return 1;
         else
             return 0;

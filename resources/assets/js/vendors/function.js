@@ -1259,8 +1259,12 @@ function eliminar_paquete(id,destino) {
             }
         });
         $.post('/admin/package/delete', 'id='+id, function(data) {
+            console.log('data.'+data);
             if(data==1){
                 $("#lista_destinos_"+id).fadeOut( "slow");
+            }
+            else{
+                
             }
         }).fail(function (data) {
         });

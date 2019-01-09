@@ -1,7 +1,7 @@
 <table id="example" class="table table-sm table-bordered" cellspacing="0">
     <thead>
     <tr>
-        <th>Pagina</th>
+        <th>Pagina(s)</th>
         <th>Codigo</th>
         <th>Titulo</th>
         <th>Destinos</th>
@@ -10,7 +10,7 @@
     </thead>
     <tfoot>
     <tr>
-        <th>Pagina</th>
+        <th>Pagina(s)</th>
         <th>Codigo</th>
         <th>Titulo</th>
         <th>Destinos</th>
@@ -23,7 +23,7 @@
             <td>
                 @if ($itinerary->paquete_paginas->count()>0)
                     @foreach ($itinerary->paquete_paginas as $paquete_pagina)
-                        <p class="text-primary">{{$paquete_pagina->pagina}}</p>
+                         | <span class="text-primary">{{$paquete_pagina->pagina}}</span>
                     @endforeach    
                 @else
                    <span class="text-danger">Falta agregar la pagina</span>
