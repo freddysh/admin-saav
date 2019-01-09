@@ -2005,7 +2005,7 @@ function eliminar_paquete(id,destino) {
                 $("#lista_destinos_"+id).fadeOut( "slow");
             }
             else{
-                
+
             }
         }).fail(function (data) {
         });
@@ -4593,7 +4593,7 @@ function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
         $.ajax({
             type: 'POST',
             url: '../admin/ventas/service/eliminar-proveedor',
-            data: 'costo_id='+costo_id+'&proveedor_id='+proveedor_id,
+            data: 'costo_id='+costo_id+'&proveedor_id='+proveedor_id+'&id='+id,
             // Mostramos un mensaje con la respuesta de PHP
             success: function(data) {
                 if(data=='1'){

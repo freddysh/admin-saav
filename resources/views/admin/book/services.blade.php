@@ -43,7 +43,7 @@
                     <div class="tab-content">
                         <div id="itinerario" class="tab-pane fade show active">
                             <div class="row">
-                                <div class="col-10">
+                                <div class="col-9">
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
@@ -70,7 +70,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-2 text-right margin-top-10">
+                                <div class="col-3 text-right margin-top-10">
                                     {{--<botton class="btn btn-primary" href="#!" id="pasajeros" data-toggle="modal" data-target="#myModal_pasajeros">--}}
                                         {{--<i class="fas fa-user-plus fa-2x"></i>--}}
                                     {{--</botton>--}}
@@ -147,6 +147,8 @@
                                             {{--</div>--}}
                                         {{--</div>--}}
                                     {{--</div>--}}
+
+                                    {{--  popap para subir y descargar archivos  --}}
                                     <botton class="btn btn-primary" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_archivos">
                                         <i class="fas fa-file-alt"></i>
                                     </botton>
@@ -242,6 +244,17 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    {{--  popap para descargar los pax en tres formatos  --}}
+                                    <a href="#!" class="btn btn-primary">
+                                            <i class="fas fa-cloud-download-alt"></i>
+                                    </a>
+                                    <a href="#!" class="btn btn-success">
+                                        <i class="fas fa-cloud-download-alt"></i>
+                                    </a>
+                                    <a href="#!" class="btn btn-warning">
+                                        <i class="fas fa-cloud-download-alt"></i>
+                                    </a>
                                     @php
                                         $nro_servicios_total=0;
                                         $nro_servicios_reservados=0;

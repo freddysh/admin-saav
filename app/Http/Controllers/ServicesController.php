@@ -544,9 +544,17 @@ class ServicesController extends Controller
     }
     public function eliminar_proveedores_service(Request $request)
     {
+        $id= $request->input('id');
         $costo_id= $request->input('costo_id');
         $proveedor_id= $request->input('proveedor_id');
-        $nro_usados=ItinerarioServicios::where('proveedor_id',$proveedor_id)->count('proveedor_id');
+        $m_servicio=M_Servicio::find($id);
+        $nro_usados=ItinerarioServicios::where('localizacion',$m_servicio->localizacion)
+        ->where('grupo',$m_servicio->grupo)
+        ->where('tipoServicio',$m_servicio->tipoServicio)
+        ->where('clase',$m_servicio->clase)
+        ->where('nombre',$m_servicio->nombre)
+        ->where('proveedor_id',$proveedor_id)->count('proveedor_id');
+        
         if($nro_usados>0){
             return 2;
         }

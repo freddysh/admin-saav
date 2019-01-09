@@ -24,6 +24,7 @@
             <th>Horario</th>
         @endif
         <th>Precio</th>
+        <th>Proveedores</th>
         <th class="text-center">Action</th>
     </tr>
     </thead>
@@ -49,12 +50,14 @@
                 <th>Horario</th>
             @endif
             <th>Precio</th>
+            <th>Proveedores</th>
             <th class="text-center">Action</th>
         </tr>
     </tfoot>
     <tbody>
     @php
         $pos = 0;
+        $nro_proveedores=0;
     @endphp
     @if($filtro=='normal')
         @foreach ($sericios as $servicio)
@@ -74,6 +77,13 @@
                     <td id="horario_{{$servicio->id}}">{{$servicio->salida}} - {{$servicio->llegada}}</td>
                 @endif
                 <td id="precio_{{$servicio->id}}" class="text-right"><sup>$</sup>{{$servicio->precio_venta}}</td>
+                <td>
+                    @php
+                    $nro_proveedores=0;
+                        $nro_proveedores=$costos->where('grupo',$servicio->grupo)->where('localizacion',$servicio->localizacion)->where('tipo_producto',$servicio->tipoServicio)->where('clase',$servicio->clase)->where('nombre',$servicio->nombre)->count('proveedor_id');
+                    @endphp
+                    {{$nro_proveedores}} <i class="fas fa-users text-primary"></i>
+                </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_producto{{$servicio->id}}">
                         <i class="fas fa-pencil-alt"></i>
@@ -983,6 +993,12 @@
                     <td id="horario_{{$servicio->id}}">{{$servicio->salida}} - {{$servicio->llegada}}</td>
                 @endif
                 <td id="precio_{{$servicio->id}}" class="text-right"><sup>$</sup>{{$servicio->precio_venta}}</td>
+                <td>
+                    @php
+                        $nro_proveedores=$costos->where('grupo',$servicio->grupo)->where('localizacion',$servicio->localizacion)->where('tipo_producto',$servicio->tipoServicio)->where('clase',$servicio->clase)->where('nombre',$servicio->nombre)->count('proveedor_id');
+                    @endphp
+                    {{$nro_proveedores}} <i class="fas fa-users text-primary"></i>
+                </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_producto{{$servicio->id}}">
                         <i class="fas fa-pencil-alt"></i>
@@ -1893,6 +1909,12 @@
                     <td id="horario_{{$servicio->id}}">{{$servicio->salida}} - {{$servicio->llegada}}</td>
                 @endif
                 <td id="precio_{{$servicio->id}}" class="text-right"><sup>$</sup>{{$servicio->precio_venta}}</td>
+                <td>
+                    @php
+                        $nro_proveedores=$costos->where('grupo',$servicio->grupo)->where('localizacion',$servicio->localizacion)->where('tipo_producto',$servicio->tipoServicio)->where('clase',$servicio->clase)->where('nombre',$servicio->nombre)->count('proveedor_id');
+                    @endphp
+                    {{$nro_proveedores}} <i class="fas fa-users text-primary"></i>
+                </td>
                 <td class="text-center">
                     <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_producto{{$servicio->id}}">
                         <i class="fas fa-pencil-alt"></i>
