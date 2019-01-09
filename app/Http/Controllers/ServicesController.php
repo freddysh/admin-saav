@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\DestinosOpera;
-use App\GrupoOpera;
 use App\Hotel;
-use App\ItinerarioServicios;
+use App\M_Destino;
+use App\Proveedor;
+use App\GrupoOpera;
 use App\M_Category;
 use App\M_Producto;
 use App\M_Servicio;
-use App\M_Destino;
-use App\Proveedor;
+use App\DestinosOpera;
 use App\ProveedorClases;
+use App\ItinerarioServicios;
 use Illuminate\Http\Request;
+use App\M_ItinerarioServicio;
 use Illuminate\Http\Response;
+use App\P_ItinerarioServicios;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
@@ -281,27 +283,36 @@ class ServicesController extends Controller
                             ->where('nombre',$servicio->nombre)
                             ->count('id');
 
+        $nro_templates_serv_usados=P_ItinerarioServicios::where('m_servicios_id',$id)->count('id');
         $nro_m_itinerario_servicios_usados=M_ItinerarioServicio::where('m_servicios_id',$id)->count('id');
         
-        $nro_templates_serv_usados=P_ItinerarioServicios::where('m_servicios_id',$id)->count('id');
         
-        $nro_productos_usados=M_Producto::where('grupo',$servicio->grupo)
-                            ->where('localizacion',$servicio->localizacion)
-                            ->where('tipo_producto',$servicio->tipoServicio)
-                            ->where('clase',$servicio->clase)
-                            ->where('nombre',$servicio->nombre)
-                            ->count('id');
-        
+        // $nro_productos_usados=M_Producto::where('grupo',$servicio->grupo)
+        //                     ->where('localizacion',$servicio->localizacion)
+        //                     ->where('tipo_producto',$servicio->tipoServicio)
+        //                     ->where('clase',$servicio->clase)
+        //                     ->where('nombre',$servicio->nombre)
+        //                     ->count('id');        
         
 
         if($nro_files_serv_usados==0){
-            if ($servicio->delete())
-                return 1;
-            else
-                return 0;
+            if($nro_templates_serv_usados==0){
+                if($nro_m_itinerario_servicios_usados==0){
+                    if ($servicio->delete())
+                        return '1_';
+                    else
+                        return '0_';
+                }
+                else{
+                    return '2_El servicio esta siendo usado en un dia';
+                }
+            }
+            else{
+                return '2_El servicio esta siendo usado en una plantilla';
+            }            
         }
         else{
-            return 2;
+            return '2_El servicio esta siendo usado en una cotizacion';
         }
     }
     public function edit(Request $request)

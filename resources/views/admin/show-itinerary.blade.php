@@ -243,10 +243,42 @@
                                                         {{$itinerario_total}} $
                                                     </small>
                                                 </a>
-                                                <div class="icon">
+                                                <div class="icon1">
                                                      <a class="text-right" href="#!" onclick="eliminar_iti('{{$iti_id}}','{{$itinerario_total}}')"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>
                                                 </div>
+                                                
                                             </div>
+                                            <div class="row">
+                                                    <div class="col">
+                                                        <table class="table table-bordered table-condensed table-responsive">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Servicio</th>
+                                                                    <th>Precio</th>
+                                                                    <th>Estado</th>
+                                                                </tr>   
+                                                            </thead>
+                                                            <tbody>   
+                                                            @foreach($itinerario->serivicios as $serivicios)
+                                                                @php
+                                                                    $existe_serv=$m_servicios->where('id',$serivicios->m_servicios_id)->count();    
+                                                                @endphp
+                                                                <tr>
+                                                                    <td>{{$serivicios->nombre}}</td>
+                                                                    <td>{{$serivicios->precio}}</td>
+                                                                    <td>
+                                                                        @if ($existe_serv==0)
+                                                                            <span class="badge badge-danger">Se ha borrado</span>
+                                                                        @else
+                                                                        <span class="badge badge-success">Existe</span>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            </tbody>
+                                                        </table>    
+                                                    </div>    
+                                                </div>    
                                         </li>
                                     @endforeach
                                 </ol>

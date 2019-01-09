@@ -12,4 +12,8 @@ class P_ItinerarioServicios extends Model
     {
         return $this->hasMany(P_Itinerario::class,'p_itinerario_id');
     }
+    // public function servicio()
+    // {
+    //     return $this->hasMany(M_Servicio::class,'m_servicios_id');
+    // }
 }

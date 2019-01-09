@@ -20,14 +20,36 @@
     <tbody>
     @foreach($itineraries->sortByDesc('fecha') as $itinerary)
         <tr id="lista_destinos_{{$itinerary->id}}">
-            <td>{{$itinerary->pagina}}</td>
+            <td>
+                @if ($itinerary->paquete_paginas->count()>0)
+                    @foreach ($itinerary->paquete_paginas as $paquete_pagina)
+                        <p class="text-primary">{{$paquete_pagina->pagina}}</p>
+                    @endforeach    
+                @else
+                   <span class="text-danger">Falta agregar la pagina</span>
+                @endif
+            </td>
             <td>{{$itinerary->codigo}}</td>
             @php
                 $arra_destinos=array();
                 $lista='';
                 $existe=0;
+                $nro_servicios_borrados=0;
+                $servicios_borrados='';
+                $servicio_=0;
             @endphp
             @foreach($itinerary->itinerarios as $itinerario)
+                @foreach ($itinerario->serivicios as $servicios)
+                    @php
+                        $servicio_=$m_servicios->where('id',$servicios->m_servicios_id)->count();
+                        $servicios_borrados.='_'.$servicios->m_servicios_id;
+                    @endphp
+                    @if ($servicio_==0)
+                        @php
+                            $nro_servicios_borrados++;
+                        @endphp
+                    @endif
+                @endforeach
                 {{--@foreach($itinerarios->where('titulo',$itinerario->titulo) as $iti)--}}
                 {{--@endforeach--}}
                 @if($itinerario->where('titulo',$itinerario->titulo)->count('titulo')>0)
@@ -45,11 +67,15 @@
                     @endphp
                 @endforeach
             @endforeach
-
             <td>
                 <a id="propover_{{$itinerary->id}}" href="{{route('show_itinerary_path',$itinerary->id)}}" data-toggle="popover" title="{{$itinerary->titulo}} x {{$itinerary->duracion}} DAYS" data-content="{{$lista}}">{{ucwords(strtolower($itinerary->titulo))}} x {{$itinerary->duracion}} DAYS</a>
                 @if(($itinerary->itinerarios->count()-$existe)>0)
                     <span class="small text-danger">({{($itinerary->itinerarios->count()-$existe)}} de {{$itinerary->itinerarios->count()}} "Day by Day" se modificaron)</span>
+                @endif
+                @if ($nro_servicios_borrados>0)
+                    <span class="badge badge-danger">Se borraron {{$nro_servicios_borrados}} servicios, clic para realizar la actualizacion</span>    
+                @else
+                    <span class="badge badge-success">Servicios completos</span>    
                 @endif
                 <i class='small text-secondary d-block'>Creado: {{$itinerary->created_at}}</i>
             </td>

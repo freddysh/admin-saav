@@ -1133,17 +1133,22 @@ class PackageController extends Controller
     }
     public function itineraries_listar_pagina(Request $request)
     {
+        set_time_limit(0);
         $pagina = $request->input('pagina');
 //        return $pagina;
-        $itineraries = P_Paquete::whereHas('paquete_paginas', function($query) use($pagina) {
-            $query->where('pagina',$pagina);
-        })->get();
-        
-        if(count($itineraries)==0){
-            $itineraries =P_Paquete::where('pagina', $pagina)->get();    
+        if($pagina=='0'){
+            $itineraries =P_Paquete::get();
         }
-        
+        else{
+            $itineraries = P_Paquete::whereHas('paquete_paginas', function($query) use($pagina) {
+                $query->where('pagina',$pagina);
+            })->get();
+        }
+        // if(count($itineraries)==0){
+        //     $itineraries =P_Paquete::where('pagina', $pagina)->get();    
+        // }
+        $m_servicios=M_Servicio::get();
         // dd($itineraries);
-        return view('admin.show-itinearies-pagina', compact('itineraries'));
+        return view('admin.show-itinearies-pagina', compact('itineraries','m_servicios'));
     }
 }

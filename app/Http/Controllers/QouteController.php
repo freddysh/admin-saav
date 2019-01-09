@@ -264,6 +264,7 @@ class QouteController extends Controller
             return redirect()->back();
         }
         else {
+            $errores=0;
             $web = $request->input('web');
             $path = $request->file('import_file')->getRealPath();
 //        dd($path);
@@ -335,10 +336,23 @@ class QouteController extends Controller
                             $query->where('pagina',$web);
                         })->first();
                         
-                        if(count($ppaquete)==0) {
-                            $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
-                        }    
-                        
+                        // if(count($ppaquete)==0) {
+                        //     $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
+                        // }  
+                        // dd($ppaquete);
+                        $nro_servicios_no_existe=0;
+                        if(count($ppaquete)) {
+                            // foreach($ppaquete as $ppaquete_){
+                                foreach($ppaquete->itinerarios as $itinerarios){
+                                    foreach($itinerarios->serivicios as $serivicio){
+                                        $serv=M_Servicio::where('id',$serivicio->m_servicios_id)->count();
+                                        if($serv==0){
+                                            $nro_servicios_no_existe++;
+                                        }
+                                    }
+                                }   
+                            // }
+                        }
                         if(count($ppaquete)) {
                             if ($ppaquete->duracion > 1) {
                                 $estrellas = 'No necesita';
@@ -349,10 +363,17 @@ class QouteController extends Controller
                             } else {
                                 $estrellas = 'No necesita';
                             }
-                            $codigo='<b class="text-success">'.$codigo.'</b>';
+                            if($nro_servicios_no_existe>0){
+                                $errores++;
+                                $codigo='<b class="text-danger">'.$codigo.'<br>No se encontraron '.$nro_servicios_no_existe.' servicios, tienes que actualizar los servicios de la plantilla</b>';
+                            }
+                            else{
+                                $codigo='<b class="text-success">'.$codigo.'</b>';
+                            }
                         }
                         else{
-                            $codigo='<b class="text-danger">'.$codigo.'<br>No existe</b>';
+                            $errores++;
+                            $codigo='<b class="text-danger">'.$codigo.'<br>No existe para los filtros(pagina='.$web.',codigo='.$codigo.')</b>';
                         }
 
                         $arr[] = ['totaltravelers' => $totaltravelers, 'codigo' => $codigo, 'estrellas' => $estrellas, 'transactiondatetime' => $transactiondatetime, 'originalBookingDate' => $originalBookingDate, 'titulo' => $titulo, 'idioma' => $idioma, 'nombres' => $nombres, 'telefono' => $telefono, 'email' => $email, 'total' => $total, 'cost' => $cost, 'profit' => $profit, 'fecha_llegada' => $fecha_llegada, 'notas' => $notas1];
@@ -361,7 +382,7 @@ class QouteController extends Controller
             }
 //        return redirect()->back()->withInput($request->input())->with('arr',$arr);
 //        return $arr;
-            return view('admin.expedia.expedia-import-vista-previa', compact('arr', 'filename','web'));
+            return view('admin.expedia.expedia-import-vista-previa', compact('arr', 'filename','web','errores'));
         }
     }
     public function expedia_save(Request $request)
@@ -430,9 +451,13 @@ class QouteController extends Controller
                     $ppaquete = P_Paquete::where('codigo', $codigo)->whereHas('paquete_paginas',function($query)use($web){
                         $query->where('pagina',$web);
                     })->first();
-                    if(count($ppaquete)==0) {
-                        $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
-                    }
+
+                    // $ppaquete = P_Paquete::where('codigo', $codigo)->whereHas('paquete_paginas',function($query)use($web){
+                    //     $query->where('pagina',$web);
+                    // })->first();
+                    // if(count($ppaquete)==0) {
+                    //     $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
+                    // }
                     if (count($ppaquete) > 0) {
                         if ($ppaquete->duracion > 1) {
                             $estrellas = 'No necesita';
@@ -453,7 +478,7 @@ class QouteController extends Controller
 
                         $codigo_auto=MisFunciones::generar_codigo('expedia.com');
                         // buscamos el paquete para crear la cotizacion
-                        $ppaquete = P_Paquete::where('codigo', $codigo)->first();
+                        // $ppaquete = P_Paquete::where('codigo', $codigo)->first();
                         $coti = new Cotizacion();
                         $coti->codigo = $codigo_auto;
                         $coti->codigo_pqt = $codigo;
@@ -590,6 +615,7 @@ class QouteController extends Controller
                             }
                             $st = 0;
                             foreach ($itinerarios_->serivicios as $servicios) {
+                                $m_serv=M_Servicio::find($servicios->m_servicios_id);
                                 $p_servicio = new ItinerarioServicios();
                                 $p_servicio->nombre = $servicios->nombre;
                                 $p_servicio->observacion = '';
@@ -609,10 +635,11 @@ class QouteController extends Controller
                                 $p_servicio->user_id = auth()->guard('admin')->user()->id;
                                 $p_servicio->m_servicios_id = $servicios->m_servicios_id;
                                 $p_servicio->pos = $servicios->pos;
-                                $p_servicio->grupo = $servicios->grupo;
-                                $p_servicio->localizacion = $servicios->localizacion;
-                                $p_servicio->tipoServicio = $servicios->tipoServicio;
-                                $p_servicio->clase = $servicios->clase;
+
+                                $p_servicio->grupo = $m_serv->grupo;
+                                $p_servicio->localizacion = $m_serv->localizacion;
+                                $p_servicio->tipoServicio = $m_serv->tipoServicio;
+                                $p_servicio->clase = $m_serv->clase;
                                 
                                 $p_servicio->save();
                                 if ($servicios->precio_grupo == 1 && $servicios->grupo == 'MOVILID') {

@@ -22,7 +22,8 @@
             <div class="form-group">
                 <label for="txt_pagina" class="font-weight-bold text-secondary">filtrar por pagina</label>
                 <select class="form-control" id="txt_pagina" name="txt_pagina" onchange="mostrar_pqts($('#txt_pagina').val())">
-                    <option value="0">Escoja una opcion</option>
+                    <option value="-1">Escoja una opcion</option>
+                    <option value="0">Todos</option>
                     @foreach ($webs as $item)
                         <option value="{{$item->pagina}}">{{$item->pagina}}</option> 
                     @endforeach

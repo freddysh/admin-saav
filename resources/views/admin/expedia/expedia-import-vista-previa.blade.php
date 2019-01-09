@@ -92,7 +92,11 @@ return $f[2].'-'.$f[1].'-'.$f[0].' '.$f0[1];
                                 {{csrf_field()}}
                                 <input type="hidden" name="web" value="{{$web}}">
                                 <input type="hidden" name="import_file" value="{{$filename}}">
-                                <button type="submit" class="btn btn-primary btn-block">HACER RESERVA <i class="fas fa-arrow-alt-circle-right"></i></button>
+                                @if ($errores==0)
+                                    <button type="submit" class="btn btn-primary btn-block">HACER RESERVA <i class="fas fa-arrow-alt-circle-right"></i></button>
+                                @else
+                                    <button type="button" class="btn btn-warning btn-block">TIENES QUE CORREGIR LAS OBSERVACIONES <i class="fas fa-exclamation-triangle"></i></button>    
+                                @endif
                             </form>
                         </div>
                     </div>

@@ -1014,14 +1014,15 @@ function eliminar_servicio(local,id,servicio) {
             }
         });
         $.post('/admin/services/delete', 'id='+id, function(data) {
-            if(data==1){
+            var res=data.split('_');
+            if(res[0]==1){
                 // $("#lista_destinos_"+id).remove();
                 $("#lista_services_"+id).fadeOut( "slow");
             }
-            else if(data==2){
+            else if(res[0]==2){
                 swal(
                     'Porque no puedo borar?',
-                    'El servicio esta en uso, solo podra desactivar.',
+                    res[1],
                     'warning'
                 )
             }
