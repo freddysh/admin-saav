@@ -323,8 +323,8 @@ class ServicesController extends Controller
         $txt_localizacion = $request->input('txt_localizacion_' . $id);
         $txt_type = $request->input('txt_type_' . $id);
 //        $txt_class='';
-        if($txt_grupo=='TRAINS'){
-            $prove=explode('_',$request->input('txt_provider_'.$id));
+        if ($txt_grupo == 'TRAINS') {
+            $prove=explode('_', $request->input('txt_provider_'.$id));
             $txt_type = $request->input('txt_class_'.$id.'_'. $prove[0]);
         }
         $txt_acomodacion = $request->input('txt_acomodacion_' . $id);
@@ -340,12 +340,13 @@ class ServicesController extends Controller
         $txt_clase = $request->input('txt_clase_' . $id);
 
 
-        if($txt_grupo=='MOVILID') {
+        if ($txt_grupo=='MOVILID') {
             $rutaAB = $request->input('txt_ruta_salida_' . $id);
             $rutaAB = explode('-', $rutaAB);
             $txt_ruta_salida = $rutaAB[0];
             $txt_ruta_llegada = $rutaAB[1];
         }
+        $m_servicio = M_Servicio::FindOrFail($id);
         $destino = M_Servicio::FindOrFail($id);
         $destino->localizacion = $txt_localizacion;
         $destino->tipoServicio = $txt_type;
@@ -365,6 +366,17 @@ class ServicesController extends Controller
         elseif ($txt_tipo_grupo == 'Individual')
             $destino->precio_grupo = 0;
         $destino->save();
+
+        $p_itinerario_servicios=P_ItinerarioServicios::where('m_servicios_id', $id)->get();
+        foreach ($p_itinerario_servicios as $value) {
+            $p_itinerario_servicios_temp=P_ItinerarioServicios::find($value->id);
+            $p_itinerario_servicios_temp->nombre=$destino->nombre;
+            $p_itinerario_servicios_temp->precio_grupo=$destino->precio_grupo;
+            $p_itinerario_servicios_temp->precio=$destino->precio;
+            $p_itinerario_servicios_temp->min_personas=$destino->min_personas;
+            $p_itinerario_servicios_temp->max_personas=$destino->max_personas;
+            $p_itinerario_servicios_temp->save();
+        }
         // return $destino->tipoServicio;
         $costo_id= $request->input('costo_id');
         // return $costo_id;
@@ -373,19 +385,48 @@ class ServicesController extends Controller
             $costos_bolsa = M_Producto::where('m_servicios_id', $id)->get();
             foreach ($costos_bolsa as $costos_bolsa_) {
                 if (in_array($costos_bolsa_->id, $costo_id)) {
-                    foreach ($costo_id as $key => $costo_id_) {
-                        $producto = M_Producto::FindOrFail($costo_id_);
-                        $producto->precio_costo = $costo_val[$key];
-                        $producto->nombre = $destino->nombre;
+                    // foreach ($costo_id as $key => $costo_id_) {
+                        // $producto = M_Producto::FindOrFail($costo_id_);
+                        $producto = M_Producto::FindOrFail($costos_bolsa_->id);
+                        $producto->localizacion = $destino->localizacion;
                         $producto->tipo_producto = $txt_type;
+                        $producto->nombre = $destino->nombre;
+                        $producto->precio_costo = $costo_val[$key];
+                        $producto->precio_grupo = $destino->precio_grupo;
+                        $producto->clase =$destino->clase;                        
+                        $producto->salida = $destino->salida;
+                        $producto->llegada = $destino->llegada;
+                        $producto->max_personas = $destino->max_personas;
+                        $producto->min_personas = $destino->min_personas;
                         $producto->save();
                         // return $producto;
                         
-                    }
+                    // }
                 } else {
                     $producto = M_Producto::FindOrFail($costos_bolsa_->id);
                     $producto->delete();
                 }
+            }
+            $itinerario_servs=ItinerarioServicios::where('grupo', $m_servicio->grupo)
+                            ->where('grupo', $m_servicio->grupo)
+                            ->where('localizacion', $m_servicio->localizacion)
+                            ->where('tipoServicio', $m_servicio->tipoServicio)
+                            ->where('clase', $m_servicio->clase)
+                            ->where('nombre', $m_servicio->nombre)
+                            ->get();
+            foreach ($itinerario_servs as $value) {
+                $itinerario_serv=ItinerarioServicios::find($value->id);
+                $itinerario_serv->nombre=$destino->nombre;
+                $itinerario_serv->precio_grupo=$destino->precio_grupo;
+                $itinerario_serv->min_personas=$destino->min_personas;
+                $itinerario_serv->max_personas=$destino->max_personas;
+                $itinerario_serv->tipoServicio=$destino->tipoServicio;
+                $itinerario_serv->localizacion=$destino->localizacion;
+                $itinerario_serv->clase=$destino->clase;
+                $itinerario_serv->salida=$destino->salida;
+                $itinerario_serv->llegada=$destino->llegada;
+                $itinerario_serv->s_p=$destino->tipoServicio;
+                $itinerario_serv->save();
             }
         }
         $pro_id= $request->input('pro_id');

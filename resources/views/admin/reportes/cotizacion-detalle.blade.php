@@ -34,39 +34,50 @@
                     $fecha=date_format($date, 'jS F Y');
                     $i++;
                     $profit=0;
+                    $profit_st=0;
                 @endphp
-                @foreach($cotizacion->paquete_cotizaciones as $paquete_cotizaciones)
-                    @php
+                @foreach($cotizacion->paquete_cotizaciones->where('estado',2) as $paquete_cotizaciones)
+                    {{-- @php
                         $profit=0;
-                    @endphp
+                    @endphp --}}
                     @if($paquete_cotizaciones->duracion==1)
                         @php
                             $profit=$paquete_cotizaciones->utilidad*$cotizacion->nropersonas;
                         @endphp
                     @else
-                        @foreach($paquete_cotizaciones->paquete_precios as $precio)
-                            @if($precio->personas_s>0)
-                                @php
-                                    $profit+=$precio->utilidad_s*$precio->personas_s;
-                                @endphp
-                            @endif
-                            @if($precio->personas_d>0)
-                                @php
-                                    $profit+=$precio->utilidad_d*$precio->personas_d;
-                                @endphp
-                            @endif
-                            @if($precio->personas_m>0)
-                                @php
-                                    $profit+=$precio->utilidad_m*$precio->personas_m;
-                                @endphp
-                            @endif
-                            @if($precio->personas_t>0)
-                                @php
-                                    $profit+=$precio->utilidad_t*$precio->personas_t;
-                                @endphp
-                            @endif
-                        @endforeach
+                        {{-- @php
+                            $profit_st=0;
+                        @endphp --}}
+                        @if($paquete_cotizaciones->paquete_precios->count()>=1)
+                            @foreach($paquete_cotizaciones->paquete_precios as $precio)
+                                @if($precio->personas_s>0)
+                                    @php
+                                        $profit_st+=$precio->utilidad_s*$precio->personas_s;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_d>0)
+                                    @php
+                                        $profit_st+=$precio->utilidad_d*$precio->personas_d*2;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_m>0)
+                                    @php
+                                        $profit_st+=$precio->utilidad_m*$precio->personas_m*2;
+                                    @endphp
+                                @endif
+                                @if($precio->personas_t>0)
+                                    @php
+                                        $profit_st+=$precio->utilidad_t*$precio->personas_t*3;
+                                    @endphp
+                                @endif
+                            @endforeach
+                        @else
+                            @php
+                                $profit=$paquete_cotizaciones->utilidad*$cotizacion->nropersonas;
+                            @endphp
+                        @endif
                     @endif
+                   
                 @endforeach
                 <tr>
                     <td>{{$i}}</td>
@@ -77,10 +88,10 @@
                             <b> <span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}}X{{$cotizacion->nropersonas}}({{$fecha}})</b>
                         @endforeach
                     </td>
-                    <td><b><sup>$</sup>{{number_format($profit,2)}}</b></td>
+                    <td><b><sup>$</sup>{{number_format($profit+$profit_st,2)}}</b></td>
                 </tr>
                 @php
-                    $profit_suma+=$profit;
+                    $profit_suma+=$profit+$profit_st;
                 @endphp
         @endforeach
         <tr>

@@ -26,6 +26,10 @@ Route::get('/',[
     'uses' => 'IndexController@inicio',
     'as' => 'inicio_path',
 ]);
+Route::get('/menu',[
+    'uses' => 'IndexController@menu',
+    'as' => 'menu_path',
+]);
 Route::post('/login',[
     'uses' => 'UserAuthController@store',
     'as' => 'login_path',

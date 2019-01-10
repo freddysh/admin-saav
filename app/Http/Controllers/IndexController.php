@@ -26,7 +26,15 @@ class IndexController extends Controller
             $cotizacion=Cotizacion::where('web', $page)->get();
         return view('admin.index',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
     }
-
+    public function menu(){
+        $user_name=auth()->guard('admin')->user()->name;
+        $user_tipo=auth()->guard('admin')->user()->tipo_user;
+        session()->put('menu', 'ventas');
+        $page='gotoperu.com';
+        $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->get();
+        return view('admin.menu',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
+        
+    }
     public function inicio()
     {
 //        $mes='Septiembre';

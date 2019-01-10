@@ -37,36 +37,46 @@ class ReportesController extends Controller
         foreach ($cotis as $coti) {
 //            if($desde<=$coti->fecha_venta&&$coti->fecha_venta<=$hasta){
                 foreach ($coti->paquete_cotizaciones->where('estado', '2') as $pqt) {
-                if ($pqt->duracion == 1) {
-                    if (!array_key_exists($coti->web, $array_profit)) {
-                        $array_profit[$coti->web]=$pqt->utilidad*$coti->nropersonas;
-                    } else {
-                        $array_profit[$coti->web]+=$pqt->utilidad*$coti->nropersonas;
+                    if ($pqt->duracion == 1) {
+                        if (!array_key_exists($coti->web, $array_profit)) {
+                            $array_profit[$coti->web]=$pqt->utilidad*$coti->nropersonas;
+                        } else {
+                            $array_profit[$coti->web]+=$pqt->utilidad*$coti->nropersonas;
+                        }
+                    }
+                    else{
+                        $uti=0;
+                        //-- preguntamos si tiene hotel
+                        if($pqt->paquete_precios->count()>=1){
+                            foreach ($pqt->paquete_precios as $precio){
+                                if($precio->personas_s>0){
+                                    $uti+=$precio->utilidad_s*$precio->personas_s;
+                                }
+                                if($precio->personas_d>0){
+                                    $uti+=$precio->utilidad_d*$precio->personas_d*2;
+                                }
+                                if($precio->personas_m>0){
+                                    $uti+=$precio->utilidad_m*$precio->personas_m*2;
+                                }
+                                if($precio->personas_t>0){
+                                    $uti+=$precio->utilidad_t*$precio->personas_t*3;
+                                }
+                            }
+                            if (!array_key_exists($coti->web, $array_profit)) {
+                                $array_profit[$coti->web]=$uti;
+                            } else {
+                                $array_profit[$coti->web]+=$uti;
+                            }
+                        }
+                        else{
+                            if (!array_key_exists($coti->web, $array_profit)) {
+                                $array_profit[$coti->web]=$pqt->utilidad*$coti->nropersonas;
+                            } else {
+                                $array_profit[$coti->web]+=$pqt->utilidad*$coti->nropersonas;
+                            }
+                        }
                     }
                 }
-                else{
-                    $uti=0;
-                    foreach ($pqt->paquete_precios as $precio){
-                        if($precio->personas_s>0){
-                            $uti+=$precio->utilidad_s*$precio->personas_s;
-                        }
-                        if($precio->personas_d>0){
-                            $uti+=$precio->utilidad_d*$precio->personas_d*2;
-                        }
-                        if($precio->personas_m>0){
-                            $uti+=$precio->utilidad_m*$precio->personas_m*2;
-                        }
-                        if($precio->personas_t>0){
-                            $uti+=$precio->utilidad_t*$precio->personas_t*3;
-                        }
-                    }
-                    if (!array_key_exists($coti->web, $array_profit)) {
-                        $array_profit[$coti->web]=$uti;
-                    } else {
-                        $array_profit[$coti->web]+=$uti;
-                    }
-                }
-            }
 //            }
         }
 //        return dd($array_profit);
