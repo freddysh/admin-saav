@@ -1284,7 +1284,7 @@ Route::get('/admin/book/situacion/traer-servicios',[
     'uses' => 'BookController@situacion_servicios',
     'as' => 'situacion_servicios_path',
 ]);
-Route::get('/admin/reportes/lista-de-cotizaciones/{web}/{desde}/{hasta}',[
+Route::get('/admin/reportes/lista-de-cotizaciones/{web}/{desde}/{hasta}/{filtro}',[
     'uses' => 'ReportesController@lista_cotizaciones',
     'as' => 'lista_de_cotizaciones_path',
 ]);

@@ -26,6 +26,24 @@
                 <h5 class="card-header bg-primary text-white"><i class="fas fa-coins"></i> PROFIT</h5>
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-6">
+                            <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="filtro1" name="filtro"  value="fecha de cierre" checked>
+                                    <label class="form-check-label" for="filtro1">
+                                            Buscar por fecha de cierre
+                                    </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                                <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="filtro2" name="filtro"  value="fecha de llegada">
+                                        <label class="form-check-label" for="filtro2">
+                                                Buscar por fecha de llegada
+                                        </label>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
                         <div class="col-5">
                             <div class="form-group">
                                 <label for="desde">Desde</label>
@@ -41,7 +59,7 @@
                         <div class="col-2">
                             <div class="form-group">
                                 {{csrf_field()}}
-                                <button type="button" class="btn btn-primary mt-4" onclick="mostrar_reporte($('#desde').val(),$('#hasta').val())"><i class="fas fa-search"></i> Buscar</button>
+                                <button type="button" class="btn btn-primary mt-4" onclick="mostrar_reporte($('#desde').val(),$('#hasta').val())"><i class="fas fa-search"></i> Buscar </button>
                             </div>
                         </div>
                         <a href="{{route('reporte_profit_path')}}" class="btn btn-primary d-none">

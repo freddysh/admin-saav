@@ -13,12 +13,14 @@
     {{--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>--}}
 @stop
 @section('content')
+<p class="mt-2 text-15 "><b>FILTRO POR {{strtoupper($filtro)}} DESDE:<span class="text-primary">{{fecha_peru($desde)}}</span> HASTA:<span class="text-primary">{{fecha_peru($hasta)}}</span></b></p>
     <table class="table table-condensed table-responsive table-striped table-hover">
         <thead>
         <tr>
             <th>#</th>
             <th>WEB</th>
             <th>SELLER</th>
+            <th>FECHA DE CIERRE</th>
             <th>PAQUETE</th>
             <th>PROFIT</th>
         </tr>
@@ -27,8 +29,18 @@
         @php
             $i=0;
             $profit_suma=0;
+            $filt='';
         @endphp
-        @foreach($cotizaciones->sortby('fecha_venta') as $cotizacion)
+        @if ($filtro=='fecha de cierre')
+            @php
+                $filt='fecha_venta';
+            @endphp
+        @elseif($filtro=='fecha de llegada')
+            @php
+                $filt='fecha';
+            @endphp
+        @endif
+        @foreach($cotizaciones->sortby($filt) as $cotizacion)
                 @php
                     $date = date_create($cotizacion->fecha);
                     $fecha=date_format($date, 'jS F Y');
@@ -84,6 +96,9 @@
                     <td>{{$cotizacion->web}}</td>
                     <td><i class="fas fa-users text-primary"></i>{{$cotizacion->users->name}}</td>
                     <td>
+                        <i class="fas fa-calendar text-primary"></i>{{fecha_peru($cotizacion->fecha_venta)}}
+                    </td>
+                    <td>
                         @foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
                             <b> <span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}}X{{$cotizacion->nropersonas}}({{$fecha}})</b>
                         @endforeach
@@ -95,7 +110,7 @@
                 @endphp
         @endforeach
         <tr>
-            <td colspan="4">TOTAL</td><td><b><sup>$</sup>{{number_format($profit_suma,2)}}</b></td>
+            <td colspan="5">TOTAL</td><td><b><sup>$</sup>{{number_format($profit_suma,2)}}</b></td>
         </tr>
     </table>
 @stop

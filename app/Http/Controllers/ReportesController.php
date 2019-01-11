@@ -29,11 +29,22 @@ class ReportesController extends Controller
     }
     public function profit_buscar(Request $request)
     {
+        
+        $filtro = $request->input('filtro');
         $desde = $request->input('desde');
         $hasta = $request->input('hasta');
+
+        // dd($filtro);
         $array_profit=[];
 //        $cotis=Cotizacion::where('estado','2')->whereBetween('created_at',[$desde,$hasta])->get();
-        $cotis=Cotizacion::where('estado','2')->whereBetween('fecha_venta',[$desde,$hasta])->get();
+        $cotis=null;
+        if($filtro=='fecha de cierre'){
+            $cotis=Cotizacion::where('estado','2')->whereBetween('fecha_venta',[$desde,$hasta])->get();
+        }
+        elseif($filtro=='fecha de llegada'){
+            $cotis=Cotizacion::where('estado','2')->whereBetween('fecha',[$desde,$hasta])->get();
+        }
+
         foreach ($cotis as $coti) {
 //            if($desde<=$coti->fecha_venta&&$coti->fecha_venta<=$hasta){
                 foreach ($coti->paquete_cotizaciones->where('estado', '2') as $pqt) {
@@ -80,12 +91,20 @@ class ReportesController extends Controller
 //            }
         }
 //        return dd($array_profit);
-        return view('admin.reportes.profit-buscar',compact(['desde','hasta','array_profit']));
+        return view('admin.reportes.profit-buscar',compact(['desde','hasta','array_profit','filtro']));
     }
-    public function lista_cotizaciones($web,$desde,$hasta)
+    public function lista_cotizaciones($web,$desde,$hasta,$filtro)
     {
-        $cotizaciones = Cotizacion::where('web',$web)->where('estado','2')->whereBetween('fecha_venta',[$desde,$hasta])->get();
-        return view('admin.reportes.cotizacion-detalle',compact(['cotizaciones','desde','hasta']));
+        if($filtro=='fecha de cierre'){
+            $cotizaciones = Cotizacion::where('web',$web)->where('estado','2')->whereBetween('fecha_venta',[$desde,$hasta])->get();
+        }
+        elseif($filtro=='fecha de llegada'){
+            $cotizaciones = Cotizacion::where('web',$web)->where('estado','2')->whereBetween('fecha',[$desde,$hasta])->get();
+        }
+
+
+        
+        return view('admin.reportes.cotizacion-detalle',compact(['cotizaciones','desde','hasta','filtro']));
     }
 
 }

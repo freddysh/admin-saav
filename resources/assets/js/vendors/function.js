@@ -5689,6 +5689,7 @@ function llamar_hoteles(loca,tipo,id) {
     });
 }
 function mostrar_reporte(desde,hasta) {
+    var filtro = $('input[name="filtro"]:checked').val();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5697,7 +5698,7 @@ function mostrar_reporte(desde,hasta) {
     $.ajax({
         type: 'POST',
         url: "reportes/profit",
-        data: 'desde='+desde+'&hasta='+hasta,
+        data: 'desde='+desde+'&hasta='+hasta+'&filtro='+filtro,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data){
             $('#rpt_profit').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
