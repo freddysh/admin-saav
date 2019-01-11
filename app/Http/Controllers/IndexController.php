@@ -8,6 +8,7 @@ use App\CotizacionesCliente;
 use App\PaqueteCotizaciones;
 use App\User;
 use Illuminate\Http\Request;
+use App\Web;
 //use ConsoleTVs\Charts\Facades\Charts;
 
 
@@ -32,7 +33,8 @@ class IndexController extends Controller
         session()->put('menu', 'ventas');
         $page='gotoperu.com';
         $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->get();
-        return view('admin.menu',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
+        $webs=Web::get();
+        return view('admin.menu',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'webs'=>$webs]);
         
     }
     public function inicio()

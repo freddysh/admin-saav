@@ -57,9 +57,12 @@ class ReportesController extends Controller
                     }
                     else{
                         $uti=0;
+                        $nro_personas=0;
                         //-- preguntamos si tiene hotel
                         if($pqt->paquete_precios->count()>=1){
+                            
                             foreach ($pqt->paquete_precios as $precio){
+                                $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
                                 if($precio->personas_s>0){
                                     $uti+=$precio->utilidad_s*$precio->personas_s;
                                 }
@@ -73,10 +76,19 @@ class ReportesController extends Controller
                                     $uti+=$precio->utilidad_t*$precio->personas_t*3;
                                 }
                             }
-                            if (!array_key_exists($coti->web, $array_profit)) {
-                                $array_profit[$coti->web]=$uti;
-                            } else {
-                                $array_profit[$coti->web]+=$uti;
+                            if($nro_personas>0){
+                                if (!array_key_exists($coti->web, $array_profit)) {
+                                    $array_profit[$coti->web]=$uti;
+                                } else {
+                                    $array_profit[$coti->web]+=$uti;
+                                }
+                            }
+                            else{
+                                if (!array_key_exists($coti->web, $array_profit)) {
+                                    $array_profit[$coti->web]=$pqt->utilidad*$coti->nropersonas;
+                                } else {
+                                    $array_profit[$coti->web]+=$pqt->utilidad*$coti->nropersonas;
+                                }    
                             }
                         }
                         else{

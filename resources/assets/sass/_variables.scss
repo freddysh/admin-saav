@@ -625,3 +625,23 @@ a{
   left: -75px;
   width: 300px;
 }
+.menu1{
+  list-style-type: none;
+  padding: 0;
+}
+.menu1 li a{
+  list-style-type: none;
+  background: white;
+  color: #000;
+}
+.menu2{
+  list-style-type: none;
+}
+.menu2 li a{
+  list-style-type: none;
+  background: white !important;
+  color: #000 !important;;
+}
+.menu2 li a:hover{
+  background: #e4e4e4 !important;
+}

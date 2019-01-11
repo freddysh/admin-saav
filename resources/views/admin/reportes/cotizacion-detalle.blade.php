@@ -57,32 +57,45 @@
                             $profit=$paquete_cotizaciones->utilidad*$cotizacion->nropersonas;
                         @endphp
                     @else
-                        {{-- @php
-                            $profit_st=0;
-                        @endphp --}}
+                        @php
+                            $nro_personas=0;
+                            $uti=0;
+                        @endphp
                         @if($paquete_cotizaciones->paquete_precios->count()>=1)
                             @foreach($paquete_cotizaciones->paquete_precios as $precio)
+                                @php
+                                    $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
+                                @endphp
                                 @if($precio->personas_s>0)
                                     @php
-                                        $profit_st+=$precio->utilidad_s*$precio->personas_s;
+                                        $uti+=$precio->utilidad_s*$precio->personas_s;
                                     @endphp
                                 @endif
                                 @if($precio->personas_d>0)
                                     @php
-                                        $profit_st+=$precio->utilidad_d*$precio->personas_d*2;
+                                        $uti+=$precio->utilidad_d*$precio->personas_d*2;
                                     @endphp
                                 @endif
                                 @if($precio->personas_m>0)
                                     @php
-                                        $profit_st+=$precio->utilidad_m*$precio->personas_m*2;
+                                        $uti+=$precio->utilidad_m*$precio->personas_m*2;
                                     @endphp
                                 @endif
                                 @if($precio->personas_t>0)
                                     @php
-                                        $profit_st+=$precio->utilidad_t*$precio->personas_t*3;
+                                        $uti+=$precio->utilidad_t*$precio->personas_t*3;
                                     @endphp
                                 @endif
                             @endforeach
+                            @if($nro_personas>0)
+                                @php
+                                    $profit+=$uti;
+                                @endphp
+                            @else
+                                @php
+                                    $profit=$paquete_cotizaciones->utilidad*$cotizacion->nropersonas;
+                                @endphp
+                            @endif
                         @else
                             @php
                                 $profit=$paquete_cotizaciones->utilidad*$cotizacion->nropersonas;
@@ -103,10 +116,10 @@
                             <b> <span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}}X{{$cotizacion->nropersonas}}({{$fecha}})</b>
                         @endforeach
                     </td>
-                    <td><b><sup>$</sup>{{number_format($profit+$profit_st,2)}}</b></td>
+                    <td><b><sup>$</sup>{{number_format($profit,2)}}</b></td>
                 </tr>
                 @php
-                    $profit_suma+=$profit+$profit_st;
+                    $profit_suma+=$profit;
                 @endphp
         @endforeach
         <tr>
