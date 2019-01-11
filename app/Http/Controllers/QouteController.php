@@ -216,8 +216,10 @@ class QouteController extends Controller
     {
         $iti_id=$request->input('iti_id');
         $fecha=$request->input('fecha');
+        $titulo=$request->input('titulo');     
         $iti=ItinerarioCotizaciones::FindOrFail($iti_id);
         $iti->fecha=$fecha;
+        $iti->titulo=$titulo;
         if($iti->save())
             return '1';
         else

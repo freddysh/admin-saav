@@ -2674,15 +2674,12 @@ class PackageCotizacionController extends Controller
         $id_cotizacion = $request->get('id_cotizacion');
         $id_client = $request->get('id_client');
         $id_paquete = $request->get('id_paquete');
-        $id_paquete = $request->get('id_paquete');
-        $precio_s=$request->input('precio_reserva');
+        $id_servicios=$request->get('id_servicios');
+        $precio=$request->get('precio_reserva');
 
-        $precio_hotel_reserva=PrecioHotelReserva::FindOrFail($id);
-        $precio_hotel_reserva->precio_s=$precio_s;
-        $precio_hotel_reserva->precio_d=ceil($precio_d*2);
-        $precio_hotel_reserva->precio_m=ceil($precio_m*2);
-        $precio_hotel_reserva->precio_t=ceil($precio_t*3);
-        $precio_hotel_reserva->save();
+        $itinerario_servicio=ItinerarioServicios::FindOrFail($id_servicios);
+        $itinerario_servicio->precio=$precio;
+        $itinerario_servicio->save();
         // return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
         return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
     }

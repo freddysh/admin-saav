@@ -46,17 +46,17 @@
                     <tr>
                         <td>{{$pos}}</td>
                         <td>{{$key}}</td>
-                        <td>{{$array_profit_}}</td>
-                        <td><a href="{{route('lista_de_cotizaciones_path',[$key,$desde,$hasta,$filtro])}}"><i class="fas fa-eye text-warning"></i> </a></td>
+                        <td class="text-right text-secondary">{{number_format($array_profit_,2)}}</td>
+                        <td><a target="_blank" href="{{route('lista_de_cotizaciones_path',[$key,$desde,$hasta,$filtro])}}"><i class="fas fa-eye text-primary"></i> </a></td>
                     </tr>
                     @php
                         $pos++;
                         $total+=$array_profit_;
                     @endphp
                 @endforeach
-                <tr class="">
+                <tr>
                     <td colspan="2"><strong>TOTAL</strong></td>
-                    <td><strong>{{$total}}</strong></td>
+                    <td class="text-right text-secondary"><strong>{{number_format($total,2)}}</strong></td>
                 </tr>
                 </tbody>
             </table>

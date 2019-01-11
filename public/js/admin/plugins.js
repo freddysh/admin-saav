@@ -6117,10 +6117,12 @@ function buscar_day_by_day_quotes(destino) {
         }
     })
 }
-function  modificar_fecha(fecha,iti_id,tipo){
+function  modificar_fecha(titulo,fecha,iti_id,tipo){
     console.log('fecha:'+fecha+',iti_id:'+iti_id);
     $('#rp_cambio_fecha_'+iti_id).removeClass('text-danger');
     $('#rp_cambio_fecha_'+iti_id).removeClass('text-success');
+    $('#rp_cambio_fecha_'+iti_id).addClass('text-primary');
+    
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6130,7 +6132,7 @@ function  modificar_fecha(fecha,iti_id,tipo){
         $.ajax({
             type: 'POST',
             url: '../../../../../quotes/new/step1/cambiar-fecha/ajax',
-            data: 'fecha=' + fecha + '&iti_id=' + iti_id,
+            data: 'fecha=' + fecha + '&iti_id=' + iti_id+ '&titulo=' + titulo,
             // Mostramos un mensaje con la respuesta de PHP
             beforeSend: function () {
                 $('#rp_cambio_fecha_' + iti_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
@@ -6139,11 +6141,16 @@ function  modificar_fecha(fecha,iti_id,tipo){
                 if (data == '1') {
                     var fecha1 = fecha.split('-');
                     $('#iti_fecha_b_' + iti_id).html(fecha1[2] + '-' + fecha1[1] + '-' + fecha1[0]);
+                    titulo = titulo.toLowerCase().replace(/\b[a-z]/g, function(letra) {
+                        return letra.toUpperCase();
+                    });
+                    $('#iti_titulo_b_' + iti_id).html( titulo);
                     $('#rp_cambio_fecha_' + iti_id).addClass('text-success');
-                    $('#rp_cambio_fecha_' + iti_id).html('Fecha cambiada correctamente');
+                    $('#rp_cambio_fecha_' + iti_id).html('Datos cambiados correctamente');
                 }
                 else {
                     $('#rp_cambio_fecha_' + iti_id).addClass('text-danger');
+                    $('#rp_cambio_fecha_' + iti_id).html('Error al cambiar los datos');
                 }
             }
         })
@@ -6152,7 +6159,7 @@ function  modificar_fecha(fecha,iti_id,tipo){
         $.ajax({
             type: 'POST',
             url: '../../../../../../quotes/new/step1/cambiar-fecha/ajax',
-            data: 'fecha='+fecha+'&iti_id='+iti_id,
+            data: 'fecha='+fecha+'&iti_id='+iti_id+ '&titulo=' + titulo,
             // Mostramos un mensaje con la respuesta de PHP
             beforeSend:
                 function() {
@@ -6162,11 +6169,16 @@ function  modificar_fecha(fecha,iti_id,tipo){
                 if(data=='1'){
                     var fecha1=fecha.split('-');
                     $('#iti_fecha_b_'+iti_id).html(fecha1[2]+'-'+fecha1[1]+'-'+fecha1[0]);
+                    titulo = titulo.toLowerCase().replace(/\b[a-z]/g, function(letra) {
+                        return letra.toUpperCase();
+                    });
+                    $('#iti_titulo_b_' + iti_id).html(titulo);
                     $('#rp_cambio_fecha_'+iti_id).addClass('text-success');
                     $('#rp_cambio_fecha_'+iti_id).html('Fecha cambiada correctamente');
                 }
                 else{
                     $('#rp_cambio_fecha_'+iti_id).addClass('text-danger');
+                    $('#rp_cambio_fecha_' + iti_id).html('Error al cambiar los datos');
                 }
             }
         })

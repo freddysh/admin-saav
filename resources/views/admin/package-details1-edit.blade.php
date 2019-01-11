@@ -283,14 +283,14 @@
                                 <div class="row bg-g-dark rounded text-white">
                                     <div class="col-6">
                                         <b id="iti_fecha_b_{{$itinerario->id}}" class="badge badge-g-yellow">{{fecha_peru($itinerario->fecha)}}</b>
-                                        <b>{{ ucwords(strtolower($itinerario->titulo))}}</b>
+                                        <b id="iti_titulo_b_{{$itinerario->id}}">{{ ucwords(strtolower($itinerario->titulo))}}</b>
                                         <!-- Button trigger modal -->
                                         <a href="#!" class="text-warning" data-toggle="modal" data-target="#exampleModal_{{$itinerario->id}}">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <!-- Modal -->
                                         <div class="modal fade" id="exampleModal_{{$itinerario->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-dialog  modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLabel">Editar fecha</h5>
@@ -299,10 +299,18 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label for="fecha_{{$itinerario->id}}">Ingrese la nueva fecha</label>
-                                                            <input type="date" class="form-control" id="fecha_{{$itinerario->id}}" name="iti_fecha" value="{{$itinerario->fecha}}">
-                                                        </div>
+                                                            <div class="input-group mb-2 mr-sm-2">
+                                                                <div class="input-group-prepend">
+                                                                <div class="input-group-text"><i class="fas fa-text-width"></i></div>
+                                                                </div>
+                                                                <input type="text" class="form-control" id="iti_dia{{$itinerario->id}}" name="iti_dia" value="{{$itinerario->titulo}}">
+                                                            </div>
+                                                            <div class="input-group mb-2 mr-sm-2">
+                                                                <div class="input-group-prepend">
+                                                                <div class="input-group-text"><i class="fas fa-calendar"></i></div>
+                                                                </div>
+                                                                <input type="date" class="form-control" id="fecha_{{$itinerario->id}}" name="iti_fecha" value="{{$itinerario->fecha}}">
+                                                            </div>
                                                         <div class="row">
                                                             <div class="col">
                                                                 <span id="rp_cambio_fecha_{{$itinerario->id}}"></span>
@@ -313,7 +321,7 @@
                                                         {{csrf_field()}}
 
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary" onclick="modificar_fecha($('#fecha_{{$itinerario->id}}').val(),'{{$itinerario->id}}','e')">Guardar cambios</button>
+                                                        <button type="button" class="btn btn-primary" onclick="modificar_fecha($('#iti_dia{{$itinerario->id}}').val(),$('#fecha_{{$itinerario->id}}').val(),'{{$itinerario->id}}','e')">Guardar cambios</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -426,8 +434,16 @@
                                                                         <div class="modal-body">
                                                                             <div class="row">
                                                                                 <div class="col">
-                                                                                    <label for="precio_{{$servicios->id}}">Precio</label>
-                                                                                    <input class="form-control" type="number" name="precio_reserva" id="precio_{{$servicios->id}}" value="@if($servicios->precio_grupo==1){{$servicios->precio}}@else{{round($servicios->precio/$cotizacion->nropersonas,2)}}@endif ">    
+                                                                                        <label for="precio_{{$servicios->id}}">Precio original</label>
+                                                                                        <input type="number" class="form-control" name="precio_reserva" id="precio_{{$servicios->id}}" value="{{$servicios->precio}}" aria-describedby="passwordHelpBlock_{{$servicios->id}}">
+                                                                                        <small id="passwordHelpBlock_{{$servicios->id}}" class="form-text text-muted">
+                                                                                            El precio es 
+                                                                                            @if($servicios->precio_grupo==0)
+                                                                                                individual.
+                                                                                            @else
+                                                                                                absoluto.
+                                                                                            @endif
+                                                                                        </small>
                                                                                 </div>    
                                                                             </div> 
                                                                         </div>

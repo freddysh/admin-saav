@@ -116,14 +116,14 @@
                             <b> <span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}}X{{$cotizacion->nropersonas}}({{$fecha}})</b>
                         @endforeach
                     </td>
-                    <td><b><sup>$</sup>{{number_format($profit,2)}}</b></td>
+                    <td class="text-right text-secondary"><b><sup>$</sup>{{number_format($profit,2)}}</b></td>
                 </tr>
                 @php
                     $profit_suma+=$profit;
                 @endphp
         @endforeach
         <tr>
-            <td colspan="5">TOTAL</td><td><b><sup>$</sup>{{number_format($profit_suma,2)}}</b></td>
+            <td colspan="5">TOTAL</td><td class="text-right text-secondary"><b><sup>$</sup>{{number_format($profit_suma,2)}}</b></td>
         </tr>
     </table>
 @stop
