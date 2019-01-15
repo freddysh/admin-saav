@@ -619,6 +619,9 @@ class BookController extends Controller
 		$p_servicio->estado=1;
 		$p_servicio->salida=$servicios->salida;
 		$p_servicio->llegada=$servicios->llegada;
+		$p_servicio->grupo=$servicios->grupo;
+		$p_servicio->tipoServicio=$servicios->tipoServicio;
+		$p_servicio->localizacion=$servicios->localizacion;
 		$p_servicio->clase=$servicios->clase;
 		$p_servicio->m_servicios_id=$servicios->id;
 		$p_servicio->pos=$pos;
