@@ -385,7 +385,7 @@ class ServicesController extends Controller
             $costos_bolsa = M_Producto::where('m_servicios_id', $id)->get();
             foreach ($costos_bolsa as $costos_bolsa_) {
                 if (in_array($costos_bolsa_->id, $costo_id)) {
-                    // foreach ($costo_id as $key => $costo_id_) {
+                    foreach ($costo_id as $key => $costo_id_) {
                         // $producto = M_Producto::FindOrFail($costo_id_);
                         $producto = M_Producto::FindOrFail($costos_bolsa_->id);
                         $producto->localizacion = $destino->localizacion;
@@ -401,7 +401,7 @@ class ServicesController extends Controller
                         $producto->save();
                         // return $producto;
                         
-                    // }
+                    }
                 } else {
                     $producto = M_Producto::FindOrFail($costos_bolsa_->id);
                     $producto->delete();
