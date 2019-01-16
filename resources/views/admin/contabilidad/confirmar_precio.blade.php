@@ -89,7 +89,6 @@
                     </ul>
                     <div class="tab-content mt-3">
                         <div id="detalle" class="tab-pane fade show @if($activado=='Detalle')in active @endif ">
-
                             <div class="row">
                                 <div class="col-md-12 margin-top-5">
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
@@ -211,13 +210,77 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
                                 {{csrf_field()}}
                                 @php
                                     $sumaTotal_hotel= [];
                                     $pagadoTotal_hotel= [];
+                                    $precio_cotizado_total=0;
+                                    $precio_cotizado_total_r=0;
+                                    $precio_cotizado_total_c=0;
+                                    $precio_cotizado_total_h=0;
+                                    $precio_cotizado_total_h_r=0;
+                                    $precio_cotizado_total_h_c=0;
+
+                                    $profit=0;
                                 @endphp
+                                
+
                                 @foreach($cotizacion->paquete_cotizaciones as $paquetes)
+                                @if ($cotizacion->duracion==1)
+                                    @php
+                                        $profit=$paquetes->utilidad*$cotizacion->nropersonas;
+                                    @endphp
+                                @else
+                                    @php
+                                        $s=0;
+                                        $d=0;
+                                        $m=0;
+                                        $t=0;
+                                        $utilidad_s=0;
+                                        $utilidad_d=0;
+                                        $utilidad_m=0;
+                                        $utilidad_t=0;
+                                    @endphp
+                                    @foreach($cotizacion->paquete_cotizaciones as $paquetes)
+                                        @foreach($paquetes->paquete_precios as $paquete_precio)
+                                            @if ($paquete_precio->personas_s>0)
+                                                @php
+                                                    $s=$paquete_precio->personas_s;  
+                                                    $utilidad_s=$paquete_precio->utilidad_s*$paquete_precio->personas_s;  
+                                                @endphp    
+                                            @endif
+                                            @if ($paquete_precio->personas_d>0)
+                                                @php
+                                                    $d=$paquete_precio->personas_d;   
+                                                    $utilidad_d=$paquete_precio->utilidad_d*$paquete_precio->personas_d*2; 
+                                                @endphp    
+                                            @endif
+                                            @if ($paquete_precio->personas_m>0)
+                                                @php
+                                                    $m=$paquete_precio->personas_m;
+                                                    $utilidad_m=$paquete_precio->utilidad_m*$paquete_precio->personas_m*2;    
+                                                @endphp    
+                                            @endif
+                                            @if ($paquete_precio->personas_t>0)
+                                                @php
+                                                    $t=$paquete_precio->personas_t;  
+                                                    $utilidad_t=$paquete_precio->utilidad_t*$paquete_precio->personas_t*3;  
+                                                @endphp    
+                                            @endif
+
+                                        @endforeach
+                                    @endforeach
+                                    @if (($s+$d+$m+$t)>0)
+                                        @php
+                                            $profit=$utilidad_s+$utilidad_d+$utilidad_m+$utilidad_t;
+                                        @endphp
+                                    @else
+                                        @php
+                                            $profit=$paquetes->utilidad*$cotizacion->nropersonas;
+                                        @endphp
+                                    @endif
+                                @endif
+
                                     @foreach($paquetes->pagos_hotel as $pagos_hotel)
                                         @if($pagos_hotel->estado=='1')
                                             @if(array_key_exists($pagos_hotel->proveedor_id,$pagadoTotal_hotel))
@@ -235,12 +298,14 @@
                                         @php
                                             $array_proveedores=[];
                                             $array_proveedores_h=[];
+                                            $precio_cotizado_total=0;
+                                            $precio_cotizado_total_h=0;
                                         @endphp
                                         @foreach($paquetes->itinerario_cotizaciones as $itinerario)
                                             <tr>
 
                                                 <td class="bg-dark" colspan="9">
-                                                    <b class="text-primary">Dia {{$itinerario->dias}}: {{fecha_letra($itinerario->fecha)}}</b>
+                                                    <b class="text-primary">Dia {{$itinerario->dias}}:{{$itinerario->titulo}}: {{fecha_letra($itinerario->fecha)}}</b>
                                                 </td>
 
                                             </tr>
@@ -266,24 +331,41 @@
                                                         </div>
                                                     </td>
                                                     @if($servicios->precio_grupo==1)
+                                                        @php
+                                                            $precio_cotizado_total+=$servicios->precio;
+                                                        @endphp
                                                         <td></td>
 
                                                         <td class="text-right">
                                                                 {{$servicios->precio}}
-                                                                <sup><small>$usd</small></sup></td>
+                                                                <sup><small>$usd</small></sup>
+                                                            </td>
                                                     @else
+                                                        @php
+                                                            $precio_cotizado_total+=$cotizacion->nropersonas * $servicios->precio;
+                                                        @endphp
                                                         <td class="text-right">
                                                                 {{$cotizacion->nropersonas}} X  {{$servicios->precio}}
                                                         </td>
                                                         <td class="text-right">
                                                                 {{$cotizacion->nropersonas * $servicios->precio}}
-                                                                <sup><small>$usd</small></sup></td>
+                                                                <sup><small>$usd</small></sup>
+                                                            </td>
                                                     @endif
-                                                    <td class="text-right">{{$servicios->precio_proveedor}}<sup><small>$usd</small></sup></td>
+                                                    <td class="text-right">
+                                                    @if ($servicios->precio_proveedor>0)
+                                                        @php
+                                                            $precio_cotizado_total_r+=$servicios->precio_proveedor;
+                                                        @endphp
+                                                    @endif
+                                                        {{$servicios->precio_proveedor}}<sup><small>$usd</small></sup>
+                                                    </td>
                                                     <td class="text-right">
 
                                                             @if($servicios->precio_c>0)
-
+                                                                @php
+                                                                    $precio_cotizado_total_c+=$servicios->precio_c;
+                                                                @endphp
                                                                     <div class="input-group">
                                                                         <input class="form-control" type="text" id="precio_c_{{$servicios->id}}" name="precio_c_{{$servicios->id}}" value="{{$servicios->precio_c}}">
                                                                         <span class="input-group-btn">
@@ -510,39 +592,61 @@
                                             @foreach($itinerario->hotel as $hotel)
                                                 @if($hotel->proveedor_id>0 OR $hotel->proveedor_id!='')
                                                     @if($hotel->personas_s>0)
+                                                        @php $precio_cotizado_total_h+=  $hotel->precio_s*$hotel->personas_s; @endphp
                                                         @if($hotel->precio_s_c>0 OR $hotel->precio_s_c!='')
                                                             @php $precio_s_c1=  $hotel->precio_s_c; @endphp
+                                                            @php $precio_cotizado_total_h_c+=  $hotel->precio_s_c*$hotel->personas_s; @endphp
                                                         @else
                                                             @php $precio_s_c1 =  $hotel->precio_s_r; @endphp
                                                         @endif
+                                                        @if ($hotel->precio_s_r>0)
+                                                            @php $precio_cotizado_total_h_r+=  $hotel->precio_s_r*$hotel->personas_s; @endphp
+                                                        @endif
                                                     @endif
                                                     @if($hotel->personas_d>0)
+                                                        @php $precio_cotizado_total_h+=  $hotel->precio_d*$hotel->personas_d; @endphp
                                                         @if($hotel->precio_d_c>0 OR $hotel->precio_d_c!='')
                                                             @php $precio_d_c1=  $hotel->precio_d_c; @endphp
+                                                            @php $precio_cotizado_total_h_c+=  $hotel->precio_d_c*$hotel->personas_d; @endphp
                                                         @else
                                                             @php $precio_d_c1 =  $hotel->precio_d_r; @endphp
                                                         @endif
+                                                        @if ($hotel->precio_d_r>0)
+                                                            @php $precio_cotizado_total_h_r+=  $hotel->precio_d_r*$hotel->personas_d; @endphp
+                                                        @endif
                                                     @endif
                                                     @if($hotel->personas_m>0)
+                                                        @php $precio_cotizado_total_h+=  $hotel->precio_m*$hotel->personas_m; @endphp
                                                         @if($hotel->precio_m_c>0 OR $hotel->precio_m_c!='')
                                                             @php $precio_m_c1=  $hotel->precio_m_c; @endphp
+                                                            @php $precio_cotizado_total_h_c+=  $hotel->precio_m_c*$hotel->personas_m; @endphp
                                                         @else
                                                             @php $precio_m_c1 =  $hotel->precio_m_r; @endphp
                                                         @endif
+                                                        @if ($hotel->precio_m_r>0)
+                                                            @php $precio_cotizado_total_h_r+=  $hotel->precio_m_r*$hotel->personas_m; @endphp
+                                                        @endif
                                                     @endif
                                                     @if($hotel->personas_t>0)
+                                                        @php $precio_cotizado_total_h+=  $hotel->precio_t*$hotel->personas_t; @endphp
                                                         @if($hotel->precio_t_c>0 OR $hotel->precio_t_c!='')
                                                             @php $precio_t_c1=  $hotel->precio_t_c; @endphp
+                                                            @php $precio_cotizado_total_h_c+=  $hotel->precio_t_c*$hotel->personas_t; @endphp
                                                         @else
                                                             @php $precio_t_c1 =  $hotel->precio_t_r; @endphp
+                                                        @endif
+                                                        @if ($hotel->precio_t_r>0)
+                                                            @php $precio_cotizado_total_h_r+=  $hotel->precio_t_r*$hotel->personas_t; @endphp
                                                         @endif
                                                     @endif
                                                     @php
                                                         $total_ho=$precio_s_c1+$precio_d_c1+$precio_m_c1+$precio_t_c1;
+                                                        // $precio_cotizado_total_h+=$total_ho;
                                                     @endphp
                                                     @if(array_key_exists($hotel->proveedor_id,$sumaTotal_hotel))
                                                         @php
                                                             $sumaTotal_hotel[$hotel->proveedor_id]+=$total_ho;
+                                                            
                                                         @endphp
                                                     @else
                                                         @php
@@ -972,11 +1076,46 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
+
+                                        
+                                        
                                         @endforeach
                                     @endif
                                 @endforeach
-
-
+                                {{-- esta fila es para calcular el cosnto de venta --}}
+                                <tr>
+                                    <td class="text-g-dark text-lef"><b>COSTO TOTAL</b></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-right"><b>{{number_format($precio_cotizado_total+$precio_cotizado_total_h,2)}}<sup><small>$usd</small></sup></b></td>
+                                    <td class="text-g-dark text-right"><b>{{number_format($precio_cotizado_total_r+$precio_cotizado_total_h_r,2)}}<sup><small>$usd</small></sup></b></td>
+                                    <td class="text-g-dark text-right"><b>{{number_format($precio_cotizado_total_c+$precio_cotizado_total_h_c,2)}}<sup><small>$usd</small></sup></b></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-center d-none"></td>
+                                    <td class="text-g-dark text-center d-none"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-g-dark text-lef"><b>PROFIT TOTAL</b></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-right"><b>{{number_format($profit,2)}}<sup><small>$usd</small></sup></b></td>
+                                    <td class="text-g-dark text-right"></td>
+                                    <td class="text-g-dark text-right"></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-center d-none"></td>
+                                    <td class="text-g-dark text-center d-none"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-g-dark text-lef"><b>PRECIO VENTA TOTAL</b></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-right"><b>{{number_format(($precio_cotizado_total+$precio_cotizado_total_h)+$profit,2)}}<sup><small>$usd</small></sup></b></td>
+                                    <td class="text-g-dark text-right"></td>
+                                    <td class="text-g-dark text-right"></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-center"></td>
+                                    <td class="text-g-dark text-center d-none"></td>
+                                    <td class="text-g-dark text-center d-none"></td>
+                                </tr>
                                 </tbody>
                             </table>
 

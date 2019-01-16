@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="fechas" class="col-4 d-none">
+                        <div id="fechas" class="col-6 d-none">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">FECHAS</span>
