@@ -6174,7 +6174,7 @@ function  modificar_fecha(titulo,fecha,iti_id,tipo){
                     });
                     $('#iti_titulo_b_' + iti_id).html(titulo);
                     $('#rp_cambio_fecha_'+iti_id).addClass('text-success');
-                    $('#rp_cambio_fecha_'+iti_id).html('Fecha cambiada correctamente');
+                    $('#rp_cambio_fecha_'+iti_id).html('Datos cambiados correctamente');
                 }
                 else{
                     $('#rp_cambio_fecha_'+iti_id).addClass('text-danger');
@@ -6490,7 +6490,7 @@ function mostrar_opcion(opcion){
         $('#to').addClass('d-none');
         $('#codigo').addClass('d-none');
         $('#nombre').addClass('d-none');
-        $('#bloque_filtros').addClass('d-none');
+        $('#bloque_filtros').removeClass('d-none');
         
     }
     else if(opcion=='ENTRE DOS FECHAS' || opcion=='ENTRE DOS FECHAS URGENTES'){
@@ -6498,7 +6498,7 @@ function mostrar_opcion(opcion){
         $('#to').removeClass('d-none');
         $('#codigo').addClass('d-none');
         $('#nombre').addClass('d-none');
-        $('#bloque_filtros').addClass('d-none');
+        $('#bloque_filtros').removeClass('d-none');
     }
 }
 function buscar_servicios_pagos_pendientes_entradas(opcion,nombre,codigo,ini,fin,servicio) {

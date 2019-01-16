@@ -5749,7 +5749,7 @@ function mostrar_opcion(opcion){
         $('#to').addClass('d-none');
         $('#codigo').addClass('d-none');
         $('#nombre').addClass('d-none');
-        $('#bloque_filtros').addClass('d-none');
+        $('#bloque_filtros').removeClass('d-none');
         
     }
     else if(opcion=='ENTRE DOS FECHAS' || opcion=='ENTRE DOS FECHAS URGENTES'){
@@ -5757,7 +5757,7 @@ function mostrar_opcion(opcion){
         $('#to').removeClass('d-none');
         $('#codigo').addClass('d-none');
         $('#nombre').addClass('d-none');
-        $('#bloque_filtros').addClass('d-none');
+        $('#bloque_filtros').removeClass('d-none');
     }
 }
 function buscar_servicios_pagos_pendientes_entradas(opcion,nombre,codigo,ini,fin,servicio) {

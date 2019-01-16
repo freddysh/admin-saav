@@ -62,8 +62,8 @@
             <div class="row margin-top-10">
                 <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[1]}}" class=" col-lg-12">
                     <ul class="nav nav-tabs">
-                        <li class="active bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[1]}}_PRIVATE">PRIVATE</a></li>
-                        <li class="bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[1]}}_GROUP">GROUP</a></li>
+                        <li class="active bg-info mx-1 px-2 bg-info rounded-top text-white"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[1]}}_PRIVATE">PRIVATE</a></li>
+                        <li class="bg-info mx-1 px-2 bg-info rounded-top text-white"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[1]}}_GROUP">GROUP</a></li>
                     </ul>
 
                     <div class="tab-content margin-top-20">
@@ -153,12 +153,12 @@
                 </div>
                 <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}" class="hide col-lg-12">
                     <ul class="nav nav-tabs">
-                        <li class="active bg-warning"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_AUTO">AUTO</a></li>
-                        <li class="bg-warning"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_SUV">SUV</a></li>
-                        <li class="bg-warning"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_VAN">VAN</a></li>
-                        <li class="bg-warning"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_H1">H1</a></li>
-                        <li class="bg-warning"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_SPRINTER">SPRINTER</a></li>
-                        <li class="bg-warning"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_BUS">BUS</a></li>
+                        <li class="active bg-warning mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_AUTO">AUTO</a></li>
+                        <li class="bg-warning mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_SUV">SUV</a></li>
+                        <li class="bg-warning mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_VAN">VAN</a></li>
+                        <li class="bg-warning mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_H1">H1</a></li>
+                        <li class="bg-warning mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_SPRINTER">SPRINTER</a></li>
+                        <li class="bg-warning mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[2]}}_BUS">BUS</a></li>
                     </ul>
                     {{--{{dd($tipos)}}--}}
                     <div class="tab-content margin-top-20">
@@ -402,9 +402,9 @@
                 </div>
                 <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[3]}}" class="hide col-lg-12">
                     <ul class="nav nav-tabs">
-                        <li class="active bg-success"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[3]}}_GUIDE">GUIDE</a></li>
-                        <li class="bg-success"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[3]}}_TRANSFER">TRANSFER</a></li>
-                        <li class="bg-success"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[3]}}_ASSISTANCE">ASSISTANCE</a></li>
+                        <li class="active bg-success mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[3]}}_GUIDE">GUIDE</a></li>
+                        <li class="bg-success mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[3]}}_TRANSFER">TRANSFER</a></li>
+                        <li class="bg-success mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[3]}}_ASSISTANCE">ASSISTANCE</a></li>
                     </ul>
                     {{--{{dd($tipos)}}--}}
                     <div class="tab-content margin-top-20">
@@ -531,8 +531,8 @@
                 </div>
                 <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[4]}}" class="hide col-lg-12">
                     <ul class="nav nav-tabs">
-                        <li class="active bg-warning"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[4]}}_EXTRANJERO">EXTRANJERO</a></li>
-                        <li class="bg-warning"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[4]}}_NATIONAL">NATIONAL</a></li>
+                        <li class="active bg-warning mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[4]}}_EXTRANJERO">EXTRANJERO</a></li>
+                        <li class="bg-warning mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[4]}}_NATIONAL">NATIONAL</a></li>
                     </ul>
 
                     <div class="tab-content margin-top-20">
@@ -619,9 +619,9 @@
                 </div>
                 <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[5]}}" class="hide col-lg-12">
                     <ul class="nav nav-tabs">
-                        <li class="active bg-danger"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[5]}}_LUNCH">LUNCH</a></li>
-                        <li class="bg-danger"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[5]}}_DINNER">DINNER</a></li>
-                        <li class="bg-danger"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[5]}}_BOX_LUNCH">BOX LUNCH</a></li>
+                        <li class="active bg-danger mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[5]}}_LUNCH">LUNCH</a></li>
+                        <li class="bg-danger mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[5]}}_DINNER">DINNER</a></li>
+                        <li class="bg-danger mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[5]}}_BOX_LUNCH">BOX LUNCH</a></li>
                     </ul>
                     {{--{{dd($tipos)}}--}}
                     <div class="tab-content margin-top-20">
@@ -746,16 +746,75 @@
                 </div>
                 <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}" class="hide col-lg-12">
                     <ul class="nav nav-tabs">
-                        <li class="active bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_EXPEDITION">EXPEDITION</a></li>
-                        <li class="bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_VISITADOME">VISITADOME</a></li>
-                        <li class="bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_EJECUTIVO">EJECUTIVO</a></li>
-                        <li class="bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_FIRST_CLASS">FIRST CLASS</a></li>
-                        <li class="bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_HIRAN_BINGHAN">HIRAN BINGHAN</a></li>
-                        <li class="bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_PRESIDENTIAL">PRESIDENTIAL</a></li>
+                        @php
+                            $pos1='active';
+                        @endphp
+                        @foreach ($pro_clase as $item)
+                            <li class="{{$pos1}} bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_{{$item->id}}">{{$item->clase}}</a></li>
+                            @php
+                                $pos1='';
+                            @endphp
+                        @endforeach
+                        {{-- <li class="active bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_EXPEDITION">EXPEDITION</a></li>
+                        <li class="bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_VISITADOME">VISITADOME</a></li>
+                        <li class="bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_EJECUTIVO">EJECUTIVO</a></li>
+                        <li class="bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_FIRST_CLASS">FIRST CLASS</a></li>
+                        <li class="bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_HIRAN_BINGHAN">HIRAN BINGHAN</a></li>
+                        <li class="bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_PRESIDENTIAL">PRESIDENTIAL</a></li> --}}
+                        
+
                     </ul>
                     {{--{{dd($tipos)}}--}}
                     <div class="tab-content margin-top-20">
-                        <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_EXPEDITION" class="tab-pane fade in active">
+                        @php
+                            $pos1='in active';
+                        @endphp
+                        @foreach ($pro_clase as $item)
+
+                            <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_{{$item->id}}" class="tab-pane fade {{$pos1}}">
+
+                                @foreach($services as $service)
+                                    @if($service->grupo==$tipoServicio[6])
+                                        @php $estado='';@endphp
+    
+                                        @if($service->tipoServicio==$item->clase)
+                                            @php
+                                                $visual=' hide';
+                                            @endphp
+                                            <div id="service_edit_{{$itinerartio_cotis_id}}_{{$service->id}}" class="col-md-4{{$visual}}">
+                                                @php
+                                                    $service_p=0;
+                                                @endphp
+                                                @if($service->precio_grupo==1)
+                                                    @php
+                                                        $service_p=round($service->precio_venta/2,2);
+                                                    @endphp
+                                                @else
+                                                    @php
+                                                        $service_p=$service->precio_venta;
+                                                    @endphp
+                                                @endif
+                                                @if($estado!='')
+                                                    @php
+                                                        $total_pre_ven_edit+=$service_p;
+                                                    @endphp
+                                                @endif
+                                                <div class="checkbox11">
+                                                    <label>
+                                                        <input type="checkbox" class="servicios_edit" name="servicios{{$itinerartio_cotis_id}}[]" value="{{$itinerartio_cotis_id}}_{{$service_p}}_{{$service->id}}_{{$service->localizacion}}" onchange="sumar_servicios_edit({{$itinerartio_cotis_id}})" {{$estado}}>
+                                                        {{$service->nombre}} <span class="text-10 text-green-goto">{{$service->localizacion}}</span> <span class="text-12 text-orange-goto">$ {{$service_p}} p.p</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
+                                @endforeach
+                            </div>
+                            @php
+                                $pos1='';
+                            @endphp
+                        @endforeach
+                        {{-- <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[6]}}_EXPEDITION" class="tab-pane fade in active">
 
                             @foreach($services as $service)
                                 @if($service->grupo==$tipoServicio[6])
@@ -988,13 +1047,13 @@
                                     @endif
                                 @endif
                             @endforeach
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div id="t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[7]}}" class="hide col-lg-12">
                     <ul class="nav nav-tabs">
-                        <li class="active bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[7]}}_NATIONAL">NATIONAL</a></li>
-                        <li class="bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[7]}}_INTERNATIONAL">INTERNATIONAL</a></li>
+                        <li class="active bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[7]}}_NATIONAL">NATIONAL</a></li>
+                        <li class="bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$tipoServicio[7]}}_INTERNATIONAL">INTERNATIONAL</a></li>
                     </ul>
                     {{--{{dd($tipos)}}--}}
                     <div class="tab-content margin-top-20">
@@ -1093,7 +1152,7 @@
 
                     <ul class="nav nav-tabs">
                         @foreach($array_tipos as $array_tipo)
-                            <li class="active bg-info"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$array_tipo}}">$array_tipo</a></li>
+                            <li class="active bg-info mx-1 px-2 bg-info rounded-top"><a data-toggle="tab" href="#t_edit_{{$itinerartio_cotis_id}}_{{$array_tipo}}">$array_tipo</a></li>
                         @endforeach
                     </ul>
                     <div class="tab-content margin-top-20">

@@ -79,7 +79,6 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-
                     <ul class="nav nav-tabs nav-justified">
                         <li class="nav-item @if($activado=='Detalle')active @endif">
                             <a data-toggle="tab" href="#detalle" class="nav-link active">Detalle</a>

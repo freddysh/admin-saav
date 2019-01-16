@@ -1,33 +1,34 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Cliente;
-use App\Cotizacion;
-use App\CotizacionArchivos;
-use App\CotizacionesCliente;
+use App\User;
 use App\Hotel;
-use App\HotelProveedor;
-use App\ItinerarioCotizaciones;
-use App\ItinerarioDestinos;
-use App\ItinerarioServicioProveedor;
-use App\ItinerarioServicios;
-use App\ItinerarioServiciosAcumPago;
-use App\Liquidacion;
-use App\M_Category;
+use App\Cliente;
 use App\M_Destino;
+use App\Proveedor;
+use Carbon\Carbon;
+use App\Cotizacion;
+use App\M_Category;
 use App\M_Producto;
 use App\M_Servicio;
-use App\PaqueteCotizaciones;
+use App\Liquidacion;
+use App\HotelProveedor;
+use App\ProveedorClases;
+use App\CotizacionArchivos;
+use App\ItinerarioDestinos;
 use App\PrecioHotelReserva;
-use App\PrecioHotelReservaPagos;
-use App\Proveedor;
-use App\User;
-use Carbon\Carbon;
+use App\CotizacionesCliente;
+use App\ItinerarioServicios;
+use App\PaqueteCotizaciones;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Illuminate\Http\Response;
 use App\Helpers\MisFunciones;
+use Illuminate\Http\Response;
+use App\ItinerarioCotizaciones;
+use App\PrecioHotelReservaPagos;
+use App\ItinerarioServicioProveedor;
+use App\ItinerarioServiciosAcumPago;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -491,8 +492,9 @@ class BookController extends Controller
 			$destinations=M_Destino::get();
 			$services=M_Servicio::get();
 			$categorias=M_Category::get();
+			$pro_clase=ProveedorClases::get();
 			$servicios=array();
-			return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id]);
+			return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id,'pro_clase'=>$pro_clase]);
 	}
 	public function nuevo_servicio_add(Request $request){
 		$origen=$request->input('origen');
