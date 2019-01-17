@@ -584,6 +584,7 @@ class QouteController extends Controller
                         $dia_texto = 1;
                         $coti = Cotizacion::FindOrFail($coti->id);
                         $fecha_viaje = date($coti->fecha);
+                        $st_=0;
                         foreach ($ppaquete->itinerarios as $itinerarios_) {
                             $p_itinerario = new ItinerarioCotizaciones();
                             $p_itinerario->titulo = $itinerarios_->titulo;
@@ -680,7 +681,10 @@ class QouteController extends Controller
                             }
                             $p_itinerario->precio = $st;
                             $p_itinerario->save();
+                            $st_+=$st;
                         }
+                        $pqt->utilidad =number_format(number_format($total,2, '.', '')-number_format($st_,2, '.', ''),2, '.', '');
+                        $pqt->save();
                         ////-- recorremos los dias para agregar los hoteles
                         $itinerario_cotizaciones = ItinerarioCotizaciones::where('paquete_cotizaciones_id', $ppaquete->id)->get();
                         $nroDias = count($itinerario_cotizaciones);
