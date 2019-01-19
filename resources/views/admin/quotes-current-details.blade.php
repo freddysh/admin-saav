@@ -312,10 +312,10 @@
                                 @php
                                     $name=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos;
                                     $email=$cliente_coti->cliente->email;
-                                    $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                    $titulo=$cotizacion_->nombre_pax.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                 @endphp
                                 <small>
-                                    <b><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
+                                    <b><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}})
                                 </small>
                             @endif
                         @endforeach

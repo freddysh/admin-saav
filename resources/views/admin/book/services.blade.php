@@ -30,6 +30,15 @@
             @endphp
         @endif
         <div class="col-12">
+            @if ($cotizacion->anulado==0)
+                <div class="alert alert-danger">
+                    <strong>Alerta!</strong> El presente file ha sido anulado el {{MisFunciones::fecha_peru_hora($cotizacion->anulado_fecha)}} por 
+                    {{$usuario->where('id',$cotizacion->anulado_user)->first()->name}}, por favor informar a los proveedores lo sucedido.
+                </div>    
+            @else
+                
+            @endif
+            
             <div class="panel panel-default">
                 <div class="panel-body">
                     <ul class="nav nav-tabs nav-justified">
@@ -47,7 +56,7 @@
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
-                                            <b class="text-info text-20">Cod:{{$cotizacion->codigo}}</b><b class="text-20"> | </b><b class="panel-title pull-left text-20">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
+                                            <b class="text-info text-20">Cod:{{$cotizacion->codigo}}</b><b class="text-20"> | </b><b class="panel-title pull-left text-20">{{$cotizacion->nombre_pax}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
                                             <b class="text-warning padding-left-10"> (X{{$cotizacion->nropersonas}})</b>
                                             @for($i=0;$i<$cotizacion->nropersonas;$i++)
                                                 <i class="fa fa-male fa-2x"></i>

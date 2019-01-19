@@ -109,13 +109,13 @@
                         $color='bg-white';
                     @endphp
                 @endif
-                @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
-                    @if($clientes->estado==1)
+                {{-- @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
+                    @if($clientes->estado==1) --}}
                         @php
-                            $dato_cliente=$clientes->cliente->nombres;
+                            $dato_cliente=$cotizacion_cat_->nombre_pax;
                         @endphp
-                    @endif
-                @endforeach
+                    {{-- @endif
+                @endforeach --}}
                 @php
                     $total=0;
                     $confirmados=0;
@@ -298,13 +298,13 @@
                         $color='bg-white';
                     @endphp
                 @endif
-                @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
-                    @if($clientes->estado==1)
+                {{-- @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
+                    @if($clientes->estado==1) --}}
                         @php
-                            $dato_cliente=$clientes->cliente->nombres;
+                            $dato_cliente=$cotizacion_cat_->nombre_pax;
                         @endphp
-                    @endif
-                @endforeach
+                    {{-- @endif
+                @endforeach --}}
                 @php
                     $total=0;
                     $confirmados=0;
@@ -488,13 +488,13 @@
                         $color='bg-white';
                     @endphp
                 @endif
-                @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
-                    @if($clientes->estado==1)
+                {{-- @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
+                    @if($clientes->estado==1) --}}
                         @php
-                            $dato_cliente=$clientes->cliente->nombres;
+                            $dato_cliente=$cotizacion_cat_->nombre_pax;
                         @endphp
-                    @endif
-                @endforeach
+                    {{-- @endif
+                @endforeach --}}
                 @php
                     $total=0;
                     $confirmados=0;
@@ -677,13 +677,13 @@
                         $color='bg-white';
                     @endphp
                 @endif
-                @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
-                    @if($clientes->estado==1)
+                {{-- @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
+                    @if($clientes->estado==1) --}}
                         @php
-                            $dato_cliente=$clientes->cliente->nombres;
+                            $dato_cliente=$cotizacion_cat_->nombre_pax;
                         @endphp
-                    @endif
-                @endforeach
+                    {{-- @endif
+                @endforeach --}}
                 @php
                     $total=0;
                     $confirmados=0;

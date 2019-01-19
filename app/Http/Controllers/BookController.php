@@ -102,7 +102,8 @@ class BookController extends Controller
 		$ItinerarioServiciosAcumPagos=ItinerarioServiciosAcumPago::where('paquete_cotizaciones_id',$pqt_id)->get();
 		$ItinerarioHotleesAcumPagos=PrecioHotelReservaPagos::where('paquete_cotizaciones_id',$pqt_id)->get();
 		$cotizacion_archivos=CotizacionArchivos::where('cotizaciones_id',$id)->get();
-		return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos]);
+		$usuario=User::get();
+		return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario]);
 	}
 
 	/**
@@ -824,12 +825,14 @@ class BookController extends Controller
 				$cotizacion_cat =Cotizacion::get();
 			}
 			elseif(trim($valor1)!=''){
-				$cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
-					$query->where('estado','1');
-					$query->whereHas('cliente',function ($query)use ($valor1){
-						$query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
-					});
-				})
+				// $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
+				// 	$query->where('estado','1');
+				// 	$query->whereHas('cliente',function ($query)use ($valor1){
+				// 		$query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
+				// 	});
+				// })
+				// 	->orWhere('codigo','like','%'.$valor1.'%')->get();
+				$cotizacion_cat =Cotizacion::where('nombre_pax','like','%'.$valor1.'%')
 					->orWhere('codigo','like','%'.$valor1.'%')->get();
 			}
 			// return dd($cotizacion_cat);
@@ -849,12 +852,13 @@ class BookController extends Controller
 				$cotizacion_cat =Cotizacion::get();
 			}
 			elseif(trim($valor1)!=''){
-				$cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
-					$query->where('estado','1');
-					$query->whereHas('cliente',function ($query)use ($valor1){
-						$query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
-					});
-				})->get();
+				$cotizacion_cat =Cotizacion::where('nombre_pax', 'like', '%'.$valor1.'%')->get();
+				// $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
+				// 	$query->where('estado','1');
+				// 	$query->whereHas('cliente',function ($query)use ($valor1){
+				// 		$query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
+				// 	});
+				// })->get();
 			}
 			return view('admin.book.list-paquetes',compact('cotizacion_cat','columna'));
 		}
@@ -901,18 +905,19 @@ class BookController extends Controller
 				$cotizaciones = Cotizacion::where('codigo', $dato1)->get();
 			}
 			elseif($opcion=='nombre'){
-				$cotizaciones=Cotizacion::whereHas('cotizaciones_cliente',function($query)use($dato1){
-                    $query->whereHas('cliente',function($query)use($dato1){
-                        $query->where('nombres',$dato1);
-                    });
-				})->get();
+				$cotizaciones = Cotizacion::where('nombre_pax', $dato1)->get();
+				// $cotizaciones=Cotizacion::whereHas('cotizaciones_cliente',function($query)use($dato1){
+                //     $query->whereHas('cliente',function($query)use($dato1){
+                //         $query->where('nombres',$dato1);
+                //     });
+				// })->get();
 			}
 			$datos_cliente='';
 			foreach($cotizaciones as $cotizacion){
-				$datos_cliente='';
-				foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $coti_cliente){
-					$datos_cliente=$coti_cliente->cliente->nombres.'X'.$cotizacion->nropersonas.' '.MisFunciones::fecha_peru($cotizacion->fecha);
-				}
+				$datos_cliente=$cotizacion->nombre_pax.'X'.$cotizacion->nropersonas.' '.MisFunciones::fecha_peru($cotizacion->fecha);
+				// foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $coti_cliente){
+				// 	$datos_cliente=$coti_cliente->cliente->nombres.'X'.$cotizacion->nropersonas.' '.MisFunciones::fecha_peru($cotizacion->fecha);
+				// }
 				foreach($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
 					foreach($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){
 						$proveedor='';

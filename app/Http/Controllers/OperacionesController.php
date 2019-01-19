@@ -32,15 +32,15 @@ class OperacionesController extends Controller
 
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
             $clientes_ ='';
-            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
-                foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_='<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cliente->nombres . " " . $cliente->apellidos;
-                }
-            }
+            // foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+            //     foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
+                    $clientes_='<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
+            //     }
+            // }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
                 foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
-                    $array_datos_coti[$key1]=Array('fecha'=>$itinerario->fecha,'datos'=>$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas);
+                    $array_datos_coti[$key1]=Array('anulado'=>$cotizacion->anulado,'fecha'=>$itinerario->fecha,'datos'=>$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas);
                     foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
                         $hora='00.00';
                         if(trim($servicio->hora_llegada)!=''){
@@ -69,7 +69,9 @@ class OperacionesController extends Controller
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
+                                
                             $array_datos_cotizacion[$key]['dates']= $itinerario->fecha.'_'.$hora;
+                            $array_datos_cotizacion[$key]['anulado']=$cotizacion->anulado;
                             $array_datos_cotizacion[$key]['servicio'].= $servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
                         }
                         else{
@@ -80,7 +82,7 @@ class OperacionesController extends Controller
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
+                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'anulado'=>$cotizacion->anulado,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
 //
 //                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
                         }
@@ -159,11 +161,11 @@ class OperacionesController extends Controller
 
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
             $clientes_ ='';
-            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
-                foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cliente->nombres . " " . $cliente->apellidos;
-                }
-            }
+            // foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+            //     foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
+                    $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
+            //     }
+            // }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
                 foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
@@ -196,7 +198,9 @@ class OperacionesController extends Controller
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
+                                    
                             $array_datos_cotizacion[$key]['dates']= $itinerario->fecha.'_'.$hora;
+                            $array_datos_cotizacion[$key]['anulado']=$cotizacion->anulado;
                             $array_datos_cotizacion[$key]['servicio'].= $servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
                         }
                         else{
@@ -207,7 +211,7 @@ class OperacionesController extends Controller
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
+                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'anulado'=>$cotizacion->anulado,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
 //
 //                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
                         }
@@ -294,11 +298,11 @@ class OperacionesController extends Controller
 
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
             $clientes_ ='';
-            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
-                foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cliente->nombres . " " . $cliente->apellidos;
-                }
-            }
+            // foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+            //     foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
+                    $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
+            //     }
+            // }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
                 foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
@@ -332,6 +336,7 @@ class OperacionesController extends Controller
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
                             $array_datos_cotizacion[$key]['dates']= $itinerario->fecha.'_'.$hora;
+                            $array_datos_cotizacion[$key]['anulado']= $cotizacion->anulado;
                             $array_datos_cotizacion[$key]['servicio'].= $servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
                         }
                         else{
@@ -342,7 +347,7 @@ class OperacionesController extends Controller
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
+                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'anulado'=>$cotizacion->anulado,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
 //
 //                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
                         }

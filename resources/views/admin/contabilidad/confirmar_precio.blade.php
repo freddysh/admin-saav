@@ -91,16 +91,15 @@
                         <div id="detalle" class="tab-pane fade show @if($activado=='Detalle')in active @endif ">
                             <div class="row">
                                 <div class="col-md-12 margin-top-5">
-                                    @foreach($cotizacion->cotizaciones_cliente as $clientes)
-                                        @if($clientes->estado==1)
-                                            {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
-                                            <h2 class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</h2>
+                                    {{-- @foreach($cotizacion->cotizaciones_cliente as $clientes)
+                                        @if($clientes->estado==1) --}}
+                                            <h2 class="panel-title pull-left" style="font-size:30px;">{{$cotizacion->codigo}} | {{$cotizacion->nombre_pax}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</h2>
                                             <b class="text-warning padding-left-10"> (X{{$cotizacion->nropersonas}})</b>
                                             @for($i=0;$i<$cotizacion->nropersonas;$i++)
                                                 <i class="fa fa-male fa-2x"></i>
                                             @endfor
-                                        @endif
-                                    @endforeach
+                                        {{-- @endif
+                                    @endforeach --}}
 
                                     <i class="fa fa-check d-none text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Hidalgo esta activo"></i>
                                     <b class="text-success text-25">@if($cotizacion->categorizado=='C'){{'Con factura'}}@elseif($cotizacion->categorizado=='S'){{'Sin factura'}}@else{{'No esta filtrado'}}@endif</b>
@@ -1156,16 +1155,16 @@
                         <div id="resumen" class="tab-pane fade @if($activado=='Resumen')in active @endif ">
                             <div class="row">
                                 <div class="col-md-12 margin-top-5">
-                                    @foreach($cotizacion->cotizaciones_cliente as $clientes)
-                                        @if($clientes->estado==1)
+                                    {{-- @foreach($cotizacion->cotizaciones_cliente as $clientes)
+                                        @if($clientes->estado==1) --}}
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
-                                            <h2 class="panel-title pull-left" style="font-size:30px;">{{$clientes->cliente->nombres}} {{$clientes->cliente->apellidos}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</h2>
+                                            <h2 class="panel-title pull-left" style="font-size:30px;">{{$cotizacion->codigo}} | {{$cotizacion->nombre_pax}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</h2>
                                             <b class="text-warning padding-left-10"> (X{{$cotizacion->nropersonas}})</b>
                                             @for($i=0;$i<$cotizacion->nropersonas;$i++)
                                                 <i class="fa fa-male fa-2x"></i>
                                             @endfor
-                                        @endif
-                                    @endforeach
+                                        {{-- @endif
+                                    @endforeach --}}
 
                                     <i class="fa fa-check d-none text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Hidalgo esta activo"></i>
                                     <b class="text-success text-25">@if($cotizacion->categorizado=='C'){{'Con factura'}}@elseif($cotizacion->categorizado=='S'){{'Sin factura'}}@else{{'No esta filtrado'}}@endif</b>

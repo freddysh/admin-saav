@@ -38,7 +38,11 @@
     {{--<form action="{{route('package_cotizacion_save_path')}}" method="post" id="package_new_path_id">--}}
     <div class="row align-items-center">
         <div class="col-6">
-            <h3>{{$cliente->nombres}} {{$cliente->apellidos}}</h3>
+            <h3>
+                @foreach($cotizaciones as $cotizacion)
+                {{$cotizacion->nombre_pax}}
+                @endforeach
+            </h3>
             @php
                 $s=0;
                 $d=0;

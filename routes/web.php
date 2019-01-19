@@ -1296,4 +1296,7 @@ Route::post('/admin/servicio/cambiar-estado', [
     'uses' => 'ServicesController@cambiar_estado',
     'as' => 'service_cambiar_estado_path',
 ]);
-
+Route::post('/admin/cotizacion/anular', [
+    'uses' => 'PackageCotizacionController@anular',
+    'as' => 'cotizacion_anular_path',
+]);

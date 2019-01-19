@@ -112,9 +112,9 @@
                         <i class="fas fa-calendar text-primary"></i>{{fecha_peru($cotizacion->fecha_venta)}}
                     </td>
                     <td>
-                        @foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente)
-                            <b> <span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizaciones_cliente->cliente->nombres}}X{{$cotizacion->nropersonas}}({{$fecha}})</b>
-                        @endforeach
+                        {{-- @foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente) --}}
+                            <b> <span class="text-success">{{$cotizacion->codigo}}</span> | {{$cotizacion->nombre_pax}}X{{$cotizacion->nropersonas}}({{$fecha}})</b>
+                        {{-- @endforeach --}}
                     </td>
                     <td class="text-right text-secondary"><b><sup>$</sup>{{number_format($profit,2)}}</b></td>
                 </tr>

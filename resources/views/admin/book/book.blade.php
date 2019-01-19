@@ -1,4 +1,3 @@
-
 @extends('layouts.admin.book')
 @section('content')
     @php
@@ -132,13 +131,13 @@
                                     $color='bg-white';
                                 @endphp
                             @endif
-                            @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
+                            {{-- @foreach($cotizacion_cat_->cotizaciones_cliente as $clientes)
                                 @if($clientes->estado==1)
                                     @php
                                         $dato_cliente=$clientes->cliente->nombres;
                                     @endphp
                                 @endif
-                            @endforeach
+                            @endforeach --}}
                             @php
                                 $total=0;
                                 $confirmados=0;
@@ -192,7 +191,7 @@
                                                         <div class="row px-0">
                                                             <div class="col-6 text-grey-goto pr-0">
                                                                 <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
-                                                                    <b class="text-10">{{strtoupper($dato_cliente)}}</b>
+                                                                    <b class="text-10">{{strtoupper($cotizacion_cat_->nombre_pax)}}</b>
                                                                 </a>
                                                             </div>
                                                             <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">
@@ -383,7 +382,7 @@
                                                             <div class="row px-0">
                                                                 <div class="col-6 text-grey-goto pr-0">
                                                                     <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
-                                                                        <b class="text-10">{{strtoupper($dato_cliente)}}</b>
+                                                                        <b class="text-10">{{strtoupper($cotizacion_cat_->nombre_pax)}}</b>
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">
@@ -570,7 +569,7 @@
                                                         <div class="row px-0">
                                                             <div class="col-6 text-grey-goto pr-0">
                                                                 <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
-                                                                    <b class="text-10">{{strtoupper($dato_cliente)}}</b>
+                                                                    <b class="text-10">{{strtoupper($cotizacion_cat_->nombre_pax)}}</b>
                                                                 </a>
                                                             </div>
                                                             <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">

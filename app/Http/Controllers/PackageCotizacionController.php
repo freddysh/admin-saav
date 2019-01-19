@@ -819,6 +819,7 @@ class PackageCotizacionController extends Controller
             $cotizacion->duracion = $request->input('txt_days1');
             $cotizacion->fecha = $request->input('txt_date1');
             $cotizacion->idioma_pasajeros= $request->input('txt_idioma1');
+            $cotizacion->nombre_pax=strtoupper($request->input('txt_name1'));
             if($estrela==0)
                 $cotizacion->star_0=0;
             if($estrela==2)
@@ -1250,7 +1251,7 @@ class PackageCotizacionController extends Controller
             $cotizacion_plantilla->duracion = $request->input('txt_days1_');
             $cotizacion_plantilla->fecha = $request->input('txt_date1_');
             $cotizacion_plantilla->idioma_pasajeros = $request->input('txt_idioma2');
-
+            $cotizacion_plantilla->nombre_pax=strtoupper($request->input('txt_name1_'));
             if ($estrela == 0)
                 $cotizacion_plantilla->star_2 = 0;
             if ($estrela == 2)
@@ -2130,11 +2131,11 @@ class PackageCotizacionController extends Controller
         $array_emails[] = array('email' => $email, 'name' => $name);
         $anio = explode('-', $cotizacion->fecha);
         $coti_datos = '';
-        foreach ($cotizacion->cotizaciones_cliente as $clientes) {
-            if ($clientes->estado == 1) {
-                $coti_datos = 'Cod:' . $cotizacion->codigo . ' | ' . $clientes->cliente->nombres . ' ' . $clientes->cliente->apellidos . ' x ' . $cotizacion->nropersonas . ' ' . date_format(date_create($cotizacion->fecha), ' l jS F Y') . '(X' . $cotizacion->nropersonas . ')';
-            }
-        }
+        // foreach ($cotizacion->cotizaciones_cliente as $clientes) {
+        //     if ($clientes->estado == 1) {
+                $coti_datos = 'Cod:' . $cotizacion->codigo . ' | ' . $cotizacion->nombre_pax . ' x ' . $cotizacion->nropersonas . ' ' . date_format(date_create($cotizacion->fecha), ' l jS F Y') . '(X' . $cotizacion->nropersonas . ')';
+        //     }
+        // }
         $email_send = Mail::to($email, $name)->send(new ReservasEmail($coti_datos,$coti->id, $anio[0], $array_emails, $email, $name));
     }
 
@@ -2682,5 +2683,42 @@ class PackageCotizacionController extends Controller
         $itinerario_servicio->save();
         // return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
         return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
+    }
+    public function anular(Request $request){
+        $id = $request->input('id');
+        $anular = $request->input('anular');
+        $user_name=auth()->guard('admin')->user()->name;
+        $user_tipo=auth()->guard('admin')->user()->tipo_user;
+        $hoy=Carbon::now();
+        $hoy->subHour(5);
+        $cotizacion=Cotizacion::FindOrFail($id);
+        $cotizacion->anulado=$anular;
+        $cotizacion->anulado_fecha=$hoy->toDateTimeString();
+        $cotizacion->anulado_user=auth()->guard('admin')->user()->id;
+        if($cotizacion->save()){
+            $usuario = auth()->guard('admin')->user();
+            $email = $usuario->email;
+            //        $email = 'fredy1432@gmail.com';
+            $name = $usuario->name;
+            $array_emails = [];
+            $emails = User::where('tipo_user', 'reservas')->get();
+            foreach ($emails as $emails_) {
+                $array_emails[] = array('email' => $emails_->email, 'name' => $emails_->name);
+            }
+            $array_emails[] = array('email' => $email, 'name' => $name);
+            $anio = explode('-', $cotizacion->fecha);
+            $coti_datos = '';
+            // foreach ($cotizacion->cotizaciones_cliente as $clientes) {
+            //     if ($clientes->estado == 1) {
+                    $coti_datos = 'Cod:' . $cotizacion->codigo . ' | ' . $cotizacion->nombre_pax . ' x ' . $cotizacion->nropersonas . ' ' . date_format(date_create($cotizacion->fecha), ' l jS F Y') . '(X' . $cotizacion->nropersonas . ')';
+            //     }
+            // }
+
+            $email_send = Mail::to($email, $name)->send(new ReservasAnuladasEmail($cotizacion->anulado_fecha,$coti_datos,$coti->id, $anio[0], $array_emails, $email, $name));
+
+            return 1;
+        }
+        else
+            return 0;
     }
 }

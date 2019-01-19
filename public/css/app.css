@@ -2198,6 +2198,11 @@ a.ui-button:active,
   background: #e4e4e4 !important;
 }
 
+.venta_anulada {
+  background-color: #f8d7da !important;
+  border-color: #f5c6cb !important;
+}
+
 /*!
  * Bootstrap v4.1.1 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors

@@ -112,10 +112,7 @@ class ReportesController extends Controller
         }
         elseif($filtro=='fecha de llegada'){
             $cotizaciones = Cotizacion::where('web',$web)->where('estado','2')->whereBetween('fecha',[$desde,$hasta])->get();
-        }
-
-
-        
+        }       
         return view('admin.reportes.cotizacion-detalle',compact(['cotizaciones','desde','hasta','filtro']));
     }
 

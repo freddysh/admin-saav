@@ -51,6 +51,10 @@
         .footer table {
             width: 100%;
         }
+        .venta_anulada{
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            }
     </style>
 <body>
 <div class="footer text-center text-12">

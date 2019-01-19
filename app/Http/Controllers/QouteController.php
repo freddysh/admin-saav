@@ -483,6 +483,7 @@ class QouteController extends Controller
                         // $ppaquete = P_Paquete::where('codigo', $codigo)->first();
                         $coti = new Cotizacion();
                         $coti->codigo = $codigo_auto;
+                        $coti->nombre_pax = $nombres;
                         $coti->codigo_pqt = $codigo;
                         $coti->nropersonas = $totaltravelers;
                         $coti->duracion = $ppaquete->duracion;

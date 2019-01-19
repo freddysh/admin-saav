@@ -37,7 +37,7 @@
                     @php
                         $arreglo=explode('%',$array_datos_coti_['servicio']);
                     @endphp
-                    <tr>
+                    <tr class="@if($array_datos_coti_['anulado']==0) venta_anulada @endif">
                         @php
                             $key1=substr($key,0,strlen($key)-6);
                             $valor=explode('|',$array_datos_coti[$key1]['datos']);

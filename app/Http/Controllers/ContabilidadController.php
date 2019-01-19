@@ -1808,11 +1808,12 @@ class ContabilidadController extends Controller
             $cotizacion_codigo_o_nombre=Cotizacion::where('codigo', $codigo)->get();
         }
         elseif($opcion=='POR NOMBRE'){
-            $cotizacion_codigo_o_nombre=Cotizacion::whereHas('cotizaciones_cliente', function($query)use($nombre){
-                $query->whereHas('cliente', function($query1)use($nombre){
-                    $query1->where('nombres','like','%'.$nombre.'%');
-                });
-            })->get();
+            $cotizacion_codigo_o_nombre=Cotizacion::where('nombre_pax', $nombre)->get();
+            // $cotizacion_codigo_o_nombre=Cotizacion::whereHas('cotizaciones_cliente', function($query)use($nombre){
+            //     $query->whereHas('cliente', function($query1)use($nombre){
+            //         $query1->where('nombres','like','%'.$nombre.'%');
+            //     });
+            // })->get();
         }
         // dd($cotizacion_codigo_o_nombre);
         return view('admin.contabilidad.lista-entrada-pendiente',compact(['cotizacion', 'cotizacion_codigo_o_nombre', 'ini', 'fin','proveedores','grupo','opcion','nombre','codigo']));

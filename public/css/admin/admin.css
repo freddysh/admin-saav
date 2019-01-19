@@ -669,6 +669,11 @@
   background: #e4e4e4 !important;
 }
 
+.venta_anulada {
+  background-color: #f8d7da !important;
+  border-color: #f5c6cb !important;
+}
+
 .nav-pills .nav-link.active {
   background: #f9a825 !important;
 }

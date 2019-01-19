@@ -293,11 +293,11 @@
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
                                                                 <?php
-                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                                $titulo=$cotizacion_->nombre_pax.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                                 ?>
                                                                 <small class="text-dark font-weight-bold">
                                                                     <i class="fas fa-user-circle text-secondary"></i>
-                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} {{$fecha}}
+                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}} x {{$cotizacion_->nropersonas}} {{$fecha}}
                                                                 </small>
                                                                 <small class="text-primary">
                                                                     <sup>$</sup>{{$valor}}
@@ -495,11 +495,11 @@
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
                                                                 <?php
-                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                                $titulo=$cotizacion_->nombre_pax.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                                 ?>
                                                                 <small class="text-dark font-weight-bold">
                                                                     <i class="fas fa-user-circle text-secondary"></i>
-                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} {{$fecha}}
+                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}} x {{$cotizacion_->nropersonas}} {{$fecha}}
                                                                 </small>
                                                                 <small class="text-primary">
                                                                     <sup>$</sup>{{$valor}}
@@ -695,11 +695,11 @@
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
                                                                 <?php
-                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                                $titulo=$cotizacion_->nombre_pax.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                                 ?>
                                                                 <small class="text-dark font-weight-bold">
                                                                     <i class="fas fa-user-circle text-secondary"></i>
-                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} {{$fecha}}
+                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}} x {{$cotizacion_->nropersonas}} {{$fecha}}
                                                                 </small>
                                                                 <small class="text-primary">
                                                                     <sup>$</sup>{{$valor}}
@@ -895,11 +895,11 @@
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
                                                                 <?php
-                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                                $titulo=$cotizacion_->nombre_pax.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                                 ?>
                                                                 <small class="text-dark font-weight-bold">
                                                                     <i class="fas fa-user-circle text-secondary"></i>
-                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} {{$fecha}}
+                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}} x {{$cotizacion_->nropersonas}} {{$fecha}}
                                                                 </small>
                                                                 <small class="text-primary">
                                                                     <sup>$</sup>{{$valor}}
@@ -1095,11 +1095,11 @@
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
                                                                 <?php
-                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                                $titulo=$cotizacion_->nombre_pax.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                                 ?>
                                                                 <small class="text-dark font-weight-bold">
                                                                     <i class="fas fa-user-circle text-secondary"></i>
-                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} {{$fecha}}
+                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}} x {{$cotizacion_->nropersonas}} {{$fecha}}
                                                                 </small>
                                                                 <small class="text-primary">
                                                                     <sup>$</sup>{{$valor}}
@@ -1296,11 +1296,11 @@
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
                                                                 <?php
-                                                                $titulo=$cliente_coti->cliente->nombres.' '.$cliente_coti->cliente->apellidos.' x '.$cotizacion_->nropersonas.' '.$fecha;
+                                                                $titulo=$cotizacion_->nombre_pax.' x '.$cotizacion_->nropersonas.' '.$fecha;
                                                                 ?>
                                                                 <small class="text-dark font-weight-bold">
                                                                     <i class="fas fa-user-circle text-secondary"></i>
-                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cliente_coti->cliente->nombres}} {{$cliente_coti->cliente->apellidos}} x {{$cotizacion_->nropersonas}} {{$fecha}}
+                                                                    <i class="text-primary">By {{$cotizacion_->users->name}}</i> | <i class="text-success">{{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}} x {{$cotizacion_->nropersonas}} {{$fecha}}
                                                                 </small>
                                                                 <small class="text-primary">
                                                                     <sup>$</sup>{{$valor}}

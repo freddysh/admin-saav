@@ -1599,6 +1599,7 @@ function Eliminar_cotizacion(id,titulo) {
 
     })
 }
+
 function confirmar_fecha_h(id){
     swal({
         title: 'MENSAJE DEL SISTEMA',
@@ -2175,6 +2176,28 @@ function enviar_form1(){
             )
             return false;
         }
+
+        // verificamos que las acomodacion y nro de pazx sea el correcto
+
+        var total_com=(parseInt($('#a_s_1').val())*1)+(parseInt($('#a_d_1').val())*2)+(parseInt($('#a_m_1').val())*2)+(parseInt($('#a_t_1').val())*3);
+        var total_paxs=$('#txt_travellers').val();
+        if(total_com>total_paxs){
+            swal(
+                'Oops...',
+                'La configuracion de la acomodacion excede la cantidad de paxs!',
+                'error'
+            )
+            return false;
+        }
+        else if(total_com<total_paxs){
+            swal(
+                'Oops...',
+                'La configuracion de la acomodacion es menor a la cantidad de paxs!',
+                'error'
+            )
+            return false;
+        }
+
     });
 }
 
@@ -2418,15 +2441,18 @@ function mostrar_datos(cadena) {
 function calcular_sumar_servicios(paxs){
     var resto=paxs;
     var t=0;
+    var m=0;
     var d=0;
     var s=0;
     if(paxs==6){
         t=0;
+        m=0;
         d=3;
         s=0;
     }
     else if(paxs==8){
         t=0;
+        m=0;
         d=4;
         s=0;
     }
@@ -2451,6 +2477,10 @@ function calcular_sumar_servicios(paxs){
     $('#a_d_1').min = 0;
     $('#a_d_1').max = paxs/2;
     $('#a_d_1').val(d);
+
+    $('#a_m_1').min = 0;
+    $('#a_m_1').max = paxs/2;
+    $('#a_m_1').val('0');
 
     $('#a_t_1').min = 0;
     $('#a_t_1').max = t;
@@ -2630,6 +2660,27 @@ function enviar_form2(){
             swal(
                 'Oops...',
                 'Escoja el paquete!',
+                'error'
+            )
+            return false;
+        }
+
+        // verificamos que las acomodacion y nro de pazx sea el correcto
+
+        var total_com=(parseInt($('#a_s_1').val())*1)+(parseInt($('#a_d_1').val())*2)+(parseInt($('#a_m_1').val())*2)+(parseInt($('#a_t_1').val())*3);
+        var total_paxs=$('#txt_travellers').val();
+        if(total_com>total_paxs){
+            swal(
+                'Oops...',
+                'La configuracion de la acomodacion excede la cantidad de paxs!',
+                'error'
+            )
+            return false;
+        }
+        else if(total_com<total_paxs){
+            swal(
+                'Oops...',
+                'La configuracion de la acomodacion es menor a la cantidad de paxs!',
                 'error'
             )
             return false;
@@ -5872,4 +5923,42 @@ function cambiar_estado(servicio,parte,id){
     }).fail(function (data) {
 
     });
+}
+function Anular_cotizacion(id,titulo) {
+    var anular=$('#hanulado_'+id).val();
+    var valor=0;
+    var msj='anular';
+    if(anular==0){
+        valor=1;
+        msj='activar';
+    }
+    // alert('holaaa');
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Estas seguro de "+msj+" la cotizacion "+titulo+"?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.post('/admin/cotizacion/anular', 'id='+id+'&anular='+valor, function(data) {
+            if(data==1){
+                if(anular==1){
+                    $('#anulado_'+id).html('<i class="fas fa-times-circle text-grey-goto"></i>');    
+                }
+                else if(anular==0){
+                    $('#anulado_'+id).html('<i class="fas fa-check-circle text-success"></i>');    
+                }
+            }
+        }).fail(function (data) {
+            console.log(data);
+        });
+
+    })
 }

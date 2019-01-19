@@ -101,14 +101,14 @@
                 @foreach($array_datos_cotizacion as $key => $array_datos_coti_)
                     @php
                         $arreglo=explode('%',$array_datos_coti_['servicio']);
+                    
+                    $key1=substr($key,0,strlen($key)-6);
+                    $valor=explode('|',$array_datos_coti[$key1]['datos']);
+                    $valor1=explode('|',$array_datos_coti[$key1]['datos']);
+                    $hora=explode('_',$key);
                     @endphp
-                    <tr>
-                        @php
-                            $key1=substr($key,0,strlen($key)-6);
-                            $valor=explode('|',$array_datos_coti[$key1]['datos']);
-                            $valor1=explode('|',$array_datos_coti[$key1]['datos']);
-                            $hora=explode('_',$key);
-                        @endphp
+                    <tr class="@if($array_datos_coti_['anulado']==0) venta_anulada @endif">
+                        
                         <td>{{fecha_peru($valor[0])}}</td>
                         <td>{{$valor[1]}}</td>
                         <td>{!!$valor[2]!!}</td>

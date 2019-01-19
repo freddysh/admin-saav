@@ -29,9 +29,12 @@
     @endphp
 
     @foreach($cotizaciones as $cotizacion)
+        @php
+            $cliente=$cotizacion->nombre_pax;
+        @endphp
         @foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $coti_cliente)
             @php
-                $cliente=$coti_cliente->cliente->nombres.' '.$coti_cliente->cliente->apellidos;
+                // $cliente=$coti_cliente->cliente->nombres.' '.$coti_cliente->cliente->apellidos;
                 $cliente_id=$coti_cliente->cliente->id;
             @endphp
         @endforeach
