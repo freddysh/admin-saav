@@ -903,7 +903,7 @@
                                                                                 {{csrf_field()}}
                                                                                 <input type="hidden" name="id_" value="{{$servicios->id}}">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}')">Guardar cambios</button>
+                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}','0')">Guardar cambios</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -949,6 +949,9 @@
                                                                             </div>
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
+                                                                                    @php
+                                                                                     $producto_id_=0;   
+                                                                                    @endphp
                                                                                     @if($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()==0)
                                                                                         <b class="text-danger">No tenemos proveedores disponibles!</b>
                                                                                     @else
@@ -1003,6 +1006,9 @@
                                                                                                                     <input class="grupo" type="radio" onchange="dato_producto('{{$producto->id}}','{{$producto->proveedor_id}}','{{$servicios->id}}','{{$itinerario->id}}')" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>
                                                                                                                     <small>$</small>
                                                                                                                     {{--<input class="grupo" type="radio" onchange="dato_producto({{$producto->id}})" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>--}}
+                                                                                                                    @php
+                                                                                                                        $producto_id_=$producto->id;   
+                                                                                                                    @endphp
                                                                                                                     @if($producto->precio_grupo==1)
                                                                                                                         {{$producto->precio_costo*1}}
                                                                                                                         <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*1}}">
@@ -1062,7 +1068,7 @@
                                                                                 {{csrf_field()}}
                                                                                 <input type="hidden" name="id_" value="{{$servicios->id}}">
                                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}')">Editar cambios</button>
+                                                                            <button type="button" class="btn btn-primary" onclick="Guardar_proveedor('{{$servicios->id}}','{{route('asignar_proveedor_costo_path')}}','{{csrf_token()}}','{{$producto_id_}}')">Editar cambios</button>
                                                                             </div>
                                                                         </form>
                                                                     </div>

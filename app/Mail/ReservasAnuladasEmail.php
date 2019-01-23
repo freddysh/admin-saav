@@ -43,9 +43,9 @@ class ReservasEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.mails.book.new-venta-filtrada-anulada',['coti'=>$this->coti,'anio'=>$this->anio,'id'=>$this->id,'nombre_ventas'=>$this->$nombre_ventas,'fecha'=>$this->fecha])
+        return $this->view('admin.mails.book.new-venta-filtrada-anulada', ['coti'=>$this->coti,'anio'=>$this->anio,'id'=>$this->id,'nombre_ventas'=>$this->$nombre_ventas,'fecha'=>$this->fecha])
             ->to($this->emails)
-            ->from($this->email_ventas,$this->nombre_ventas)
+            ->from($this->email_ventas, $this->nombre_ventas)
             ->subject('Venta Anulada '.$this->coti.' (GotoPeru)');
     }
 }

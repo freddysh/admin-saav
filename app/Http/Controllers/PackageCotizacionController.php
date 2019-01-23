@@ -14,6 +14,7 @@ use App\Cotizacion;
 use App\M_Category;
 use App\M_Servicio;
 use App\M_Itinerario;
+use App\Mail\Reserva;
 use App\P_Itinerario;
 use App\Http\Requests;
 use App\PaquetePrecio;
@@ -25,8 +26,8 @@ use App\CotizacionArchivos;
 use App\ItinerarioDestinos;
 use App\Mail\ReservasEmail;
 use App\PrecioHotelReserva;
-use App\CotizacionesCliente;
 
+use App\CotizacionesCliente;
 use App\ItinerarioServicios;
 use App\M_ItinerarioDestino;
 use App\Mail\AskInformation;
@@ -39,9 +40,11 @@ use App\P_ItinerarioServicios;
 use App\ItinerarioCotizaciones;
 use App\Mail\ContabilidadEmail;
 use PhpParser\Node\Expr\Array_;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Input;
+use App\Mail\ReservasAnuladasEmail;
 
+use Illuminate\Support\Facades\Mail;
+
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
@@ -1523,6 +1526,7 @@ class PackageCotizacionController extends Controller
                 }
                 $st=0;
                 foreach($itinerarios_->serivicios as $servicios){
+                    $serv=M_Servicios::find($servicios->m_servicios_id;);
                     $p_servicio=new ItinerarioServicios();
                     $p_servicio->nombre=$servicios->nombre;
                     $p_servicio->observacion='';
@@ -1539,10 +1543,10 @@ class PackageCotizacionController extends Controller
                     $p_servicio->max_personas=$servicios->max_personas;
                     $p_servicio->salida=$servicios->salida;
                     $p_servicio->llegada=$servicios->llegada;
-                    $p_servicio->grupo=$servicios->grupo;
-                    $p_servicio->localizacion=$servicios->localizacion;
-                    $p_servicio->tipoServicio=$servicios->tipoServicio;
-                    $p_servicio->clase=$servicios->clase;
+                    $p_servicio->grupo=$serv->grupo;
+                    $p_servicio->localizacion=$serv->localizacion;
+                    $p_servicio->tipoServicio=$serv->tipoServicio;
+                    $p_servicio->clase=$serv->clase;
                     $p_servicio->precio_c=0;
 //                    $p_servicio->user_id=1;
                     $p_servicio->user_id=auth()->guard('admin')->user()->id;
