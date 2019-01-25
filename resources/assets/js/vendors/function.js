@@ -3361,7 +3361,7 @@ function Guardar_proveedor(id,url,csrf_field,id_pro) {
                 '</div>'+
                 '</div>';
 
-                $('#book_precio_asig_'+id).html('<span id="costo_servicio_'+id+'">$'+number_format(precio_pro, 2, '.', '')+'</span>');
+                $('#book_precio_asig_'+id).html('<span id="costo_servicio_'+id+'">$'+precio_pro+'</span>');
                 $('#book_precio_asig_'+id).append(popup);
                 prove=$('#proveedor_servicio_'+dato_producto_id).val();
                 $('#boton_prove_'+id).html('<i class="fa fa-edit"></i>');

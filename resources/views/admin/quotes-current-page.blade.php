@@ -1,11 +1,10 @@
 @extends('layouts.admin.admin')
 @section('archivos-css')
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-    <style>
+    {{--  <style>
         body.dragging, body.dragging * {
         cursor: move !important;
         }
-
         .dragged {
         position: absolute;
         opacity: 0.5;
@@ -20,10 +19,10 @@
         position: absolute;
         /** Define arrowhead **/
         }
-    </style>
+    </style>  --}}
 @stop
 @section('archivos-js')
-    <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+    {{--  <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>  --}}
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @stop
 @section('content')
@@ -120,7 +119,6 @@
                     <li value="0">
                         <ol class='simple_with_animation vertical m-0 p-0 caja_sort'>
                             @foreach($cotizacion->sortByDesc('created_at') as $cotizacion_)
-
                                 @php
                                     $s=0;
                                     $d=0;
@@ -288,7 +286,7 @@
                                     <li class="content-list-book" id="content-list-{{$cotizacion_->id}}" value="{{$cotizacion_->id}}">
                                         <div class="content-list-book-s">
                                             <div class="row">
-                                                <div class="col-10">
+                                                <div class="col-8">
                                                     <a href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}">
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
@@ -309,6 +307,18 @@
                                                 <div class="col-2">
                                                     <div class="icon">
                                                         <a href="#" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash small text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="icon">
+                                                        <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
+                                                        <a id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
+                                                            @if($cotizacion_->anulado==1)
+                                                                <i class="fas fa-check-circle text-success"></i>
+                                                            @elseif($cotizacion_->anulado==0)
+                                                                <i class="fas fa-times-circle text-grey-goto"></i>
+                                                            @endif
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -490,7 +500,7 @@
                                     <li class="content-list-book" id="content-list-{{$cotizacion_->id}}" value="{{$cotizacion_->id}}">
                                         <div class="content-list-book-s">
                                             <div class="row">
-                                                <div class="col-10">
+                                                <div class="col-8">
                                                     <a href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}">
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
@@ -511,6 +521,18 @@
                                                 <div class="col-2">
                                                     <div class="icon">
                                                         <a href="#" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash small text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="icon">
+                                                        <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
+                                                        <a id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
+                                                            @if($cotizacion_->anulado==1)
+                                                                <i class="fas fa-check-circle text-success"></i>
+                                                            @elseif($cotizacion_->anulado==0)
+                                                                <i class="fas fa-times-circle text-grey-goto"></i>
+                                                            @endif
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -690,7 +712,7 @@
                                     <li class="content-list-book" id="content-list-{{$cotizacion_->id}}" value="{{$cotizacion_->id}}">
                                         <div class="content-list-book-s">
                                             <div class="row">
-                                                <div class="col-10">
+                                                <div class="col-8">
                                                     <a href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}">
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
@@ -711,6 +733,18 @@
                                                 <div class="col-2">
                                                     <div class="icon">
                                                         <a href="#" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash small text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="icon">
+                                                        <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
+                                                        <a id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
+                                                            @if($cotizacion_->anulado==1)
+                                                                <i class="fas fa-check-circle text-success"></i>
+                                                            @elseif($cotizacion_->anulado==0)
+                                                                <i class="fas fa-times-circle text-grey-goto"></i>
+                                                            @endif
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -890,7 +924,7 @@
                                     <li class="content-list-book" id="content-list-{{$cotizacion_->id}}" value="{{$cotizacion_->id}}">
                                         <div class="content-list-book-s">
                                             <div class="row">
-                                                <div class="col-10">
+                                                <div class="col-8">
                                                     <a href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}">
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
@@ -911,6 +945,18 @@
                                                 <div class="col-2">
                                                     <div class="icon">
                                                         <a href="#" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash small text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="icon">
+                                                        <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
+                                                        <a id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
+                                                            @if($cotizacion_->anulado==1)
+                                                                <i class="fas fa-check-circle text-success"></i>
+                                                            @elseif($cotizacion_->anulado==0)
+                                                                <i class="fas fa-times-circle text-grey-goto"></i>
+                                                            @endif
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1090,7 +1136,7 @@
                                     <li class="content-list-book" id="content-list-{{$cotizacion_->id}}" value="{{$cotizacion_->id}}">
                                         <div class="content-list-book-s">
                                             <div class="row">
-                                                <div class="col-10">
+                                                <div class="col-8">
                                                     <a href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}">
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
@@ -1111,6 +1157,18 @@
                                                 <div class="col-2">
                                                     <div class="icon">
                                                         <a href="#" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash small text-danger"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="icon">
+                                                        <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
+                                                        <a id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
+                                                            @if($cotizacion_->anulado==1)
+                                                                <i class="fas fa-check-circle text-success"></i>
+                                                            @elseif($cotizacion_->anulado==0)
+                                                                <i class="fas fa-times-circle text-grey-goto"></i>
+                                                            @endif
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1291,7 +1349,7 @@
                                     <li class="content-list-book" id="content-list-{{$cotizacion_->id}}" value="{{$cotizacion_->id}}">
                                         <div class="content-list-book-s">
                                             <div class="row">
-                                                <div class="col-10">
+                                                <div class="col-8">
                                                     <a href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}">
                                                         @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
                                                             @if($cliente_coti->estado=='1')
@@ -1314,6 +1372,18 @@
                                                         <a href="#" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash small text-danger"></i></a>
                                                     </div>
                                                 </div>
+                                                <div class="col-2">
+                                                    <div class="icon">
+                                                        <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
+                                                        <a id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
+                                                            @if($cotizacion_->anulado==1)
+                                                                <i class="fas fa-check-circle text-success"></i>
+                                                            @elseif($cotizacion_->anulado==0)
+                                                                <i class="fas fa-times-circle text-grey-goto"></i>
+                                                            @endif
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -1332,128 +1402,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-
-
-
+    
     </div>
-    </div>
-    <script>
-        //formilario contac
-        function update_p(valor){
-            var s_name = $('#mi_id').val();
-            alert(s_name);
-        }
-
-    </script>
-    <script>
-        var adjustment;
-        $('.caja_sort').sortable({
-            tolerance: 'pointer',
-            revert: 'invalid',
-            placeholder: 'span2 well placeholder tile',
-            forceHelperSize: true,
-            connectWith:'.caja_sort',
-            // handle:'.title',
-            // placeholder: ....,
-            tolerance:'intersect',
-            receive: function(event, ui ) {
-//                console.log('id:'+ $(ui.item).val());
-//                console.log('cambiar por:'+ $(this).parent().val());
-                var datos = {
-                    "txt_cotizacion" : $(ui.item).val(),
-                    "txt_porcentaje" : $(this).parent().val()
-                };
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('[name="_token"]').val()
-                    }
-                });
-                $.ajax({
-                    data:  datos,
-                    url:   "{{route('agregar_probabilidad_path')}}",
-                    type:  'POST',
-
-                });
-
-
-//                evento_soltar($(this));
-            },
-        });
-        function evento_soltar(obj){
-            var este =$(obj).children();
-            $(este).each(function(index, element){
-                var elto=$(element).val();
-                console.log('id:'+elto);
-            });
-
-            var titles =$(obj).parent();
-            $(titles).each(function(index, element){
-                var elto=$(element).val();
-                console.log('cambiar a:'+elto);
-            });
-
-
-        }
-        $("ol.simple_with_animation").sortable({
-            group: 'simple_with_animation',
-            pullPlaceholder: false,
-            tolerance: 6,
-            // animation on drop
-            onDrop: function  ($item, container, _super) {
-
-                var $clonedItem = $('<li/>').css({height: 0});
-                $item.before($clonedItem);
-                $clonedItem.animate({'height': $item.height()});
-
-                var s_cotizacion = $item.val();
-                var s_porcentaje = $item.parent().parent().val();
-
-                // alert(s_cotizacion);
-                // alert(s_porcentaje);
-
-                $item.animate($clonedItem.position(), function  () {
-                    $clonedItem.detach();
-                    _super($item, container);
-                });
-
-                var datos = {
-                    "txt_cotizacion" : s_cotizacion,
-                    "txt_porcentaje" : s_porcentaje
-                };
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('[name="_token"]').val()
-                    }
-                });
-                $.ajax({
-                    data:  datos,
-                    url:   "{{route('agregar_probabilidad_path')}}",
-                    type:  'post',
-
-                });
-
-
-            },
-
-            // set $item relative to cursor position
-            onDragStart: function ($item, container, _super) {
-                var offset = $item.offset(),
-                    pointer = container.rootGroup.pointer;
-
-                adjustment = {
-                    left: pointer.left - offset.left,
-                    top: pointer.top - offset.top
-                };
-
-                _super($item, container);
-            },
-            onDrag: function ($item, position) {
-                $item.css({
-                    left: position.left - adjustment.left,
-                    top: position.top - adjustment.top
-                });
-            }
-        });
-    </script>
+    
 @stop

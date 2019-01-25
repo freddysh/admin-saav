@@ -1526,7 +1526,7 @@ class PackageCotizacionController extends Controller
                 }
                 $st=0;
                 foreach($itinerarios_->serivicios as $servicios){
-                    $serv=M_Servicios::find($servicios->m_servicios_id;);
+                    $serv=M_Servicios::find($servicios->m_servicios_id);
                     $p_servicio=new ItinerarioServicios();
                     $p_servicio->nombre=$servicios->nombre;
                     $p_servicio->observacion='';
@@ -2456,6 +2456,7 @@ class PackageCotizacionController extends Controller
     }
     public function current_cotizacion_page_expedia($anio,$mes,$page)
     {
+        // dd('hola');
         $user_name=auth()->guard('admin')->user()->name;
         $user_tipo=auth()->guard('admin')->user()->tipo_user;
         if($user_tipo=='ventas') {
