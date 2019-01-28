@@ -2,26 +2,16 @@
         <ul id="menu-content" class="menu-content collapsed menu1">
             <li>
               <a href="#">
-              <i class="fa fa-eye fa-lg"></i> Dashboard
+                <i class="fa fa-eye fa-lg"></i> Dashboard
               </a>
             </li>
             <li data-toggle="collapse" data-target="#ventas" class="collapsed active1">
-              <a href="#"><i class="fa fa-gift fa-lg"></i> VENTAS <span class="fas fa-arrow-circle-down"></span></a>
+              <a href="#" class="menu"><i class="fa fa-gift fa-lg"></i> VENTAS <span class="fas fa-arrow-circle-down"></span></a>
             </li>
             <ul class="sub-menu collapse menu2" id="ventas">
-                <li data-toggle="collapse" class="active1"><a href="#"><i class="fa fa-eye fa-lg"></i> INVENTORY <span class="fas fa-arrow-circle-down"></span></a></li>
-                <li data-toggle="collapse" data-target="#sales" class="active1"><a href="#"><i class="fa fa-eye fa-lg"></i> SALES <span class="fas fa-arrow-circle-down"></span></a></li>
-                <ul class="sub-menu collapse menu2" id="sales">
-                  @foreach ($webs as $item)
-                    <li><a href="#"><i class="fa fa-eye fa-lg"></i> {{$item->pagina}}</a></li>
-                  @endforeach
-                </ul>
-                <li><a href="#">Typography</a></li>
-                <li><a href="#">FontAwesome</a></li>
-                <li><a href="#">Slider</a></li>
-                <li><a href="#">Panels</a></li>
-                <li><a href="#">Widgets</a></li>
-                <li><a href="#">Bootstrap Model</a></li>
+              @foreach ($webs as $item)
+                <li data-toggle="collapse" class="active1"><a href="#"><b>></b> {{$item->pagina}}</a></li>
+              @endforeach
             </ul>
 
             <li data-toggle="collapse" data-target="#service" class="collapsed">

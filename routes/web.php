@@ -35,8 +35,6 @@ Route::post('/login',[
     'as' => 'login_path',
 ]);
 
-
-
 Route::get('/logout',[
     'uses' => 'UserAuthController@destroy',
     'as' => 'logout_path',

@@ -2203,6 +2203,22 @@ a.ui-button:active,
   border-color: #f5c6cb !important;
 }
 
+.menu {
+  background: #e4e4e4;
+  color: #333;
+  border-radius: 5px;
+}
+
+.menu:hover {
+  background: #456744;
+  color: #f7f7f7;
+}
+
+.menu:active {
+  background: #456744;
+  color: #f7f7f7;
+}
+
 /*!
  * Bootstrap v4.1.1 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors

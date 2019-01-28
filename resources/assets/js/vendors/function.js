@@ -5945,6 +5945,7 @@ function Anular_cotizacion(id,titulo) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes'
     }).then(function () {
+        $('#anulado_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>'); 
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5954,9 +5955,11 @@ function Anular_cotizacion(id,titulo) {
             if(data==1){
                 if(anular==1){
                     $('#anulado_'+id).html('<i class="fas fa-times-circle text-grey-goto"></i>');    
+                    $('#hanulado_'+id).val('0');
                 }
                 else if(anular==0){
-                    $('#anulado_'+id).html('<i class="fas fa-check-circle text-success"></i>');    
+                    $('#anulado_'+id).html('<i class="fas fa-check-circle text-success"></i>');   
+                    $('#hanulado_'+id).val('1'); 
                 }
             }
         }).fail(function (data) {
