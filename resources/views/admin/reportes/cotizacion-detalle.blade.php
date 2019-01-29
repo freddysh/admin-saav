@@ -107,9 +107,9 @@
                 <tr>
                     <td>{{$i}}</td>
                     <td>{{$cotizacion->web}}</td>
-                    <td><i class="fas fa-users text-primary"></i>{{$cotizacion->users->name}}</td>
+                    <td><span class="text-primary">By</span> {{$cotizacion->users->name}}</td>
                     <td>
-                        <i class="fas fa-calendar text-primary"></i>{{fecha_peru($cotizacion->fecha_venta)}}
+                        <i class="fas fa-calendar-alt text-primary"></i> {{fecha_peru($cotizacion->fecha_venta)}}
                     </td>
                     <td>
                         {{-- @foreach($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizaciones_cliente) --}}

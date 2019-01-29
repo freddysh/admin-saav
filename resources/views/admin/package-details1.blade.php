@@ -144,10 +144,10 @@
                                                                 <div class="row text-left">
                                                                     <div class="col-3 m-0">
                                                                         <div class="list-group text-center">
-                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fas fa-map  text-info"></i><b class="small d-block">{{$tipoServicio[1] }}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fas fa-map-marked-alt"></i><b class="small d-block">{{$tipoServicio[1] }}</b></a>
                                                                             <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus  text-warning"></i><b class="small d-block">{{$tipoServicio[2]}}</b></a>
                                                                             <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users  text-success"></i><b class="small d-block">{{$tipoServicio[3]}}</b></a>
-                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fas fa-ticket-alt  text-warning"></i><b class="small d-block">{{$tipoServicio[4]}}</b></a>
+                                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fas fa-ticket-alt text-warning"></i><b class="small d-block">{{$tipoServicio[4]}}</b></a>
                                                                             <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fas fa-utensils  text-danger"></i><b class="small d-block">{{$tipoServicio[5]}}</b></a>
                                                                             <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train  text-info"></i><b class="small d-block">{{$tipoServicio[6]}}</b></a>
                                                                             <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane  text-primary"></i><b class="small d-block">{{$tipoServicio[7]}}</b></a>
@@ -385,28 +385,28 @@
                                                     <div class="row">
                                                         <div class="col-lg-10{{$rango}}">
                                                             @if($servicios->servicio->grupo=='TOURS')
-                                                                <b class="text-primary text-13"><i class="fa fa-map-o" aria-hidden="true"></i></b>
+                                                                <b class="text-primary text-13"><i class="fas fa-map-marked"></i></b>
                                                             @endif
                                                             @if($servicios->servicio->grupo=='MOVILID')
-                                                                <b class="text-primary text-13"><i class="fa fa-bus" aria-hidden="true"></i></b>
+                                                                <b class="text-primary text-13"><i class="fa fa-bus"></i></b>
                                                             @endif
                                                             @if($servicios->servicio->grupo=='REPRESENT')
-                                                                <b class="text-primary text-13"><i class="fa fa-users" aria-hidden="true"></i></b>
+                                                                <b class="text-primary text-13"><i class="fa fa-users"></i></b>
                                                             @endif
                                                             @if($servicios->servicio->grupo=='ENTRANCES')
-                                                                <b class="text-primary text-13"><i class="fa fa-ticket" aria-hidden="true"></i></b>
+                                                                <b class="text-primary text-13"><i class="fas fa-ticket-alt"></i></b>
                                                             @endif
                                                             @if($servicios->servicio->grupo=='FOOD')
-                                                                <b class="text-primary text-13"><i class="fa fa-cutlery" aria-hidden="true"></i></b>
+                                                                <b class="text-primary text-13"><i class="fas fa-utensils"></i></b>
                                                             @endif
                                                             @if($servicios->servicio->grupo=='TRAINS')
-                                                                <b class="text-primary text-13"><i class="fa fa-train" aria-hidden="true"></i></b>
+                                                                <b class="text-primary text-13"><i class="fa fa-train"></i></b>
                                                             @endif
                                                             @if($servicios->servicio->grupo=='FLIGHTS')
-                                                                <b class="text-primary text-13"><i class="fa fa-plane" aria-hidden="true"></i></b>
+                                                                <b class="text-primary text-13"><i class="fa fa-plane"></i></b>
                                                             @endif
                                                             @if($servicios->servicio->grupo=='OTHERS')
-                                                                <b class="text-primary text-13"><i class="fa fa-question" aria-hidden="true"></i></b>
+                                                                <b class="text-primary text-13"><i class="fa fa-question"></i></b>
                                                             @endif
                                                             {{$servicios->nombre}}
                                                             @if($servicios->servicio->grupo=='MOVILID')

@@ -1208,7 +1208,10 @@ class PackageCotizacionController extends Controller
                 }
             }
         }
-     return redirect()->route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete->id,'nuevo']);
+    //  return redirect()->route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete->id,'nuevo']);
+     return redirect()->route('show_current_paquete_edit_path',[$paquete->id]);
+     
+
     }
     public function nuevo_paquete_(Request $request)
     {
@@ -1634,7 +1637,8 @@ class PackageCotizacionController extends Controller
             }
         }
 //        dd($paquete->id);
-        return redirect()->route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete->id,'nuevo']);
+        // return redirect()->route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete->id,'nuevo']);
+        return redirect()->route('show_current_paquete_edit_path',[$paquete->id]);
     }
     public function editar_cotizacion1(Request $request){
         $cotizacion_id=$request->input('cotizacion_id');

@@ -725,7 +725,7 @@
                         <input type="hidden" name="imprimir" value="si">
                         <input type="hidden" name="origen" value="{{$msj}}">
                         <input type="hidden" name="itis" value="{{$itis}}">
-                        <button class="btn btn-success btn-lg" type="submit">EDIT</button>
+                        <button class="btn btn-success btn-lg" type="submit">SAVE</button>
                     </form>
                 </div>
             </div>
