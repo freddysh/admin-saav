@@ -649,16 +649,15 @@ a{
   background-color: #f8d7da !important;
   border-color: #f5c6cb !important;
 }
-.menu{
-  background: #e4e4e4;
-  color: #333;
-  border-radius: 5px;
-}
-.menu:hover{
-  background: #456744;
-  color: #f7f7f7;
-}
-.menu:active{
-  background: #456744;
-  color: #f7f7f7;
+// .menu{
+//   background: #e4e4e4;
+//   color: #333;
+//   border-radius: 5px;
+// }
+// .menu:hover{
+//   background: #456744;
+//   color: #f7f7f7;
+// }
+.menu2 li .active{
+  background: #e4e4e4 !important;
 }

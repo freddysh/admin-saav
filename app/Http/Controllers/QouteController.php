@@ -298,7 +298,7 @@ class QouteController extends Controller
                 foreach ($data as $key => $value) {
                     $totaltravelers = $value->travelers;
                     $codigo = $value->offerid;
-                    $transactiondatetime = $value->transactiondatetime;
+                    // $transactiondatetime = $value->transactiondatetime;
 //                $originalBookingDate=$value->originalbookingdate;
                     $titulo = $value->activitytitle . '[' . $value->offertitle . ']';
                     $idioma = $value->language;
@@ -323,7 +323,7 @@ class QouteController extends Controller
                     if (
                         trim($totaltravelers) != '' &&
                         trim($codigo) != '' &&
-                        trim($transactiondatetime) != '' &&
+                        /*trim($transactiondatetime) != '' &&*/
                         trim($titulo) != '' &&
                         trim($idioma) != '' &&
                         trim($nombres) != '' &&
@@ -416,7 +416,7 @@ class QouteController extends Controller
             foreach ($data as $key => $value) {
                 $totaltravelers=$value->travelers;
                 $codigo=$value->offerid;
-                $transactiondatetime=$value->transactiondatetime;
+                // $transactiondatetime=$value->transactiondatetime;
 //                $originalBookingDate=$value->originalbookingdate;
                 $titulo=$value->activitytitle.'['.$value->offertitle.']';
                 $idioma=$value->language;
@@ -440,8 +440,8 @@ class QouteController extends Controller
 
                 if(
                     trim($totaltravelers)!=''&&
-                    trim($codigo)!=''&&
-                    trim($transactiondatetime)!=''&&
+                    trim($codigo)!=''&&/*
+                    trim($transactiondatetime)!=''&&*/
                     trim($titulo)!=''&&
                     trim($idioma)!=''&&
                     trim($nombres)!=''&&
@@ -481,6 +481,12 @@ class QouteController extends Controller
                         $codigo_auto=MisFunciones::generar_codigo('expedia.com');
                         // buscamos el paquete para crear la cotizacion
                         // $ppaquete = P_Paquete::where('codigo', $codigo)->first();
+                        
+                            $f=explode('-',$fecha_llegada);
+                            if(strlen($f[0])==2){//-- peru
+                                $fecha_llegada=$f[2].'-'.$f[1].'-'.$f[0];
+                            }
+
                         $coti = new Cotizacion();
                         $coti->codigo = $codigo_auto;
                         $coti->nombre_pax = $nombres;

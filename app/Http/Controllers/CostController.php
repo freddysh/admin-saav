@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\Hotel;
-use App\HotelProveedor;
-use App\M_Category;
 use App\M_Destino;
+use App\Proveedor;
+use App\M_Category;
 use App\M_Producto;
 use App\M_Servicio;
-use App\Proveedor;
+use App\HotelProveedor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -42,7 +43,7 @@ class CostController extends Controller
         $proveedor_db=Proveedor::get();
         $productos=Proveedor::with(['productos'])->get();
 //        dd($productos_hotels);
-
+        $webs=Web::get();
         session()->put('menu-lateral', 'Scosts');
         return view('admin.database.costs',['productos_hotels'=>$productos_hotels,
             'productos_tours'=>$productos_tours,'productos_transp'=>$productos_transp,
@@ -50,7 +51,7 @@ class CostController extends Controller
             'productos_food'=>$productos_food,'productos_trains'=>$productos_trains,
             'productos_travels'=>$productos_travels,'productos_others'=>$productos_others,
             'destinations'=>$destinations,'categorias'=>$categorias,
-            'productos'=>$productos,'hotel'=>$hotel,'proveedores'=>$proveedores,'hotel_solo'=>$hotel_solo,'proveedor_db'=>$proveedor_db]);
+            'productos'=>$productos,'hotel'=>$hotel,'proveedores'=>$proveedores,'hotel_solo'=>$hotel_solo,'proveedor_db'=>$proveedor_db,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
     }
     public function new_(){
         $valor='';
@@ -78,7 +79,7 @@ class CostController extends Controller
         $proveedor_db=Proveedor::get();
         $productos=Proveedor::with(['productos'])->get();
 //        dd($productos_hotels);
-
+        $webs=Web::get();
         session()->put('menu-lateral', 'Scosts');
         return view('admin.database.costs-new',['productos_hotels'=>$productos_hotels,
             'productos_tours'=>$productos_tours,'productos_transp'=>$productos_transp,
@@ -86,7 +87,7 @@ class CostController extends Controller
             'productos_food'=>$productos_food,'productos_trains'=>$productos_trains,
             'productos_travels'=>$productos_travels,'productos_others'=>$productos_others,
             'destinations'=>$destinations,'categorias'=>$categorias,
-            'productos'=>$productos,'hotel'=>$hotel,'proveedores'=>$proveedores,'hotel_solo'=>$hotel_solo,'proveedor_db'=>$proveedor_db]);
+            'productos'=>$productos,'hotel'=>$hotel,'proveedores'=>$proveedores,'hotel_solo'=>$hotel_solo,'proveedor_db'=>$proveedor_db,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
     }
     public function store(Request $request){
         $categorias=M_Category::get();

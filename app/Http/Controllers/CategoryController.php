@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\M_Category;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class CategoryController extends Controller
     {
         $categorias = M_Category::get();
         session()->put('menu-lateral', 'Scategories');
-        return view('admin.database.category', ['categorias' => $categorias]);
+        $webs=Web::get();
+        return view('admin.database.category', ['categorias' => $categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
     }
     public function store(Request $request){
         $txt_nombre=strtoupper($request->input('txt_nombre'));
@@ -23,9 +25,9 @@ class CategoryController extends Controller
 //        $categoria->periodo=$periodo;
 //        $categoria->tipo_periodo=$tipo_periodo;
         $categoria->save();
-
+        $webs=Web::get();
         $categorias=M_Category::get();
-        return view('admin.database.category',['categorias'=>$categorias]);
+        return view('admin.database.category',['categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
 
     }
     public function edit(Request $request){
@@ -38,9 +40,9 @@ class CategoryController extends Controller
 //        $categoria->periodo=$periodo;
 //        $categoria->tipo_periodo=$tipo_periodo;
         $categoria->save();
-
+        $webs=Web::get();
         $categorias=M_Category::get();
-        return view('admin.database.category',['categorias'=>$categorias]);
+        return view('admin.database.category',['categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
     }
     public function delete(Request $request){
         $id=$request->input('id');

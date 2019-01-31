@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\Hotel;
 use App\M_Destino;
 use App\Proveedor;
@@ -31,13 +32,14 @@ class ServicesController extends Controller
         session()->put('menu-lateral', 'Sproducts');
         $proveedores = Proveedor::get();
         $costos = M_Producto::get();
-        return view('admin.database.services', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos]);
+        $webs=Web::get();
+        return view('admin.database.services', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
     }
 
     public function store(Request $request)
     {
         $categorias = M_Category::get();
-
+        $webs=Web::get();
         foreach ($categorias as $categoria) {
             $cate[] = $categoria->nombre;
         }
@@ -269,7 +271,8 @@ class ServicesController extends Controller
         $servicios = M_Servicio::get();
         $categorias = M_Category::get();
         $hotel = Hotel::get();
-        return view('admin.database.services', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel]);
+        $webs = Web::get();
+        return view('admin.database.services', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
     }
 
     public function delete(Request $request)
@@ -545,7 +548,8 @@ class ServicesController extends Controller
 //        dd($proveedores);
         $costos = M_Producto::get();
         $destino_operados=DestinosOpera::get();
-        return view('admin.database.new_service', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos,'destino_operados'=>$destino_operados]);
+        $webs=Web::get();
+        return view('admin.database.new_service', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos,'destino_operados'=>$destino_operados,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
     }
     public function listar_proveedores_service(Request $request)
     {

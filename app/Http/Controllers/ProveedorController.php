@@ -9,6 +9,7 @@ use App\M_Category;
 use App\M_Destino;
 use App\M_Producto;
 use App\Proveedor;
+use App\Web;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -24,7 +25,10 @@ class ProveedorController extends Controller
         $entidadBancaria=EntidadBancaria::get();
         $m_categories=M_Category::where('nombre','!=','HOTELS')->get();
         $m_categoras=M_Category::get(); 
-        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria','m_categories','m_categoras'));
+        $webs=Web::get();
+        $hotel_proveedor_id=0;
+        $id=0;
+        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria','m_categories','m_categoras','webs','hotel_proveedor_id','id'));
     }
     public function autocomplete()
     {
@@ -174,58 +178,63 @@ class ProveedorController extends Controller
         $txt_banco_nombre_cta_cci=$request->input('txt_banco_nombre_cta_cci_'.$nro_grupo);
         $txt_banco_nro_cta_cci=$request->input('txt_banco_nro_cta_cci_'.$nro_grupo);
 
+        $buscar_pro=Proveedor::where('localizacion',$txt_localizacion)->where('ruc',$txt_ruc)->orWhere('razon_social',$txt_razon_social)->orWhere('nombre_comercial',$txt_nombre_comercial)->count();
+        if($buscar_pro==0){
+            $proveedor=new Proveedor();
+            $proveedor->categoria=$txt_categoria;
+            $proveedor->ruc=$txt_ruc;
+            $proveedor->razon_social=$txt_razon_social;
+            $proveedor->nombre_comercial=$txt_nombre_comercial;
+            $proveedor->direccion=$txt_direccion;
 
-        $proveedor=new Proveedor();
-        $proveedor->categoria=$txt_categoria;
-        $proveedor->ruc=$txt_ruc;
-        $proveedor->razon_social=$txt_razon_social;
-        $proveedor->nombre_comercial=$txt_nombre_comercial;
-        $proveedor->direccion=$txt_direccion;
+            $proveedor->r_telefono=$txt_r_telefono;
+            $proveedor->r_email=$txt_r_email;
 
-        $proveedor->r_telefono=$txt_r_telefono;
-        $proveedor->r_email=$txt_r_email;
+            $proveedor->c_telefono=$txt_c_telefono;
+            $proveedor->c_email=$txt_c_email;
 
-        $proveedor->c_telefono=$txt_c_telefono;
-        $proveedor->c_email=$txt_c_email;
+            $proveedor->o_telefono=$txt_o_telefono;
+            $proveedor->o_email=$txt_o_email;
 
-        $proveedor->o_telefono=$txt_o_telefono;
-        $proveedor->o_email=$txt_o_email;
+            $proveedor->localizacion=$txt_localizacion;
+            $proveedor->grupo=$txt_grupo;
+            $proveedor->plazo=$txt_plazo;
+            $proveedor->desci=$txt_desci;
 
-        $proveedor->localizacion=$txt_localizacion;
-        $proveedor->grupo=$txt_grupo;
-        $proveedor->plazo=$txt_plazo;
-        $proveedor->desci=$txt_desci;
+            $proveedor->banco_nombre_cta_corriente=$txt_banco_nombre_cta_corriente;
+            $proveedor->banco_nro_cta_corriente=$txt_banco_nro_cta_corriente;
+            $proveedor->banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
+            $proveedor->banco_nro_cta_cci=$txt_banco_nro_cta_cci;
 
-        $proveedor->banco_nombre_cta_corriente=$txt_banco_nombre_cta_corriente;
-        $proveedor->banco_nro_cta_corriente=$txt_banco_nro_cta_corriente;
-        $proveedor->banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
-        $proveedor->banco_nro_cta_cci=$txt_banco_nro_cta_cci;
-
-        if($proveedor->save()){
-            $proveedor->codigo=$txt_grupo_cod.$proveedor->id;
-            $proveedor->save();
-            if(isset($destinos_opera)){
-                foreach ($destinos_opera as $destino_opera){
-                   $destino_temp=new DestinosOpera();
-                    $destino_temp->proveedor_id=$proveedor->id;
-                    $destino_temp->m_destinos_id=$destino_opera;
-                    $destino_temp->save();
+            if($proveedor->save()){
+                $proveedor->codigo=$txt_grupo_cod.$proveedor->id;
+                $proveedor->save();
+                if(isset($destinos_opera)){
+                    foreach ($destinos_opera as $destino_opera){
+                    $destino_temp=new DestinosOpera();
+                        $destino_temp->proveedor_id=$proveedor->id;
+                        $destino_temp->m_destinos_id=$destino_opera;
+                        $destino_temp->save();
+                    }
                 }
-            }
-            if(isset($grupos_opera)) {
-                foreach ($grupos_opera as $grupo_opera_) {
-                    $grupo_opera = new GrupoOpera();
-                    $grupo_opera->proveedor_id = $proveedor->id;
-                    $grupo_opera->m_category_id = $grupo_opera_;
-                    $grupo_opera->save();
+                if(isset($grupos_opera)) {
+                    foreach ($grupos_opera as $grupo_opera_) {
+                        $grupo_opera = new GrupoOpera();
+                        $grupo_opera->proveedor_id = $proveedor->id;
+                        $grupo_opera->m_category_id = $grupo_opera_;
+                        $grupo_opera->save();
+                    }
                 }
+                return redirect()->route('provider_index_path');
+                // $destinations=M_Destino::get();
+                // $providers=Proveedor::get();
+                // $m_categories=M_Category::get();
+                // $entidadBancaria=EntidadBancaria::get();
+                // return view('admin.database.provider',compact('destinations','providers','m_categories','entidadBancaria'));
             }
-            return redirect()->route('provider_index_path');
-            // $destinations=M_Destino::get();
-            // $providers=Proveedor::get();
-            // $m_categories=M_Category::get();
-            // $entidadBancaria=EntidadBancaria::get();
-            // return view('admin.database.provider',compact('destinations','providers','m_categories','entidadBancaria'));
+        }
+        else{
+            return redirect()->back();
         }
     }
     public function edit(Request $request)
@@ -260,60 +269,55 @@ class ProveedorController extends Controller
         $txt_banco_nombre_cta_cci = $request->input('txt_banco_nombre_cta_cci_');
         $txt_banco_nro_cta_cci = $request->input('txt_banco_nro_cta_cci_');
 //dd($destinos_opera);
-
-        if (isset($destinos_opera)){
-            $existe = DestinosOpera::where('proveedor_id', $id)->delete();
-            foreach ($destinos_opera as $destinos_opera_) {
-                $destino_opera = new DestinosOpera();
-                $destino_opera->proveedor_id = $id;
-                $destino_opera->m_destinos_id = $destinos_opera_;
-                $destino_opera->save();
+        $buscar_pro=Proveedor::where('localizacion',$txt_localizacion)->where('ruc',$txt_ruc)->orWhere('razon_social',$txt_razon_social)->orWhere('nombre_comercial',$txt_nombre_comercial)->count();
+        if($buscar_pro==0){
+            if (isset($destinos_opera)){
+                $existe = DestinosOpera::where('proveedor_id', $id)->delete();
+                foreach ($destinos_opera as $destinos_opera_) {
+                    $destino_opera = new DestinosOpera();
+                    $destino_opera->proveedor_id = $id;
+                    $destino_opera->m_destinos_id = $destinos_opera_;
+                    $destino_opera->save();
+                }
             }
-        }
-        if(isset($grupos_opera)) {
-            $existe1 = GrupoOpera::where('proveedor_id', $id)->delete();
-            foreach ($grupos_opera as $grupo_opera_) {
-                $grupo_opera = new GrupoOpera();
-                $grupo_opera->proveedor_id = $id;
-                $grupo_opera->m_category_id = $grupo_opera_;
-                $grupo_opera->save();
+            if(isset($grupos_opera)) {
+                $existe1 = GrupoOpera::where('proveedor_id', $id)->delete();
+                foreach ($grupos_opera as $grupo_opera_) {
+                    $grupo_opera = new GrupoOpera();
+                    $grupo_opera->proveedor_id = $id;
+                    $grupo_opera->m_category_id = $grupo_opera_;
+                    $grupo_opera->save();
+                }
             }
+            $proveedor=Proveedor::findOrFail($id);
+            $proveedor->ruc=$txt_ruc;
+            $proveedor->localizacion=$txt_localizacion;
+            $proveedor->razon_social=$txt_razon_social;
+            $proveedor->nombre_comercial=$txt_nombre_comercial;
+            $proveedor->direccion=$txt_direccion;
+            $proveedor->r_telefono=$txt_r_telefono;
+            $proveedor->r_email=$txt_r_email;
+
+            $proveedor->c_telefono=$txt_c_telefono;
+            $proveedor->c_email=$txt_c_email;
+
+            $proveedor->o_telefono=$txt_o_telefono;
+            $proveedor->o_email=$txt_o_email;
+
+            $proveedor->categoria=$txt_categoria;
+            $proveedor->plazo=$txt_plazo;
+            $proveedor->desci=$txt_desci;
+
+            $proveedor->banco_nombre_cta_corriente=$txt_banco_nombre_cta_corriente;
+            $proveedor->banco_nro_cta_corriente=$txt_banco_nro_cta_corriente;
+            $proveedor->banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
+            $proveedor->banco_nro_cta_cci=$txt_banco_nro_cta_cci;
+            $proveedor->save();
+            return redirect()->route('provider_index_path');
         }
-        $proveedor=Proveedor::findOrFail($id);
-        $proveedor->ruc=$txt_ruc;
-        $proveedor->razon_social=$txt_razon_social;
-        $proveedor->nombre_comercial=$txt_nombre_comercial;
-        $proveedor->direccion=$txt_direccion;
-        $proveedor->r_telefono=$txt_r_telefono;
-        $proveedor->r_email=$txt_r_email;
-
-        $proveedor->c_telefono=$txt_c_telefono;
-        $proveedor->c_email=$txt_c_email;
-
-        $proveedor->o_telefono=$txt_o_telefono;
-        $proveedor->o_email=$txt_o_email;
-
-        $proveedor->categoria=$txt_categoria;
-        $proveedor->plazo=$txt_plazo;
-        $proveedor->desci=$txt_desci;
-
-        $proveedor->banco_nombre_cta_corriente=$txt_banco_nombre_cta_corriente;
-        $proveedor->banco_nro_cta_corriente=$txt_banco_nro_cta_corriente;
-        $proveedor->banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
-        $proveedor->banco_nro_cta_cci=$txt_banco_nro_cta_cci;
-
-//        $proveedor->codigo=$txt_grupo_cod.$proveedor->id;
-        $proveedor->save();
-        return redirect()->route('provider_index_path');
-//        if($proveedor->save()){
-//            dd('Hola');
-            // redirect()->route('provider_index_path');
-//            $proveedor->codigo=$txt_grupo_cod.$id;
-//            $destinations=M_Destino::get();
-//            $providers=Proveedor::get();
-//            $categorias=M_Category::get();
-//            return view('admin.database.provider',['destinations'=>$destinations,'providers'=>$providers,'categorias'=>$categorias]);
-//        }
+        else{
+            return redirect()->back();
+        }
     }
     public function delete(Request $request){
         $id=$request->input('id');

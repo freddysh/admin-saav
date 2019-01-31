@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\M_Category;
+use App\Web;
 use App\M_Destino;
+use App\M_Category;
+use App\M_Servicio;
 use App\M_Itinerario;
 use App\M_ItinerarioDestino;
-use App\M_ItinerarioServicio;
-use App\M_Servicio;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use App\M_ItinerarioServicio;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ItinerariController extends Controller
 {
@@ -23,7 +24,8 @@ class ItinerariController extends Controller
         $itinerarios=M_Itinerario::get();
         $categorias=M_Category::get();
         session()->put('menu-lateral', 'sales/iti/daybyday');
-        return view('admin.itinerary',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias]);
+        $webs=Web::get();
+        return view('admin.itinerary',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0]);
     }
     public function day_by_day_new(){
         $destinations=M_Destino::get();
@@ -282,7 +284,9 @@ class ItinerariController extends Controller
         $services=M_Servicio::get();
         $itinerarios=M_Itinerario::get();
         $categorias=M_Category::get();
-        return view('admin.itinerary-new',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias]);
+        $webs=Web::get();
+        return view('admin.itinerary-new',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0'
+        ]);
     }
     public function call_servicios_grupo_get(Request $request){
 //        $destinations=M_Destino::get();
@@ -303,7 +307,8 @@ class ItinerariController extends Controller
         $itinerarios=M_Itinerario::FindOrFail($id);
 //        dd($itinerarios);
         $categorias=M_Category::get();
-        return view('admin.itinerary-new-edit',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias]);
+        $webs=Web::get();
+        return view('admin.itinerary-new-edit',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>$id]);
     }
     public function call_servicios_edit(Request $request){
         $txt_id=$request->input('itinerario_id');
@@ -393,7 +398,8 @@ class ItinerariController extends Controller
         $services=M_Servicio::get();
         $itinerarios=M_Itinerario::get();
         $categorias=M_Category::get();
-        return view('admin.itinerary',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias]);
+        $webs=Web::get();
+        return view('admin.itinerary',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0]);
     }
 }
 

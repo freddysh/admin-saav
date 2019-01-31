@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\M_Destino;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class DestinationController extends Controller
@@ -13,8 +14,10 @@ class DestinationController extends Controller
     //
     public function index(){
         $destinos=M_Destino::get();
+        $webs=Web::get();
         session()->put('menu-lateral', 'sales/iti/destinations');
-        return view('admin.database.destination',['destinos'=>$destinos]);
+        return view('admin.database.destination',['destinos'=>$destinos,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0'
+        ]);
     }
     public function store(Request $request){
         $txt_codigo=strtoupper($request->input('txt_codigo'));

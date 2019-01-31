@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\Hotel;
-use App\HotelProveedor;
-use App\M_Category;
 use App\M_Destino;
 use App\Proveedor;
+use App\M_Category;
+use App\HotelProveedor;
 use Illuminate\Http\Request;
 
 class HotelProveedorController extends Controller
@@ -19,10 +20,10 @@ class HotelProveedorController extends Controller
         $proveedor_escojido=Proveedor::FindOrFail($hotel->proveedor_id);
         $hotel_solo=Hotel::get();
         $productos=Proveedor::with(['productos'])->get();
+        $webs=Web::get();
         return view('admin.database.hotel-proveedor',['destinations'=>$destinations,'categorias'=>$categorias,
             'productos'=>$productos,'hotel'=>$hotel,'hotel_solo'=>$hotel_solo,'hotel_proveedor_id'=>$hotel_proveedor_id,
-            'proveedor_escojido'=>$proveedor_escojido
-            ]);
+            'proveedor_escojido'=>$proveedor_escojido,'webs'=>$webs,'id'=>'0']);
     }
     public function update_hotel_proveedor(Request $request)
     {

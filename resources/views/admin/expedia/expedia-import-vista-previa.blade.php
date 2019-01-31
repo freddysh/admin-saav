@@ -1,13 +1,26 @@
 @php
 function fecha_peru($fecha){
-$f=explode('-',$fecha);
-return $f[2].'-'.$f[1].'-'.$f[0];
+    if($fecha!=''){
+        $f=explode('-',$fecha);
+        if(strlen($f[0])==2){//-- peru
+            return $fecha;
+        }
+        else if(strlen($f[0])==4){//-- ee.uu
+            return $f[2].'-'.$f[1].'-'.$f[0];
+        }
+    }
+    else
+        return 'no hay fecha';
 }
-function fecha_peru_hora($fecha){
-$f0=explode(' ',$fecha);
-$f=explode('-',$f0[0]);
 
-return $f[2].'-'.$f[1].'-'.$f[0].' '.$f0[1];
+function fecha_peru_hora($fecha){
+    if($fecha!=''){
+        $f0=explode(' ',$fecha);
+        $f=explode('-',$f0[0]);
+        return $f[2].'-'.$f[1].'-'.$f[0].' '.$f0[1];
+    }
+    else
+        return 'no hay fecha'; 
 }
 @endphp
 @extends('layouts.admin.admin')
