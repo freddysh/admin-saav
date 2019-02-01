@@ -110,7 +110,7 @@ class OperacionesController extends Controller
                         $nombre_comercial='Sin reserva';
                         if($hotel->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$hotel->proveedor_id)->first();
-                            if(count($pro1)){
+                            if(count((array)$pro1)>0){
                                 if (strlen($pro1->nombre_comercial) > 0)
                                     $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
                                 else
@@ -183,7 +183,7 @@ class OperacionesController extends Controller
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
-                            if(count($pro1)>0){
+                            if(count((array)$pro1)>0){
                                 if (strlen($pro1->nombre_comercial) > 0)
                                     $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
                                 else
@@ -239,7 +239,7 @@ class OperacionesController extends Controller
                         $nombre_comercial='Sin reserva';
                         if($hotel->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$hotel->proveedor_id)->first();
-                            if(count($pro1)){
+                            if(count((array)$pro1)>0){
                                 if (strlen($pro1->nombre_comercial) > 0)
                                     $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
                                 else
@@ -320,7 +320,7 @@ class OperacionesController extends Controller
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
-                            if(count($pro1)>0){
+                            if(count((array)$pro1)>0){
                                 if (strlen($pro1->nombre_comercial) > 0)
                                     $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
                                 else
@@ -376,7 +376,7 @@ class OperacionesController extends Controller
                         $nombre_comercial='Sin reserva';
                         if($hotel->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$hotel->proveedor_id)->first();
-                            if(count($pro1)){
+                            if(count((array)$pro1)>0){
                                 if (strlen($pro1->nombre_comercial) > 0)
                                     $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
                                 else
@@ -449,7 +449,7 @@ class OperacionesController extends Controller
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
-                            if(count($pro1)>0){
+                            if(count((array)$pro1)>0){
                                 if (strlen($pro1->nombre_comercial) > 0)
                                     $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
                                 else
@@ -493,7 +493,7 @@ class OperacionesController extends Controller
                         $nombre_comercial='Sin reserva';
                         if($hotel->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$hotel->proveedor_id)->first();
-                            if(count($pro1)){
+                            if(count((array)$pro1)>0){
                                 if (strlen($pro1->nombre_comercial) > 0)
                                     $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
                                 else
