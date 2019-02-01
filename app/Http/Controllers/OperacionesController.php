@@ -50,6 +50,7 @@ class OperacionesController extends Controller
                         // $serv = M_Servicio::Find($servicio->m_servicios_id);
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
+                            // $pro1=0;
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
                             if(count($pro1)>0){
                                 if (strlen($pro1->nombre_comercial) > 0)
