@@ -28,7 +28,9 @@ class ProveedorController extends Controller
         $webs=Web::get();
         $hotel_proveedor_id=0;
         $id=0;
-        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria','m_categories','m_categoras','webs','hotel_proveedor_id','id'));
+        $fecha_ini=date("Y-m-d");
+        $fecha_fin=date("Y-m-d");
+        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria','m_categories','m_categoras','webs','hotel_proveedor_id','id','fecha_ini','fecha_fin'));
     }
     public function autocomplete()
     {

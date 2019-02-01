@@ -25,7 +25,8 @@ class IndexController extends Controller
             $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->get();
         else
             $cotizacion=Cotizacion::where('web', $page)->get();
-        return view('admin.index',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo]);
+        $webs=Web::get();
+        return view('admin.index',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0]);
     }
     public function menu(){
         $user_name=auth()->guard('admin')->user()->name;

@@ -14,7 +14,7 @@ class CategoryController extends Controller
         $categorias = M_Category::get();
         session()->put('menu-lateral', 'Scategories');
         $webs=Web::get();
-        return view('admin.database.category', ['categorias' => $categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
+        return view('admin.database.category', ['categorias' => $categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
     }
     public function store(Request $request){
         $txt_nombre=strtoupper($request->input('txt_nombre'));
@@ -27,7 +27,7 @@ class CategoryController extends Controller
         $categoria->save();
         $webs=Web::get();
         $categorias=M_Category::get();
-        return view('admin.database.category',['categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
+        return view('admin.database.category',['categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 
     }
     public function edit(Request $request){
@@ -42,7 +42,7 @@ class CategoryController extends Controller
         $categoria->save();
         $webs=Web::get();
         $categorias=M_Category::get();
-        return view('admin.database.category',['categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
+        return view('admin.database.category',['categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
     }
     public function delete(Request $request){
         $id=$request->input('id');

@@ -641,7 +641,9 @@ class PackageController extends Controller
         session()->put('menu-lateral', 'sales/iti/list');
         $hotel_proveedor_id=0;
         $id=0;
-        return view('admin.show-itineraries',compact(['itineraries','itinerarios','webs','hotel_proveedor_id','id']));
+        $fecha_ini=date("Y-m-d");
+        $fecha_fin=date("Y-m-d");
+        return view('admin.show-itineraries',compact(['itineraries','itinerarios','webs','hotel_proveedor_id','id','fecha_ini','fecha_fin']));
     }
     public function show_itinerary($id)
     {
@@ -652,7 +654,7 @@ class PackageController extends Controller
         $itinerary=P_Paquete::FindOrFail($id);
         $itinerarios_d=M_ItinerarioDestino::get();
         $paquete_paginas=PaquetePagina::get();
-        return view('admin.show-itinerary', ['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d,'webs'=>$webs,'paquete_paginas'=>$paquete_paginas,'hotel_proveedor_id'=>0,'id'=>$id]);
+        return view('admin.show-itinerary', ['itinerary'=>$itinerary,'destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'paquete_id'=>$id,'itinerarios_d'=>$itinerarios_d,'webs'=>$webs,'paquete_paginas'=>$paquete_paginas,'hotel_proveedor_id'=>0,'id'=>$id,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
     }
     public function duplicate_itinerary($id)
     {

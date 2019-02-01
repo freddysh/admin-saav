@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\User;
 use App\Hotel;
 use App\Cliente;
@@ -44,7 +45,8 @@ class BookController extends Controller
 		$cotizacion_cat=Cotizacion::where('estado',2)
 			->whereBetween('categorizado',['C','S'])->get();
 		session()->put('menu', 'reservas');
-		return view('admin.book.book', ['paquete_cotizacion'=>$paquete_cotizacion, 'cot_cliente'=>$cot_cliente, 'cliente'=>$cliente,'cotizacion_cat'=>$cotizacion_cat]);
+		$webs=Web::get();
+		return view('admin.book.book', ['paquete_cotizacion'=>$paquete_cotizacion, 'cot_cliente'=>$cot_cliente, 'cliente'=>$cliente,'cotizacion_cat'=>$cotizacion_cat,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 	}
 
 	/**
@@ -57,14 +59,15 @@ class BookController extends Controller
 		$fecha_fin=date("Y-m-d");
 		$nro_ini=Liquidacion::where('ini','<=',$fecha_ini)->where('fin','>=',$fecha_ini)->count();
 		$nro_fin=Liquidacion::where('fin','<=',$fecha_fin)->where('fin','>=',$fecha_fin)->count();
+		$webs=Web::get();
 		if($nro_ini>0 ||$nro_fin>0){
-			return view('admin.book.crear-liquidacion',['mensaje'=>'1','fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'nro_ini'=>$nro_ini,'nro_fin'=>$nro_fin]);
+			return view('admin.book.crear-liquidacion',['mensaje'=>'1','fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'nro_ini'=>$nro_ini,'nro_fin'=>$nro_fin,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0]);
 		}
 		else{
 			$liquidaciones=Cotizacion::where('liquidacion',0)->get();
 			$servicios=M_Servicio::where('grupo','ENTRANCES')->get();
 			$servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-			return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0']);
+			return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0','webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 		}
 
 	}
@@ -103,7 +106,8 @@ class BookController extends Controller
 		$ItinerarioHotleesAcumPagos=PrecioHotelReservaPagos::where('paquete_cotizaciones_id',$pqt_id)->get();
 		$cotizacion_archivos=CotizacionArchivos::where('cotizaciones_id',$id)->get();
 		$usuario=User::get();
-		return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario]);
+		$webs=Web::get();
+		return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>$id,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 	}
 
 	/**
@@ -319,7 +323,7 @@ class BookController extends Controller
 						$iti_temp=ItinerarioServicios::findOrfail($itinerario_servicios->id);
 						$iti_temp->fecha_uso=$itinerario_cotizaciones->fecha;
 						$fecha= Carbon::createFromFormat('Y-m-d',$itinerario_cotizaciones->fecha);
-						if(count($itinerario_servicios->proveedor_id)>0){
+						if(count((array)$itinerario_servicios->proveedor_id)>0){
 							$proveedor=Proveedor::FindOrFail($itinerario_servicios->proveedor_id);
 							if($proveedor->desci='antes')
 								$fecha->subDays($proveedor->plazo);
@@ -365,7 +369,7 @@ class BookController extends Controller
 					->where('grupo',$array_servicios_grupo[$key])
 					->whereIn('estado',[-2,-1])->get();
 //                dd($itinerario_servicios_acum_pago_);
-				if(count($itinerario_servicios_acum_pago_)>0) {
+				if(count((array)$itinerario_servicios_acum_pago_)>0) {
 					foreach ($itinerario_servicios_acum_pago_->take(1) as $itinerario_servicios_acum_pago_0){
 						$itinerario_servicios_acum_pago_1=ItinerarioServiciosAcumPago::findOrFail($itinerario_servicios_acum_pago_0->id);
 						$itinerario_servicios_acum_pago_1->a_cuenta = $array_servicio;
@@ -376,7 +380,7 @@ class BookController extends Controller
 					$proveedor=Proveedor::FindOrFail($proveedor_id[1]);
 
 					$fecha= Carbon::createFromFormat('Y-m-d',$array_servicios_fecha[$key]);
-					if(count($proveedor)>0) {
+					if(count((array)$proveedor)>0) {
 						if ($proveedor->desci = 'antes')
 							$fecha->subDays($proveedor->plazo);
 						else
@@ -400,7 +404,7 @@ class BookController extends Controller
 				$precio_hotel_reserv_=PrecioHotelReservaPagos::where('proveedor_id',$key)
 					->where('paquete_cotizaciones_id',$pqt_coti)
 					->whereIn('estado',[-2,-1])->get();
-				if(count($precio_hotel_reserv_)>0){
+				if(count((array)$precio_hotel_reserv_)>0){
 					foreach ($precio_hotel_reserv_ as $precio_hotel_reserv_0) {
 						$precio_hotel_reserv_1 = PrecioHotelReservaPagos::FindOrFail($precio_hotel_reserv_0->id);
 						$precio_hotel_reserv_1->a_cuenta = $array_hotel_;
@@ -412,7 +416,7 @@ class BookController extends Controller
 
 					$proveedor=Proveedor::FindOrFail($key);
 					$fecha= Carbon::createFromFormat('Y-m-d',$array_hotel_fecha[$key]);
-					if(count($proveedor)>0) {
+					if(count((array)$proveedor)>0) {
 						if ($proveedor->desci = 'antes')
 							$fecha->subDays($proveedor->plazo);
 						else
@@ -437,17 +441,19 @@ class BookController extends Controller
 		$fecha_fin=$request->input('fecha_fin');
 		$nro_ini=Liquidacion::where('ini','<=',$fecha_ini)->where('fin','>=',$fecha_ini)->count();
 		$nro_fin=Liquidacion::where('fin','<=',$fecha_fin)->where('fin','>=',$fecha_fin)->count();
+		$webs=Web::get();
 		if($nro_ini>0 ||$nro_fin>0){
-			return view('admin.book.crear-liquidacion',['mensaje'=>'1','fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'nro_ini'=>$nro_ini,'nro_fin'=>$nro_fin]);
+			return view('admin.book.crear-liquidacion',['mensaje'=>'1','fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'nro_ini'=>$nro_ini,'nro_fin'=>$nro_fin,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 		}
 		else{
 			$liquidaciones=Cotizacion::get();
 			$servicios=M_Servicio::where('grupo','ENTRANCES')->get();
 			$servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-			return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0']);
+			return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0','webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 		}
 	}
 	function guardar_liquidacion_storage(Request $request){
+		set_time_limit(0);
 		$cotis=$request->input('cotis');
 		$cotizaciones_ids=explode('_',$cotis);
 		if(count($cotizaciones_ids)>0) {
@@ -481,13 +487,15 @@ class BookController extends Controller
 		$servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
 		$liquidaciones=Liquidacion::where('estado',1)->get();
 		$users=User::get();
-		return view('admin.book.liquidaciones',['cotizaciones'=>$cotizaciones,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'liquidaciones'=>$liquidaciones,'users'=>$users]);
+		$webs=Web::get();
+		return view('admin.book.liquidaciones',['cotizaciones'=>$cotizaciones,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'liquidaciones'=>$liquidaciones,'users'=>$users,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 	}
 	function ver_liquidaciones($fecha_ini,$fecha_fin){
 		$liquidaciones=Cotizacion::get();
 		$servicios=M_Servicio::where('grupo','ENTRANCES')->get();
 		$servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-		return view('admin.book.ver-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi]);
+		$webs=Web::get();
+		return view('admin.book.ver-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 	}
 	function nuevo_servicio($cotizaciones_id,$itinerartio_cotis_id,$dia){
 			$destinations=M_Destino::get();
@@ -495,7 +503,8 @@ class BookController extends Controller
 			$categorias=M_Category::get();
 			$pro_clase=ProveedorClases::get();
 			$servicios=array();
-			return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id,'pro_clase'=>$pro_clase]);
+			$webs=Web::get();
+			return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id,'pro_clase'=>$pro_clase,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 	}
 	public function nuevo_servicio_add(Request $request){
 		$origen=$request->input('origen');
@@ -880,7 +889,8 @@ class BookController extends Controller
 		return view('admin.book.list-paquetes', compact('cotizacion_cat'));
 	}
 	public function situacion_servicios(){
-		return view('admin.book.situacion-pqt');
+		$webs=Web::get();
+		return view('admin.book.situacion-pqt',['webs'=>$webs, 'hotel_proveedor_id'=>0, 'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
 	}
 	public function situacion_servicios_hoteles(Request $request)
 	{

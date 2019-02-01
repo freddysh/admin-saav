@@ -16,7 +16,7 @@ class DestinationController extends Controller
         $destinos=M_Destino::get();
         $webs=Web::get();
         session()->put('menu-lateral', 'sales/iti/destinations');
-        return view('admin.database.destination',['destinos'=>$destinos,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0'
+        return view('admin.database.destination',['destinos'=>$destinos,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")
         ]);
     }
     public function store(Request $request){

@@ -47,27 +47,40 @@
             <li data-toggle="collapse" data-target="#reservations" class="collapsed">
               <a href="#"><i class="fas fa-book"></i> RESERVATIONS </a>
             </li>  
-            <ul class="sub-menu collapse menu2" id="reservations">
+            <ul class="sub-menu collapse menu2 @if(
+              (url()->current()==route('book_path')||url()->current()==route('book_show_path',[$id])||url()->current()==route('servicios_add_path',[$id,$id,$id]))||
+              (url()->current()==route('situacion_servicios_path')||url()->current()==route('provider_new_path')||url()->current()==route('provider_edit_path'))||
+              (url()->current()==route('crear_liquidacion_path')||url()->current()==route('filtrar_liquidacion_reservas_path'))||
+              (url()->current()==route('liquidaciones_hechas_path')||url()->current()==route('ver_liquidacion_path',[$fecha_ini,$fecha_fin]))) show @endif" id="reservations">
+
               <li data-toggle="collapse" class="active1">
-                <a href="#">VIEW RESERVATIONS</a>
+                <a class="@if(url()->current()==route('book_path')) active @endif" href="{{route('book_path')}}">VIEW RESERVATIONS</a>
               </li>
               <li data-toggle="collapse" class="active1">
-                  <a href="#">RESERVATIONS STATE</a>
+                <a class="@if(url()->current()==route('situacion_servicios_path')) active @endif" href="{{route('situacion_servicios_path')}}">RESERVATIONS STATE</a>
               </li>
               <li data-toggle="collapse" class="active1">
-                  <a href="#">CREATE SETTLEMENT</a>
+                <a class="@if(url()->current()==route('crear_liquidacion_path')) active @endif" href="{{route('crear_liquidacion_path')}}">CREATE SETTLEMENT</a>
               </li>
               <li data-toggle="collapse" class="active1">
-                  <a href="#">SETTLEMENTS</a>
+                <a class="@if(url()->current()==route('liquidaciones_hechas_path')||url()->current()==route('ver_liquidacion_path',[$fecha_ini,$fecha_fin])) active @endif" href="{{route('liquidaciones_hechas_path')}}">SETTLEMENT</a>
               </li>
             </ul>
 
             <li data-toggle="collapse" data-target="#contabilidad" class="collapsed">
                 <a href="#"><i class="fas fa-cubes"></i> ACCOUNTING </a>
             </li>  
-            <ul class="sub-menu collapse menu2" id="contabilidad">
+            <ul class="sub-menu collapse menu2 @if(
+              (url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id])||url()->current()==route('servicios_add_path',[$id,$id,$id]))||
+              (url()->current()==route('situacion_servicios_path')||url()->current()==route('provider_new_path')||url()->current()==route('provider_edit_path'))||
+              (url()->current()==route('crear_liquidacion_path')||url()->current()==route('filtrar_liquidacion_reservas_path'))||
+              (url()->current()==route('liquidaciones_hechas_path')||url()->current()==route('ver_liquidacion_path',[$fecha_ini,$fecha_fin]))) show @endif" id="contabilidad">
+              
               <li data-toggle="collapse" class="active1">
-                <a href="#">VIEW RESERVATIONS</a>
+                <a class="@if(url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id])) active @endif" href="{{route('contabilidad_index_path')}}">VIEW RESERVATIONS</a>
+              </li>
+              <li data-toggle="collapse" class="active1">
+                <a class="@if(url()->current()==route('pagos_pendientes_rango_fecha_path')) active @endif" href="{{route('pagos_pendientes_rango_fecha_path')}}">PENDING PAYMENTS</a>
               </li>
             </ul>
 

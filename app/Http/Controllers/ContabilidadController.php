@@ -2,36 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
+use App\User;
+use DateTime;
 use App\Cliente;
-use App\ConsultaPago;
-use App\ConsultaPagoHotel;
+use App\Proveedor;
+use Carbon\Carbon;
 use App\Cotizacion;
-use App\CotizacionesCliente;
-use App\CuentasGoto;
-use App\EntidadBancaria;
-use App\HotelProveedor;
-use App\ItinerarioCotizaciones;
-use App\ItinerarioServicioProveedor;
-use App\ItinerarioServicios;
-use App\ItinerarioServiciosAcumPago;
-use App\ItinerarioServiciosPagos;
-use App\Liquidacion;
-use App\M_Itinerario;
 use App\M_Producto;
 use App\M_Servicio;
+use App\CuentasGoto;
+use App\Liquidacion;
+use App\ConsultaPago;
+use App\M_Itinerario;
 use App\P_Itinerario;
-use App\PaqueteCotizaciones;
+use App\HotelProveedor;
+use App\EntidadBancaria;
+use App\ConsultaPagoHotel;
 use App\PrecioHotelReserva;
-use App\PrecioHotelReservaPagos;
-use App\Proveedor;
-use App\User;
-use Carbon\Carbon;
-use DateTime;
+use App\CotizacionesCliente;
+use App\ItinerarioServicios;
+use App\PaqueteCotizaciones;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\ItinerarioCotizaciones;
+use App\PrecioHotelReservaPagos;
+use App\ItinerarioServiciosPagos;
+use App\ItinerarioServicioProveedor;
+use App\ItinerarioServiciosAcumPago;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Illuminate\Http\Response;
 
 class ContabilidadController extends Controller
 {
@@ -40,7 +41,8 @@ class ContabilidadController extends Controller
     {
         $cotizacion = Cotizacion::where('confirmado_r', 'ok')->get();
         session()->put('menu', 'contabilidad');
-        return view('admin.contabilidad.index', ['cotizacion' => $cotizacion]);
+        $webs = Web::get();
+        return view('admin.contabilidad.index', ['cotizacion' => $cotizacion,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
     }
 
     public function list_proveedores()
@@ -220,7 +222,8 @@ class ContabilidadController extends Controller
         $itinerario_cotis = ItinerarioCotizaciones::where('paquete_cotizaciones_id', $pqt_id)->get();
 //        dd($ItinerarioHotleesAcumPagos);
 //        dd($ItinerarioHotleesAcumPagos);
-        return view('admin.contabilidad.confirmar_precio', ['cotizaciones' => $cotizaciones, 'cotizacion' => $cotizacion, 'productos' => $productos, 'proveedores' => $proveedores, 'hotel_proveedor' => $hotel_proveedor, 'ItinerarioServiciosAcumPagos' => $ItinerarioServiciosAcumPagos, 'ItinerarioHotleesAcumPagos' => $ItinerarioHotleesAcumPagos, 'activado' => $activado, 'itinerario_cotis' => $itinerario_cotis, 'pqt_coti' => $pqt_coti]);
+        $webs = Web::get();
+        return view('admin.contabilidad.confirmar_precio', ['cotizaciones' => $cotizaciones, 'cotizacion' => $cotizacion, 'productos' => $productos, 'proveedores' => $proveedores, 'hotel_proveedor' => $hotel_proveedor, 'ItinerarioServiciosAcumPagos' => $ItinerarioServiciosAcumPagos, 'ItinerarioHotleesAcumPagos' => $ItinerarioHotleesAcumPagos, 'activado' => $activado, 'itinerario_cotis' => $itinerario_cotis, 'pqt_coti' => $pqt_coti,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>$id,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
     }
 
     public function show_back($id)
