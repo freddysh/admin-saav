@@ -50,17 +50,19 @@ class OperacionesController extends Controller
                         // $serv = M_Servicio::Find($servicio->m_servicios_id);
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
-                            $pro1=0;
-                            $pro1=Proveedor::where('id',$servicio->proveedor_id)->get()->first();
-                            if(count($pro1)>0){
-                                if (strlen($pro1->nombre_comercial) > 0)
-                                    $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
-                                else
-                                    $nombre_comercial = 'Sin nombre comercial';
-                            }
-                            else{
-                                $nombre_comercial = 'Proveedor borrado de la db';
-                            }
+                            // $pro1=null;
+                            $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
+                            // if(is_array($pro1)){
+                                if(count((array)$pro1)>0){
+                                    if (strlen($pro1->nombre_comercial) > 0)
+                                        $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
+                                    else
+                                        $nombre_comercial = 'Sin nombre comercial';
+                                }
+                                else{
+                                    $nombre_comercial = 'Proveedor borrado de la db';
+                                }
+                            // }
                         }
                         if(array_key_exists($key,$array_datos_cotizacion)){
                             $horario='';
