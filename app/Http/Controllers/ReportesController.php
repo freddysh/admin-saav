@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\Cliente;
+use App\Proveedor;
 use App\Cotizacion;
 use App\M_Servicio;
-use App\Proveedor;
 use Illuminate\Http\Request;
 
 class ReportesController extends Controller
@@ -15,7 +16,9 @@ class ReportesController extends Controller
     {
         $cotizacion=Cotizacion::where('confirmado_r','ok')->get();
         session()->put('menu','reportes');
-        return view('admin.reportes.reportes',['cotizacion'=>$cotizacion]);
+        $grupo='HOTELS';
+        $webs=Web::get();
+        return view('admin.reportes.reportes',compact(['cotizacion','grupo','webs']));
     }
 
     public function view($id)
@@ -113,7 +116,13 @@ class ReportesController extends Controller
         elseif($filtro=='fecha de llegada'){
             $cotizaciones = Cotizacion::where('web',$web)->where('estado','2')->whereBetween('fecha',[$desde,$hasta])->get();
         }       
-        return view('admin.reportes.cotizacion-detalle',compact(['cotizaciones','desde','hasta','filtro']));
+        $grupo='HOTELS';
+        $webs=Web::get();
+        $hotel_proveedor_id=0;
+        $id=0;
+        $fecha_ini=$desde;
+        $fecha_fin=$hasta;
+        return view('admin.reportes.cotizacion-detalle',compact(['cotizaciones','desde','hasta','filtro','grupo','webs']));
     }
 
 }

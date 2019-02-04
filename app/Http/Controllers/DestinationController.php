@@ -16,8 +16,7 @@ class DestinationController extends Controller
         $destinos=M_Destino::get();
         $webs=Web::get();
         session()->put('menu-lateral', 'sales/iti/destinations');
-        return view('admin.database.destination',['destinos'=>$destinos,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")
-        ]);
+        return view('admin.database.destination',['destinos'=>$destinos,'webs'=>$webs]);
     }
     public function store(Request $request){
         $txt_codigo=strtoupper($request->input('txt_codigo'));
@@ -44,7 +43,8 @@ class DestinationController extends Controller
             Storage::disk('destination')->put($filename,  File::get($txt_imagen));
         }
         $destinos=M_Destino::get();
-        return view('admin.database.destination',['destinos'=>$destinos]);
+        $webs=Web::get();
+        return view('admin.database.destination',['destinos'=>$destinos,'webs'=>$webs]);
     }
     public function delete(Request $request){
         $id=$request->input('id');
@@ -80,7 +80,8 @@ class DestinationController extends Controller
             Storage::disk('destination')->put($filename,  File::get($txt_imagen));
         }
         $destinos=M_Destino::get();
-        return view('admin.database.destination',['destinos'=>$destinos]);
+        $webs=Web::get();
+        return view('admin.database.destination',['destinos'=>$destinos,'webs'=>$webs]);
     }
     public function getDestinarionImageName($filename){
 //        return Storage::setVisibility($filename, 'public');

@@ -20,13 +20,13 @@
                         </div>
                     </div>
                 </div>
-                {{-- <ul class="list-unstyled components"> --}}
-                    {{-- <p>VENTAS</p> --}}
-                    {{-- @include('layouts.menu-lateral') --}}
-                    {{-- <hr> --}}
-                    {{-- @include('layouts.menu') --}}
-                {{-- </ul> --}}
-                @include('layouts.menu-full')
+                <ul class="list-unstyled components">
+                    <p>VENTAS</p>
+                    @include('layouts.menu-lateral')
+                    <hr>
+                    @include('layouts.menu')
+                </ul>
+                {{-- @include('layouts.menu-full') --}}
 
             </nav>
 

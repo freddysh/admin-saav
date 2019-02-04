@@ -51,7 +51,7 @@ class CostController extends Controller
             'productos_food'=>$productos_food,'productos_trains'=>$productos_trains,
             'productos_travels'=>$productos_travels,'productos_others'=>$productos_others,
             'destinations'=>$destinations,'categorias'=>$categorias,
-            'productos'=>$productos,'hotel'=>$hotel,'proveedores'=>$proveedores,'hotel_solo'=>$hotel_solo,'proveedor_db'=>$proveedor_db,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+            'productos'=>$productos,'hotel'=>$hotel,'proveedores'=>$proveedores,'hotel_solo'=>$hotel_solo,'proveedor_db'=>$proveedor_db,'webs'=>$webs]);
     }
     public function new_(){
         $valor='';
@@ -87,7 +87,7 @@ class CostController extends Controller
             'productos_food'=>$productos_food,'productos_trains'=>$productos_trains,
             'productos_travels'=>$productos_travels,'productos_others'=>$productos_others,
             'destinations'=>$destinations,'categorias'=>$categorias,
-            'productos'=>$productos,'hotel'=>$hotel,'proveedores'=>$proveedores,'hotel_solo'=>$hotel_solo,'proveedor_db'=>$proveedor_db,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+            'productos'=>$productos,'hotel'=>$hotel,'proveedores'=>$proveedores,'hotel_solo'=>$hotel_solo,'proveedor_db'=>$proveedor_db,'webs'=>$webs]);
     }
     public function store(Request $request){
         $categorias=M_Category::get();

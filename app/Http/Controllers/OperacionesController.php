@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Web;
 use App\Cliente;
+use App\Proveedor;
 use App\Cotizacion;
-use App\ItinerarioServicios;
 use App\M_Servicio;
 use App\PrecioHotelReserva;
-use App\Proveedor;
+use App\ItinerarioServicios;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -144,7 +145,15 @@ class OperacionesController extends Controller
         }
         array_multisort($sort1, SORT_ASC, $array_datos_cotizacion);
         session()->put('menu','operaciones');
-        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
+        $grupo='HOTELS';
+        $webs=Web::get();
+        $hotel_proveedor_id = 0;
+        $id=0;
+        $fecha_ini = date("Y-m-d");
+        $fecha_fin = date("Y-m-d");
+        $web = 'gotoperu.com';
+        $filtro='filtro';
+        return view('admin.operaciones.operaciones-copia', compact(['desde', 'hasta', 'array_datos_cotizacion', 'array_datos_coti', 'array_hotel', 'grupo', 'webs']));
     }
     public function Lista_fechas(Request $request)
     {
@@ -273,8 +282,9 @@ class OperacionesController extends Controller
         }
         array_multisort($sort1, SORT_ASC, $array_datos_cotizacion);
 //        dd($array_datos_cotizacion);
-
-        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel'));
+        $grupo='HOTELS';
+        $webs=Web::get();
+        return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel','grupo','webs'));
     }
     public function sp($id1,$id,$sp)
     {

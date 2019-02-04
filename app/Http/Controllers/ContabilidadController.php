@@ -42,7 +42,7 @@ class ContabilidadController extends Controller
         $cotizacion = Cotizacion::where('confirmado_r', 'ok')->get();
         session()->put('menu', 'contabilidad');
         $webs = Web::get();
-        return view('admin.contabilidad.index', ['cotizacion' => $cotizacion,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+        return view('admin.contabilidad.index', ['cotizacion' => $cotizacion,'webs'=>$webs]);
     }
 
     public function list_proveedores()
@@ -223,7 +223,7 @@ class ContabilidadController extends Controller
 //        dd($ItinerarioHotleesAcumPagos);
 //        dd($ItinerarioHotleesAcumPagos);
         $webs = Web::get();
-        return view('admin.contabilidad.confirmar_precio', ['cotizaciones' => $cotizaciones, 'cotizacion' => $cotizacion, 'productos' => $productos, 'proveedores' => $proveedores, 'hotel_proveedor' => $hotel_proveedor, 'ItinerarioServiciosAcumPagos' => $ItinerarioServiciosAcumPagos, 'ItinerarioHotleesAcumPagos' => $ItinerarioHotleesAcumPagos, 'activado' => $activado, 'itinerario_cotis' => $itinerario_cotis, 'pqt_coti' => $pqt_coti,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>$id,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+        return view('admin.contabilidad.confirmar_precio', ['cotizaciones' => $cotizaciones, 'cotizacion' => $cotizacion, 'productos' => $productos, 'proveedores' => $proveedores, 'hotel_proveedor' => $hotel_proveedor, 'ItinerarioServiciosAcumPagos' => $ItinerarioServiciosAcumPagos, 'ItinerarioHotleesAcumPagos' => $ItinerarioHotleesAcumPagos, 'activado' => $activado, 'itinerario_cotis' => $itinerario_cotis, 'pqt_coti' => $pqt_coti,'webs'=>$webs,'id'=>$id]);
     }
 
     public function show_back($id)
@@ -1175,7 +1175,8 @@ class ContabilidadController extends Controller
         $users=User::get();
         $consulta=ConsultaPagoHotel::get();
         $consulta_serv=ConsultaPago::get();
-        return view('admin.contabilidad.pagos-pendientes',compact(['cotizacion','ini','fin','cotizaciones','servicios','servicios_movi','liquidaciones','users','consulta','consulta_serv','grupo']));
+        $webs = Web::get();
+        return view('admin.contabilidad.pagos-pendientes',compact(['cotizacion','ini','fin','cotizaciones','servicios','servicios_movi','liquidaciones','users','consulta','consulta_serv','grupo','webs']));
 //        return view('admin.contabilidad.liquidaciones',['cotizaciones'=>$cotizaciones,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'liquidaciones'=>$liquidaciones,'users'=>$users]);
     }
     public function pagos_pendientes_filtro(){

@@ -25,7 +25,7 @@ class ItinerariController extends Controller
         $categorias=M_Category::get();
         session()->put('menu-lateral', 'sales/iti/daybyday');
         $webs=Web::get();
-        return view('admin.itinerary',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+        return view('admin.itinerary',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs]);
     }
     public function day_by_day_new(){
         $destinations=M_Destino::get();
@@ -285,8 +285,7 @@ class ItinerariController extends Controller
         $itinerarios=M_Itinerario::get();
         $categorias=M_Category::get();
         $webs=Web::get();
-        return view('admin.itinerary-new',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")
-        ]);
+        return view('admin.itinerary-new',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs]);
     }
     public function call_servicios_grupo_get(Request $request){
 //        $destinations=M_Destino::get();
@@ -308,7 +307,7 @@ class ItinerariController extends Controller
 //        dd($itinerarios);
         $categorias=M_Category::get();
         $webs=Web::get();
-        return view('admin.itinerary-new-edit',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>$id,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+        return view('admin.itinerary-new-edit',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'id'=>$id]);
     }
     public function call_servicios_edit(Request $request){
         $txt_id=$request->input('itinerario_id');
@@ -399,7 +398,7 @@ class ItinerariController extends Controller
         $itinerarios=M_Itinerario::get();
         $categorias=M_Category::get();
         $webs=Web::get();
-        return view('admin.itinerary',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+        return view('admin.itinerary',['destinations'=>$destinations,'services'=>$services,'itinerarios'=>$itinerarios,'categorias'=>$categorias,'webs'=>$webs]);
     }
 }
 

@@ -46,7 +46,7 @@ class BookController extends Controller
 			->whereBetween('categorizado',['C','S'])->get();
 		session()->put('menu', 'reservas');
 		$webs=Web::get();
-		return view('admin.book.book', ['paquete_cotizacion'=>$paquete_cotizacion, 'cot_cliente'=>$cot_cliente, 'cliente'=>$cliente,'cotizacion_cat'=>$cotizacion_cat,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+		return view('admin.book.book', ['paquete_cotizacion'=>$paquete_cotizacion, 'cot_cliente'=>$cot_cliente, 'cliente'=>$cliente,'cotizacion_cat'=>$cotizacion_cat,'webs'=>$webs]);
 	}
 
 	/**
@@ -67,7 +67,8 @@ class BookController extends Controller
 			$liquidaciones=Cotizacion::where('liquidacion',0)->get();
 			$servicios=M_Servicio::where('grupo','ENTRANCES')->get();
 			$servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-			return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0','webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+			return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0','webs'=>$webs
+			]);
 		}
 
 	}
@@ -107,7 +108,7 @@ class BookController extends Controller
 		$cotizacion_archivos=CotizacionArchivos::where('cotizaciones_id',$id)->get();
 		$usuario=User::get();
 		$webs=Web::get();
-		return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>$id,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+		return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id]);
 	}
 
 	/**
@@ -449,7 +450,7 @@ class BookController extends Controller
 			$liquidaciones=Cotizacion::get();
 			$servicios=M_Servicio::where('grupo','ENTRANCES')->get();
 			$servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-			return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0','webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+			return view('admin.book.crear-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'mensaje'=>'0','webs'=>$webs]);
 		}
 	}
 	function guardar_liquidacion_storage(Request $request){
@@ -488,14 +489,14 @@ class BookController extends Controller
 		$liquidaciones=Liquidacion::where('estado',1)->get();
 		$users=User::get();
 		$webs=Web::get();
-		return view('admin.book.liquidaciones',['cotizaciones'=>$cotizaciones,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'liquidaciones'=>$liquidaciones,'users'=>$users,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+		return view('admin.book.liquidaciones',['cotizaciones'=>$cotizaciones,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'liquidaciones'=>$liquidaciones,'users'=>$users,'webs'=>$webs]);
 	}
 	function ver_liquidaciones($fecha_ini,$fecha_fin){
 		$liquidaciones=Cotizacion::get();
 		$servicios=M_Servicio::where('grupo','ENTRANCES')->get();
 		$servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
 		$webs=Web::get();
-		return view('admin.book.ver-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+		return view('admin.book.ver-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'webs'=>$webs]);
 	}
 	function nuevo_servicio($cotizaciones_id,$itinerartio_cotis_id,$dia){
 			$destinations=M_Destino::get();
@@ -504,7 +505,7 @@ class BookController extends Controller
 			$pro_clase=ProveedorClases::get();
 			$servicios=array();
 			$webs=Web::get();
-			return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id,'pro_clase'=>$pro_clase,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+			return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id,'pro_clase'=>$pro_clase,'webs'=>$webs]);
 	}
 	public function nuevo_servicio_add(Request $request){
 		$origen=$request->input('origen');
@@ -890,7 +891,7 @@ class BookController extends Controller
 	}
 	public function situacion_servicios(){
 		$webs=Web::get();
-		return view('admin.book.situacion-pqt',['webs'=>$webs, 'hotel_proveedor_id'=>0, 'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+		return view('admin.book.situacion-pqt',['webs'=>$webs]);
 	}
 	public function situacion_servicios_hoteles(Request $request)
 	{

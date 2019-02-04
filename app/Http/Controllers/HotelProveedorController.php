@@ -23,7 +23,7 @@ class HotelProveedorController extends Controller
         $webs=Web::get();
         return view('admin.database.hotel-proveedor',['destinations'=>$destinations,'categorias'=>$categorias,
             'productos'=>$productos,'hotel'=>$hotel,'hotel_solo'=>$hotel_solo,'hotel_proveedor_id'=>$hotel_proveedor_id,
-            'proveedor_escojido'=>$proveedor_escojido,'webs'=>$webs,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+            'proveedor_escojido'=>$proveedor_escojido,'webs'=>$webs]);
     }
     public function update_hotel_proveedor(Request $request)
     {

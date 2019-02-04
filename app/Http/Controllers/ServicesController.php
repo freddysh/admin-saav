@@ -33,7 +33,7 @@ class ServicesController extends Controller
         $proveedores = Proveedor::get();
         $costos = M_Producto::get();
         $webs=Web::get();
-        return view('admin.database.services', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+        return view('admin.database.services', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos,'webs'=>$webs]);
     }
 
     public function store(Request $request)
@@ -272,7 +272,9 @@ class ServicesController extends Controller
         $categorias = M_Category::get();
         $hotel = Hotel::get();
         $webs = Web::get();
-        return view('admin.database.services', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0']);
+        $proveedores=Proveedor::get();
+        $grupo='HOTELS';
+        return view('admin.database.services', ['servicios' => $servicios,'proveedores'=>$proveedores, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel,'grupo'=>$grupo,'webs'=>$webs]);
     }
 
     public function delete(Request $request)
@@ -549,7 +551,7 @@ class ServicesController extends Controller
         $costos = M_Producto::get();
         $destino_operados=DestinosOpera::get();
         $webs=Web::get();
-        return view('admin.database.new_service', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos,'destino_operados'=>$destino_operados,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>'0','fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+        return view('admin.database.new_service', ['servicios' => $servicios, 'categorias' => $categorias, 'destinations' => $destinations, 'hotel' => $hotel, 'proveedores' => $proveedores, 'costos' => $costos,'destino_operados'=>$destino_operados,'webs'=>$webs]);
     }
     public function listar_proveedores_service(Request $request)
     {

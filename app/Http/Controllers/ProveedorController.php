@@ -30,7 +30,9 @@ class ProveedorController extends Controller
         $id=0;
         $fecha_ini=date("Y-m-d");
         $fecha_fin=date("Y-m-d");
-        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria','m_categories','m_categoras','webs','hotel_proveedor_id','id','fecha_ini','fecha_fin'));
+        $web= 'gotoperu.com';
+        $filtro='filtro';
+        return view('admin.database.provider',compact('destinations','providers','categorias','entidadBancaria','m_categories','m_categoras','webs'));
     }
     public function autocomplete()
     {
@@ -271,8 +273,10 @@ class ProveedorController extends Controller
         $txt_banco_nombre_cta_cci = $request->input('txt_banco_nombre_cta_cci_');
         $txt_banco_nro_cta_cci = $request->input('txt_banco_nro_cta_cci_');
 //dd($destinos_opera);
-        $buscar_pro=Proveedor::where('localizacion',$txt_localizacion)->where('ruc',$txt_ruc)->orWhere('razon_social',$txt_razon_social)->orWhere('nombre_comercial',$txt_nombre_comercial)->count();
-        if($buscar_pro==0){
+        // $buscar_pro=Proveedor::where('localizacion',$txt_localizacion)->where('ruc',$txt_ruc)->orWhere('razon_social',$txt_razon_social)->orWhere('nombre_comercial',$txt_nombre_comercial)->count();
+
+        // dd('localizacion:'.$txt_localizacion.',ruc:'.$txt_ruc.',razon_social:'.$txt_razon_social.',nombre_comercial:'.$txt_nombre_comercial);
+        // if($buscar_pro==0){
             if (isset($destinos_opera)){
                 $existe = DestinosOpera::where('proveedor_id', $id)->delete();
                 foreach ($destinos_opera as $destinos_opera_) {
@@ -316,10 +320,10 @@ class ProveedorController extends Controller
             $proveedor->banco_nro_cta_cci=$txt_banco_nro_cta_cci;
             $proveedor->save();
             return redirect()->route('provider_index_path');
-        }
-        else{
-            return redirect()->back();
-        }
+        // }
+        // else{
+        //     return redirect()->back();
+        // }
     }
     public function delete(Request $request){
         $id=$request->input('id');
