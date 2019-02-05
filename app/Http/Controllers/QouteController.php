@@ -338,12 +338,12 @@ class QouteController extends Controller
                             $query->where('pagina',$web);
                         })->first();
                         
-                        // if(count($ppaquete)==0) {
+                        // if(count((array)$ppaquete)==0) {
                         //     $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
                         // }  
                         // dd($ppaquete);
                         $nro_servicios_no_existe=0;
-                        if(count($ppaquete)) {
+                        if(count((array)$ppaquete)) {
                             // foreach($ppaquete as $ppaquete_){
                                 foreach($ppaquete->itinerarios as $itinerarios){
                                     foreach($itinerarios->serivicios as $serivicio){
@@ -355,7 +355,7 @@ class QouteController extends Controller
                                 }   
                             // }
                         }
-                        if(count($ppaquete)) {
+                        if(count((array)$ppaquete)) {
                             if ($ppaquete->duracion > 1) {
                                 $estrellas = 'No necesita';
                                 $estrellas = $value->stars;
@@ -457,10 +457,10 @@ class QouteController extends Controller
                     // $ppaquete = P_Paquete::where('codigo', $codigo)->whereHas('paquete_paginas',function($query)use($web){
                     //     $query->where('pagina',$web);
                     // })->first();
-                    // if(count($ppaquete)==0) {
+                    // if(count((array)$ppaquete)==0) {
                     //     $ppaquete = P_Paquete::where('codigo', $codigo)->where('pagina', $web)->first();
                     // }
-                    if (count($ppaquete) > 0) {
+                    if (count((array)$ppaquete) > 0) {
                         if ($ppaquete->duracion > 1) {
                             $estrellas = 'No necesita';
                             $estrellas = $value->stars;

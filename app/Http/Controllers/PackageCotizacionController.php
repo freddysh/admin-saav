@@ -2468,7 +2468,13 @@ class PackageCotizacionController extends Controller
             $cotizacion = Cotizacion::where('web', $page)->get();
         }
         session()->put('menu-lateral', 'quotes/current');
-        return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes]);
+        $webs=Web::get();
+        if($page=='expedia.com'){
+            return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs]);
+        }
+        else{
+            return view('admin.quotes-current-pages',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs]);
+        }
     }
     public function current_cotizacion_page_expedia_(Request $request)
     {

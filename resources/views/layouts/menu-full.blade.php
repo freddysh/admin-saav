@@ -49,6 +49,22 @@
       $grupo=0;
   @endphp    
 @endif
+@if (!isset($anio))
+  @php
+      $anio=date("Y");
+  @endphp    
+@endif
+@if (!isset($mes))
+  @php
+      $mes=date("m");
+  @endphp    
+@endif
+@if (!isset($page))
+  @php
+      $page='gotoperu.com';
+  @endphp    
+@endif
+
 <div class="menu-list">
         <ul id="menu-content" class="menu-content collapsed menu1">
             <li data-toggle="collapse" data-target="#inventary" class="collapsed">
@@ -85,13 +101,19 @@
               <a class="@if(url()->current()==route('show_itineraries_path')||url()->current()==route('show_itinerary_path',[$id])||url()->current()==route('duplicate_package_path',[$id])||url()->current()==route('package_duplicate_path')) active @endif" href="{{route('show_itineraries_path')}}">PROGRAMS</a>
               </li>
             </ul>
-
+            
             <li data-toggle="collapse" data-target="#ventas" class="collapsed active1">
-              <a href="#" class="menu"><i class="fas fa-handshake"></i> SALES </a>
+              <a href="#"><i class="fas fa-handshake"></i> SALES </a>
             </li>
-            <ul class="sub-menu collapse menu2" id="ventas">
+            <ul class="sub-menu collapse menu2 @if(
+              (url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$page])||url()->current()==route('book_show_path',[$id])||url()->current()==route('servicios_add_path',[$cotizaciones_id,$itinerartio_cotis_id,$dia]))||
+              (url()->current()==route('situacion_servicios_path')||url()->current()==route('provider_new_path')||url()->current()==route('provider_edit_path'))||
+              (url()->current()==route('crear_liquidacion_path')||url()->current()==route('filtrar_liquidacion_reservas_path'))||
+              (url()->current()==route('liquidaciones_hechas_path')||url()->current()==route('ver_liquidacion_path',[$fecha_ini,$fecha_fin]))) show @endif" id="ventas">
               @foreach ($webs->sortBy('pagina') as $item)
-                <li data-toggle="collapse" class="active1"><a href="#">{{strtoupper($item->pagina)}}</a></li>
+              <li data-toggle="collapse" class="active1">
+                  <a class="@if(url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])) active @endif" href="{{route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])}}">{{strtoupper($item->pagina)}}</a>
+                </li>
               @endforeach
             </ul>
 
