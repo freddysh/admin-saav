@@ -1529,7 +1529,7 @@ class PackageCotizacionController extends Controller
                 }
                 $st=0;
                 foreach($itinerarios_->serivicios as $servicios){
-                    $serv=M_Servicios::find($servicios->m_servicios_id);
+                    $serv=M_Servicio::find($servicios->m_servicios_id);
                     $p_servicio=new ItinerarioServicios();
                     $p_servicio->nombre=$servicios->nombre;
                     $p_servicio->observacion='';
@@ -2487,18 +2487,18 @@ class PackageCotizacionController extends Controller
     {
         $user_name=auth()->guard('admin')->user()->name;
         $user_tipo=auth()->guard('admin')->user()->tipo_user;
-        // if($user_tipo=='ventas') {
-        //     $cotizacion = Cotizacion::where('web', $page)->where('users_id', auth()->guard('admin')->user()->id)->get();
-        // }
-        // else {
-        //     $cotizacion = Cotizacion::where('web', $page)->get();
-        // }
         if($user_tipo=='ventas') {
-            $cotizacion = Cotizacion::where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('users_id', auth()->guard('admin')->user()->id)->get();
+            $cotizacion = Cotizacion::where('web', $page)->where('users_id', auth()->guard('admin')->user()->id)->get();
         }
         else {
-            $cotizacion = Cotizacion::where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->get();
+            $cotizacion = Cotizacion::where('web', $page)->get();
         }
+        // if($user_tipo=='ventas') {
+        //     $cotizacion = Cotizacion::where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->where('users_id', auth()->guard('admin')->user()->id)->get();
+        // }
+        // else {
+        //     $cotizacion = Cotizacion::where('web', $page)->whereYear('fecha_venta',$anio)->whereMonth('fecha_venta',$mes)->get();
+        // }
         // dd($cotizacion);
         session()->put('menu-lateral', 'quotes/current');
         $webs=Web::get();

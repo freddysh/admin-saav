@@ -230,6 +230,10 @@ Route::get('admin/quotes/new/profile',[
     'uses' => 'QouteController@nuevo1',
     'as' => 'quotes_new1_path',
 ]);
+Route::get('admin/quotes/new/profile/{pagina}',[
+    'uses' => 'QouteController@nuevo1_pagina',
+    'as' => 'quotes_new1_pagina_path',
+]);
 Route::get('admin/quotes/expedia/new/profile',[
     'uses' => 'QouteController@expedia',
     'as' => 'quotes_new1_expedia_path',

@@ -36,7 +36,7 @@
                                 </div>
                                 <select name="web" id="web" class="form-control">
                                     @foreach ($webs as $item)
-                                        <option value="{{$item->pagina}}">{{$item->pagina}}</option>
+                                        <option value="{{$item->pagina}}" @if($item->pagina==$page) selected @endif>{{$item->pagina}}</option>
                                     @endforeach
                                 </select>
                             </div>

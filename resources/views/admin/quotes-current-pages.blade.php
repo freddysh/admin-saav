@@ -11,8 +11,11 @@
     <div class="row mt-2">
         <div class="col-12 text-12">
             <div class="row">
-                <div class="col-2">
-                    <b class="text-18 text-grey-goto bg-white">{{$page}}</b>
+                <div class="col-2 text-right ">
+                    <b class="text-15 text-green-goto">{{$page}}</b><br>
+                    <b class="text-15 text-green-goto">{{$anio}}</b><br>
+                    <button class="btn btn-primary btn-sm">CLOSE DATE</button>
+                    <button class="btn btn-secondary btn-sm">ARRIVAL DATE</button>
                 </div>
                 <div class="col-8 text-right">
                     <div class="row">
@@ -72,7 +75,11 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <a href="#" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>
+                    @if ($page=='expedia.com')
+                        <a href="{{route('quotes_new1_expedia_path')}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>
+                    @else
+                        <a href="{{route('quotes_new1_pagina_path',$page)}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>    
+                    @endif
                     <b class="text-danger text-12">(PREVIOUS YEAR {{ $mes_[$messs]}} {{date("Y")-1}} : <sup>$</sup>{{$profit_anio_pasado}})</b>
                 </div>
             </div>

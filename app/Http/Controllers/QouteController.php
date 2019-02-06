@@ -192,6 +192,48 @@ class QouteController extends Controller
             'webs'=>$webs
             ]);
     }
+    public function nuevo1_pagina($web)
+    {
+        $webs=Web::get();
+        $destinos=M_Destino::get();
+        $itinerarios=M_Itinerario::get();
+        $itinerarios_d=M_ItinerarioDestino::get();
+        $m_servicios=M_Servicio::get();
+        $p_paquete=P_Paquete::get();
+        $hotel=Hotel::get();
+//        dd($servicios);
+        $plan=0;
+        $id=0;
+        $cliente_id=0;
+        $nombres='';
+        $nacionalidad='';
+        $email='';
+        $telefono='';
+        $travelers=0;
+        $days=0;
+        $fecha='';
+        // $web='gotoperu.com';
+        $idioma_pasajeros='';
+        $codigo= MisFunciones::generar_codigo($web);
+        // dd($codigo);
+        session()->put('menu-lateral', 'quotes/new');
+        return view('admin.quotes-new1',['destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'p_paquete'=>$p_paquete, 'itinerarios_d'=>$itinerarios_d,'hotel'=>$hotel,
+            'plan'=>$plan,
+            'coti_id'=>$id,
+            'cliente_id'=>$cliente_id,
+            'nombres'=>$nombres,
+            'nacionalidad'=>$nacionalidad,
+            'email'=>$email,
+            'telefono'=>$telefono,
+            'travelers'=>$travelers,
+            'days'=>$days,
+            'fecha'=>$fecha,
+            'web'=>$web,
+            'codigo'=>$codigo,
+            'idioma_pasajeros'=>$idioma_pasajeros,
+            'webs'=>$webs
+            ]);
+    }
     public function ordenar_servios_db(Request $request)
     {
         $lista_servicios=$request->input('array_servicios');
@@ -243,7 +285,8 @@ class QouteController extends Controller
     public function expedia()
     {
         $webs=Web::get();
-        return view('admin.expedia.expedia-import',compact(['webs']));
+        $page='expedia.com';
+        return view('admin.expedia.expedia-import',compact(['webs','page']));
     }
     public function import(Request $request)
     {

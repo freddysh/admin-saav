@@ -111,10 +111,10 @@
               <a href="#"><i class="fas fa-handshake"></i> SALES </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
-              (url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$page])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id]))) show @endif" id="ventas">
+              (url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$page])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_expedia_path')||url()->current()==route('quotes_new1_pagina_path',$web))) show @endif" id="ventas">
               @foreach ($webs->sortBy('pagina') as $item)
               <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id]))) active @endif" href="{{route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])}}">{{strtoupper($item->pagina)}}</a>
+                  <a class="@if(url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_pagina_path',$item->pagina))) active @endif @if($item->pagina==$page) active @endif" href="{{route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])}}">{{strtoupper($item->pagina)}}</a>
                 </li>
               @endforeach
             </ul>
