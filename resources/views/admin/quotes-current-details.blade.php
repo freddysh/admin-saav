@@ -288,6 +288,7 @@
                     <td>AGREGAR ARCHIVOS</td>
                     <td>AGREGAR NOTAS</td>
                     <td>PEDIR DATOS</td>
+                    <td>INGRESAR DATOS</td>
                     <td>REVISAR DATOS</td>
                     <td>ESTADO</td>
                 </th>
@@ -507,6 +508,79 @@
                                         </div>
                                     </form>
                                 </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="#!" class="text-unset small" data-toggle="modal" data-target="#Modal_datos_{{$paquete->id}}">
+                            <i class="fas fa-list-alt" aria-hidden="true"></i>Ingresar datos
+                        </a>
+                        <div class="modal fade" id="Modal_datos_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <form id="ingresar_idatos_{{$paquete->id}}" action="{{route('package_cotizacion_ingresar_datos_path')}}" method="post">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Ingresar datos</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
+                                                <div class="col-6 card mb-1 pt-1 mx-0 border">
+                                                <input type="hidden" name="clientes_id[]" value="{{$cliente_coti->cliente->id}}">
+                                                    <div class="input-group mb-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Nombres</div>
+                                                            </div>
+                                                        <input type="text" class="form-control" id="nombres" name="nombres[]" value="{{$cliente_coti->cliente->nombres}}" required>
+                                                    </div>
+                                                    <div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Apellidos</div>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="apellidos" name="apellidos[]" value="{{$cliente_coti->cliente->apellidos}}" required>
+                                                    </div>
+                                                    <div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Gender</div>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="gender" name="gender[]" value="{{$cliente_coti->cliente->sexo}}" required>
+                                                    </div>
+                                                    <div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Fecha de nacimiento</div>
+                                                        </div>
+                                                        <input type="date" class="form-control" id="fecha_nac" name="fecha_nac[]" value="{{$cliente_coti->cliente->fechanacimiento}}" required>
+                                                    </div>
+                                                    <div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Pasaporte</div>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="pasaporte" name="pasaporte[]" value="{{$cliente_coti->cliente->pasaporte}}" required>
+                                                    </div>
+                                                    <div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">Nacionalidad</div>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="nacionalidad" name="nacionalidad[]" value="{{$cliente_coti->cliente->nacionalidad}}" required>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                            
+                                            <div class="col-12">
+                                                <b id="response_idatos_{{$paquete->id}}" class="text-22"></b>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
+                                            <input type="hidden" name="pqt_id" value="{{$paquete->id}}">
+                                            {{csrf_field()}}
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" onclick="ingresar_datos('{{$paquete->id}}')">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </td>

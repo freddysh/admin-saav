@@ -1161,6 +1161,10 @@ Route::post('admin/show-cotizacion/ingresar-notas', [
     'uses' => 'PackageCotizacionController@ingresar_notas',
     'as' => 'package_cotizacion_notas_path',
 ]);
+Route::post('admin/show-cotizacion/ingresar-idatos', [
+    'uses' => 'PackageCotizacionController@ingresar_idatos',
+    'as' => 'package_cotizacion_ingresar_datos_path',
+]);
 Route::post('admin/contabilidad/listar/proveedores/ajax', [
     'uses' => 'ContabilidadController@pagar_a_banco',
     'as' => 'contabilidad_listar_provedores_path',

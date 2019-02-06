@@ -9,10 +9,10 @@
 @stop
 @section('content')
     <div class="row mt-2">
-        <div class="col-12">
+        <div class="col-12 text-12">
             <div class="row">
                 <div class="col-2">
-                <b class="text-18 text-grey-goto bg-white">{{$page}}</b>
+                    <b class="text-18 text-grey-goto bg-white">{{$page}}</b>
                 </div>
                 <div class="col-8 text-right">
                     <div class="row">
@@ -49,42 +49,156 @@
                                             $mess=$i;
                                         @endphp
                                     @endif
-                                    <button type="button" class="btn btn-outline-secondary @if($mes==$mess) active @endif">{{$mes_[$i]}}</button>
+                                    <a href="{{route('current_quote_page_expedia_path',[$anio,$mess,$page])}}" class="btn btn-outline-secondary @if($mes==$mess) active @endif">{{$mes_[$i]}}</a>
                                 @endfor
                             </div>
                         </div>  
                     </div>
+                    @if ($profit_tope==0)
+                        @php
+                            $profit_tope=1;    
+                        @endphp
+                    @endif
                     <div class="row mt-1">
                         <div class="col-1"><b>PROFIT GOAL</b></div>
                         <div class="col-10">
-                            <div class="progress" style="height: 1px;">
-                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="progress" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress"  style="height: 30px;">
+                                <div class="progress-bar bg-info progress-bar-striped" role="progressbar" style="width: {{($profit_alcanzado/$profit_tope)*100}}%;" aria-valuenow="{{($profit_alcanzado/$profit_tope)*100}}" aria-valuemin="0" aria-valuemax="100">{{$profit_alcanzado}}</div>
                             </div>
                         </div>
                         <div class="col-1">
-                            <b><sup>$</sup>7000</b>    
-                        </div> 
+                            <b><sup>$</sup>{{$profit_tope}}</b>
+                        </div>
                     </div>
                 </div>
                 <div class="col-2">
                     <a href="#" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>
-                    <b class="text-danger text-12">(PREVIOUS YEAR {{ $mes_[$messs]}} {{date("Y")-1}} : <sup>$</sup>6500)</b>
+                    <b class="text-danger text-12">(PREVIOUS YEAR {{ $mes_[$messs]}} {{date("Y")-1}} : <sup>$</sup>{{$profit_anio_pasado}})</b>
                 </div>
             </div>
+        </div>
+        <div id="ventas_profit" class="col-12">
+            <table class="table table-striped table-bordered  table-condensed text-12">
+                <thead>
+                    <tr>
+                        <th>CLOSE DATE</th>
+                        <th>ARRIVAL DATE</th>
+                        <th>CODE</th>
+                        <th>PAX</th>
+                        <th>#</th>
+                        <th>PROGRAM</th>
+                        <th>#DAYS</th>
+                        <th>MEMBER</th>
+                        <th>PROFIT</th>
+                        <th>OPERATIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $profit_suma=0;
+                    @endphp
+                    @foreach ($cotizacion->sortByDesc('fecha_venta') as $cotizacion_)
+                        @php
+                        $date = date_create($cotizacion_->fecha);
+                        $fecha=date_format($date, 'jS F Y');
+                        $i++;
+                        $profit=0;
+                        $profit_st=0;
+                        $titulo=$cotizacion_->nombre_pax.'x'.$cotizacion_->nropersonas.' '.$cotizacion_->fecha;
+                        @endphp
+                        @foreach($cotizacion_->paquete_cotizaciones->where('estado',2) as $paquete_cotizaciones)
+                            @if($paquete_cotizaciones->duracion==1)
+                                @php
+                                    $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                                @endphp
+                            @else
+                                @php
+                                    $nro_personas=0;
+                                    $uti=0;
+                                @endphp
+                                @if($paquete_cotizaciones->paquete_precios->count()>=1)
+                                    @foreach($paquete_cotizaciones->paquete_precios as $precio)
+                                        @php
+                                            $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
+                                        @endphp
+                                        @if($precio->personas_s>0)
+                                            @php
+                                                $uti+=$precio->utilidad_s*$precio->personas_s;
+                                            @endphp
+                                        @endif
+                                        @if($precio->personas_d>0)
+                                            @php
+                                                $uti+=$precio->utilidad_d*$precio->personas_d*2;
+                                            @endphp
+                                        @endif
+                                        @if($precio->personas_m>0)
+                                            @php
+                                                $uti+=$precio->utilidad_m*$precio->personas_m*2;
+                                            @endphp
+                                        @endif
+                                        @if($precio->personas_t>0)
+                                            @php
+                                                $uti+=$precio->utilidad_t*$precio->personas_t*3;
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    @if($nro_personas>0)
+                                        @php
+                                            $profit+=$uti;
+                                        @endphp
+                                    @else
+                                        @php
+                                            $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                                        @endphp
+                                    @endif
+                                @else
+                                    @php
+                                        $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                                    @endphp
+                                @endif
+                            @endif
+                        @endforeach   
+                        <tr id="content-list-{{$cotizacion_->id}}">
+                            <th>{{$cotizacion_->fecha_venta}} </th>
+                            <th>{{$cotizacion_->fecha}} </th>
+                            <th>{{$cotizacion_->codigo}} </th>
+                            <th>{{strtoupper($cotizacion_->nombre_pax)}} </th>
+                            <th>{{$cotizacion_->nropersonas}} </th>
+                            <th>PROGRAM</th>
+                            <th>{{$cotizacion_->duracion}} </th>
+                            <th><span class="text-primary">By</span> {{$cotizacion_->users->name}} </th>
+                            <th><b><sup>$</sup>{{number_format($profit,2)}}</b></th>
+                            <th>
+                            <a class="text-15" href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}"><i class="fas fa-eye"></i></a>
+                            <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
+                            <a class="text-15" id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
+                                @if($cotizacion_->anulado==1)
+                                    <i class="fas fa-check-circle text-success"></i>
+                                @elseif($cotizacion_->anulado==0)
+                                    <i class="fas fa-times-circle text-grey-goto"></i>
+                                @endif
+                            </a>
+                            <a class="text-15" href="#!" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash text-danger"></i></a>
+                            </th>
+                        </tr>
+                        @php
+                            $profit_suma+=$profit;
+                        @endphp
+                    @endforeach
+                    
+                </body>
+            </table>
         </div>
     </div>
 
 
-    <div class="row no-gutters mb-2">
+    <div class="row no-gutters mb-2 d-none">
         <div class="col text-center">
             <a href="#!" class="btn btn-block btn-sm  btn-success">{{$page}}</a>
             <i class="fas fa-sort-down fa-2x arrow-page text-success"></i>
         </div>
     </div>
-    <div class="row">
+    <div class="row d-none">
         <div id="list-example" class="list-group">
             <div class="list-group-item list-group-item-action">
                 <form action="{{route('current_quote_page_expedia_post_path')}}" method="post">
@@ -130,7 +244,7 @@
                 @php
                     $nro=0;
                 @endphp
-                @foreach($cotizacion->sortByDesc('fecha')/*->where('estado','!=','2')*/ as $cotizacion_)
+                @foreach($cotizacion->sortByDesc('fecha_venta')/*->where('estado','!=','2')*/ as $cotizacion_)
                     @php
                         $f1=explode('-',$cotizacion_->fecha);
                     @endphp
@@ -333,7 +447,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row d-none">
         <div class="col text-right">
             <div class="btn-save-fixed btn-save-fixed-plus p-3">
                 <a href="{{route("quotes_new1_expedia_path")}}" class="p-3 bg-danger rounded-circle text-white" data-toggle="tooltip" data-placement="top" title="" data-original-title="Create New Plan"><i class="fas fa-plus"></i></a>
@@ -342,5 +456,25 @@
     </div>
     
     </div>
+<script>
+    // $(function() {
+    //     var progressed = 15;
+    //     var interval = setInterval(function() {
+    //       progressed += 25;
+    //       $("#moving-progress-bar")
+    //       .css("width", progressed)
+    //       .attr("aria-valuenow", progressed)
+    //       .text("$"+progressed + " progress");
+    //       if (progressed >= {{$profit_alcanzado}})
+    //           clearInterval(interval);
+    //   }, {{$profit_tope}});
+    // });
+    $(function() {
+        //   $("#moving-progress-bar")
+        //   .css("width", {{$profit_alcanzado}})
+        //   .attr("aria-valuenow", {{$profit_alcanzado}})
+        //   .text("$"+{{$profit_alcanzado}} + " progress");
+    });
+</script>
 
 @stop

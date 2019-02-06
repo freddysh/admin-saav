@@ -64,8 +64,13 @@
       $page='gotoperu.com';
   @endphp    
 @endif
+@if (!isset($cotizacion_id))
+  @php
+      $cotizacion_id=0;
+  @endphp    
+@endif
 
-<div class="menu-list">
+<div class="menu-list text-12">
         <ul id="menu-content" class="menu-content collapsed menu1">
             <li data-toggle="collapse" data-target="#inventary" class="collapsed">
               <a href="#"><i class="fas fa-database"></i> INVENTARY </a>
@@ -106,13 +111,10 @@
               <a href="#"><i class="fas fa-handshake"></i> SALES </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
-              (url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$page])||url()->current()==route('book_show_path',[$id])||url()->current()==route('servicios_add_path',[$cotizaciones_id,$itinerartio_cotis_id,$dia]))||
-              (url()->current()==route('situacion_servicios_path')||url()->current()==route('provider_new_path')||url()->current()==route('provider_edit_path'))||
-              (url()->current()==route('crear_liquidacion_path')||url()->current()==route('filtrar_liquidacion_reservas_path'))||
-              (url()->current()==route('liquidaciones_hechas_path')||url()->current()==route('ver_liquidacion_path',[$fecha_ini,$fecha_fin]))) show @endif" id="ventas">
+              (url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$page])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id]))) show @endif" id="ventas">
               @foreach ($webs->sortBy('pagina') as $item)
               <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])) active @endif" href="{{route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])}}">{{strtoupper($item->pagina)}}</a>
+                  <a class="@if(url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id]))) active @endif" href="{{route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])}}">{{strtoupper($item->pagina)}}</a>
                 </li>
               @endforeach
             </ul>

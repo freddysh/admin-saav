@@ -6709,3 +6709,34 @@ function Anular_cotizacion(id,titulo) {
 
     })
 }
+
+function ingresar_datos(pqt_id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type:  'post',
+        url:   $('#ingresar_idatos_'+pqt_id).attr('action'),
+        data:  $('#ingresar_idatos_'+pqt_id).serialize(),
+        beforeSend:function(res){
+            $('#response_idatos_'+pqt_id).removeClass('text-danger');
+            $('#response_idatos_'+pqt_id).removeClass('text-success');
+            $('#response_idatos_'+pqt_id).html('<i class="fa fa-circle-o-notch fa-spin"></i>Loading');
+        }
+        ,success:  function (response) {
+            console.log('response:'+response);
+            if(response=='1'){
+                $('#response_idatos_'+pqt_id).removeClass('text-danger');
+                $('#response_idatos_'+pqt_id).addClass('text-success');
+                $('#response_idatos_'+pqt_id).html('Notas guardadas');
+            }
+            else if(response=='0'){
+                $('#response_idatos_'+pqt_id).removeClass('text-success');
+                $('#response_idatos_'+pqt_id).addClass('text-danger');
+                $('#response_idatos_'+pqt_id).html('Error al guardar las notas!');
+            }
+        }
+    });
+}

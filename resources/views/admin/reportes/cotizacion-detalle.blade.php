@@ -49,9 +49,6 @@
                     $profit_st=0;
                 @endphp
                 @foreach($cotizacion->paquete_cotizaciones->where('estado',2) as $paquete_cotizaciones)
-                    {{-- @php
-                        $profit=0;
-                    @endphp --}}
                     @if($paquete_cotizaciones->duracion==1)
                         @php
                             $profit=$paquete_cotizaciones->utilidad*$cotizacion->nropersonas;
