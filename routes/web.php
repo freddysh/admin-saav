@@ -270,6 +270,10 @@ Route::get('/admin/current-quote/expedia/{anio}/{mes}/{page}', [
     'uses' => 'PackageCotizacionController@current_cotizacion_page_expedia',
     'as' => 'current_quote_page_expedia_path',
 ]);
+Route::get('/admin/current-quote/expedia/{anio}/{mes}/{page}/{tipo_filtro}', [
+    'uses' => 'PackageCotizacionController@current_cotizacion_page_',
+    'as' => 'current_sales_type_page_path',
+]);
 Route::post('/admin/current-quote/expedia', [
     'uses' => 'PackageCotizacionController@current_cotizacion_page_expedia_',
     'as' => 'current_quote_page_expedia_post_path',
@@ -1305,4 +1309,22 @@ Route::post('/admin/servicio/cambiar-estado', [
 Route::post('/admin/cotizacion/anular', [
     'uses' => 'PackageCotizacionController@anular',
     'as' => 'cotizacion_anular_path',
+]);
+
+// rutas para los profits
+Route::get('/admin/profits/{anio}',[
+    'uses' => 'ProfitController@show',
+    'as' => 'profits_index_path',
+]);
+Route::post('/admin/profits/new',[
+    'uses' => 'ProfitController@store',
+    'as' => 'profits_save_path',
+]);
+Route::post('/admin/profits/edit',[
+    'uses' => 'ProfitController@edit',
+    'as' => 'profits_edit_path',
+]);
+Route::post('/admin/profits/delete',[
+    'uses' => 'ProfitController@delete',
+    'as' => 'profits_delete_path',
 ]);

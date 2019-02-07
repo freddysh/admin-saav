@@ -1726,9 +1726,9 @@ class PackageCotizacionController extends Controller
         $imprimir='si_create';
         $btn=$request->input('create');
 //        dd($btn);
-
+        $webs=Web::get();
         if($btn=='create'){
-            return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_id,'imprimir'=>$imprimir,'origen'=>$origen]);
+            return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_id,'imprimir'=>$imprimir,'origen'=>$origen,'webs'=>$webs]);
         }
         elseif($btn=='create_template'){
             $imprimir='si_create_temp';
@@ -1840,7 +1840,7 @@ class PackageCotizacionController extends Controller
                     }
                 }
             }
-            return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_id,'imprimir'=>$imprimir,'origen'=>$origen]);
+            return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_id,'imprimir'=>$imprimir,'origen'=>$origen,'webs'=>$webs]);
         }
 
     }
@@ -1976,7 +1976,8 @@ class PackageCotizacionController extends Controller
         $destinations=M_Destino::get();
         $categorias=M_Category::get();
         $hoteles=Hotel::where('localizacion','CUSCO')->get();
-        return view('admin.package-details1-edit',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id,'destinations'=>$destinations,'categorias'=>$categorias,'hoteles'=>$hoteles,'msj'=>$msj]);
+        $webs=Web::get();
+        return view('admin.package-details1-edit',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id,'destinations'=>$destinations,'categorias'=>$categorias,'hoteles'=>$hoteles,'msj'=>$msj,'webs'=>$webs]);
     }
     public function show_step1_ser($cliente_id, $cotizacion_id,$pqt_id,$id_serv,$msj)
     {
@@ -2432,8 +2433,8 @@ class PackageCotizacionController extends Controller
             $temp->descripcion=$request->input('txt_descr_'.$iti);
             $temp->save();
         }
-
-        return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_precio_id,'imprimir'=>$imprimir,'origen'=>$origen]);
+        $webs=Web::get();
+        return view('admin.package-prepare',['cotizaciones'=>$cotizaciones,'paquete_precio_id'=>$paquete_precio_id,'imprimir'=>$imprimir,'origen'=>$origen,'webs'=>$webs]);
     }
     public function ask_information(Request $request){
 //        $cliente_estado=$request->input('estado');
@@ -2482,6 +2483,144 @@ class PackageCotizacionController extends Controller
         }
         else
         return 0;
+    }
+    
+    public function current_cotizacion_page_($anio,$mes,$page,$tipo_filtro)
+    {
+        $user_name=auth()->guard('admin')->user()->name;
+        $user_tipo=auth()->guard('admin')->user()->tipo_user;
+        // if($user_tipo=='ventas') {
+        //     $cotizacion = Cotizacion::where('web', $page)->where('users_id', auth()->guard('admin')->user()->id)->get();
+        // }
+        // else {
+        //     $cotizacion = Cotizacion::where('web', $page)->get();
+        // }
+        $filtro_sale='fecha_venta';
+        if($tipo_filtro=='arrival-date'){
+            $filtro_sale='fecha';
+        }
+
+        if($user_tipo=='ventas') {
+            $cotizacion = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio)->whereMonth($filtro_sale,$mes)->where('users_id', auth()->guard('admin')->user()->id)->get();
+        }
+        else {
+            $cotizacion = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio)->whereMonth($filtro_sale,$mes)->get();
+        }
+        // dd($cotizacion);
+        session()->put('menu-lateral', 'quotes/current');
+        $webs=Web::get();
+        
+        $goal= GoalProfit::where('pagina',$page)->where('anio',$anio)->where('mes',$mes)->get()->first();
+        $profit_tope =0;
+        if(count((array)$goal)>0)
+            $profit_tope =$goal->goal;
+        
+        $profit_suma=0;
+        // profit alcanzado
+        foreach ($cotizacion->sortByDesc($filtro_sale) as $cotizacion_){
+            $profit=0;
+            $profit_st=0;
+            foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete_cotizaciones){
+                if($paquete_cotizaciones->duracion==1){
+                    $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                }                    
+                else{
+                    $nro_personas=0;
+                    $uti=0;
+                    
+                    if($paquete_cotizaciones->paquete_precios->count()>=1){
+                        foreach($paquete_cotizaciones->paquete_precios as $precio){
+                            $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
+                            if($precio->personas_s>0)
+                                $uti+=$precio->utilidad_s*$precio->personas_s;
+                            
+                            if($precio->personas_d>0)
+                                    $uti+=$precio->utilidad_d*$precio->personas_d*2;
+                            
+                            if($precio->personas_m>0)
+                                    $uti+=$precio->utilidad_m*$precio->personas_m*2;
+                            
+                            if($precio->personas_t>0)
+                                $uti+=$precio->utilidad_t*$precio->personas_t*3;
+                        
+                        }
+
+                        if($nro_personas>0)
+                            $profit+=$uti;
+                        else
+                            $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                            
+                    }
+                    else
+                        $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                    
+                }
+            }            
+            $profit_suma+=$profit;
+        }
+        $profit_alcanzado = $profit_suma;
+        
+        $profit_suma_anio_pasado=0;
+        // profit alcanzado anio pasado
+        $cotizacion_anio_pasado=null;
+        $anio_pasado=$anio-1;
+        // dd($anio_pasado);
+        if($user_tipo=='ventas') {
+            $cotizacion_anio_pasado = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio_pasado)->whereMonth($filtro_sale,$mes)->where('users_id', auth()->guard('admin')->user()->id)->get();
+        }
+        else {
+            $cotizacion_anio_pasado = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio_pasado)->whereMonth($filtro_sale,$mes)->get();
+        }
+        // dd($anio_pasado);
+        foreach ($cotizacion_anio_pasado->sortByDesc($filtro_sale) as $cotizacion_){
+            $profit=0;
+            $profit_st=0;
+            foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete_cotizaciones){
+                if($paquete_cotizaciones->duracion==1){
+                    $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                }                    
+                else{
+                    $nro_personas=0;
+                    $uti=0;
+                    
+                    if($paquete_cotizaciones->paquete_precios->count()>=1){
+                        foreach($paquete_cotizaciones->paquete_precios as $precio){
+                            $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
+                            if($precio->personas_s>0)
+                                $uti+=$precio->utilidad_s*$precio->personas_s;
+                            
+                            if($precio->personas_d>0)
+                                    $uti+=$precio->utilidad_d*$precio->personas_d*2;
+                            
+                            if($precio->personas_m>0)
+                                    $uti+=$precio->utilidad_m*$precio->personas_m*2;
+                            
+                            if($precio->personas_t>0)
+                                $uti+=$precio->utilidad_t*$precio->personas_t*3;
+                        
+                        }
+
+                        if($nro_personas>0)
+                            $profit+=$uti;
+                        else
+                            $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                            
+                    }
+                    else
+                        $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                    
+                }
+            }            
+            $profit_suma_anio_pasado+=$profit;
+        }
+        $profit_anio_pasado = $profit_suma_anio_pasado;
+
+        // if($page=='expedia.com'){
+        //     return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs]);
+        // }
+        // else{
+            return view('admin.quotes-current-pages',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs,'profit_tope'=>$profit_tope,'profit_alcanzado'=>$profit_alcanzado,'profit_anio_pasado'=>$profit_anio_pasado,'tipo_filtro'=>$tipo_filtro]);
+        // }
     }
     public function current_cotizacion_page_expedia($anio,$mes,$page)
     {

@@ -69,6 +69,11 @@
       $cotizacion_id=0;
   @endphp    
 @endif
+@if (!isset($tipo_filtro))
+  @php
+      $tipo_filtro='close-date';
+  @endphp    
+@endif
 
 <div class="menu-list text-12">
         <ul id="menu-content" class="menu-content collapsed menu1">
@@ -76,6 +81,7 @@
               <a href="#"><i class="fas fa-database"></i> INVENTARY </a>
             </li>  
             <ul class="sub-menu collapse menu2 @if(
+            (url()->current()==route('profits_index_path',$anio))||
             (url()->current()==route('category_index_path')||url()->current()==route('category_save_path')||url()->current()==route('category_edit_path'))||
             (url()->current()==route('provider_index_path')||url()->current()==route('provider_new_path')||url()->current()==route('provider_edit_path'))||
             (url()->current()==route('service_index_path')||url()->current()==route('nuevo_producto_path')||url()->current()==route('hotel_edit_path'))||
@@ -83,6 +89,9 @@
             (url()->current()==route('destination_index_path')||url()->current()==route('destination_save_path')||url()->current()==route('destination_edit_path'))||
             (url()->current()==route('itinerari_index_path')||url()->current()==route('daybyday_new_path')||url()->current()==route('daybyday_new_edit_path',[$id])||url()->current()==route('call_servicios_edit_path'))||
             (url()->current()==route('show_itineraries_path')||url()->current()==route('show_itinerary_path',[$id])||url()->current()==route('duplicate_package_path',[$id])||url()->current()==route('package_duplicate_path'))) show @endif" id="inventary">
+              <li data-toggle="collapse">
+                  <a class="@if(url()->current()==route('profits_index_path',$anio)) active @endif" href="{{route('profits_index_path',date("Y"))}}">PROFIT</a>
+                  </li>
               <li data-toggle="collapse">
               <a class="@if(url()->current()==route('category_index_path')||url()->current()==route('category_save_path')||url()->current()==route('category_edit_path')) active @endif" href="{{route('category_index_path')}}">CATEGORIES</a>
               </li>
@@ -111,10 +120,10 @@
               <a href="#"><i class="fas fa-handshake"></i> SALES </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
-              (url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$page])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_expedia_path')||url()->current()==route('quotes_new1_pagina_path',$web))) show @endif" id="ventas">
+              (url()->current()==route('current_sales_type_page_path',[$anio,$mes,$page,$tipo_filtro])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_expedia_path')||url()->current()==route('quotes_new1_pagina_path',$web))) show @endif" id="ventas">
               @foreach ($webs->sortBy('pagina') as $item)
               <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_pagina_path',$item->pagina))) active @endif @if($item->pagina==$page) active @endif" href="{{route('current_quote_page_expedia_path',[$anio,$mes,$item->pagina])}}">{{strtoupper($item->pagina)}}</a>
+                  <a class="@if(url()->current()==route('current_sales_type_page_path',[$anio,$mes,$item->pagina,$tipo_filtro])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_pagina_path',$item->pagina))) active @endif @if($item->pagina==$page) active @endif" href="{{route('current_sales_type_page_path',[$anio,$mes,$item->pagina,$tipo_filtro])}}">{{strtoupper($item->pagina)}}</a>
                 </li>
               @endforeach
             </ul>

@@ -584,7 +584,7 @@
                                 @else
                                     <p><b class="text-success text-20">Gracias. Su paquete fue creado correctamente y se creo el template!!!</b></p>
                                 @endif
-                                <p><a class="btn btn-primary text-15" href="{{route('current_quote_page_path',$cotizacion->web)}}">Ver aqui mi paquete</a></p>
+                                <p><a class="btn btn-primary text-15" href="{{route('cotizacion_id_show_path',$cotizacion->id)}}">Ver aqui mi paquete</a></p>
                                 <a href="{{route('quotes_pdf_path',$paquete_id)}}" class="hide pull-right btn btn-default btn-lg"><i class="fa fa-download" aria-hidden="true"></i></a>
                             @endif
                         </div>

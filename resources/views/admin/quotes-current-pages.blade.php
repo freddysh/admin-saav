@@ -11,13 +11,15 @@
     <div class="row mt-2">
         <div class="col-12 text-12">
             <div class="row">
-                <div class="col-2 text-right ">
-                    <b class="text-15 text-green-goto">{{$page}}</b><br>
-                    <b class="text-15 text-green-goto">{{$anio}}</b><br>
-                    <button class="btn btn-primary btn-sm">CLOSE DATE</button>
-                    <button class="btn btn-secondary btn-sm">ARRIVAL DATE</button>
+                <div class="col-3 text-right px-0">
+                    <b class="text-14 text-green-goto">{{$page}}</b><br>
+                    <b class="text-14 text-green-goto">{{$anio}}</b><br>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                        <a href="{{route('current_sales_type_page_path',[$anio,$mes,$page,'close-date'])}}" class="btn @if($tipo_filtro=='close-date') btn-primary @else btn-outline-primary @endif">CLOSE DATE</a>
+                        <a href="{{route('current_sales_type_page_path',[$anio,$mes,$page,'arrival-date'])}}" class="btn @if($tipo_filtro=='arrival-date') btn-primary @else btn-outline-primary @endif">ARRIVAL DATE</a>
+                    </div>
                 </div>
-                <div class="col-8 text-right">
+                <div class="col-8 pr-0">
                     <div class="row">
                         <div class="col">
                             <div class="btn-group btn-group-md" role="group" aria-label="Basic example">
@@ -52,7 +54,7 @@
                                             $mess=$i;
                                         @endphp
                                     @endif
-                                    <a href="{{route('current_quote_page_expedia_path',[$anio,$mess,$page])}}" class="btn btn-outline-secondary @if($mes==$mess) active @endif">{{$mes_[$i]}}</a>
+                                    <a href="{{route('current_sales_type_page_path',[$anio,$mess,$page,$tipo_filtro])}}" class="btn btn-outline-secondary @if($mes==$mess) active @endif">{{$mes_[$i]}}</a>
                                 @endfor
                             </div>
                         </div>  
@@ -74,13 +76,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-1 text-11 px-0">
                     @if ($page=='expedia.com')
                         <a href="{{route('quotes_new1_expedia_path')}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>
                     @else
                         <a href="{{route('quotes_new1_pagina_path',$page)}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>    
                     @endif
-                    <b class="text-danger text-12">(PREVIOUS YEAR {{ $mes_[$messs]}} {{date("Y")-1}} : <sup>$</sup>{{$profit_anio_pasado}})</b>
+                    <b class="text-danger text-11">(PREVIOUS YEAR {{ $mes_[$messs]}} {{date("Y")-1}} : <sup>$</sup>{{$profit_anio_pasado}})</b>
                 </div>
             </div>
         </div>
@@ -93,7 +95,7 @@
                         <th>CODE</th>
                         <th>PAX</th>
                         <th>#</th>
-                        <th>PROGRAM</th>
+                        {{-- <th>PROGRAM</th> --}}
                         <th>#DAYS</th>
                         <th>MEMBER</th>
                         <th>PROFIT</th>
@@ -103,8 +105,14 @@
                 <tbody>
                     @php
                         $profit_suma=0;
+                        $orden='fecha_venta';
                     @endphp
-                    @foreach ($cotizacion->sortByDesc('fecha_venta') as $cotizacion_)
+                    @if ($tipo_filtro=='arrival-date')
+                        @php
+                            $orden='fecha';
+                        @endphp
+                    @endif
+                    @foreach ($cotizacion->sortByDesc($orden) as $cotizacion_)
                         @php
                         $date = date_create($cotizacion_->fecha);
                         $fecha=date_format($date, 'jS F Y');
@@ -113,7 +121,7 @@
                         $profit_st=0;
                         $titulo=$cotizacion_->nombre_pax.'x'.$cotizacion_->nropersonas.' '.$cotizacion_->fecha;
                         @endphp
-                        @foreach($cotizacion_->paquete_cotizaciones->where('estado',2) as $paquete_cotizaciones)
+                        @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete_cotizaciones)
                             @if($paquete_cotizaciones->duracion==1)
                                 @php
                                     $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
@@ -166,27 +174,30 @@
                             @endif
                         @endforeach   
                         <tr id="content-list-{{$cotizacion_->id}}">
-                            <th>{{$cotizacion_->fecha_venta}} </th>
-                            <th>{{$cotizacion_->fecha}} </th>
-                            <th>{{$cotizacion_->codigo}} </th>
-                            <th>{{strtoupper($cotizacion_->nombre_pax)}} </th>
-                            <th>{{$cotizacion_->nropersonas}} </th>
-                            <th>PROGRAM</th>
-                            <th>{{$cotizacion_->duracion}} </th>
-                            <th><span class="text-primary">By</span> {{$cotizacion_->users->name}} </th>
-                            <th><b><sup>$</sup>{{number_format($profit,2)}}</b></th>
-                            <th>
-                            <a class="text-15" href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}"><i class="fas fa-eye"></i></a>
+                            <td>{{$cotizacion_->fecha_venta}} </td>
+                            <td>{{$cotizacion_->fecha}} </td>
+                            <td>{{$cotizacion_->codigo}} </td>
+                            <td>{{strtoupper($cotizacion_->nombre_pax)}} </td>
+                            <td>{{$cotizacion_->nropersonas}}<i class="fas fa-user text-primary"></i></td>
+                            {{-- <td>PROGRAM</td> --}}
+                            <td>{{$cotizacion_->duracion}} </td>
+                            <td><span class="text-primary">By</span> {{$cotizacion_->users->name}} </td>
+                            <td><b><sup>$</sup>{{number_format($profit,2)}}</b></td>
+                            <td>
+                                <span class="badge @if($cotizacion_->estado==2) badge-success @else badge-dark @endif">@if($cotizacion_->estado==2) Confirmado @else Sin confirmar @endif</span>
+                            </td>
+                            <td>
+                            <a class="text-18" href="{{route('cotizacion_id_show_path',$cotizacion_->id)}}"><i class="fas fa-eye"></i></a>
                             <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
-                            <a class="text-15" id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
+                            <a class="text-18" id="anulado_{{$cotizacion_->id}}" href="#" onclick="Anular_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')">
                                 @if($cotizacion_->anulado==1)
                                     <i class="fas fa-check-circle text-success"></i>
                                 @elseif($cotizacion_->anulado==0)
                                     <i class="fas fa-times-circle text-grey-goto"></i>
                                 @endif
                             </a>
-                            <a class="text-15" href="#!" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash text-danger"></i></a>
-                            </th>
+                            <a class="text-18" href="#!" onclick="Eliminar_cotizacion('{{$cotizacion_->id}}','{{$titulo}}')"><i class="fa fa-trash text-danger"></i></a>
+                            </td>
                         </tr>
                         @php
                             $profit_suma+=$profit;
