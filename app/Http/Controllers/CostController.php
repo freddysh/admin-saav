@@ -378,9 +378,9 @@ class CostController extends Controller
         $destino=explode('_',$request->input('destino'));
         $grupo=$request->input('grupo');
         $hotel=HotelProveedor::where('localizacion',$destino[1])->get();
-//        $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->get();
+        // $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->get();
         $destinations=M_Destino::get();
-        return view('admin.database.get-hotel-proveedores',compact(['proveedores','destinations','grupo','hotel']));
+        return view('admin.database.get-hotel-proveedores',compact(['destinations','grupo','hotel']));
     }
     public function call_cost_providers_localizacion_estrellas(Request $request){
         $destino=explode('_',$request->input('destino'));
@@ -389,7 +389,7 @@ class CostController extends Controller
         $hotel=HotelProveedor::where('localizacion',$destino[1])->get();
 //        $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->get();
         $destinations=M_Destino::get();
-        return view('admin.database.get-hotel-proveedores-estrellas',compact(['proveedores','destinations','grupo','hotel','estrellas']));
+        return view('admin.database.get-hotel-proveedores-estrellas',compact(['destinations','grupo','hotel','estrellas']));
     }
 
 }
