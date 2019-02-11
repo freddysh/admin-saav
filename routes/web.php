@@ -1328,3 +1328,7 @@ Route::post('/admin/profit/delete',[
     'uses' => 'ProfitController@delete',
     'as' => 'profit_delete_path',
 ]);
+Route::post('/admin/profit/enviar_file',[
+    'uses' => 'ProfitController@enviar_file',
+    'as' => 'enviar_file_path',
+]);

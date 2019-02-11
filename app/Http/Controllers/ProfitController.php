@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Web;
-use Illuminate\Http\Request;
 use App\GoalProfit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class ProfitController extends Controller
 {
@@ -92,4 +93,32 @@ class ProfitController extends Controller
         // else
         //     return 0;
      }
+     public function enviar_file(Request $request){
+        //  return response()->json($request->file('foto'));
+        
+        // $file=$request->file('foto');
+        // return $file->getClientOriginalName();
+        $file = Input::file('foto')->getClientOriginalName(); 
+        return $file;
+        // $id= $request->input('id');
+        // $pagina= $request->input('pagina');
+        // $datos=explode('_',$id);
+        // $anio=$datos[2];
+        
+        // $goal_profit=GoalProfit::where('pagina',$pagina)->where('anio',$anio)->get();
+        // // return response()->json($goal_profit);
+        // // // dd($goal_profit);
+        // foreach ($goal_profit as $value) {
+        //     # code...
+        //     $temp=GoalProfit::find($value->id);
+        //     $temp->delete();
+        // } 
+        // return 1;
+        // if($goal_profit->delete())
+        //     return 1;
+        // else
+        //     return 0;
+     }
+
+     
 }

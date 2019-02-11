@@ -83,14 +83,14 @@ function fecha_peru_hora($fecha){
                                 <td>{{$arreglo['totaltravelers']}}</td>
                                 <td>{!! $arreglo['codigo'] !!}</td>
                                 <td>{{$arreglo['estrellas']}}</td>
-                                <td>{{fecha_peru_hora($arreglo['transactiondatetime'])}}</td>
+                                <td>{{$arreglo['transactiondatetime']}}</td>
                                 <td>{{$arreglo['titulo']}}</td>
                                 <td>{{$arreglo['idioma']}}</td>
                                 <td>{{$arreglo['nombres']}}</td>
                                 <td>{{$arreglo['telefono']}}</td>
                                 <td>{{$arreglo['email']}}</td>
                                 <td>{{$arreglo['total']}}</td>
-                                <td>{{fecha_peru($arreglo['fecha_llegada'])}}</td>
+                                <td>{{$arreglo['fecha_llegada']}}</td>
                                 <td>{!!$arreglo['notas']!!}</td>
                             </tr>
                         @endforeach

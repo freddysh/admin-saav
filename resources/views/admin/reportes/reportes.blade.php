@@ -118,8 +118,26 @@
                 </td>
             </tr>
         @endforeach
+
         </tbody>
     </table>
+    <div class="row">
+        <div class="col">
+        <form id="archivo" action="{{route('enviar_file_path')}}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="nombre">nombre</label>
+                <input type="text" name="nombre" id="nombre">
+            </div>
+            <div class="form-group">
+                <label for="foto">File</label>
+                <input type="file" name="foto" id="foto">
+            </div>
+            {{ csrf_field() }}
+            <button class="btn btn-primary" type="button" onclick="enviar()">enviar</button>
+        </form>
+        </div>
+    </div>  
+        
     {{--<div class="row margin-top-5 hide">--}}
         {{--<div class="col-md-6 no-padding">--}}
             {{--<div class="box-header-book">--}}
@@ -137,4 +155,30 @@
             {{--$('#example').DataTable();--}}
         {{--} );--}}
     {{--</script>--}}
+
+    <script>
+    function enviar(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.ajax({
+            type:'POST',
+            url: $('#archivo').attr('action'),
+            data:$('#archivo').serialize(),
+            cache:false,
+            contentType: true,
+            processData: false,
+            success:function(data){
+                console.log(data);
+                // toastr.error('Validation true!', 'se pudo Añadir los datos<br>', {timeOut: 5000});
+            },
+            error: function(jqXHR, text, error){
+                console.log('error');
+                // toastr.error('Validation error!', 'No se pudo Añadir los datos<br>' + error, {timeOut: 5000});
+            }
+        });
+    }
+    </script>
 @stop
