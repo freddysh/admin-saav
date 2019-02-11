@@ -27,6 +27,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Expr\Array_;
 use App\Helpers\MisFunciones;
 use App\Web;
+use Carbon\Carbon;
 
 class QouteController extends Controller
 {
@@ -421,7 +422,9 @@ class QouteController extends Controller
                             $codigo='<b class="text-danger">'.$codigo.'<br>No existe para los filtros(pagina='.$web.',codigo='.$codigo.')</b>';
                         }
 
-                        $arr[] = ['totaltravelers' => $totaltravelers, 'codigo' => $codigo, 'estrellas' => $estrellas, 'transactiondatetime' => $transactiondatetime, 'originalBookingDate' => $originalBookingDate, 'titulo' => $titulo, 'idioma' => $idioma, 'nombres' => $nombres, 'telefono' => $telefono, 'email' => $email, 'total' => $total, 'cost' => $cost, 'profit' => $profit, 'fecha_llegada' => $fecha_llegada, 'notas' => $notas1];
+                        $fecha_llegada1=explode(' ',$fecha_llegada);
+
+                        $arr[] = ['totaltravelers' => $totaltravelers, 'codigo' => $codigo, 'estrellas' => $estrellas, 'transactiondatetime' => $transactiondatetime, 'originalBookingDate' => $originalBookingDate, 'titulo' => $titulo, 'idioma' => $idioma, 'nombres' => $nombres, 'telefono' => $telefono, 'email' => $email, 'total' => $total, 'cost' => $cost, 'profit' => $profit, 'fecha_llegada' => $fecha_llegada1[0], 'notas' => $notas1];
                     }
                 }
             }
@@ -525,11 +528,21 @@ class QouteController extends Controller
                         $codigo_auto=MisFunciones::generar_codigo('expedia.com');
                         // buscamos el paquete para crear la cotizacion
                         // $ppaquete = P_Paquete::where('codigo', $codigo)->first();
-                        
-                            $f=explode('-',$fecha_llegada);
-                            if(strlen($f[0])==2){//-- peru
-                                $fecha_llegada=$f[2].'-'.$f[1].'-'.$f[0];
-                            }
+
+                            // $f=explode(' ',$fecha_llegada);
+                            // if(count($f)>1){
+                            //     if(strlen($f[0]==10)){
+                            //         $fech=$f[0];
+
+                            //     }
+                            // }
+                            // else{
+
+                            // }
+                            $fecha_llegada1=explode(' ',$fecha_llegada);
+                            // if(strlen($f[0])==2){//-- peru
+                            //     $fecha_llegada=$f[2].'-'.$f[1].'-'.$f[0];
+                            // }
 
                         $coti = new Cotizacion();
                         $coti->codigo = $codigo_auto;
@@ -539,10 +552,10 @@ class QouteController extends Controller
                         $coti->duracion = $ppaquete->duracion;
 //                        $coti->precioventa = $ppaquete->precio_venta;
                         $coti->precioventa = $total;
-                        $coti->fecha = $fecha_llegada;
+                        $coti->fecha = $fecha_llegada1[0];
                         $coti->posibilidad = 0;
                         $coti->estado = 1;
-                        $coti->fecha_venta = $transactiondatetime;
+                        $coti->fecha_venta =date('Y-m-d'); /*$transactiondatetime*/;
                         $coti->users_id = auth()->guard('admin')->user()->id;
                         $coti->categorizado = 'N';
                         $coti->web = $web;
@@ -779,7 +792,7 @@ class QouteController extends Controller
                                 }
                             }
                         }
-                        $arr[] = ['totaltravelers' => $totaltravelers, 'codigo' => $codigo, 'estrellas' => $estrellas, 'transactiondatetime' => $transactiondatetime, 'originalBookingDate' => $originalBookingDate, 'titulo' => $titulo, 'idioma' => $idioma, 'nombres' => $nombres, 'telefono' => $telefono, 'email' => $email, 'total' => $total, 'cost' => $cost, 'profit' => $profit, 'fecha_llegada' => $fecha_llegada, 'notas' => $notas];
+                        $arr[] = ['totaltravelers' => $totaltravelers, 'codigo' => $codigo, 'estrellas' => $estrellas, 'transactiondatetime' => $transactiondatetime, 'originalBookingDate' => $originalBookingDate, 'titulo' => $titulo, 'idioma' => $idioma, 'nombres' => $nombres, 'telefono' => $telefono, 'email' => $email, 'total' => $total, 'cost' => $cost, 'profit' => $profit, 'fecha_llegada' => $fecha_llegada1[0], 'notas' => $notas];
                     }
                 }
             }
