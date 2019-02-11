@@ -30,7 +30,7 @@
             </div>
         </div>
         <div id="TODOS" class="row mt-1 no-gutters">
-            <div class="col-3 border border-danger">
+            <div class="col-4 border border-danger">
                 <div class="row bg-danger mx-0">
                     <div class="col-12 ">
                         <div class="row p-1">
@@ -219,7 +219,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3 border border-warning">
+            <div class="col-4 border border-warning">
                 <div class="row bg-warning mx-0">
                     <div class="col-12 ">
                         <div class="row p-1">
@@ -408,7 +408,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3 border border-success">
+            <div class="col-4 border border-success">
                 <div class="row bg-success mx-0">
                     <div class="col-12 ">
                         <div class="row p-1">
@@ -597,7 +597,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3 border border-secondary">
+            <div class="col-3 border border-secondary d-none">
                 <div class="row bg-secondary mx-0">
                     <div class="col-12 ">
                         <div class="row p-1">

@@ -31,7 +31,7 @@ class ReservasEmail extends Mailable
         $this->anio=$anio;
         $this->emails=$emails;
         $this->email_ventas=$email_ventas;
-        $this->$nombre_ventas=$nombre_ventas;
+        $this->nombre_ventas=$nombre_ventas;
     }
 
     /**

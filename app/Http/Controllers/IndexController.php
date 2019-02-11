@@ -17,16 +17,22 @@ class IndexController extends Controller
     //
     public function index()
     {
-        $user_name=auth()->guard('admin')->user()->name;
-        $user_tipo=auth()->guard('admin')->user()->tipo_user;
-        session()->put('menu', 'ventas');
+        // $user_name=auth()->guard('admin')->user()->name;
+        // $user_tipo=auth()->guard('admin')->user()->tipo_user;
+        // session()->put('menu', 'ventas');
+        // $page='gotoperu.com';
+        // if($user_tipo=='ventas')
+        //     $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->get();
+        // else
+        //     $cotizacion=Cotizacion::where('web', $page)->get();
+        // $webs=Web::get();
+        // return view('admin.index',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+      
+        $anio=date("Y");
+        $mes=date("m");
         $page='gotoperu.com';
-        if($user_tipo=='ventas')
-            $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->get();
-        else
-            $cotizacion=Cotizacion::where('web', $page)->get();
-        $webs=Web::get();
-        return view('admin.index',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
+        $tipo_filtro='close-date';
+        return redirect()->route('current_sales_type_page_path',compact(['anio','mes','page','tipo_filtro']));
     }
     public function menu(){
         $user_name=auth()->guard('admin')->user()->name;

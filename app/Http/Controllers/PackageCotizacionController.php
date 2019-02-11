@@ -2128,6 +2128,7 @@ class PackageCotizacionController extends Controller
         $pqt->estado=$valor;
         $pqt->save();
     if($valor=='2') {
+        $anulada='confirmada';
         $usuario = auth()->guard('admin')->user();
         $email = $usuario->email;
 //        $email = 'fredy1432@gmail.com';
@@ -2145,7 +2146,8 @@ class PackageCotizacionController extends Controller
                 $coti_datos = 'Cod:' . $cotizacion->codigo . ' | ' . $cotizacion->nombre_pax . ' x ' . $cotizacion->nropersonas . ' ' . date_format(date_create($cotizacion->fecha), ' l jS F Y') . '(X' . $cotizacion->nropersonas . ')';
         //     }
         // }
-        $email_send = Mail::to($email, $name)->send(new ReservasEmail($coti_datos,$coti->id, $anio[0], $array_emails, $email, $name));
+        $fecha=$hoy->toDateString();
+        $email_send = Mail::to($email, $name)->send(new ReservasEmail($fecha,$coti_datos,$coti->id, $anio[0], $array_emails, $email, $name,$anulada));
     }
 
 //        $usuario=auth()->guard('admin')->user();
@@ -2571,7 +2573,7 @@ class PackageCotizacionController extends Controller
         else {
             $cotizacion_anio_pasado = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio_pasado)->whereMonth($filtro_sale,$mes)->get();
         }
-        // dd($anio_pasado);
+        // dd($cotizacion_anio_pasado);
         foreach ($cotizacion_anio_pasado->sortByDesc($filtro_sale) as $cotizacion_){
             $profit=0;
             $profit_st=0;

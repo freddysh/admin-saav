@@ -12,45 +12,84 @@ class ProfitController extends Controller
      //
      public function show($anio)
      {
-         $profit =GoalProfit::where('anio',$anio)->get();
-         session()->put('menu-lateral', 'Scategories');
-         $webs=Web::get();
-         return view('admin.database.profit', ['profit' => $profit,'webs'=>$webs,'anio'=>$anio]);
+        $anios =GoalProfit::pluck('anio','anio')->sortBy('anio')->toArray();
+        sort($anios);
+        $profit =GoalProfit::get();
+        session()->put('menu-lateral', 'Scategories');
+        $webs=Web::get();
+        return view('admin.database.profit',compact('profit','webs','anio','anios'));
      }
      public function store(Request $request){
-         $txt_nombre=strtoupper($request->input('txt_nombre'));
-         $periodo=strtoupper($request->input('periodo'));
-         $tipo_periodo=strtoupper($request->input('tipo_periodo'));
-         $categoria=new M_Category();
-         $categoria->nombre=$txt_nombre;
- //        $categoria->periodo=$periodo;
- //        $categoria->tipo_periodo=$tipo_periodo;
-         $categoria->save();
-         $webs=Web::get();
-         $categorias=M_Category::get();
-         return view('admin.database.category',['categorias'=>$categorias,'webs'=>$webs]);
- 
+        $anio=$request->input('anio');
+        $webs=Web::get(); 
+        foreach ($webs as $value) {
+            $goal=$request->input('goal_'.$value->id);
+            foreach ($goal as $key => $item) {
+                $me=$key+1;
+                if($me<=9){
+                    $me='0'.$me; 
+                }
+                $buscar_profit=GoalProfit::where('pagina',$value->pagina)->where('anio',$anio)->where('mes',$me)->first();
+                if(count((array)$buscar_profit)==0){
+                    $profit = new GoalProfit();
+                    $profit->pagina=$value->pagina;
+                    $profit->mes=$me;
+                    $profit->anio=$anio;
+                    $profit->goal=number_format((float)$item, 2, '.', '');
+                    $profit->save();
+                }
+            }
+        }
+        return redirect()->route('profits_index_path',$anio); 
      }
      public function edit(Request $request){
-         $txt_id=strtoupper($request->input('id'));
-         $txt_nombre=strtoupper($request->input('txt_nombre'));
-         $periodo=strtoupper($request->input('periodo'));
-         $tipo_periodo=strtoupper($request->input('tipo_periodo'));
-         $categoria=M_Category::FindOrFail($txt_id);
-         $categoria->nombre=$txt_nombre;
- //        $categoria->periodo=$periodo;
- //        $categoria->tipo_periodo=$tipo_periodo;
-         $categoria->save();
-         $webs=Web::get();
-         $categorias=M_Category::get();
-         return view('admin.database.category',['categorias'=>$categorias,'webs'=>$webs]);
+        //  dd($request->all());
+        $id= $request->input('id');
+        $pagina= $request->input('pagina');
+        $anio= $request->input('anio');        
+        $goals=$request->input('goal_');
+        // dd($goals);
+        foreach ($goals as $key => $item) {
+            // dd('hola');
+            $me=$key+1;
+            if($me<=9){
+                $me='0'.$me; 
+            }
+            $buscar_profit=GoalProfit::where('pagina',$pagina)->where('anio',$anio)->where('mes',$me)->first();
+            if(count((array)$buscar_profit)>0){
+                $profit = GoalProfit::find($buscar_profit->id);
+                $profit->goal=number_format((float)$item, 2, '.', '');
+                $profit->save();
+            }
+            else{
+                $profit = new GoalProfit();
+                $profit->pagina=$pagina;
+                $profit->mes=$me;
+                $profit->anio=$anio;
+                $profit->goal=number_format((float)$item, 2, '.', '');
+                $profit->save();
+            }
+        }
+        return redirect()->route('profits_index_path',$anio);
      }
      public function delete(Request $request){
-         $id=$request->input('id');
-         $categoria=M_Category::FindOrFail($id);
-         if($categoria->delete())
-             return 1;
-         else
-             return 0;
+        $id= $request->input('id');
+        $pagina= $request->input('pagina');
+        $datos=explode('_',$id);
+        $anio=$datos[2];
+        
+        $goal_profit=GoalProfit::where('pagina',$pagina)->where('anio',$anio)->get();
+        // return response()->json($goal_profit);
+        // // dd($goal_profit);
+        foreach ($goal_profit as $value) {
+            # code...
+            $temp=GoalProfit::find($value->id);
+            $temp->delete();
+        } 
+        return 1;
+        // if($goal_profit->delete())
+        //     return 1;
+        // else
+        //     return 0;
      }
 }

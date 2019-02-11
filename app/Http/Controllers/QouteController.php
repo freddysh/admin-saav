@@ -217,7 +217,7 @@ class QouteController extends Controller
         $codigo= MisFunciones::generar_codigo($web);
         // dd($codigo);
         session()->put('menu-lateral', 'quotes/new');
-        return view('admin.quotes-new1',['destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'p_paquete'=>$p_paquete, 'itinerarios_d'=>$itinerarios_d,'hotel'=>$hotel,
+        return view('admin.quotes-new1-pagina',['destinos'=>$destinos,'itinerarios'=>$itinerarios,'m_servicios'=>$m_servicios,'p_paquete'=>$p_paquete, 'itinerarios_d'=>$itinerarios_d,'hotel'=>$hotel,
             'plan'=>$plan,
             'coti_id'=>$id,
             'cliente_id'=>$cliente_id,
@@ -427,7 +427,8 @@ class QouteController extends Controller
             }
 //        return redirect()->back()->withInput($request->input())->with('arr',$arr);
 //        return $arr;
-            return view('admin.expedia.expedia-import-vista-previa', compact('arr', 'filename','web','errores'));
+            $webs=Web::get();
+            return view('admin.expedia.expedia-import-vista-previa', compact('arr', 'filename','web','errores','webs'));
         }
     }
     public function expedia_save(Request $request)
@@ -788,7 +789,9 @@ class QouteController extends Controller
 //        return redirect()->back();
         $anio=date("Y");
         $mes=date("m");
-        return view('admin.expedia.expedia-import-vista-previa-rpt',compact(['anio','mes']));
+        $webs=Web::get();
+        $page=$web;
+        return view('admin.expedia.expedia-import-vista-previa-rpt',compact(['anio','mes','webs','page']));
 
 //        return redirect()->route('current_quote_page_path','expedia.com');
     }

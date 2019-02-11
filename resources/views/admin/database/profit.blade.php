@@ -42,7 +42,7 @@
         <div class="modal fade bd-example-modal-lg" id="modal_new_destination" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <form action="{{route('category_save_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
+                    <form action="{{route('profit_save_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">New profit</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -54,6 +54,18 @@
                                 <div class="col">
                                     <table id="example" class="table table-sm table-responsive text-12">
                                         <thead>
+                                            <tr>
+                                                <th colspan="14" class="text-center">
+                                                    <div class="row">
+                                                        <div class="col-1 mt-2">
+                                                            <b class="text-primary">AÑO:</b>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input class="form-control" type="text" name="anio" value="{{$anio}}">
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                            </tr>
                                             <tr>
                                                 <th>#</th>
                                                 <th>Pagina</th>
@@ -70,7 +82,7 @@
                                                 <td>{{$item->pagina}}</td>
                                                 @for ($i = 1; $i <=12; $i++)    
                                                     <td>
-                                                    <div class="form-control1"><input style="width:50px" type="text" name="goal_{{$item->pagina}}[]"></div>
+                                                    <div class="form-control1"><input style="width:60px" type="number" min="0" name="goal_{{$item->id}}[]"></div>
                                                     </td>        
                                                 @endfor                                                        
                                             </tr>
@@ -109,86 +121,120 @@
             </thead>
             <tbody>
             @php $ii=1;@endphp
-
-            @foreach ($webs as $item)
-                <tr id="lista_categoria_">
-                    <td>{{$ii}}</td>
-                    <td>{{$anio}}</td>
-                    <td>{{$item->pagina}}</td>
-                    @for ($i = 1; $i <=12; $i++)
-                        @php
-                            $goal=$profit->where('pagina',$item->pagina)->where('mes',$i)->first();
-                        @endphp
-                        @if (strlen($goal)!='')
-                            <td><sup>$</sup>{{$goal->goal}}</td>    
-                        @else
-                            <td></td>        
-                        @endif
-                    @endfor
-                    <td class="text-center">
-                        <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_categoria_{{$anio}}_{{$item->pagina}}">
-                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_categoria1('{{$anio}}','{{$item->pagina}}')">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                    </td>
-                </tr>
-                @php $ii++; @endphp
+            @foreach ($anios as $anio_)
+                @foreach ($webs as $item)
+                
+                    <tr id="lista_profit_{{$anio_}}_{{$item->id}}">
+                        <td>{{$ii}}</td>
+                        <td>{{$anio_}}</td>
+                        <td>{{$item->pagina}}</td>
+                        @for ($i = 1; $i <=12; $i++)
+                            @php
+                                $goal=$profit->where('pagina',$item->pagina)->where('anio',$anio_)->where('mes',$i)->first();
+                            @endphp
+                            @if (strlen($goal)!='')
+                                <td><sup>$</sup>{{$goal->goal}}</td>    
+                            @else
+                                <td></td>        
+                            @endif
+                        @endfor
+                        <td class="text-center">
+                            <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal_edit_categoria_{{$anio_}}_{{$item->id}}">
+                                <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                            </button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_profit('lista_profit_{{$anio_}}_{{$item->id}}','{{$item->pagina}}')">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade bd-example-modal-lg" id="modal_edit_categoria_{{$anio_}}_{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <form action="{{route('profit_edit_path')}}" method="post" id="destination_edit_id" enctype="multipart/form-data">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Edit Profit</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">            
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <table id="example" class="table table-sm table-responsive text-12">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="14" class="text-center">
+                                                                        <div class="row">
+                                                                            <div class="col-1 mt-2">
+                                                                                <b class="text-primary">AÑO:</b>
+                                                                            </div>
+                                                                            <div class="col-2">
+                                                                                <input class="form-control" type="text" name="anio" value="{{$anio_}}" disabled>
+                                                                            </div>
+                                                                        </div>
+                                                                    </th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Pagina</th>
+                                                                    @for ($i = 1; $i <=12; $i++)
+                                                                        <th>{{$messes[$i]}}</th>       
+                                                                    @endfor
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @php $iii=1;@endphp                       
+                                                                <tr id="lista_categoria_">
+                                                                    <td>{{$iii}}</td>
+                                                                    <td>{{$item->pagina}}</td>
+                                                                    @for ($i = 1; $i <=12; $i++)    
+                                                                        @php
+                                                                            $goal=$profit->where('pagina',$item->pagina)->where('anio',$anio_)->where('mes',$i)->first();
+                                                                            $goal_1=0
+                                                                        @endphp
+                                                                        @if ($goal)
+                                                                            @php
+                                                                                $goal_1=$goal->goal; 
+                                                                            @endphp
+                                                                        @else
+                                                                            @php
+                                                                                $goal_1=0;    
+                                                                            @endphp
+                                                                        @endif
+                                                                        <td>
+                                                                            <div class="form-control1">
+                                                                            <input style="width:60px" type="number" min="0" name="goal_[]" value="{{$goal_1}}">
+                                                                            </div>
+                                                                        </td>        
+                                                                    @endfor                                                        
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                {{csrf_field()}}
+                                                <input type="hidden" id="id" name="id"  value="{{$item->id}}">
+                                                <input type="hidden" id="pagina" name="pagina"  value="{{$item->pagina}}">
+                                                <input type="hidden" id="anio" name="anio"  value="{{$anio_}}">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @php $ii++; @endphp    
+                @endforeach
+                
             @endforeach
 
 
            
             </tbody>
         </table>
-        {{-- @foreach($categorias as $categoria)
-            <!-- Modal -->
-            <div class="modal fade bd-example-modal-lg" id="modal_edit_categoria_{{$categoria->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <form action="{{route('category_edit_path')}}" method="post" id="destination_edit_id" enctype="multipart/form-data">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit categoria</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="txt_nombre">Nombre</label>
-                                            <input type="text" class="form-control" id="txt_nombre" name="txt_nombre" placeholder="Codigo" value="{{$categoria->nombre}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 d-none">
-                                        <div class="form-group">
-                                            <label  for="txt_imagen">Periodo de pago</label>
-                                            <input class="form-control" type="number" name="periodo" min="1"  value="{{$categoria->periodo}}" >
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 d-none">
-                                        <div class="form-group margin-top-25">
-                                            <select class="custom-select form-control" id="tipo_periodo" name="tipo_periodo" >
-                                                <option @if($categoria->tipo_periodo=='Antes') {{selected}}@endif value="Antes">Antes</option>
-                                                <option @if($categoria->tipo_periodo=='Despues') {{selected}}@endif value="Despues">Despues</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                {{csrf_field()}}
-                                <input type="hidden" id="id" name="id"   value="{{$categoria->id}}">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        @endforeach --}}
     </div>
     <script>
         // $(document).ready(function() {

@@ -38,7 +38,8 @@ return $f[2].'-'.$f[1].'-'.$f[0].' '.$f0[1];
                     <div class="col">
                         @if(Session::has('msg'))
                             @if(Session::get("msg")=='OK')
-                                <div class="alert alert-success" role="alert">Archivo subido, revise su panel <a href="{{route('current_quote_page_expedia_path',[$anio,$mes,'expedia.com'])}}">EXPEDIA</a></div>
+                                {{-- <div class="alert alert-success" role="alert">Archivo subido, revise su panel <a href="{{route('current_quote_page_expedia_path',[$anio,$mes,'expedia.com'])}}">EXPEDIA</a></div> --}}
+                                <div class="alert alert-success" role="alert">Archivo subido, revise su panel <a href="{{route('current_sales_type_page_path',[$anio,$mes,$page,'close-date'])}}">EXPEDIA</a></div>
                             @else
                                 <div class="alert alert-danger" role="alert">Error al subir el archivo</div>
                             @endif

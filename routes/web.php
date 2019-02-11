@@ -1312,19 +1312,19 @@ Route::post('/admin/cotizacion/anular', [
 ]);
 
 // rutas para los profits
-Route::get('/admin/profits/{anio}',[
+Route::get('/admin/profit/{anio}',[
     'uses' => 'ProfitController@show',
     'as' => 'profits_index_path',
 ]);
-Route::post('/admin/profits/new',[
+Route::post('/admin/profit/new',[
     'uses' => 'ProfitController@store',
-    'as' => 'profits_save_path',
+    'as' => 'profit_save_path',
 ]);
-Route::post('/admin/profits/edit',[
+Route::post('/admin/profit/edit',[
     'uses' => 'ProfitController@edit',
-    'as' => 'profits_edit_path',
+    'as' => 'profit_edit_path',
 ]);
-Route::post('/admin/profits/delete',[
+Route::post('/admin/profit/delete',[
     'uses' => 'ProfitController@delete',
-    'as' => 'profits_delete_path',
+    'as' => 'profit_delete_path',
 ]);

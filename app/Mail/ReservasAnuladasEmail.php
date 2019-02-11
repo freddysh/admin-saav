@@ -17,6 +17,8 @@ class ReservasEmail extends Mailable
     public $emails;
     public $email_ventas;
     public $nombre_ventas;
+    public $anulada;
+    
     use Queueable, SerializesModels;
 
     /**
@@ -24,7 +26,7 @@ class ReservasEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($fecha,$coti,$id,$anio,$emails,$email_ventas,$nombre_ventas)
+    public function __construct($fecha,$coti,$id,$anio,$emails,$email_ventas,$nombre_ventas,$anulada)
     {
         //
         $this->id=$id;
@@ -33,7 +35,9 @@ class ReservasEmail extends Mailable
         $this->anio=$anio;
         $this->emails=$emails;
         $this->email_ventas=$email_ventas;
-        $this->$nombre_ventas=$nombre_ventas;
+        $this->nombre_ventas=$nombre_ventas;
+        $this->anulada=$anulada;
+        
     }
 
     /**
@@ -43,7 +47,7 @@ class ReservasEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.mails.book.new-venta-filtrada-anulada', ['coti'=>$this->coti,'anio'=>$this->anio,'id'=>$this->id,'nombre_ventas'=>$this->$nombre_ventas,'fecha'=>$this->fecha])
+        return $this->view('admin.mails.book.new-venta-filtrada-anulada', ['coti'=>$this->coti,'anio'=>$this->anio,'id'=>$this->id,'nombre_ventas'=>$this->nombre_ventas,'fecha'=>$this->fecha,'anulada'=>$this->anulada])
             ->to($this->emails)
             ->from($this->email_ventas, $this->nombre_ventas)
             ->subject('Venta Anulada '.$this->coti.' (GotoPeru)');

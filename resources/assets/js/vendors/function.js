@@ -5317,6 +5317,23 @@ function generar_codigo(web){
         }
     });
 }
+function generar_codigo_pagina(web){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../generar-codigo',
+        data: 'web='+web,
+        // Mostramos un mensaje con la respuesta de PHP
+        success:  function (response) {
+            $('#txt_codigo').val(response);
+        }
+    });
+}
+
 function eliminar_archivo(id){
     swal({
         title: 'MENSAJE DEL SISTEMA',
@@ -5589,7 +5606,7 @@ function buscar_pqts(pagina,duracion){
         });
         $.ajax({
             type: 'POST',
-            url: "../new/profile/list-paquetes",
+            url: "../../new/profile/list-paquetes",
             data: 'pagina='+pagina+'&duracion='+duracion+'&destinos='+destinos+'&estrellas='+$('#estrellas_from').val(),
             // Mostramos un mensaje con la respuesta de PHP
             beforeSend: function(data1){
@@ -5998,4 +6015,42 @@ function ingresar_datos(pqt_id){
             }
         }
     });
+}
+
+function eliminar_profit(id,pagina) {
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Estas seguro de eliminar los profit para la pagina "+pagina+"?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.post('/admin/profit/delete', 'id='+id+'&pagina='+pagina, function(data) {
+            console.log(data);
+            if(data==1){
+                $("#"+id).remove();
+                $("#"+id).fadeOut( "slow");
+                swal(
+                    'Mensaje del sistema',
+                    'Se borraron los profits de la pagina '+pagina,
+                    'success'
+                )
+            }
+            if(data==0){
+                swal(
+                    'Porque no puedo borrar?',
+                    'Algo salio mal, vuelva a intentarlo mas tarde',
+                    'warning'
+                )
+            }
+        }).fail(function (data) {
+        });
+    })
 }

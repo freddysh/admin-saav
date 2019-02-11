@@ -314,7 +314,7 @@
                                                         <div class="row">
 
                                                             <div class="col">
-                                                                <b>{!! $arra_iconos[$servicios->servicio->grupo] !!}</b>
+                                                                <b>{!! $arra_iconos[$servicios->grupo] !!}</b>
                                                                 {{ucwords(strtolower($servicios->nombre))}}
                                                             </div>
                                                             <div class="col">
@@ -539,7 +539,7 @@
                                                     <td class="text-right">
 
                                                         <b class="d-none text-danger">{{$total_itis}}</b>
-                                                        @if($servicios->servicio->grupo=='ENTRANCES'||($servicios->servicio->grupo=='MOVILID'&&$servicios->servicio->clase=='BOLETO'))
+                                                        @if($servicios->grupo=='ENTRANCES'||($servicios->grupo=='MOVILID'&&$servicios->clase=='BOLETO'))
                                                             @if($servicios->liquidacion==2)
                                                                 {{$servicios->precio_proveedor}}<sup><small>$usd</small></sup>
                                                             @else
@@ -1023,7 +1023,7 @@
                                                     <td class="text-right">
                                                         <b class="d-none text-danger">{{$total_hotels}}</b>
 
-                                                    {{--@if($servicios->servicio->grupo=='ENTRANCES'||($servicios->servicio->grupo=='MOVILID'&&$servicios->servicio->clase=='BOLETO'))--}}
+                                                    {{--@if($servicios->grupo=='ENTRANCES'||($servicios->grupo=='MOVILID'&&$servicios->clase=='BOLETO'))--}}
                                                     {{--@if($servicios->liquidacion==2)--}}
                                                     {{--{{$servicios->precio_proveedor}}<sup><small>$usd</small></sup></b>--}}
                                                     {{--@else--}}
@@ -1913,7 +1913,7 @@
                                     @foreach($cotizacion_->paquete_cotizaciones->where('estado',2) as $pqt)
                                         @foreach($pqt->itinerario_cotizaciones as $iti)
                                             @foreach($iti->itinerario_servicios as $servicio)
-                                                @if($servicio->servicio->grupo=='ENTRANCES'||($servicio->servicio->grupo=='MOVILID' && $servicio->servicio->clase=='BOLETO'))
+                                                @if($servicio->grupo=='ENTRANCES'||($servicio->grupo=='MOVILID' && $servicio->clase=='BOLETO'))
                                                     <tr>
                                                         <td>
                                                             <span class="small">
@@ -1922,7 +1922,7 @@
                                                             </span><br>
                                                             <b class="small text-green-goto padding-15">
 
-                                                                {{$servicio->servicio->clase}}
+                                                                {{$servicio->clase}}
                                                             </b>
                                                         </td>
                                                         <td>

@@ -41,8 +41,8 @@
                                             @foreach($paquetes->itinerario_cotizaciones as $itinerario)
                                                 @foreach($itinerario->itinerario_servicios as $servicio)
                                                     @if($servicio->fecha_venc)
-                                                    @if($servicio->servicio->grupo==$grupo)
-                                                        @if($servicio->servicio->grupo!='MOVILID')
+                                                    @if($servicio->grupo==$grupo)
+                                                        @if($servicio->grupo!='MOVILID')
                                                             @if(date($ini)<=$servicio->fecha_venc and $servicio->fecha_venc <= date($fin))
                                                                 @php
                                                                     $total_h=0;
@@ -72,7 +72,7 @@
                                                                     @endphp
                                                                 @endif
                                                             @endif
-                                                        @elseif($servicio->servicio->grupo=='MOVILID')
+                                                        @elseif($servicio->grupo=='MOVILID')
                                                             @if($servicio->clase!='BOLETO')
                                                                 @if(date($ini)<=$servicio->fecha_venc and $servicio->fecha_venc <= date($fin))
                                                                     @php
