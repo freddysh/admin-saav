@@ -6176,7 +6176,7 @@ function buscar_day_by_day_quotes(destino) {
     });
     $.ajax({
         type: 'POST',
-        url: '../../../admin/package/buscar-day-by-day/ajax',
+        url: '../../../package/buscar-day-by-day/ajax',
         data: 'destino='+destino,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend:
