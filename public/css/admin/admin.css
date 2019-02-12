@@ -280,23 +280,27 @@
 }
 
 .bg-danger-goto {
-  background: #f2dede;
+  background: #f2dede !important;
+}
+
+.bg-dange-goto-light {
+  background: #af2a2a !important;
 }
 
 .bg-green-goto {
-  background: #7F8429;
+  background: #7F8429 !important;
 }
 
 .bg-orange-goto {
-  background: #e09e37;
+  background: #e09e37 !important;
 }
 
 .bg-grey-goto {
-  background: #333333;
+  background: #333333 !important;
 }
 
 .bg-grey-goto-light {
-  background: #717171;
+  background: #717171 !important;
 }
 
 .bg-grey-goto-light1 {

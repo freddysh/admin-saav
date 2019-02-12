@@ -229,7 +229,7 @@ class ProveedorController extends Controller
                         $grupo_opera->save();
                     }
                 }
-                return redirect()->route('provider_index_path');
+                return redirect()->route('provider_index_path')->with('success','Guardado correctamente!');
                 // $destinations=M_Destino::get();
                 // $providers=Proveedor::get();
                 // $m_categories=M_Category::get();
@@ -238,7 +238,7 @@ class ProveedorController extends Controller
             }
         }
         else{
-            return redirect()->back();
+            return redirect()->back()->with('error','Error ya existe el proveedor con localizacion:'.$txt_localizacion.'y uno de estos campos (ruc:'.$txt_ruc.',razon_social:'.$txt_razon_social.',nombre_comercial:'.$txt_nombre_comercial.')');
         }
     }
     public function edit(Request $request)
@@ -319,7 +319,7 @@ class ProveedorController extends Controller
             $proveedor->banco_nombre_cta_cci=$txt_banco_nombre_cta_cci;
             $proveedor->banco_nro_cta_cci=$txt_banco_nro_cta_cci;
             $proveedor->save();
-            return redirect()->route('provider_index_path');
+            return redirect()->route('provider_index_path')->with('success','Guardado correctamente!');;
         // }
         // else{
         //     return redirect()->back();
