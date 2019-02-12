@@ -182,8 +182,9 @@ class ProveedorController extends Controller
         $txt_banco_nombre_cta_cci=$request->input('txt_banco_nombre_cta_cci_'.$nro_grupo);
         $txt_banco_nro_cta_cci=$request->input('txt_banco_nro_cta_cci_'.$nro_grupo);
 
-        $buscar_pro=Proveedor::where('localizacion',$txt_localizacion)->where('ruc',$txt_ruc)->orWhere('razon_social',$txt_razon_social)->orWhere('nombre_comercial',$txt_nombre_comercial)->count();
-        if($buscar_pro==0){
+        // $buscar_pro=Proveedor::where('localizacion',$txt_localizacion)->where('ruc',$txt_ruc)->orWhere('razon_social',$txt_razon_social)->orWhere('nombre_comercial',$txt_nombre_comercial)->count();
+
+        // if($buscar_pro==0){
             $proveedor=new Proveedor();
             $proveedor->categoria=$txt_categoria;
             $proveedor->ruc=$txt_ruc;
@@ -236,10 +237,10 @@ class ProveedorController extends Controller
                 // $entidadBancaria=EntidadBancaria::get();
                 // return view('admin.database.provider',compact('destinations','providers','m_categories','entidadBancaria'));
             }
-        }
-        else{
-            return redirect()->back()->with('error','Error ya existe el proveedor con localizacion:'.$txt_localizacion.'y uno de estos campos (ruc:'.$txt_ruc.',razon_social:'.$txt_razon_social.',nombre_comercial:'.$txt_nombre_comercial.')');
-        }
+        // }
+        // else{
+        //     return redirect()->back()->with('error','Error ya existe el proveedor con localizacion:'.$txt_localizacion.'y uno de estos campos (ruc:'.$txt_ruc.',razon_social:'.$txt_razon_social.',nombre_comercial:'.$txt_nombre_comercial.')');
+        // }
     }
     public function edit(Request $request)
     {
