@@ -2,32 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Cliente;
-use App\Cotizacion;
-use App\CotizacionesCliente;
-use App\CotizacionesPagos;
+use App\Web;
 use App\Hotel;
-use App\ItinerarioCotizaciones;
-use App\ItinerarioDestinos;
-use App\ItinerarioServicios;
+use App\Cliente;
 use App\M_Destino;
-use App\M_Itinerario;
-use App\M_ItinerarioDestino;
-use App\M_Servicio;
 use App\P_Paquete;
-use App\P_PaquetePrecio;
-use App\PaqueteCotizaciones;
+use Carbon\Carbon;
+use App\Cotizacion;
+use App\M_Servicio;
+use App\M_Itinerario;
 use App\PaquetePrecio;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Request;
+use App\P_PaquetePrecio;
+use App\CotizacionesPagos;
+use App\ItinerarioDestinos;
+use App\PrecioHotelReserva;
+use App\CotizacionesCliente;
+use App\ItinerarioServicios;
+use App\M_ItinerarioDestino;
+use App\PaqueteCotizaciones;
 //use Maatwebsite\Excel\Excel;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use App\Helpers\MisFunciones;
+use App\ItinerarioCotizaciones;
+use PhpParser\Node\Expr\Array_;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpParser\Node\Expr\Array_;
-use App\Helpers\MisFunciones;
-use App\Web;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Validation\Validator;
 
 class QouteController extends Controller
 {
@@ -754,8 +755,8 @@ class QouteController extends Controller
                         }
                         $pqt->utilidad =number_format(number_format($total,2, '.', '')-number_format($st_,2, '.', ''),2, '.', '');
                         $pqt->save();
-                        ////-- recorremos los dias para agregar los hoteles
-                        $itinerario_cotizaciones = ItinerarioCotizaciones::where('paquete_cotizaciones_id', $ppaquete->id)->get();
+                        //-- recorremos los dias para agregar los hoteles
+                        $itinerario_cotizaciones = ItinerarioCotizaciones::where('paquete_cotizaciones_id', $pqt->id)->get();
                         $nroDias = count($itinerario_cotizaciones);
                         $pos = 1;
                         if ($ppaquete->duracion > 1) {
