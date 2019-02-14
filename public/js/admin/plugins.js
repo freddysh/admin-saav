@@ -6795,3 +6795,16 @@ function eliminar_profit(id,pagina) {
         });
     })
 }
+
+function pintar(id){
+
+    $('#in').parent().removeClass("btn-primary");
+    $('#general').parent().removeClass("btn-primary");
+    $('#out').parent().removeClass("btn-primary");
+    $('#in').parent().addClass("btn-info");
+    $('#general').parent().addClass("btn-info");
+    $('#out').parent().addClass("btn-info");
+
+    $('#'+id).parent().removeClass("btn-info");
+    $('#'+id).parent().addClass("btn-primary");
+}

@@ -26,13 +26,34 @@
         <form action="{{route('itinerary_save_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
             <h3 class="">New Day by Day</h3>
             <div class="row pb-3">
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="txt_titulo" class="font-weight-bold text-secondary">Titulo</label>
-                                <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo">
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="txt_filtro" class="font-weight-bold text-secondary">Fitro</label>
+                        <div class="form-group">
+                            <div class="form-check-inline mx-0">
+                                <label class="form-check-label btn btn-primary">
+                                    <input type="radio" class="form-check-input d-none" id="in" name="tipo" value="IN" checked onchange="pintar('in')">IN
+                                </label>
+                            </div>
+                            <div class="form-check-inline mx-0">
+                                <label class="form-check-label btn btn-info">
+                                    <input type="radio" class="form-check-input d-none" id="general" name="tipo" value="GENERAL" onchange="pintar('general')">GENERAL
+                                </label>
+                            </div>
+                            <div class="form-check-inline mx-0">
+                                <label class="form-check-label btn btn-info">
+                                    <input type="radio" class="form-check-input d-none" id="out" name="tipo" value="OUT" onchange="pintar('out')">OUT
+                                </label>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <div class="form-group">
+                        <label for="txt_titulo" class="font-weight-bold text-secondary">Titulo</label>
+                        <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo">
+                    </div>
+                </div>
 
                 <div class="col-6">
                     <div class="form-group">

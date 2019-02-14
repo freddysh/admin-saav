@@ -39,7 +39,7 @@
                     <input class="itinerario" type="checkbox" aria-label="..." name="itinerarios_{{$day_by_day->id}}" value="{{$day_by_day->id}}_{{$destinos_iti}}_{{$day_by_day->titulo}}_a_{{$precio_iti}}_s_{{$nro_servicios}}">
                 </div>
             </span>
-            <input type="text" name="titulo_{{$day_by_day->id}}" class="form-control text-11" aria-label="..." value="{{$day_by_day->titulo}}" readonly>
+            <input type="text" name="titulo_{{$day_by_day->id}}" class="form-control text-11" aria-label="..." value="{{$day_by_day->tipo}} {{$day_by_day->titulo}}" readonly>
             <span class="input-group-append">
                 <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse_{{$day_by_day->id}}"><b>${{$precio_iti}}</b> <i class="fas fa-angle-down"></i></button>
             </span>

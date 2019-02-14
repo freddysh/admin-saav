@@ -518,9 +518,13 @@ class QouteController extends Controller
                         else
                             $estrellas = 'No necesita';
 
-                        if ($ppaquete->duracion > 1)
-                            $estrellas = $value->stars;
-
+                        if ($ppaquete->duracion > 1){
+                                $estrellas = $value->stars;
+                                $s = $value->s;
+                                $d = $value->d;
+                                $m = $value->m;
+                                $t = $value->t;
+                            }
                         //-- creamos el codigo autogenerado                        
                         // $nro_codigo=Cotizacion::where('web','expedia.com')->count()+1;
                         // $codigo_auto='E'.$nro_codigo;
@@ -617,19 +621,20 @@ class QouteController extends Controller
                         $pqt->proceso_complete = 1;
 //                        $pqt->pedir_datos ='';
                         $pqt->save();
+                        $coti->save();
                         if ($ppaquete->duracion > 1) {
                             $pqt_precio = P_PaquetePrecio::where('estrellas', $estrellas)->get();
                             foreach ($pqt_precio as $pqt_temp_2) {
                                 $pqt_precio = new PaquetePrecio();
                                 $pqt_precio->estrellas = $estrellas;
                                 $pqt_precio->precio_s = $pqt_temp_2->precio_s;
-                                $pqt_precio->personas_s = $pqt_temp_2->personas_s;
+                                $pqt_precio->personas_s =$s;/* $pqt_temp_2->personas_s;*/
                                 $pqt_precio->precio_d = $pqt_temp_2->precio_d;
-                                $pqt_precio->personas_d = $pqt_temp_2->personas_d;
+                                $pqt_precio->personas_d =$d;/* $pqt_temp_2->personas_d;*/
                                 $pqt_precio->precio_m = $pqt_temp_2->precio_m;
-                                $pqt_precio->personas_m = $pqt_temp_2->personas_m;
+                                $pqt_precio->personas_m =$m;/* $pqt_temp_2->personas_m;*/
                                 $pqt_precio->precio_t = $pqt_temp_2->precio_t;
-                                $pqt_precio->personas_t = $pqt_temp_2->personas_t;
+                                $pqt_precio->personas_t =$t; /*$pqt_temp_2->personas_t;*/
                                 $pqt_precio->estado = '1';
                                 $pqt_precio->paquete_cotizaciones_id = $pqt->id;
                                 $pqt_precio->hotel_id = $pqt_temp_2->hotel_id;

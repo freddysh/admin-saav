@@ -161,9 +161,7 @@
               <li data-toggle="collapse">
                   <a class="@if(url()->current()==route('profits_index_path',$anio)) active @endif" href="{{route('profits_index_path',date("Y"))}}">PROFIT</a>
                   </li>
-              <li data-toggle="collapse">
-              <a class="@if(url()->current()==route('category_index_path')||url()->current()==route('category_save_path')||url()->current()==route('category_edit_path')) active @endif" href="{{route('category_index_path')}}">CATEGORIES</a>
-              </li>
+              
               <li data-toggle="collapse" class="active1">
                 <a class="@if(url()->current()==route('provider_index_path')||url()->current()==route('provider_new_path')||url()->current()==route('provider_edit_path')) active @endif" href="{{route('provider_index_path')}}">PROVIDERS</a>
               </li>
@@ -174,22 +172,41 @@
                   <a class="@if(url()->current()==route('costs_index_path')||url()->current()==route('mostrar_cost_new_path')||url()->current()==route('editar_hotel_proveedor_path',[$hotel_proveedor_id])) active @endif" href="{{route('costs_index_path')}}">HOTELS</a>
               </li>
               <hr>
+              <li data-toggle="collapse">
+                  <div class="row border-bottom">
+                      <div class="col-6 pr-0">
+                          <a class="@if(url()->current()==route('category_index_path')||url()->current()==route('category_save_path')||url()->current()==route('category_edit_path')) active @endif" href="{{route('category_index_path')}}">CATEGORIES</a>
+                      </div>
+                      <div class="col-6 px-0">
+                          <a class="@if(url()->current()==route('destination_index_path')||url()->current()==route('destination_save_path')||url()->current()==route('destination_edit_path')) active @endif" href="{{route('destination_index_path')}}">DESTINATIONS</a>
+                      </div>
+                  </div>    
+              </li>
+
               <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('destination_index_path')||url()->current()==route('destination_save_path')||url()->current()==route('destination_edit_path')) active @endif" href="{{route('destination_index_path')}}">DESTINATIONS</a>
+                <div class="row border-bottom">
+                  <div class="col-6 pr-0">
+                    <a class="" href="#!"><b class="text-warning">DAY BY DAY</b></a>
+                  </div>
+                  <div class="col-3 px-0 text-center">
+                      <a class="@if(url()->current()==route('daybyday_new_path')) active @endif" href="{{route('daybyday_new_path')}}"><b class=" text-primary">NEW</b></a>
+                  </div>
+                  <div class="col-3 px-0 text-center">
+                      <a class="@if(url()->current()==route('itinerari_index_path')||url()->current()==route('daybyday_new_edit_path',[$id])||url()->current()==route('call_servicios_edit_path')) active @endif" href="{{route('itinerari_index_path')}}"><b class=" text-primary">LIST</b></a>
+                  </div>
+                </div>
               </li>
               <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('itinerari_index_path')||url()->current()==route('daybyday_new_path')||url()->current()==route('daybyday_new_edit_path',[$id])||url()->current()==route('call_servicios_edit_path')) active @endif" href="{{route('itinerari_index_path')}}">DAY BY DAY</a>
-              </li>
-              <li data-toggle="collapse" class="active1">
-                <div class="row">
-                <div class="col-6 pr-0">
-                  <a class="" href="#!"><b class="text-warning">PROGRAMS</b></a>
-                </div>
-                <div class="col-3 px-0">
-                  <a class="@if(url()->current()==route('package_create_path')) active @endif" href="{{route('package_create_path')}}">NEW</a>
-                </div>
-                <div class="col-3 px-0">
-                  <a class="@if(url()->current()==route('show_itineraries_path')||url()->current()==route('show_itinerary_path',[$id])||url()->current()==route('duplicate_package_path',[$id])||url()->current()==route('package_duplicate_path')) active @endif" href="{{route('show_itineraries_path')}}">LIST</a></div>  
+                <div class="row border-bottom">
+                  <div class="col-6 pr-0">
+                    <a class="" href="#!"><b class="text-warning">PROGRAMS</b></a>
+                  </div>
+                  <div class="col-3 px-0 text-center">
+                    <a class="@if(url()->current()==route('package_create_path')) active @endif" href="{{route('package_create_path')}}"><b class=" text-primary">NEW</b></a>
+                  </div>
+                  <div class="col-3 px-0 text-center">
+                    <a class="@if(url()->current()==route('show_itineraries_path')||url()->current()==route('show_itinerary_path',[$id])||url()->current()==route('duplicate_package_path',[$id])||url()->current()==route('package_duplicate_path')) active @endif" href="{{route('show_itineraries_path')}}"><b class=" text-primary">LIST</b></a>
+                  </div>  
                 </div> 
               </li>
             </ul>
