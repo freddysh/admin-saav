@@ -26,7 +26,7 @@
         <form action="{{route('itinerary_save_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
             <h3 class="">New Day by Day</h3>
             <div class="row pb-3">
-                <div class="col-2">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="txt_filtro" class="font-weight-bold text-secondary">Fitro</label>
                         <div class="form-group">
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-10">
+                <div class="col-9">
                     <div class="form-group">
                         <label for="txt_titulo" class="font-weight-bold text-secondary">Titulo</label>
                         <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo">
