@@ -1,7 +1,7 @@
 <table id="tb_{{$destino[0]}}_{{$destino[1]}}" class="{{$destino[1]}} table table-striped table-bordered table-sm mt-3"  width="100%" cellspacing="0">
     <thead>
     <tr>
-        <th>Localizacion</th>
+        <th>Origen</th>
         <th>Codigo</th>
         @if($destino[1] == 'MOVILID')
             <th>Ruta</th>
@@ -30,7 +30,7 @@
     </thead>
     <tfoot>
         <tr>
-            <th>Localizacion</th>
+            <th>Origen</th>
             <th>Codigo</th>
                 <th>
                 @if ($destino[1] == 'TRAINS')
@@ -120,7 +120,7 @@
                                                             <div class="col-6">
                                                                 <div class="form-group">
                                                                     @if($destino[1]=='MOVILID')
-                                                                        <label for="txt_codigo" class="text-secondary font-weight-bold">Punto de inicio</label>
+                                                                        <label for="txt_codigo" class="text-secondary font-weight-bold">Origen</label>
                                                                         <select class="form-control" id="txt_localizacion_{{$servicio->id}}" name="txt_localizacion_{{$servicio->id}}" onchange="nuevos_proveedores_movilidad_ruta_edit('{{$servicio->id}}','{{$destino[0]}}','{{$destino[1]}}')">
                                                                             @foreach ($destinations as $destination)
                                                                                 <option value="{{$destination->destino}}"
@@ -131,7 +131,7 @@
                                                                             @endforeach
                                                                         </select>
                                                                     @else
-                                                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+                                                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Origen</label>
                                                                         <select class="form-control" id="txt_localizacion_{{$servicio->id}}" name="txt_localizacion_{{$servicio->id}}"  onchange="nuevos_proveedores('{{$servicio->id}}','{{$destino[0]}}','{{$destino[1]}}')">
                                                                             @foreach ($destinations as $destination)
                                                                                 <option value="{{$destination->destino}}"
@@ -1035,7 +1035,7 @@
                                                         <div class="col-6">
                                                             <div class="form-group">
                                                                 @if($destino[1]=='MOVILID')
-                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Punto de inicio</label>
+                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Origen</label>
                                                                     <select class="form-control" id="txt_localizacion_{{$servicio->id}}" name="txt_localizacion_{{$servicio->id}}" onchange="nuevos_proveedores_movilidad_ruta_edit('{{$servicio->id}}','{{$destino[0]}}','{{$destino[1]}}')">
                                                                         @foreach ($destinations as $destination)
                                                                             <option value="{{$destination->destino}}"
@@ -1951,7 +1951,7 @@
                                                         <div class="col-6">
                                                             <div class="form-group">
                                                                 @if($destino[1]=='MOVILID')
-                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Punto de inicio</label>
+                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Origen</label>
                                                                     <select class="form-control" id="txt_localizacion_{{$servicio->id}}" name="txt_localizacion_{{$servicio->id}}" onchange="nuevos_proveedores_movilidad_ruta_edit('{{$servicio->id}}','{{$destino[0]}}','{{$destino[1]}}')">
                                                                         @foreach ($destinations as $destination)
                                                                             <option value="{{$destination->destino}}"

@@ -151,7 +151,7 @@
                                     <div class="padding-left-0">
                                         {{--<select name="Destinos_{{$categoria->nombre}}" id="Destinos_{{$categoria->nombre}}" class="form-control" onchange="mostrar_tabla_empresa('{{$categoria->nombre}}','{{$categoria->id}}',$(this).val())">--}}
                                         <select name="Destinos_{{$categoria->nombre}}" id="Destinos_{{$categoria->nombre}}" class="form-control" onchange="mostrar_tabla_destino('{{$categoria->nombre}}','{{$categoria->id}}')">
-                                            <option value="0">Escoja la localizacion</option>
+                                            <option value="0">Escoja el origen</option>
                                             @foreach($destinations as $destination)
                                                 <option value="{{$destination->id}}_{{$categoria->nombre}}_{{$destination->destino}}">{{$destination->destino}}</option>
                                             @endforeach
@@ -171,9 +171,9 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="">
-                                        <label>Localizacion</label>
+                                        <label>Origen</label>
                                         <select name="Destinos_{{$categoria->nombre}}" id="Destinos_{{$categoria->nombre}}" class="form-control" onchange="mostrar_tabla_destino_ruta('{{$categoria->nombre}}','{{$categoria->id}}','{{$pos}}','','','normal')">
-                                            <option value="0">Escoja la localizacion</option>
+                                            <option value="0">Escoja el origen</option>
                                             @foreach($destinations as $destination)
                                                 <option value="{{$destination->id}}_{{$categoria->nombre}}_{{$destination->destino}}">{{$destination->destino}}</option>
                                             @endforeach
@@ -205,7 +205,7 @@
                                 <div class="col">
                                     <div class="col-lg-4 padding-left-0">
                                         <select name="Destinos_{{$categoria->nombre}}" id="Destinos_{{$categoria->nombre}}" class="form-control" onchange="mostrar_tabla_destino('{{$categoria->nombre}}','{{$categoria->id}}')">
-                                            <option value="0">Escoja la localizacion</option>
+                                            <option value="0">Escoja el origen</option>
                                             @foreach($destinations as $destination)
                                                 <option value="{{$destination->id}}_{{$categoria->nombre}}_{{$destination->destino}}">{{$destination->destino}}</option>
                                             @endforeach
@@ -226,14 +226,14 @@
                                 <table id="tb_{{$categoria->nombre}}" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
-                                        <th>Localizacion</th>
+                                        <th>Origen</th>
                                         <th>Estrellas</th>
                                         <th>Operaciones</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
-                                        <th>Localizacion</th>
+                                        <th>Origen</th>
                                         <th>Estrellas</th>
                                         <th>Operaciones</th>
                                     </tr>

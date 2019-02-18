@@ -32,17 +32,17 @@
                         <div class="form-group">
                             <div class="form-check-inline mx-0">
                                 <label class="form-check-label btn btn-primary">
-                                    <input type="radio" class="form-check-input d-none" id="in" name="tipo" value="IN" checked onchange="pintar('in')">IN
+                                    <input type="radio" class="form-check-input d-none" id="in" name="tipo" value="a" checked onchange="pintar('in')">IN
                                 </label>
                             </div>
                             <div class="form-check-inline mx-0">
                                 <label class="form-check-label btn btn-info">
-                                    <input type="radio" class="form-check-input d-none" id="general" name="tipo" value="GENERAL" onchange="pintar('general')">GENERAL
+                                    <input type="radio" class="form-check-input d-none" id="general" name="tipo" value="b" onchange="pintar('general')">GENERAL
                                 </label>
                             </div>
                             <div class="form-check-inline mx-0">
                                 <label class="form-check-label btn btn-info">
-                                    <input type="radio" class="form-check-input d-none" id="out" name="tipo" value="OUT" onchange="pintar('out')">OUT
+                                    <input type="radio" class="form-check-input d-none" id="out" name="tipo" value="c" onchange="pintar('out')">OUT
                                 </label>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
             <hr>
             <div class="row my-2">
                 <div class="col-12">
-                    <h4 class="text-g-yellow">Destinations</h4>
+                    <h4 class="text-g-yellow">Origen</h4>
                 </div>
             </div>
             <div class="row d-none">
@@ -173,7 +173,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="txt_travel_date">Destino oficial</label>
+                                        <label for="txt_travel_date">Origen</label>
                                         <select class="form-control" name="txt_destino_foco" id="txt_destino_foco">
                                             <option value="0">Escoja un destino</option>
                                             @foreach($destinations as $destino)
@@ -185,7 +185,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="txt_travel_date">Lugar donde duerme</label>
+                                        <label for="txt_travel_date">Destino</label>
                                         <select class="form-control" name="txt_destino_duerme" id="txt_destino_duerme">
                                             <option value="0">Escoja un destino</option>
                                             <option value="-1">NO DUERME</option>

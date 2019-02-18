@@ -77,16 +77,14 @@
 
 <div class="menu-list text-12">
         <ul id="menu-content" class="menu-content collapsed menu1">
-            
-            
             <li data-toggle="collapse" data-target="#ventas" class="collapsed active1">
               <a href="#" class="bg-green-goto text-white"><i class="fas fa-handshake"></i> SALES </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
               (url()->current()==route('current_sales_type_page_path',[$anio,$mes,$page,$tipo_filtro])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_expedia_path')||url()->current()==route('quotes_new1_pagina_path',$web))) show @endif" id="ventas">
-              @foreach ($webs->sortBy('pagina') as $item)
-              <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('current_sales_type_page_path',[$anio,$mes,$item->pagina,$tipo_filtro])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_pagina_path',$item->pagina))) active @endif @if($item->pagina==$page) active @endif" href="{{route('current_sales_type_page_path',[$anio,$mes,$item->pagina,$tipo_filtro])}}">{{strtoupper($item->pagina)}}</a>
+              @foreach ($webs->sortBy('pagina')->where('estado',1) as $item)
+                <li data-toggle="collapse" class="active1">
+                  <a class="@if(url()->current()==route('current_sales_type_page_path',[$anio,$mes,$item->pagina,$tipo_filtro])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_pagina_path',$item->pagina))) active @endif " href="{{route('current_sales_type_page_path',[$anio,$mes,$item->pagina,$tipo_filtro])}}">{{strtoupper($item->pagina)}}</a>
                 </li>
               @endforeach
             </ul>

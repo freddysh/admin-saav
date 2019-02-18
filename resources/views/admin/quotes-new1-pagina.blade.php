@@ -49,7 +49,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="txt_notas" class="font-weight-bold text-secondary">Notas</label>
-                                        <textarea  class="form-control" name="txt_notas" id="txt_notas" cols="30" rows="3"></textarea>
+                                        <textarea  class="form-control" name="txt_notas" id="txt_notas" cols="30" rows="5"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                                         {{csrf_field()}}
                                         <label for="web" class="font-weight-bold text-secondary">Pagina de origen</label>
                                         <select name="web" id="web" class="form-control" onchange="generar_codigo_pagina($(this).val())">
-                                            @foreach ($webs as $item)
+                                            @foreach ($webs->where('estado','1')->sortBy('pagina') as $item)
                                                 <option value="{{$item->pagina}}" @if($item->pagina==$web) selected @endif>{{$item->pagina}}</option>
                                             @endforeach
                                         </select>
@@ -154,6 +154,19 @@
                                                 <input type="number" class="form-control" name="a_t_1" id="a_t_1" min="0" value="0" onchange="aumentar_acom('t')">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="txt_movilid" class="font-weight-bold text-secondary">Vehicle</label>
+                                        <select class="form-control" id="txt_movilid" name="txt_movilid">
+                                            <option value="0">Escoja un vehiculo</option>
+                                            <option value="AUTO" >AUTO</Option>
+                                            <option value="VAN">VAN</option>
+                                            <option value="H1">H1</option>
+                                            <option value="SPRINTER">SPRINTER</option>
+                                            <option value="BUS">BUS</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -587,6 +600,7 @@
                                             <input type="hidden" name="codigo_" id="codigo_" value="{{$codigo}}">
                                             <input type="hidden" name="notas_" id="notas_" value="">
                                             <input type="hidden" name="txt_idioma2" id="txt_idioma2" value="{{$idioma_pasajeros}}">
+                                            <input type="hidden" name="txt_movilid2" id="txt_movilid2" value="0">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -679,6 +693,7 @@
                                                         <input type="hidden" name="hotel_id_3" id="hotel_id_3" value="{{$hotel_id_3}}">
                                                         <input type="hidden" name="hotel_id_4" id="hotel_id_4" value="{{$hotel_id_4}}">
                                                         <input type="hidden" name="hotel_id_5" id="hotel_id_5" value="{{$hotel_id_5}}">
+                                                        <input type="hidden" name="txt_movilid1" id="txt_movilid1" value="0">
                                                     </div>
                                                 </div>
                                                 <div class="row">

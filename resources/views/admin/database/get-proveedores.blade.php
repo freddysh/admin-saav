@@ -70,7 +70,7 @@
                                                         </div>
                                                         <div class="col-4">
                                                             <div class="form-group">
-                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Location</label>
+                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Origen</label>
                                                                 <select class="form-control" id="txt_localizacion_" name="txt_localizacion_">
                                                                     @foreach($destinations as $destination)
                                                                         <option value="{{$destination->destino}}" <?php if($grupo==$provider->grupo){if($provider->localizacion==$destination->destino) echo 'selected';}?>>{{$destination->destino}}</option>
@@ -223,7 +223,7 @@
                                                     <div class="col">
                                                         <div class="card p-3 bg-light">
                                                             <div class="form-group">
-                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Destinos que opera</label>
+                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Lugares que opera</label>
                                                             </div>
                                                             <div class="row padding-10">
                                                                 @foreach($destinations as $destination)
@@ -244,7 +244,7 @@
                                                         <div class="col">
                                                             <div class="card p-3 bg-light">
                                                                 <div class="form-group">
-                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Destinos que opera</label>
+                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Servicios que opera</label>
                                                                 </div>
                                                                 <div class="row padding-10">
                                                                     @foreach($m_categories as $m_category)

@@ -110,14 +110,14 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         @if($categoria->nombre=='MOVILID')
-                                                            <label for="txt_codigo" class="text-secondary font-weight-bold">Punto de inicio</label>
+                                                            <label for="txt_codigo" class="text-secondary font-weight-bold">Origen(Punto de inicio)</label>
                                                             <select class="form-control" id="txt_localizacion_{{$pos}}" name="txt_localizacion_{{$pos}}" onchange="nuevos_proveedores_movilidad_ruta('{{$pos}}','{{$categoria->id}}','{{$categoria->nombre}}')">
                                                                 @foreach($destinations as $destination)
                                                                     <option value="{{$destination->destino}}">{{$destination->destino}}</option>
                                                                 @endforeach
                                                             </select>
                                                         @else
-                                                            <label for="txt_codigo" class="text-secondary font-weight-bold">Location</label>
+                                                            <label for="txt_codigo" class="text-secondary font-weight-bold">Origen</label>
                                                             <select class="form-control" id="txt_localizacion_{{$pos}}" name="txt_localizacion_{{$pos}}" onchange="nuevos_proveedores('{{$pos}}','{{$categoria->id}}','{{$categoria->nombre}}')">
                                                                 @foreach($destinations as $destination)
                                                                     <option value="{{$destination->destino}}">{{$destination->destino}}</option>
@@ -144,7 +144,7 @@
                                                 @endphp
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label for="txt_codigo" class="text-secondary font-weight-bold">Punto de inicio</label>
+                                                        <label for="txt_codigo" class="text-secondary font-weight-bold">Origen(Punto de inicio)</label>
                                                         <select class="form-control" id="txt_localizacion_{{$pos}}" name="txt_localizacion_{{$pos}}" onchange="nuevos_proveedores_trains_ruta('{{$pos}}','{{$categoria->id}}','{{$categoria->nombre}}')">
                                                             @foreach($destinations as $destination)
                                                                 <option value="{{$destination->destino}}">{{$destination->destino}}</option>

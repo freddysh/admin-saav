@@ -2795,7 +2795,8 @@ function enviar_form1(){
         $('#txt_codigo1').val($('#txt_codigo').val());
         $('#notas1').val($('#txt_notas').val());
         $('#estrellas_from').val($('#hotel').val());
-        
+        $('#txt_movilid1').val($('#txt_movilid').val());
+
         if($('#notas1').val().trim()=='') {
             $('#notas1').focus();
             swal(
@@ -3278,6 +3279,7 @@ function enviar_form2(){
         $('#codigo_').val($('#txt_codigo').val());
         $('#notas_').val($('#txt_notas').val());
         $('#estrellas_from_').val($('#hotel').val());
+        $('#txt_movilid2').val($('#txt_movilid').val());
         if($('#notas_').val().trim()==''){
             $('#notas_').focus();
             swal(
@@ -6184,6 +6186,7 @@ function buscar_day_by_day_quotes(destino) {
                 $('#resultado_busqueda').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
             },
         success: function(data) {
+            $('#resultado_busqueda').html('');
             $('#resultado_busqueda').html(data);
         }
     })

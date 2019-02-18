@@ -326,6 +326,7 @@ class ItinerariController extends Controller
         $txt_imagenC=$request->file('txt_imagenC');
         $txt_destino_foco=$request->input('txt_destino_foco');
         $txt_destino_duerme=$request->input('txt_destino_duerme');
+        $txt_tipo=$request->input('tipo');
 
         $itinerario=M_Itinerario::FindOrFail($txt_id);
         $itinerario->titulo=$txt_titulo;
@@ -334,6 +335,7 @@ class ItinerariController extends Controller
         $itinerario->precio=$precio_iti;
         $itinerario->destino_foco=$txt_destino_foco;
         $itinerario->destino_duerme=$txt_destino_duerme;
+        $itinerario->tipo=$txt_tipo;
         $itinerario->save();
         if($txt_imagen){
             $filename ='itinerary-'.$itinerario->id.'.jpg';

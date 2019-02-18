@@ -111,7 +111,7 @@
                                                                 </div>
                                                                 <div class="col">
                                                                     <div class="form-group">
-                                                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+                                                                        <label for="txt_codigo" class="font-weight-bold text-secondary">Origen</label>
                                                                         <select class="form-control" id="txt_localizacion_{{$in_pos}}" name="txt_localizacion_{{$in_pos}}">
                                                                             @foreach($destinations as $destination)
                                                                                 <option value="{{$destination->destino}}">{{$destination->destino}}</option>
@@ -380,7 +380,7 @@
                                         <div class="col">
                                             {{csrf_field()}}
                                             <div class="form-group">
-                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Origen</label>
 
                                                 <select class="form-control" name="localizacion" id="localizacion" onchange="mostrar_proveedores($('#localizacion').val(),'{{$tipoServicio_}}')">
                                                     <option value="0_ninguno">Escoja un destino</option>
@@ -411,7 +411,7 @@
                                         <div class="col-6">
                                             {{csrf_field()}}
                                             <div class="form-group">
-                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Location</label>
+                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Origen</label>
 
                                                 <select class="form-control" name="localizacion" id="localizacion" onchange="mostrar_proveedores($(this).val(),'{{$tipoServicio_}}')">
                                                     <option value="0_ninguno">Escoja un destino</option>

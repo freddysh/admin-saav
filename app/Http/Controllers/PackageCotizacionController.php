@@ -806,6 +806,8 @@ class PackageCotizacionController extends Controller
         $cliente_id=0;
         $estrela = $request->input('estrellas_from');
         $date = date_create($request->input('txt_date1'));
+        
+        $movilid=$request->input('txt_movilid1');
 //        $fecha =strftime("%d %B, %Y", strtotime(str_replace('-','/', $date)));
         if($plan=='0') {
             $cliente = new Cliente();
@@ -1132,12 +1134,29 @@ class PackageCotizacionController extends Controller
 
                     }
                     else{
-                        $servicios_list=M_Servicio::where('grupo',$servicios->itinerario_servicios_servicio->grupo)
+                        $servicios_list=null;
+                        if($movilid=='0'){
+                            $servicios_list=M_Servicio::where('grupo',$servicios->itinerario_servicios_servicio->grupo)
                             ->where('localizacion',$servicios->itinerario_servicios_servicio->localizacion)
 //                            ->where('tipoServicio',$servicios->itinerario_servicios_servicio->tipoServicio)
                             ->where('min_personas','<=',$nro_personas)
                             ->where('max_personas','>=',$nro_personas)
                             ->get();
+                        }
+                        else{
+                            $servicios_list=M_Servicio::where('grupo',$servicios->itinerario_servicios_servicio->grupo)
+                            ->where('localizacion',$servicios->itinerario_servicios_servicio->localizacion)
+                            ->where('tipoServicio',$movilid)
+                            ->get();
+                            if(count((array)$servicios_list)==0){
+                                $servicios_list=M_Servicio::where('grupo',$servicios->itinerario_servicios_servicio->grupo)
+                                ->where('localizacion',$servicios->itinerario_servicios_servicio->localizacion)
+                                ->where('min_personas','<=',$nro_personas)
+                                ->where('max_personas','>=',$nro_personas)
+                                ->get();
+                            }
+                        }
+                        
                         foreach($servicios_list->take(1) as $servi){
                             $st-=$p_servicio->precio;
                             $p_servicio1=ItinerarioServicios::FindOrFail($p_servicio->id);
@@ -1224,6 +1243,8 @@ class PackageCotizacionController extends Controller
         $notas = $request->input('notas_');
         $estrela = $request->input('estrellas_from_');
         $date = date_create($request->input('txt_date1_'));
+        
+        $movilid=$request->input('txt_movilid2');
 //        $fecha =strftime("%d %B, %Y", strtotime(str_replace('-','/', $date)));
         $acomodacion_s=0;
         if($request->input('a_s_'))
@@ -1560,12 +1581,30 @@ class PackageCotizacionController extends Controller
                         if($servicios->min_personas<=$nro_personas&&$nro_personas<=$servicios->max_personas)
                         {}
                         else{
-                            $servicios_list=M_Servicio::where('grupo',$servicios->grupo)
+                            $servicios_list=null;
+                            if($movilid=='0'){
+                                $servicios_list=M_Servicio::where('grupo',$servicios->grupo)
                                 ->where('localizacion',$servicios->localizacion)
                                 ->where('tipoServicio',$servicios->tipoServicio)
                                 ->where('min_personas','<=',$nro_personas)
                                 ->where('max_personas','>=',$nro_personas)
                                 ->get();
+                            }
+                            else{
+                                $servicios_list=M_Servicio::where('grupo',$servicios->grupo)
+                                ->where('localizacion',$servicios->localizacion)
+                                ->where('tipoServicio',$movilid)
+                                ->get();
+                                if(count((array)$servicios_list)==0){
+                                    $servicios_list=M_Servicio::where('grupo',$servicios->grupo)
+                                    ->where('localizacion',$servicios->localizacion)
+                                    ->where('tipoServicio',$servicios->tipoServicio)
+                                    ->where('min_personas','<=',$nro_personas)
+                                    ->where('max_personas','>=',$nro_personas)
+                                    ->get();
+                                }
+                            }                          
+
                             foreach($servicios_list->take(1) as $servi){
                                 $st-=$p_servicio->precio;
                                 $p_servicio1=ItinerarioServicios::FindOrFail($p_servicio->id);

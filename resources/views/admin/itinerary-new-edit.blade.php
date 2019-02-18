@@ -25,13 +25,34 @@
         <form action="{{route('call_servicios_edit_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
             <h3 class="">New Day by Day</h3>
             <div class="row pb-3">
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="txt_titulo" class="font-weight-bold text-secondary">Titulo</label>
-                                <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo" value="{{$itinerarios->titulo}}">
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="txt_filtro" class="font-weight-bold text-secondary">Fitro</label>
+                        <div class="form-group">
+                            <div class="form-check-inline mx-0">
+                                <label class="form-check-label btn @if($itinerarios->tipo=='a') btn-primary @else btn-info @endif">
+                                    <input type="radio" class="form-check-input d-none" id="in" name="tipo" value="a" @if($itinerarios->tipo=='a') checked @endif onchange="pintar('in')">IN
+                                </label>
+                            </div>
+                            <div class="form-check-inline mx-0">
+                                <label class="form-check-label btn @if($itinerarios->tipo=='b') btn-primary @else btn-info @endif">
+                                    <input type="radio" class="form-check-input d-none" id="general" name="tipo" value="b" @if($itinerarios->tipo=='b') checked @endif onchange="pintar('general')">GENERAL
+                                </label>
+                            </div>
+                            <div class="form-check-inline mx-0">
+                                <label class="form-check-label btn @if($itinerarios->tipo=='c') btn-primary @else btn-info @endif">
+                                    <input type="radio" class="form-check-input d-none" id="out" name="tipo" value="c" @if($itinerarios->tipo=='c') checked @endif onchange="pintar('out')">OUT
+                                </label>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <div class="form-group">
+                        <label for="txt_titulo" class="font-weight-bold text-secondary">Titulo</label>
+                        <input type="text" class="form-control" id="txt_titulo" name="txt_titulo" placeholder="Titulo" value="{{$itinerarios->titulo}}">
+                    </div>
+                </div>
 
                 <div class="col-6">
                     <div class="form-group">
@@ -87,7 +108,7 @@
             <hr>
             <div class="row my-2">
                 <div class="col-12">
-                    <h4 class="text-g-yellow">Destinations</h4>
+                    <h4 class="text-g-yellow">Origen</h4>
                 </div>
             </div>
             <div class="row d-none">
@@ -223,7 +244,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="txt_travel_date" class="font-weight-bold text-secondary">Destino oficial</label>
+                                        <label for="txt_travel_date" class="font-weight-bold text-secondary">Origen</label>
                                         <select class="form-control" name="txt_destino_foco" id="txt_destino_foco">
                                             <option value="0">Escoja un destino</option>
                                             @foreach($destinations as $destino)
@@ -239,7 +260,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="txt_travel_date" class="font-weight-bold text-secondary">Lugar donde duerme</label>
+                                        <label for="txt_travel_date" class="font-weight-bold text-secondary">Destino</label>
                                         <select class="form-control" name="txt_destino_duerme" id="txt_destino_duerme">
                                             <option value="0">Escoja un destino</option>
                                             <option value="-1" @if($itinerarios->destino_duerme=='-1'){{'selected'}}@endif>NO DUERME</option>
@@ -264,7 +285,7 @@
                 <div class="col-lg-6 text-left text-16 d-none">
                     <label class="text-green-goto">Total(cost without hotel) $<span id="total_ci_0"></span></label>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-12 text-right mb-5">
                     <input type="hidden" name="itinerario_id" value="{{$itinerarios->id}}">
                     <button type="submit" class="btn btn-primary">Edit changes</button>
                 </div>
