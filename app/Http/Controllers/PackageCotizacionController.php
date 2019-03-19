@@ -1884,12 +1884,130 @@ class PackageCotizacionController extends Controller
 
     }
     public function delete_servicio_quotes_paso1(Request $request){
+        
+        // return response()->json(['mensaje'=>$request->all()]);
+
         $id = $request->input('id');
+        $cost_s_serv=$request->input('cost_s_serv_e_s');
+        $cost_d_serv=$request->input('cost_d_serv_e_s');
+        $cost_m_serv=$request->input('cost_m_serv_e_s');
+        $cost_t_serv=$request->input('cost_t_serv_e_s');
+        $cost_sh_serv=$request->input('cost_sh_serv_e_s');
+
+        $pv_s_serv=$request->input('pv_s_serv_e_s');
+        $pv_d_serv=$request->input('pv_d_serv_e_s');
+        $pv_m_serv=$request->input('pv_m_serv_e_s');
+        $pv_t_serv=$request->input('pv_t_serv_e_s');
+        $pv_sh_serv=$request->input('pv_sh_serv_e_s');
+    
+        $con_sin_hotel=$request->input('con_sin_hotel_e_s');
+        $acomodacion_hotel=$request->input('acomodacion_hotel_e_s');
+
+        $cotizacion_id = $request->input('cotizacion_id');
+        $cotizacion=Cotizacion::FindOrFail($cotizacion_id);
         $objeto=ItinerarioServicios::FindOrFail($id);
-        if($objeto->delete())
-            return 1;
-        else
-            return 0;
+        $costo_add=0;
+        if($objeto->precio_grupo==1){
+            $costo_add=(0-$objeto->precio)/$cotizacion->nropersonas;
+        }
+        else{
+            $costo_add=(0-$objeto->precio);
+        }
+        
+        // dd($con_sin_hotel);
+        if($con_sin_hotel=='ch'){
+            $acomodacion_hotel=explode('_',$acomodacion_hotel);
+            if($acomodacion_hotel[0]>0){
+                $costo=$cost_s_serv;
+                $venta=$pv_s_serv;
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_s=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_s=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[1]>0){
+                $costo=$cost_d_serv;
+                $venta=$pv_d_serv;
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_d=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_d=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[2]>0){
+                $costo=$cost_m_serv;
+                $venta=$pv_m_serv;
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_m=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_m=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[3]>0){
+                $costo=$cost_t_serv;
+                $venta=$pv_t_serv;
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_t=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_t=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }    
+        }
+        elseif($con_sin_hotel=='sh'){
+            $costo=$cost_sh_serv;
+            $venta=$pv_sh_serv;
+            $profit_nuevo=$venta-($costo_add+$costo);
+            foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                $temp_hotel=PaqueteCotizaciones::find($paquete->id);
+                $temp_hotel->utilidad=$profit_nuevo;
+                $temp_hotel->save();                     
+            }  
+        }
+
+        $objeto->delete();
+        return response()->json(['mensaje'=>'1']);
+        
     }
     public function cotizacion_cliente_autocomplete(){
         $term=Input::get('term');
@@ -2046,16 +2164,22 @@ class PackageCotizacionController extends Controller
     {
         return redirect()->route('cotizacion_id_show_path',$cotizacion_id);
     }
-    public function step1_edit(Request $request, $id)
+    public function step1_edit(Request $request)
     {
+        // return response()->json(['mensaje'=>$request->all()]);
+
+
         $id_cotizacion = $request->get('id_cotizacion');
         $id_client = $request->get('id_client');
         $id_paquete = $request->get('id_paquete');
+        $id = $request->get('id');
+        $cotizacion=Cotizacion::FindOrFail($id_cotizacion);
 //dd($request->get('op_services'));
         $m_servicios = M_Servicio::where('id', $request->get('op_services'))->get();
         $servicios = ItinerarioServicios::findOrFail($id);
         foreach ($m_servicios as $m_servicio){
             $servicios->nombre = $m_servicio->nombre;
+            $precio_anterior=$servicios->precio;
             $servicios->precio = $m_servicio->precio_venta;
             $servicios->precio_grupo = $m_servicio->precio_grupo;
 //            $servicios->tipoServicio = $m_servicio->tipoServicio;
@@ -2069,9 +2193,113 @@ class PackageCotizacionController extends Controller
             $servicios->max_personas = $m_servicio->max_personas;
             $servicios->clase = $m_servicio->clase;
             $servicios->save();
+
+            $costo_add=0;
+            if($m_servicio->precio_grupo==1){
+                $costo_add=($m_servicio->precio_venta-$precio_anterior)/$cotizacion->nropersonas;
+            }
+            else{
+                $costo_add=($m_servicio->precio_venta-$precio_anterior);
+            }
+            $con_sin_hotel=$request->input('con_sin_hotel');
+            // dd($con_sin_hotel);
+            if($con_sin_hotel=='ch'){
+                $acomodacion_hotel=$request->input('acomodacion_hotel');
+                $acomodacion_hotel=explode('_',$acomodacion_hotel);
+                if($acomodacion_hotel[0]>0){
+                    $costo=$request->input('cost_s_serv');
+                    $venta=$request->input('pv_s_serv');
+                    $profit_nuevo=$venta-($costo_add+$costo);
+                    foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                        foreach($paquete->paquete_precios as $paquete_precios){
+                            $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                            $temp_hotel->utilidad_s=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                        foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                            foreach($itinerario_cotizaciones->hotel as $hotel){
+                                $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                                $temp_hotel->utilidad_s=$profit_nuevo;
+                                $temp_hotel->save();
+                            }
+                        }       
+                    }  
+                }
+                if($acomodacion_hotel[1]>0){
+                    $costo=$request->input('cost_d_serv');
+                    $venta=$request->input('pv_d_serv');
+                    $profit_nuevo=$venta-($costo_add+$costo);
+                    foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                        foreach($paquete->paquete_precios as $paquete_precios){
+                            $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                            $temp_hotel->utilidad_d=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                        foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                            foreach($itinerario_cotizaciones->hotel as $hotel){
+                                $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                                $temp_hotel->utilidad_d=$profit_nuevo;
+                                $temp_hotel->save();
+                            }
+                        }       
+                    }  
+                }
+                if($acomodacion_hotel[2]>0){
+                    $costo=$request->input('cost_m_serv');
+                    $venta=$request->input('pv_m_serv');
+                    $profit_nuevo=$venta-($costo_add+$costo);
+                    foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                        foreach($paquete->paquete_precios as $paquete_precios){
+                            $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                            $temp_hotel->utilidad_m=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                        foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                            foreach($itinerario_cotizaciones->hotel as $hotel){
+                                $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                                $temp_hotel->utilidad_m=$profit_nuevo;
+                                $temp_hotel->save();
+                            }
+                        }       
+                    }  
+                }
+                if($acomodacion_hotel[3]>0){
+                    $costo=$request->input('cost_t_serv');
+                    $venta=$request->input('pv_t_serv');
+                    $profit_nuevo=$venta-($costo_add+$costo);
+                    foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                        foreach($paquete->paquete_precios as $paquete_precios){
+                            $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                            $temp_hotel->utilidad_t=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                        foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                            foreach($itinerario_cotizaciones->hotel as $hotel){
+                                $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                                $temp_hotel->utilidad_t=$profit_nuevo;
+                                $temp_hotel->save();
+                            }
+                        }       
+                    }  
+                }
+            }
+            elseif($con_sin_hotel=='sh'){
+                $costo=$request->input('cost_sh_serv');
+                $venta=$request->input('pv_sh_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    $temp_hotel=PaqueteCotizaciones::find($paquete->id);
+                    $temp_hotel->utilidad=$profit_nuevo;
+                    $temp_hotel->save();                     
+                }  
+            }
         }
 //        return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id,'nuevo_ajax']);
-        return redirect()->back();
+
+
+        return response()->json(['mensaje'=>'1']);
+
+        // return redirect()->back();
     }
     public function step1_edit_edit(Request $request, $id)
     {
@@ -2100,8 +2328,111 @@ class PackageCotizacionController extends Controller
         return redirect()->route('show_step1_ser_edit_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
     }
     public function delete_hotel_quotes_paso1(Request $request){
+        
+        return response()->json(['mensaje'=>$request->all()]);
+
+        $cost_s_serv=$request->input('cost_s_serv_e_s');
+        $cost_d_serv=$request->input('cost_d_serv_e_s');
+        $cost_m_serv=$request->input('cost_m_serv_e_s');
+        $cost_t_serv=$request->input('cost_t_serv_e_s');
+        $cost_sh_serv=$request->input('cost_sh_serv_e_s');
+
+        $pv_s_serv=$request->input('pv_s_serv_e_s');
+        $pv_d_serv=$request->input('pv_d_serv_e_s');
+        $pv_m_serv=$request->input('pv_m_serv_e_s');
+        $pv_t_serv=$request->input('pv_t_serv_e_s');
+        $pv_sh_serv=$request->input('pv_sh_serv_e_s');
+    
+        $con_sin_hotel=$request->input('con_sin_hotel_e_s');
+        $acomodacion_hotel=$request->input('acomodacion_hotel_e_s');
+
+        $cotizacion_id = $request->input('cotizacion_id');
+        $cotizacion=Cotizacion::FindOrFail($cotizacion_id);
         $id = $request->input('id');
         $objeto=PrecioHotelReserva::FindOrFail($id);
+        // if($con_sin_hotel=='ch'){
+        //     // $acomodacion_hotel=$request->input('acomodacion_hotel');
+        //     $acomodacion_hotel=explode('_',$acomodacion_hotel);
+        //     if($acomodacion_hotel[0]>0){
+        //         $costo=$cost_s_serv;
+        //         $venta=$pv_s_serv;
+        //         $profit_nuevo=$venta-($costo-$objeto->precio_s);
+        //         foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+        //             foreach($paquete->paquete_precios as $paquete_precios){
+        //                 $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+        //                 $temp_hotel->utilidad_s=$profit_nuevo;
+        //                 $temp_hotel->save();
+        //             }
+        //             foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+        //                 foreach($itinerario_cotizaciones->hotel as $hotel){
+        //                     $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+        //                     $temp_hotel->utilidad_s=$profit_nuevo;
+        //                     $temp_hotel->save();
+        //                 }
+        //             }       
+        //         }  
+        //     }
+        //     if($acomodacion_hotel[1]>0){
+        //         $costo=$cost_d_serv;
+        //         $venta=$pv_d_serv;
+        //         $profit_nuevo=$venta-($costo-$objeto->precio_d);
+        //         foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+        //             foreach($paquete->paquete_precios as $paquete_precios){
+        //                 $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+        //                 $temp_hotel->utilidad_d=$profit_nuevo;
+        //                 $temp_hotel->save();
+        //             }
+        //             foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+        //                 foreach($itinerario_cotizaciones->hotel as $hotel){
+        //                     $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+        //                     $temp_hotel->utilidad_d=$profit_nuevo;
+        //                     $temp_hotel->save();
+        //                 }
+        //             }       
+        //         }  
+        //     }
+        //     if($acomodacion_hotel[2]>0){
+        //         $costo=$cost_m_serv;
+        //         $venta=$pv_m_serv;
+        //         $profit_nuevo=$venta-($costo-$objeto->precio_m);
+                
+        //         // dd($profit_nuevo);
+        //         foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+        //             foreach($paquete->paquete_precios as $paquete_precios){
+        //                 $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+        //                 $temp_hotel->utilidad_m=$profit_nuevo;
+        //                 $temp_hotel->save();
+        //             }
+        //             foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+        //                 foreach($itinerario_cotizaciones->hotel as $hotel){
+        //                     $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+        //                     $temp_hotel->utilidad_m=$profit_nuevo;
+        //                     $temp_hotel->save();
+        //                 }
+        //             }       
+        //         }  
+        //     }
+        //     if($acomodacion_hotel[3]>0){
+        //         $costo=$cost_t_serv;
+        //         $venta=$pv_t_serv;
+        //         $profit_nuevo=$venta-($costo-$objeto->precio_t);
+        //         foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+        //             foreach($paquete->paquete_precios as $paquete_precios){
+        //                 $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+        //                 $temp_hotel->utilidad_t=$profit_nuevo;
+        //                 $temp_hotel->save();
+        //             }
+        //             foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+        //                 foreach($itinerario_cotizaciones->hotel as $hotel){
+        //                     $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+        //                     $temp_hotel->utilidad_t=$profit_nuevo;
+        //                     $temp_hotel->save();
+        //                 }
+        //             }       
+        //         }  
+        //     }    
+        // }
+                
         $itinerario_cotizaciones_id=$objeto->itinerario_cotizaciones_id;
         $localizacion=$objeto->localizacion;
         if($objeto->delete()){
@@ -2402,7 +2733,9 @@ class PackageCotizacionController extends Controller
         $numero_con_ceros.= $numero;
         return $numero_con_ceros;
     }
-    public function step1_edit_hotel(Request $request, $id){
+    public function step1_edit_hotel(Request $request){
+
+        // return response()->json(['mensaje'=>$request->all()]);
         $id_cotizacion = $request->get('id_cotizacion');
         $id_client = $request->get('id_client');
         $id_paquete = $request->get('id_paquete');
@@ -2410,14 +2743,128 @@ class PackageCotizacionController extends Controller
         $precio_d=$request->input('precio_d');
         $precio_m=$request->input('precio_m');
         $precio_t=$request->input('precio_t');
+        $id=$request->input('id');
+        $precio_s_a=0;
+        $precio_d_a=0;
+        $precio_m_a=0;
+        $precio_t_a=0;
+        // $precio_sh_a=0;
+        
         $precio_hotel_reserva=PrecioHotelReserva::FindOrFail($id);
+        $precio_s_a=$precio_hotel_reserva->precio_s;
+        $precio_d_a=$precio_hotel_reserva->precio_d;
+        $precio_m_a=$precio_hotel_reserva->precio_m;
+        $precio_t_a=$precio_hotel_reserva->precio_t;
+        
         $precio_hotel_reserva->precio_s=$precio_s;
         $precio_hotel_reserva->precio_d=ceil($precio_d*2);
         $precio_hotel_reserva->precio_m=ceil($precio_m*2);
         $precio_hotel_reserva->precio_t=ceil($precio_t*3);
         $precio_hotel_reserva->save();
+
+
+        $cotizacion_id=$request->input('id_cotizacion');
+        $cotizacion=Cotizacion::FindOrFail($cotizacion_id);
+        
+        if($request->input('con_sin_hotel')=='ch'){
+            $acomodacion_hotel=$request->input('acomodacion_hotel');
+            $acomodacion_hotel=explode('_',$acomodacion_hotel);
+            // dd($acomodacion_hotel);
+            if($acomodacion_hotel[0]>0){
+                $costo=$request->input('cost_s_serv');
+                $venta=$request->input('pv_s_serv');
+                $profit_nuevo=$venta-(($precio_s-$precio_s_a)+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_s=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_s=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[1]>0){
+                $costo=$request->input('cost_d_serv');
+                $venta=$request->input('pv_d_serv');
+                $profit_nuevo=$venta-(($precio_d-$precio_d_a/2)+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_d=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_d=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[2]>0){
+                $costo=$request->input('cost_m_serv');
+                $venta=$request->input('pv_m_serv');
+                $profit_nuevo=$venta-(($precio_m-$precio_m_a)+$costo);
+                // dd($profit_nuevo);
+                // $profit_nuevo=$venta-($hotel->matrimonial+$costo);
+                $profit_nuevo=$venta-(($precio_m-$precio_m_a/2)+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_m=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_m=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[3]>0){
+                $costo=$request->input('cost_t_serv');
+                $venta=$request->input('pv_t_serv');
+                $profit_nuevo=$venta-(($precio_t-$precio_t_a/3)+$costo);
+                // $profit_nuevo=$venta-($hotel->triple+$costo);
+                $profit_nuevo=$venta-(($precio_t-$precio_t_a)+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_t=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_t=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+        }
+        elseif($request->input('con_sin_hotel')=='sh'){
+            $costo=$request->input('cost_sh_serv');
+            $venta=$request->input('pv_sh_serv');
+            $profit_nuevo=$venta-($costo_add+$costo);
+            foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                $temp_hotel=PaqueteCotizaciones::find($paquete->id);
+                $temp_hotel->utilidad=$profit_nuevo;
+                $temp_hotel->save();                     
+            }  
+        }
         // return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
-        return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
+        // return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
+        return response()->json(['mensaje'=>'1']);
     }
     public function editar_daybyday($id){
         $destinations=M_Destino::get();
@@ -2848,10 +3295,13 @@ class PackageCotizacionController extends Controller
     }
     public function agregar_nuevo_servicio(Request $request)
     {
-        $itinerario_cotizaciones_id=$request->input('dia');
-        $servicios=$request->input('servicios');
-        $itinerario_cotizacion=ItinerarioCotizaciones::Find($itinerario_cotizaciones_id);
 
+        $itinerario_cotizaciones_id=$request->input('dia');
+        $itinerario_cotizacion=ItinerarioCotizaciones::Find($itinerario_cotizaciones_id);
+        $cotizacion_id=$request->input('cotizacion_id');
+        $servicios=$request->input('servicios');
+        $cotizacion=Cotizacion::FindOrFail($cotizacion_id);
+        $costo_add=0;
         foreach ($servicios as $servicio){
             $serv=explode('_',$servicio);
             $m_servicio=M_Servicio::Find($serv[2]);
@@ -2869,16 +3319,260 @@ class PackageCotizacionController extends Controller
             $temp->salida=$m_servicio->salida;
             $temp->llegada=$m_servicio->llegada;
             $temp->fecha_uso=$itinerario_cotizacion->fecha;
-            $temp->s_p=$m_servicio->s_p;
-            $temp->s_p=0;
+            if($m_servicio->tipoServicio=='SIC'||$m_servicio->tipoServicio=='GROUP'){
+                $temp->s_p='SIC';
+            }
+            elseif($m_servicio->tipoServicio=='PV'||$m_servicio->tipoServicio=='PRIVATE'){
+                $temp->s_p='PV';
+            }
             $temp->pos=20;
             $temp->save();
+            if($m_servicio->precio_grupo==1)
+                $costo_add+=$m_servicio->precio_venta/$cotizacion->nropersonas;
+            elseif($m_servicio->precio_grupo==0)   
+                $costo_add+=$m_servicio->precio_venta;
+
         }
+        $con_sin_hotel=$request->input('con_sin_hotel');
+        // dd($con_sin_hotel);
+        if($con_sin_hotel=='ch'){
+            $acomodacion_hotel=$request->input('acomodacion_hotel');
+            $acomodacion_hotel=explode('_',$acomodacion_hotel);
+            if($acomodacion_hotel[0]>0){
+                $costo=$request->input('cost_s_serv');
+                $venta=$request->input('pv_s_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_s=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_s=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[1]>0){
+                $costo=$request->input('cost_d_serv');
+                $venta=$request->input('pv_d_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_d=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_d=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[2]>0){
+                $costo=$request->input('cost_m_serv');
+                $venta=$request->input('pv_m_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_m=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_m=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[3]>0){
+                $costo=$request->input('cost_t_serv');
+                $venta=$request->input('pv_t_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_t=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_t=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+        }
+        elseif($con_sin_hotel=='sh'){
+            $costo=$request->input('cost_sh_serv');
+            $venta=$request->input('pv_sh_serv');
+            $profit_nuevo=$venta-($costo_add+$costo);
+            foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                $temp_hotel=PaqueteCotizaciones::find($paquete->id);
+                $temp_hotel->utilidad=$profit_nuevo;
+                $temp_hotel->save();                     
+            }
+        }
+
+        
+        // $s=0;
+        // $d=0;
+        // $m=0;
+        // $t=0;
+        // $costo=0;
+        // $duracion=0;
+        // $utilidad=0;
+        // $utilidad_s=0;
+        // $utilidad_d=0;
+        // $utilidad_m=0;
+        // $utilidad_t=0;
+
+        // $pv_sh=0;
+        // $pv_s=0;
+        // $pv_d=0;
+        // $pv_m=0;
+        // $pv_t=0;
+
+        // foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+        //     foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+        //         foreach($itinerario_cotizaciones->itinerario_servicios as $itinerario_servicio){
+        //             if($itinerario_servicio->precio_grupo==1){
+        //                 $costo+=round($itinerario_servicio->precio/$cotizacion->nropersonas);
+        //             }
+        //             else{
+        //                 $costo+=round($itinerario_servicio->precio);
+        //             }
+        //         }
+        //     }
+        //     if($cotizacion->star_0=='0'){
+        //         $pv_sh=$costo+$paquete->utilidad;
+        //     }
+        //     elseif($cotizacion->star_2=='2' || $cotizacion->star_3=='3' || $cotizacion->star_4=='4' || $cotizacion->star_5=='5'){          
+        //         foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+        //             foreach($itinerario_cotizaciones->hotel as $hotel){
+        //                 if($hotel->personas_s){
+        //                     $s+=$hotel->precio_s;
+        //                     $utilidad_s=$hotel->utilidad_s;
+        //                 }
+        //                 if($hotel->personas_d){
+        //                     $d+=$hotel->precio_s;
+        //                     $utilidad_d=$hotel->utilidad_d;
+        //                 }
+        //                 if($hotel->personas_m){
+        //                     $m+=$hotel->precio_m/2;
+        //                     $utilidad_m=$hotel->utilidad_m;
+        //                 }
+        //                 if($hotel->personas_t){
+        //                     $t+=$hotel->precio_t;
+        //                     $utilidad_t=$hotel->utilidad_t;
+        //                 }
+        //             }
+        //         }
+        //         $pv_s=$costo+$utilidad_s+$s;
+        //         $pv_d=$costo+$utilidad_d+$d;
+        //         $pv_m=$costo+$utilidad_m+$m;
+        //         $pv_t=$costo+$utilidad_t+$t;                
+        //     }
+        // }
+        // // dd($utilidad_m);
+        // $itinerario_cotizacion=ItinerarioCotizaciones::Find($itinerario_cotizaciones_id);
+        // foreach ($servicios as $servicio){
+        //     $serv=explode('_',$servicio);
+        //     $m_servicio=M_Servicio::Find($serv[2]);
+        //     $temp=new ItinerarioServicios();
+        //     $temp->nombre=$m_servicio->nombre;
+        //     $temp->precio=$m_servicio->precio_venta;
+        //     $temp->precio_grupo=$m_servicio->precio_grupo;
+        //     $temp->itinerario_cotizaciones_id=$itinerario_cotizaciones_id;
+        //     $temp->m_servicios_id=$m_servicio->id;
+        //     $temp->user_id=auth()->guard('admin')->user()->id;
+        //     $temp->min_personas=$m_servicio->min_personas;
+        //     $temp->max_personas=$m_servicio->max_personas;
+        //     $temp->grupo=$m_servicio->grupo;
+        //     $temp->clase=$m_servicio->clase;
+        //     $temp->salida=$m_servicio->salida;
+        //     $temp->llegada=$m_servicio->llegada;
+        //     $temp->fecha_uso=$itinerario_cotizacion->fecha;
+        //     $temp->s_p=$m_servicio->s_p;
+        //     // $temp->s_p=0;
+        //     $temp->pos=20;
+        //     $temp->save();
+        // }
+        // $costo2=0;
+        // foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+        //     foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+        //         foreach($itinerario_cotizaciones->itinerario_servicio as $itinerario_servicio){
+        //             if($itinerario_servicio->precio_grupo==1){
+        //                 $costo2+=$itinerario_servicio->precio;
+        //             }
+        //             else{
+        //                 $costo2+=$itinerario_servicio->precio/$cotizacion->nropersonas;
+        //             }
+        //         }              
+        //     }
+        // }
+        //-- si el file no tiene hotel
+        // $profit_sh=0;
+        // $profit_s=0;
+        // $profit_d=0;
+        // $profit_m=0;
+        // $profit_t=0;
+        
+
+        // foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+            
+        //     if($cotizacion->star_0=='0'){
+        //         $tempo=PaqueteCotizaciones::FindOrFail($paquete->id);
+        //         $tempo->utilidad=$profit_sh;
+        //         $tempo->save();
+        //     }
+        //     else{
+        //         foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+        //             foreach($itinerario_cotizaciones->hotel as $hotel){
+        //                 if($hotel->personas_s){
+        //                     $temp=PrecioHotelReserva::FindOrFail($hotel->id);
+        //                     $temp->utilidad_s=$pv_s-$costo2;
+        //                     $temp->save();
+        //                 }
+        //                 if($hotel->personas_d){
+        //                     $temp=PrecioHotelReserva::FindOrFail($hotel->id);
+        //                     $temp->utilidad_d=$pv_d-$costo2;
+        //                     $temp->save();
+        //                 }
+        //                 if($hotel->personas_m){
+        //                     $temp=PrecioHotelReserva::FindOrFail($hotel->id);
+        //                     $temp->utilidad_m=$pv_m-$costo2;
+        //                     $temp->save();
+        //                 }
+        //                 if($hotel->personas_s){
+        //                     $temp=PrecioHotelReserva::FindOrFail($hotel->id);
+        //                     $temp->utilidad_t=$pv_t-$costo2;
+        //                     $temp->save();
+        //                 }
+        //             }
+        //         }
+        //     }
+
+        // }
+
 
         return redirect()->back();
     }
     public function agregar_nuevo_hotel(Request $request)
     {
+
         $itinerario_cotizaciones_id=$request->input('dia');
         $estrellas=$request->input('categoria_');
         $pqt_precio_id=$request->input('pqt_precio');
@@ -2908,6 +3602,88 @@ class PackageCotizacionController extends Controller
         $precio_h_r->itinerario_cotizaciones_id=$itinerario_cotizaciones_id;
         $precio_h_r->localizacion=$hotel->localizacion;
         $precio_h_r->save();
+        $cotizacion_id=$request->input('cotizacion_id');
+        $cotizacion=Cotizacion::FindOrFail($cotizacion_id);
+        $acomodacion_hotel=$request->input('acomodacion_hotel');
+        // dd($acomodacion_hotel);
+        $acomodacion_hotel=explode('_',$acomodacion_hotel);
+        if($acomodacion_hotel[0]>0){
+            $costo=$request->input('cost_s_serv');
+            $venta=$request->input('pv_s_serv');
+            $profit_nuevo=$venta-($hotel->single+$costo);
+            foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                foreach($paquete->paquete_precios as $paquete_precios){
+                    $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                    $temp_hotel->utilidad_s=$profit_nuevo;
+                    $temp_hotel->save();
+                }
+                foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                    foreach($itinerario_cotizaciones->hotel as $hotel){
+                        $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                        $temp_hotel->utilidad_s=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                }       
+            }  
+        }
+        if($acomodacion_hotel[1]>0){
+            $costo=$request->input('cost_d_serv');
+            $venta=$request->input('pv_d_serv');
+            $profit_nuevo=$venta-($hotel->doble/2+$costo);
+            // dd($hotel->doble);
+            foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                foreach($paquete->paquete_precios as $paquete_precios){
+                    $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                    $temp_hotel->utilidad_d=$profit_nuevo;
+                    $temp_hotel->save();
+                }
+                foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                    foreach($itinerario_cotizaciones->hotel as $hotel){
+                        $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                        $temp_hotel->utilidad_d=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                }       
+            }  
+        }
+        if($acomodacion_hotel[2]>0){
+            $costo=$request->input('cost_m_serv');
+            $venta=$request->input('pv_m_serv');
+            $profit_nuevo=$venta-($hotel->matrimonial/2+$costo);
+            foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                foreach($paquete->paquete_precios as $paquete_precios){
+                    $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                    $temp_hotel->utilidad_m=$profit_nuevo;
+                    $temp_hotel->save();
+                }
+                foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                    foreach($itinerario_cotizaciones->hotel as $hotel){
+                        $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                        $temp_hotel->utilidad_m=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                }       
+            }  
+        }
+        if($acomodacion_hotel[3]>0){
+            $costo=$request->input('cost_t_serv');
+            $venta=$request->input('pv_t_serv');
+            $profit_nuevo=$venta-($hotel->triple/3+$costo);
+            foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                foreach($paquete->paquete_precios as $paquete_precios){
+                    $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                    $temp_hotel->utilidad_t=$profit_nuevo;
+                    $temp_hotel->save();
+                }
+                foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                    foreach($itinerario_cotizaciones->hotel as $hotel){
+                        $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                        $temp_hotel->utilidad_t=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                }       
+            }  
+        }
         return redirect()->back();
     }
     public function listar_hoteles(Request $request)
@@ -2920,11 +3696,12 @@ class PackageCotizacionController extends Controller
     }
     public function cambiar_hotel(Request $request)
     {
+        // return response()->json(['mensaje'=>$request->all()]);
         $itinerario_cotizaciones_id=$request->input('itinerario_cotizaciones_id');
         $precio_hotel_reserva_id=$request->input('precio_hotel_reserva_id');
 //        dd($precio_hotel_reserva_id);
         $pqt_precio=PrecioHotelReserva::Find($precio_hotel_reserva_id);
-//        dd($pqt_precio);
+    //    dd($pqt_precio);
         $estrellas=$request->input('categoria_');
         $nombre='hotel_id_'.$estrellas[0];
         $hotel_id=$request->input($nombre);
@@ -2951,8 +3728,94 @@ class PackageCotizacionController extends Controller
         $precio_h_r->localizacion=$hotel->localizacion;
         $precio_h_r->save();
 
+        $cotizacion_id=$request->input('cotizacion_id');
+        $cotizacion=Cotizacion::FindOrFail($cotizacion_id);
+        if($request->input('con_sin_hotel')=='ch'){
+            $acomodacion_hotel=$request->input('acomodacion_hotel');
+            $acomodacion_hotel=explode('_',$acomodacion_hotel);
+            if($acomodacion_hotel[0]>0){
+                $costo=$request->input('cost_s_serv');
+                $venta=$request->input('pv_s_serv');
+                $profit_nuevo=$venta-(($hotel->single-$pqt_precio->precio_s)+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_s=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_s=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[1]>0){
+                $costo=$request->input('cost_d_serv');
+                $venta=$request->input('pv_d_serv');
+                $profit_nuevo=$venta-((($hotel->doble-$pqt_precio->precio_d)/2)+$costo);
+                // $profit_nuevo=$venta-($hotel->doble+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_d=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_d=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[2]>0){
+                $costo=$request->input('cost_m_serv');
+                $venta=$request->input('pv_m_serv');
+                $profit_nuevo=$venta-((($hotel->matrimonial-$pqt_precio->precio_m)/2)+$costo);
+                $profit_nuevo=$venta-($hotel->matrimonial+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_m=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_m=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[3]>0){
+                $costo=$request->input('cost_t_serv');
+                $venta=$request->input('pv_t_serv');
+                $profit_nuevo=$venta-((($hotel->triple-$pqt_precio->precio_t)/3)+$costo);
+                $profit_nuevo=$venta-($hotel->triple+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_t=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_t=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+        }
         $pqt_precio->delete();
-        return redirect()->back();
+        return response()->json(['mensaje'=>'1']);
+        // return redirect()->back();
     }
     public function buscar_servicios(Request $request)
     {
@@ -3011,18 +3874,128 @@ class PackageCotizacionController extends Controller
         return '<label for="exampleInputEmail1">Fecha a pagar</label>
                 <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">';
     }
-    public function step1_edit_precio_servicios(Request $request, $id){
-        $id_cotizacion = $request->get('id_cotizacion');
-        $id_client = $request->get('id_client');
-        $id_paquete = $request->get('id_paquete');
-        $id_servicios=$request->get('id_servicios');
-        $precio=$request->get('precio_reserva');
+    public function step1_edit_precio_servicios(Request $request){
+        // return response()->json(['mensaje'=>'holaaaaaa']);
+        $id_cotizacion = $request->input('id_cotizacion');
+        $id_client = $request->input('id_client');
+        $id_paquete = $request->input('id_paquete');
+        $id_servicios=$request->input('id_servicios');
+        $precio=$request->input('precio_reserva');
 
         $itinerario_servicio=ItinerarioServicios::FindOrFail($id_servicios);
+        $precio_anterior=$itinerario_servicio->precio;
         $itinerario_servicio->precio=$precio;
         $itinerario_servicio->save();
+
+        $cotizacion=Cotizacion::FindOrFail($id_cotizacion);
+        $costo_add=0;                                                                                                                                                                                                    
+        if($itinerario_servicio->precio_grupo==1){
+            $costo_add=($precio-$precio_anterior)/$cotizacion->nropersonas;
+        }
+        else{
+            $costo_add=($precio-$precio_anterior);
+        }
+        
+        $con_sin_hotel=$request->input('con_sin_hotel');
+
+        
+        if($con_sin_hotel=='ch'){
+            $acomodacion_hotel=$request->input('acomodacion_hotel');
+            $acomodacion_hotel=explode('_',$acomodacion_hotel);
+            if($acomodacion_hotel[0]>0){
+                $costo=$request->input('cost_s_serv');
+                $venta=$request->input('pv_s_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_s=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_s=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[1]>0){
+                $costo=$request->input('cost_d_serv');
+                $venta=$request->input('pv_d_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                // dd($costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_d=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_d=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[2]>0){
+                $costo=$request->input('cost_m_serv');
+                $venta=$request->input('pv_m_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                // dd($costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_m=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_m=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+            if($acomodacion_hotel[3]>0){
+                $costo=$request->input('cost_t_serv');
+                $venta=$request->input('pv_t_serv');
+                $profit_nuevo=$venta-($costo_add+$costo);
+                foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                    foreach($paquete->paquete_precios as $paquete_precios){
+                        $temp_hotel=PaquetePrecio::find($paquete_precios->id);
+                        $temp_hotel->utilidad_t=$profit_nuevo;
+                        $temp_hotel->save();
+                    }
+                    foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
+                        foreach($itinerario_cotizaciones->hotel as $hotel){
+                            $temp_hotel=PrecioHotelReserva::Find($hotel->id);
+                            $temp_hotel->utilidad_t=$profit_nuevo;
+                            $temp_hotel->save();
+                        }
+                    }       
+                }  
+            }
+        }
+        elseif($con_sin_hotel=='sh'){
+            $costo=$request->input('cost_sh_serv');
+            $venta=$request->input('pv_sh_serv');
+            $profit_nuevo=$venta-($costo_add+$costo);
+            // dd($costo);
+            foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
+                $temp_hotel=PaqueteCotizaciones::find($paquete->id);
+                $temp_hotel->utilidad=$profit_nuevo;
+                $temp_hotel->save();                     
+            }
+        }
         // return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
-        return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
+        // return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
+        return response()->json(['mensaje'=>'1']);
     }
     public function anular(Request $request){
         $id = $request->input('id');

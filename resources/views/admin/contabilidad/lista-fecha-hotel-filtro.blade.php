@@ -42,7 +42,7 @@
                                                         $fecha_servicio = strtotime ( '+'.$dia.' day' , strtotime ( $fecha ) ) ;
                                                         $fecha_servicio = date ( 'Y-m-d' , $fecha_servicio );
 
-                                                        $dia_pago = 7;
+                                                        $dia_pago = 0;
                                                         $fecha_p = date($fecha_servicio);
                                                         $fecha_pago = strtotime ( '-'.$dia_pago.' day' , strtotime ( $fecha_p ) ) ;
                                                         $fecha_pago = date ( 'Y-m-d' , $fecha_pago );

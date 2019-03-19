@@ -70,7 +70,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
-                                        <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}">
+                                        <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}" disabled="disabled">
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -504,7 +504,7 @@
                         @php
                             $deti='';
                         @endphp
-                        @foreach($destinos->sortBy('destino') as $destino)
+                        @foreach($destinos->where('estado','1')->sortBy('destino') as $destino)
                             <div class="">
                                 <div class="text-13">
                                     <label class="m-0">

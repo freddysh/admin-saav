@@ -163,7 +163,7 @@ class OperacionesController extends Controller
         $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
             $query->whereBetween('fecha', array($desde, $hasta));
         }])
-            ->where('confirmado_r', 'ok')
+            // ->where('confirmado_r', 'ok')
             ->get();
 //        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
         $clientes2 = Cliente::get();
@@ -301,7 +301,7 @@ class OperacionesController extends Controller
         $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
             $query->whereBetween('fecha', array($desde, $hasta));
         }])
-            ->where('confirmado_r', 'ok')
+            // ->where('confirmado_r', 'ok')
             ->get();
 //        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
         $clientes2 = Cliente::get();

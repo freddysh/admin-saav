@@ -600,10 +600,10 @@ Route::get('/admin/quotes/edit/step2/{coti_id}/{pqt_id}/{imprimir}', [
     'as' => 'show_step2_edit_path'
 ]);
 //
-Route::patch('/admin/quotes/new/step1/step1_edit/{id}', [
+Route::post('/admin/quotes/new/step1/step1_edit', [
     'uses' => 'PackageCotizacionController@step1_edit',
     'as' => 'step1_edit_path'
-])->where('id', '[0-9]+');
+]);
 
 Route::patch('/admin/quotes/edit/step1/step1_edit/{id}', [
     'uses' => 'PackageCotizacionController@step1_edit_edit',
@@ -647,10 +647,10 @@ Route::post('admin/plantilla/crear/', [
     'as' => 'package_plantilla_crear_path'
 ]);
 
-Route::patch('/admin/quotes/new/step1/step1_edit_hotel/{id}', [
+Route::post('/admin/quotes/new/step1/step1_edit_hotel', [
     'uses' => 'PackageCotizacionController@step1_edit_hotel',
     'as' => 'step1_edit_hotel_path'
-])->where('id', '[0-9]+');
+]);
 Route::get('/admin/daybyday/edit/{id}', [
     'uses' => 'PackageCotizacionController@editar_daybyday',
     'as' => 'editar_dadybyday_parh',
@@ -1298,7 +1298,7 @@ Route::get('/admin/reportes/lista-de-cotizaciones/{web}/{desde}/{hasta}/{filtro}
     'uses' => 'ReportesController@lista_cotizaciones',
     'as' => 'lista_de_cotizaciones_path',
 ]);
-Route::patch('/admin/quotes/new/step1/step1_edit_precio_servicios/{id}', [
+Route::post('/admin/quotes/new/step1/step1_edit_precio_servicios', [
     'uses' => 'PackageCotizacionController@step1_edit_precio_servicios',
     'as' => 'step1_edit_servicio_precio_path'
 ]);
@@ -1332,3 +1332,20 @@ Route::post('/admin/profit/enviar_file',[
     'uses' => 'ProfitController@enviar_file',
     'as' => 'enviar_file_path',
 ]);
+Route::get('admin/contabilidad/pagos-en-genral/filtrar/', [
+    'uses' => 'ContabilidadController@pagos_pendientes_general',
+    'as' => 'contabilidad.pagos_en_genral.filtrar',
+]);
+Route::post('/admin/contabilidad/pagos-en-genral/pendientes/filtrar', [
+    'uses' => 'ContabilidadController@pagos_pendientes_general_filtro_datos',
+    'as' => 'contabilidad.pagos_en_genral.filtrar.buscar',
+]);
+Route::post('/admin/contabilidad/traer-datos', [
+    'uses' => 'ContabilidadController@traer_datos',
+    'as' => 'contabilidad.traer_datos',
+]);
+Route::post('/admin/contabilidad/hotel/store', [
+    'uses' => 'ContabilidadController@hotel_store',
+    'as' => 'contabilidad.hotel.store',
+]);
+

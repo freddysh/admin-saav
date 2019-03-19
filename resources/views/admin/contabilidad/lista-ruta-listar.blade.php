@@ -11,12 +11,14 @@
                 <option value="CUSCO-POROY">CUSCO-POROY</option>
                 <option value="CUSCO-STATION">CUSCO-STATION</option>
                 <option value="CUSCO-VALLE">CUSCO-VALLE</option>
+                <option value="CUSCO-URUBAMBA">CUSCO-URUBAMBA</option>
                 <option value="AIRPORT-CUSCO">AIRPORT-CUSCO</option>
                 <option value="POROY-CUSCO">POROY-CUSCO</option>
                 <option value="STATION-CUSCO">STATION-CUSCO</option>
         @elseif($punto_inicio=='SACRED VALLEY')
                 <option value="OLLANTA-CUSCO">OLLANTA-CUSCO</option>
                 <option value="VALLE-CUSCO">VALLE-CUSCO</option>
+                <option value="URUBAMBA-CUSCO">URUBAMBA-CUSCO</option>
         @elseif($punto_inicio=='PUNO')
                 <option value="PUNO-AIRPORT">PUNO-AIRPORT</option>
                 <option value="PUNO-BUS.STATION">PUNO-BUS.STATION</option>
@@ -29,4 +31,6 @@
                 <option value="AGUAS CALIENTES-MACHUPICCHU">AGUAS CALIENTES-MACHUPICCHU</option>
                 <option value="MACHUPICCHU-AGUAS CALIENTES">MACHUPICCHU-AGUAS CALIENTES</option>
         @endif
+        <option value="TOUR-TOUR">TOUR</option>
+        
 </select>

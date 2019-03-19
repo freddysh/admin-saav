@@ -395,10 +395,11 @@
                                                                 <option value="CUSCO-OLLANTA">CUSCO-OLLANTA</option>
                                                                 <option value="CUSCO-POROY">CUSCO-POROY</option>
                                                                 <option value="CUSCO-VALLE">CUSCO-VALLE</option>
+                                                                <option value="CUSCO-URUBAMBA">CUSCO-URUBAMBA</option>
                                                                 <option value="AIRPORT-CUSCO">AIRPORT-CUSCO</option>
                                                                 <option value="POROY-CUSCO">POROY-CUSCO</option>
+                                                                <option value="TOUR-TOUR">TOUR</option>
                                                             </select>
-
                                                         </div>
                                                     </div>
                                                 </div>

@@ -398,7 +398,7 @@ class ServicesController extends Controller
                         $producto->nombre = $destino->nombre;
                         $producto->precio_costo = $costo_val[$key];
                         $producto->precio_grupo = $destino->precio_grupo;
-                        $producto->clase =$destino->clase;                        
+                        $producto->clase =$destino->clase;
                         $producto->salida = $destino->salida;
                         $producto->llegada = $destino->llegada;
                         $producto->max_personas = $destino->max_personas;

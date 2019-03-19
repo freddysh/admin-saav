@@ -91,162 +91,231 @@
                 @endforeach
             @endforeach
         </div>
-        <div class="col-2 text-right">
-            <div class="row">
-                <div class="col  text-30 ">
-                    {{--                            <a href="{{route('agregar_servicios_paso1_path',[$cliente,$cotizacion_id,$paquete_precio_id])}}" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar servicio</a>--}}
-                    <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="mostrarservicios()">
-                        <i class="fa fa-cubes fa-4x"></i><br> Agregar servicio
-                    </a>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <form action="{{route('agregar_nuevo_servicio_path')}}" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO SERVICO</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label for="dia">Ingrese el dia</label>
-                                                    <select class="form-control" name="dia" id="dia">
-                                                        @foreach($cotizaciones as $cotizacion)
-                                                            @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
-                                                                @foreach($paquete->itinerario_cotizaciones as $itinerario)
-                                                                    <option value="{{$itinerario->id}}">DIA {{$itinerario->dias}}</option>
-                                                                @endforeach
-                                                            @endforeach
+        <div class="col-3">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="mostrarservicios()">
+                    <i class="fa fa-cubes fa-2x"></i><br> Agregar servicio
+                </a>
+                <a href="#!" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal_h" onclick="mostrarservicios()">
+                    <i class="fa fa-h-square fa-2x" aria-hidden="true"></i> <br> Agregar Hotel
+                </a>
+                <a href="#!" class="btn btn-success" data-toggle="modal" data-target="#exampleModal_d" onclick="mostrarservicios()">
+                    <i class="fas fa-map-pin fa-2x"></i> <br> Agregar dia
+                </a>
+              </div>
+        </div>
+        <div class="col-12">
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form id="frm_add_serv" action="{{route('agregar_nuevo_servicio_path')}}" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO SERVICO</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="dia">Ingrese el dia</label>
+                                            <select class="form-control" name="dia" id="dia">
+                                                @foreach($cotizaciones as $cotizacion)
+                                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
+                                                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                                                            <option value="{{$itinerario->id}}">DIA {{$itinerario->dias}}</option>
                                                         @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+                                                    @endforeach
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                {{csrf_field()}}
-                                                <select class="form-control" name="txt_destino" id="txt_destino" onchange="limpiar_caja_servicios()">
-                                                    @foreach($destinations as $destino)
-                                                        <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div class="row mt-4">
-                                                    @foreach($categorias as $categoria)
-                                                        <?php
-                                                        $tipoServicio[]=$categoria->nombre;
-                                                        ?>
-                                                    @endforeach
-                                                    <div class="col-10">
-                                                        <div class="row text-left">
-                                                            <div class="col-3 m-0">
-                                                                <div class="list-group text-center">
-                                                                    <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fas fa-map  text-info"></i><b class="small d-block">{{$tipoServicio[1] }}</b></a>
-                                                                    <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus  text-warning"></i><b class="small d-block">{{$tipoServicio[2]}}</b></a>
-                                                                    <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users  text-success"></i><b class="small d-block">{{$tipoServicio[3]}}</b></a>
-                                                                    <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fas fa-ticket-alt  text-warning"></i><b class="small d-block">{{$tipoServicio[4]}}</b></a>
-                                                                    <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fas fa-utensils  text-danger"></i><b class="small d-block">{{$tipoServicio[5]}}</b></a>
-                                                                    <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train  text-info"></i><b class="small d-block">{{$tipoServicio[6]}}</b></a>
-                                                                    <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane  text-primary"></i><b class="small d-block">{{$tipoServicio[7]}}</b></a>
-                                                                    <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[8]}}')"> <i class="fa fa-question  text-success"></i><b class="small d-block">{{$tipoServicio[8]}}</b></a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-9">
-                                                                <div class="panel panel-default">
-                                                                    <div id="list_servicios_grupo" class="panel-body"></div>
-                                                                </div>
-                                                            </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        {{csrf_field()}}
+                                        <select class="form-control" name="txt_destino" id="txt_destino" onchange="limpiar_caja_servicios()">
+                                            @foreach($destinations as $destino)
+                                                <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="row mt-4">
+                                            @foreach($categorias as $categoria)
+                                                <?php
+                                                $tipoServicio[]=$categoria->nombre;
+                                                ?>
+                                            @endforeach
+                                            <div class="col-10">
+                                                <div class="row text-left">
+                                                    <div class="col-3 m-0">
+                                                        <div class="list-group text-center">
+                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fas fa-map  text-info"></i><b class="small d-block">{{$tipoServicio[1] }}</b></a>
+                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus  text-warning"></i><b class="small d-block">{{$tipoServicio[2]}}</b></a>
+                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users  text-success"></i><b class="small d-block">{{$tipoServicio[3]}}</b></a>
+                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fas fa-ticket-alt  text-warning"></i><b class="small d-block">{{$tipoServicio[4]}}</b></a>
+                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fas fa-utensils  text-danger"></i><b class="small d-block">{{$tipoServicio[5]}}</b></a>
+                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train  text-info"></i><b class="small d-block">{{$tipoServicio[6]}}</b></a>
+                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane  text-primary"></i><b class="small d-block">{{$tipoServicio[7]}}</b></a>
+                                                            <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[8]}}')"> <i class="fa fa-question  text-success"></i><b class="small d-block">{{$tipoServicio[8]}}</b></a>
                                                         </div>
-
+                                                    </div>
+                                                    <div class="col-9">
+                                                        <div class="panel panel-default">
+                                                            <div id="list_servicios_grupo" class="panel-body"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        {{csrf_field()}}
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" >Agregar servicio</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
+                            <div class="modal-footer">
+                                {{csrf_field()}}
+                                @foreach($cotizaciones as $cotizacion)
+                                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                @endforeach
+
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" >Agregar servicio</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-2 text-left @if(($s+$d+$m+$t)==0) nada @endif">
-            <div class="row ">
-                <div class="col  text-30">
-                    <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_h" onclick="mostrarservicios()">
-                        <i class="fa fa-h-square fa-4x" aria-hidden="true"></i> <br> Agregar Hotel
-                    </a>
-                    <div class="modal fade" id="exampleModal_h" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <form action="{{route('agregar_nuevo_hotel_path')}}" method="post">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO HOTEL</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label for="dia">Ingrese el dia</label>
-                                                    <select class="form-control" name="dia" id="dia">
-                                                        @foreach($cotizaciones as $cotizacion)
-                                                            @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
-                                                                @foreach($paquete->itinerario_cotizaciones as $itinerario)
-                                                                    <option value="{{$itinerario->id}}">DIA {{$itinerario->dias}}</option>
-                                                                @endforeach
-                                                            @endforeach
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                {{csrf_field()}}
-                                                <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'n','{{$itinerario->id}}')">
-                                                    @foreach($destinations as $destino)
-                                                        <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <div id="lista_hoteles_n_{{$itinerario->id}}" class="row mt-4">
-                                                    @foreach($hoteles as $hotel)
-                                                        <div class="col">
-                                                            <input type="hidden" name="hotel_id_{{$hotel->estrellas}}" value="{{$hotel->id}}">
-                                                            <div class="custom-control custom-radio">
-                                                                <input type="radio" id="customRadio{{$hotel->estrellas}}" name="categoria_[]" class="custom-control-input" value="{{$hotel->estrellas}}">
-                                                                <label class="custom-control-label" for="customRadio{{$hotel->estrellas}}">{{$hotel->estrellas}} <i class="fas fa-star text-warning"></i></label>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        {{csrf_field()}}
-                                        @foreach($cotizaciones as $cotizacion)
-                                            @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
-                                                @foreach($paquete->paquete_precios as $hotel)
-                                                    <input type="hidden" name="pqt_precio" value="{{$hotel->id}}">
-                                                @endforeach
-                                            @endforeach
-                                        @endforeach
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" >Agregar servicio</button>
-                                    </div>
-                                </form>
+        
+            <div class="modal fade" id="exampleModal_h" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form id="frm_add_hotel" action="{{route('agregar_nuevo_hotel_path')}}" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO HOTEL</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                        </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="dia">Ingrese el dia</label>
+                                            <select class="form-control" name="dia" id="dia">
+                                                @foreach($cotizaciones as $cotizacion)
+                                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
+                                                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                                                            <option value="{{$itinerario->id}}">DIA {{$itinerario->dias}}</option>
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        {{csrf_field()}}
+                                        <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'n','{{$itinerario->id}}')">
+                                            @foreach($destinations as $destino)
+                                                <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                                            @endforeach
+                                        </select>
+                                        <div id="lista_hoteles_n_{{$itinerario->id}}" class="row mt-4">
+                                            @foreach($hoteles as $hotel)
+                                                <div class="col">
+                                                    <input type="hidden" name="hotel_id_{{$hotel->estrellas}}" value="{{$hotel->id}}">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="customRadio{{$hotel->estrellas}}" name="categoria_[]" class="custom-control-input" value="{{$hotel->estrellas}}">
+                                                        <label class="custom-control-label" for="customRadio{{$hotel->estrellas}}">{{$hotel->estrellas}} <i class="fas fa-star text-warning"></i></label>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {{csrf_field()}}
+                                @foreach($cotizaciones as $cotizacion)
+                                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
+                                        @foreach($paquete->paquete_precios as $hotel)
+                                            <input type="hidden" name="pqt_precio" value="{{$hotel->id}}">
+                                        @endforeach
+                                    @endforeach
+                                @endforeach
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" >Agregar servicio</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="modal fade" id="exampleModal_d" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form id="frm_add_hotel" action="{{route('agregar_nuevo_hotel_path')}}" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO HOTEL</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="dia">Ingrese el dia</label>
+                                            <select class="form-control" name="dia" id="dia">
+                                                @foreach($cotizaciones as $cotizacion)
+                                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
+                                                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                                                            <option value="{{$itinerario->id}}">DIA {{$itinerario->dias}}</option>
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        {{csrf_field()}}
+                                        <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'n','{{$itinerario->id}}')">
+                                            @foreach($destinations as $destino)
+                                                <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                                            @endforeach
+                                        </select>
+                                        <div id="lista_hoteles_n_{{$itinerario->id}}" class="row mt-4">
+                                            @foreach($hoteles as $hotel)
+                                                <div class="col">
+                                                    <input type="hidden" name="hotel_id_{{$hotel->estrellas}}" value="{{$hotel->id}}">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="customRadio{{$hotel->estrellas}}" name="categoria_[]" class="custom-control-input" value="{{$hotel->estrellas}}">
+                                                        <label class="custom-control-label" for="customRadio{{$hotel->estrellas}}">{{$hotel->estrellas}} <i class="fas fa-star text-warning"></i></label>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {{csrf_field()}}
+                                @foreach($cotizaciones as $cotizacion)
+                                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
+                                        @foreach($paquete->paquete_precios as $hotel)
+                                            <input type="hidden" name="pqt_precio" value="{{$hotel->id}}">
+                                        @endforeach
+                                    @endforeach
+                                @endforeach
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" >Agregar servicio</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -333,6 +402,7 @@
                                     <div class="col @if($t==0) d-none @endif">T</div>
                                     @if($s==0&&$d==0&&$m==0&&$t==0)<div class="col">SIN HOTEL</div>@endif
 
+                                    
                                     {{--<div class="col-2 d-none"></div>--}}
                                 </div>
                                 <div class="row caja_detalle">
@@ -416,11 +486,11 @@
                                                         <a class="btn py-0" data-toggle="modal" data-target="#modal_editar_precio_servicio{{$servicios->id}}">
                                                             <i class="fas fa-pencil-alt text-primary" aria-hidden="true"></i>
                                                         </a>
+                                                        
                                                         <div class="modal fade bd-example-modal-m" id="modal_editar_precio_servicio{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-m" role="document">
                                                                 <div class="modal-content">
-                                                                    <form action="{{route('step1_edit_servicio_precio_path', $hotel->id)}}" method="post" enctype="multipart/form-data">
-                                                                        <input type="hidden" name="_method" value="patch">
+                                                                    <form id="frm_edit_servicio_{{$servicios->id}}" action="{{route('step1_edit_servicio_precio_path')}}" method="post">
                                                                         <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
                                                                         <input type="hidden" name="id_client" value="{{$cliente->id}}">
                                                                         <input type="hidden" name="id_paquete" value="{{$paquete->id}}">
@@ -450,8 +520,8 @@
                                                                         <div class="modal-footer">
                                                                             {{csrf_field()}}
                                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                                                        </div>
+                                                                        <button type="button" class="btn btn-primary" onclick="preparar_envio('frm_edit_servicio_{{$servicios->id}}')">Save changes</button>
+                                                                        </div>                                                                        
                                                                     </form>
                                                                 </div>
                                                             </div>
@@ -465,11 +535,11 @@
                                                         <div class="modal fade bd-example-modal-lg" id="modal_new_destination1_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-lg" role="document">
                                                                 <div class="modal-content">
-                                                                    <form action="{{route('step1_edit_path', $servicios->id)}}" method="post" enctype="multipart/form-data">
-                                                                        <input type="hidden" name="_method" value="patch">
+                                                                <form id="frm_cambiar_servicio_{{$servicios->id}}" action="{{route('step1_edit_path')}}" method="post">
                                                                         <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
                                                                         <input type="hidden" name="id_client" value="{{$cliente->id}}">
                                                                         <input type="hidden" name="id_paquete" value="{{$paquete->id}}">
+                                                                        <input type="hidden" name="id" value="{{$servicios->id}}">
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title" id="exampleModalLabel">Editar Servicio</h5>
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -483,7 +553,7 @@
                                                                         <div class="modal-footer">
                                                                             {{csrf_field()}}
                                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                            <button type="button" class="btn btn-primary" onclick="preparar_envio('frm_cambiar_servicio_{{$servicios->id}}')">Save changes</button>
                                                                         </div>
                                                                     </form>
                                                                 </div>
@@ -546,11 +616,11 @@
                                                     <div class="modal fade bd-example-modal-m" id="modal_new_destinationh_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-m" role="document">
                                                             <div class="modal-content">
-                                                                <form action="{{route('step1_edit_hotel_path', $hotel->id)}}" method="post" enctype="multipart/form-data">
-                                                                    <input type="hidden" name="_method" value="patch">
+                                                                <form id="frm_editar_hotel_{{$hotel->id}}" action="{{route('step1_edit_hotel_path')}}" method="post">
                                                                     <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
                                                                     <input type="hidden" name="id_client" value="{{$cliente->id}}">
                                                                     <input type="hidden" name="id_paquete" value="{{$paquete->id}}">
+                                                                    <input type="hidden" name="id" value="{{$hotel->id}}">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title" id="exampleModalLabel">Editar Precio hotel</h5>
                                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -592,7 +662,7 @@
                                                                     <div class="modal-footer">
                                                                         {{csrf_field()}}
                                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        <button type="button" class="btn btn-primary" onclick="preparar_envio('frm_editar_hotel_{{$hotel->id}}')">Save changes</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -606,9 +676,9 @@
                                                     <div class="modal fade bd-example-modal-m" id="modal_cambiar_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-m" role="document">
                                                             <div class="modal-content">
-                                                                <form action="{{route('cambiar_hotel_path')}}" method="post" enctype="multipart/form-data">
+                                                            <form id="frm_cambiar_hotel_{{$hotel->id}}" action="{{route('cambiar_hotel_path')}}" method="post">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">Editar hotel</h5>
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Cambiar de hotel</h5>
                                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
@@ -638,9 +708,12 @@
                                                                         {{csrf_field()}}
                                                                         <input type="hidden" name="itinerario_cotizaciones_id" value="{{$hotel->itinerario_cotizaciones_id}}">
                                                                         <input type="hidden" name="precio_hotel_reserva_id" value="{{$hotel->id}}">
-
+                                                                        @foreach($cotizaciones as $cotizacion)
+                                                                            <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="{{$cotizacion->id}}">
+                                                                        @endforeach
                                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        {{-- <button type="submit" class="btn btn-primary">Save changes</button> --}}
+                                                                        <button type="button" class="btn btn-primary" onclick="preparar_envio('frm_cambiar_hotel_{{$hotel->id}}')">Save changes</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -648,9 +721,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <b class="text-right text-danger puntero" onclick="borrar_hotel_quot_paso1('{{$hotel->id}}','{{$itinerario->dias}}')">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </b>
+                                                    <b class="text-danger puntero" onclick="borrar_hotel_quot_paso1('{{$hotel->id}}','{{$itinerario->dias}}')">
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </b>
                                                 </div>
                                             </div>
                                         </div>
@@ -684,31 +757,159 @@
                     <div class="col-12">
                         <div class="row bg-g-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>COST</b></div>
-                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s,2)}}</span></b></div>
-                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_d,2)}}</span></b></div>
-                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_m,2)}}</span></b></div>
-                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($precio_hotel_t,2)}}</span></b></div>
-                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($precio_iti,2)}}</span></b></div>
+                        <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s,2)}}</span></b> 
+                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_add_serv">
+                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_add_hotel">
+                            <input type="hidden" name="cost_s_serv" id="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_edit_servicio">
+                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_cambiar_servicio">
+                            <input type="hidden" name="cost_s_serv" id="cost_s_serv_e_s" value="{{round($precio_hotel_s,2)}}" >
+                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_editar_hotel">
+                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_cambiar_hotel">                          
+                        </div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_d,2)}}</span></b> 
+                                <input type="hidden" name="cost_d_serv" value="{{round($precio_hotel_d,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="cost_d_serv" value="{{round($precio_hotel_d,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="cost_d_serv" id="cost_d_serv" value="{{round($precio_hotel_d,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="cost_d_serv" value="{{round($precio_hotel_d,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="cost_d_serv" id="cost_d_serv_e_s" value="{{round($precio_hotel_d,2)}}">
+                                <input type="hidden" name="cost_d_serv"  value="{{round($precio_hotel_d,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="cost_d_serv" value="{{round($precio_hotel_d,2)}}" form="frm_cambiar_hotel">
+                                
+                            </div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_m">{{round($precio_hotel_m,2)}}</span></b> 
+                                <input type="hidden" name="cost_m_serv" value="{{round($precio_hotel_m,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="cost_m_serv" value="{{round($precio_hotel_m,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="cost_m_serv" id="cost_m_serv" value="{{round($precio_hotel_m,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="cost_m_serv" value="{{round($precio_hotel_m,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="cost_m_serv" id="cost_m_serv_e_s" value="{{round($precio_hotel_m,2)}}" >
+                                <input type="hidden" name="cost_m_serv"  value="{{round($precio_hotel_m,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="cost_m_serv" value="{{round($precio_hotel_m,2)}}" form="frm_cambiar_hotel">
+                            </div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($precio_hotel_t,2)}}</span></b> 
+                                <input type="hidden" name="cost_t_serv" value="{{round($precio_hotel_t,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="cost_t_serv" value="{{round($precio_hotel_t,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="cost_t_serv" id="cost_t_serv" value="{{round($precio_hotel_t,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="cost_t_serv" value="{{round($precio_hotel_t,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="cost_t_serv" id="cost_t_serv_e_s" value="{{round($precio_hotel_t,2)}}" >
+                                <input type="hidden" name="cost_t_serv"  value="{{round($precio_hotel_t,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="cost_t_serv" value="{{round($precio_hotel_t,2)}}" form="frm_cambiar_hotel">
+                            </div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($precio_iti,2)}}</span></b> <input type="hidden" name="cost_sh_serv" value="{{round($precio_iti,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="cost_sh_serv" value="{{round($precio_iti,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="cost_sh_serv" id="cost_sh_serv" value="{{round($precio_iti,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="cost_sh_serv" value="{{round($precio_iti,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="cost_sh_serv" id="cost_sh_serv_e_s" value="{{round($precio_iti,2)}}">
+                                <input type="hidden" name="cost_sh_serv"  value="{{round($precio_iti,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="cost_sh_serv" value="{{round($precio_iti,2)}}" form="frm_cambiar_hotel">
+                            </div>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="row bg-g-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>PROFIT</b></div>
-                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($utilidad_s,2)}}</span></b></div>
-                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($utilidad_d,2)}}</span></b></div>
-                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($utilidad_m,2)}}</span></b></div>
-                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($utilidad_t,2)}}</span></b></div>
-                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($utilidad,2)}}</span></b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($utilidad_s,2)}}</span></b><input type="hidden" name="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="utilidad_s_serv" id="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_cambiar_servicio"></div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($utilidad_d,2)}}</span></b>
+                                <input type="hidden" name="utilidad_d_serv" value="{{round($utilidad_d,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="utilidad_d_serv" value="{{round($utilidad_d,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="utilidad_d_serv" id="utilidad_d_serv" value="{{round($utilidad_d,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="utilidad_d_serv" value="{{round($utilidad_d,2)}}" form="frm_cambiar_servicio"></div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($utilidad_m,2)}}</span></b>
+                                <input type="hidden" name="utilidad_m_serv" value="{{round($utilidad_m,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="utilidad_m_serv" value="{{round($utilidad_m,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="utilidad_m_serv" id="utilidad_m_serv" value="{{round($utilidad_m,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="utilidad_m_serv" value="{{round($utilidad_m,2)}}" form="frm_cambiar_servicio"></div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($utilidad_t,2)}}</span></b>
+                                <input type="hidden" name="utilidad_t_serv" value="{{round($utilidad_t,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="utilidad_t_serv" value="{{round($utilidad_t,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="utilidad_t_serv" id="utilidad_t_serv" value="{{round($utilidad_t,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="utilidad_t_serv" value="{{round($utilidad_t,2)}}" form="frm_cambiar_servicio"></div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($utilidad,2)}}</span></b>
+                                <input type="hidden" name="utilidad_sh_serv" value="{{round($utilidad,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="utilidad_sh_serv" value="{{round($utilidad,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="utilidad_sh_serv" id="utilidad_sh_serv" value="{{round($utilidad,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="utilidad_sh_serv" value="{{round($utilidad,2)}}" form="frm_cambiar_servicio"></div>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="row bg-g-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>SALE</b></div>
-                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s+$utilidad_s,2)}}</span></b></div>
-                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_d+$utilidad_d,2)}}</span></b></div>
-                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_m+$utilidad_m,2)}}</span></b></div>
-                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($precio_hotel_t+$utilidad_t,2)}}</span></b></div>
-                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($precio_iti+$utilidad,2)}}</span></b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s+$utilidad_s,2)}}</span></b>
+                                <input type="hidden" name="pv_s_serv" value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="pv_s_serv" value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="pv_s_serv" id="pv_s_serv" value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="pv_s_serv" value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="pv_s_serv" id="pv_s_serv_e_s" value="{{round($precio_hotel_s+$utilidad_s,2)}}" >
+                                <input type="hidden" name="pv_s_serv"  value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="pv_s_serv" value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_cambiar_hotel">
+                            </div>
+                            <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_d+$utilidad_d,2)}}</span></b>
+                                <input type="hidden" name="pv_d_serv" value="{{round($precio_hotel_d+$utilidad_d,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="pv_d_serv" value="{{round($precio_hotel_d+$utilidad_d,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="pv_d_serv" id="pv_d_serv" value="{{round($precio_hotel_d+$utilidad_d,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="pv_d_serv" value="{{round($precio_hotel_d+$utilidad_d,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="pv_d_serv" id="pv_d_serv_e_s" value="{{round($precio_hotel_d+$utilidad_d,2)}}">
+                                <input type="hidden" name="pv_d_serv"  value="{{round($precio_hotel_d+$utilidad_d,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="pv_d_serv" value="{{round($precio_hotel_d+$utilidad_d,2)}}" form="frm_cambiar_hotel">
+                            </div>
+                            <div class="col text-warning @if($m==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_m+$utilidad_m,2)}}</span></b><input type="hidden" name="pv_m_serv" value="{{round($precio_hotel_m+$utilidad_m,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="pv_m_serv" value="{{round($precio_hotel_m+$utilidad_m,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="pv_m_serv" id="pv_m_serv" value="{{round($precio_hotel_m+$utilidad_m,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="pv_m_serv" value="{{round($precio_hotel_m+$utilidad_m,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="pv_m_serv" id="pv_m_serv_e_s" value="{{round($precio_hotel_m+$utilidad_m,2)}}">
+                                <input type="hidden" name="pv_m_serv"  value="{{round($precio_hotel_m+$utilidad_m,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="pv_m_serv" value="{{round($precio_hotel_m+$utilidad_m,2)}}" form="frm_cambiar_hotel">
+                            </div>
+                            <div class="col text-warning @if($t==0) d-none @endif"><b>$<span id="cost_t">{{round($precio_hotel_t+$utilidad_t,2)}}</span></b><input type="hidden" name="pv_t_serv" value="{{round($precio_hotel_t+$utilidad_t,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="pv_t_serv" value="{{round($precio_hotel_t+$utilidad_t,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="pv_t_serv" id="pv_t_serv" value="{{round($precio_hotel_t+$utilidad_t,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="pv_t_serv" value="{{round($precio_hotel_t+$utilidad_t,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="pv_t_serv" id="pv_t_serv_e_s" value="{{round($precio_hotel_t+$utilidad_t,2)}}">
+                                <input type="hidden" name="pv_t_serv"  value="{{round($precio_hotel_t+$utilidad_t,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="pv_t_serv" value="{{round($precio_hotel_t+$utilidad_t,2)}}" form="frm_cambiar_hotel">
+                            </div>
+                            <div class="col text-warning @if($s==0&&$d==0&&$m==0&&$t==0) @else d-none @endif"><b>$<span id="cost_sh">{{round($precio_iti+$utilidad,2)}}</span></b><input type="hidden" name="pv_sh_serv" value="{{round($precio_iti+$utilidad,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="pv_sh_serv" value="{{round($precio_iti+$utilidad,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="pv_sh_serv" id="pv_sh_serv" value="{{round($precio_iti+$utilidad,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="pv_sh_serv" value="{{round($precio_iti+$utilidad,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="pv_sh_serv" id="pv_sh_serv_e_s" value="{{round($precio_iti+$utilidad,2)}}">
+                                <input type="hidden" name="pv_sh_serv"  value="{{round($precio_iti+$utilidad,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="pv_sh_serv" value="{{round($precio_iti+$utilidad,2)}}" form="frm_cambiar_hotel">
+                            </div>
+
+                            @if($s==0&&$d==0&&$m==0&&$t==0)
+                                <input type="hidden" name="con_sin_hotel" value="sh" form="frm_add_serv">                                
+                                <input type="hidden" name="con_sin_hotel" id="con_sin_hotel" value="sh" form="frm_edit_servicio">   
+                                <input type="hidden" name="acomodacion_hotel" id="acomodacion_hotel" value="{{$s}}_{{$d}}_{{$m}}_{{$t}}" form="frm_edit_servicio">          
+                                <input type="hidden" name="con_sin_hotel" value="sh" form="frm_cambiar_servicio">
+                                <input type="hidden" name="con_sin_hotel" id="con_sin_hotel_e_s" value="sh">                                  
+                                <input type="hidden" name="acomodacion_hotel" id="acomodacion_hotel_e_s" value="{{$s}}_{{$d}}_{{$m}}_{{$t}}">              
+                                <input type="hidden" name="con_sin_hotel"  value="sh" form="frm_editar_hotel">  
+                                <input type="hidden" name="acomodacion_hotel"  value="{{$s}}_{{$d}}_{{$m}}_{{$t}}" form="frm_editar_hotel">               
+                                <input type="hidden" name="con_sin_hotel" value="sh" form="frm_cambiar_hotel">                                            
+                                
+                            @else
+                                <input type="hidden" name="con_sin_hotel" value="ch" form="frm_add_serv">   
+                                <input type="hidden" name="acomodacion_hotel" value="{{$s}}_{{$d}}_{{$m}}_{{$t}}" form="frm_add_serv">
+                                <input type="hidden" name="con_sin_hotel" value="ch" form="frm_add_hotel">   
+                                <input type="hidden" name="acomodacion_hotel" value="{{$s}}_{{$d}}_{{$m}}_{{$t}}" form="frm_add_hotel">
+                                <input type="hidden" name="con_sin_hotel" id="con_sin_hotel" value="ch" form="frm_edit_servicio">   
+                                <input type="hidden" name="acomodacion_hotel" id="acomodacion_hotel" value="{{$s}}_{{$d}}_{{$m}}_{{$t}}" form="frm_edit_servicio">
+                                <input type="hidden" name="con_sin_hotel" value="ch" form="frm_cambiar_servicio">   
+                                <input type="hidden" name="acomodacion_hotel" value="{{$s}}_{{$d}}_{{$m}}_{{$t}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="con_sin_hotel" id="con_sin_hotel_e_s" value="ch"> 
+                                <input type="hidden" name="acomodacion_hotel" id="acomodacion_hotel_e_s" value="{{$s}}_{{$d}}_{{$m}}_{{$t}}">                                
+                                <input type="hidden" name="con_sin_hotel"  value="ch" form="frm_editar_hotel">   
+                                <input type="hidden" name="acomodacion_hotel"  value="{{$s}}_{{$d}}_{{$m}}_{{$t}}" form="frm_editar_hotel">                                
+                                <input type="hidden" name="con_sin_hotel" value="ch" form="frm_cambiar_hotel">   
+                                <input type="hidden" name="acomodacion_hotel" value="{{$s}}_{{$d}}_{{$m}}_{{$t}}" form="frm_cambiar_hotel">
+                                
+                            @endif
+                            @foreach($cotizaciones as $cotizacion)
+                                <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="{{$cotizacion->id}}">
+                            @endforeach
                         </div>
                         <div class="row">
                             <div class="col text-right">PRICE PER PERSON</div>

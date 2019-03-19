@@ -155,41 +155,43 @@
                     $ultimo_dia=\Carbon\Carbon::createFromFormat('Y-m-d',$ultimo_dia);
                     $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
                 @endphp
-                @if($total>0)
-                    @if($confirmados==0)
-                        @if($dias_restantes>=0)
-                            <div class="row mb-1 border border-top-0 border-right-0 border-left-0 mx-0 {{$color}}">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <b class="text-success text-12">{{$cotizacion_cat_->codigo}}</b>
-                                            <a href="#!" title="Itinerario" data-toggle="popover" data-trigger="focus" data-content="{{$itinerario}}"> <i class="fas fa-eye text-12"></i></a>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row px-0">
-                                                <div class="col-6 text-grey-goto pr-0">
-                                                    <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
-                                                        <b class="text-10">{{strtoupper($dato_cliente)}}</b>
-                                                    </a>
-                                                </div>
-                                                <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">
-                                                    <b class="text-10">x{{$cotizacion_cat_->nropersonas}}</b>
-                                                </div>
-                                                <div class="col-1 bg-danger text-center text-white mx-0 px-0">
-                                                    <b class="text-10">{{$cotizacion_cat_->duracion}}d</b>
-                                                </div>
-                                                <div class="col-4 mx-0 pr-0">
-                                                    <b class="text-10">{{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</b>
-                                                </div>
-                                                {{--<div class="col-1 px-0">--}}
-                                                {{--<b class="text-12">{{ round(($confirmados*100)/$total,2)}}%</b>--}}
-                                                {{--</div>--}}
+                @if($cotizacion_cat_->anulado>0)
+                    @if($total>0)
+                        @if($confirmados==0)
+                            @if($dias_restantes>=0)
+                                <div class="row mb-1 border border-top-0 border-right-0 border-left-0 mx-0 {{$color}}">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <b class="text-success text-12">{{$cotizacion_cat_->codigo}}</b>
+                                                <a href="#!" title="Itinerario" data-toggle="popover" data-trigger="focus" data-content="{{$itinerario}}"> <i class="fas fa-eye text-12"></i></a>
                                             </div>
-                                        </div>
+                                            <div class="col-12">
+                                                <div class="row px-0">
+                                                    <div class="col-6 text-grey-goto pr-0">
+                                                        <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
+                                                            <b class="text-10">{{strtoupper($dato_cliente)}}</b>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">
+                                                        <b class="text-10">x{{$cotizacion_cat_->nropersonas}}</b>
+                                                    </div>
+                                                    <div class="col-1 bg-danger text-center text-white mx-0 px-0">
+                                                        <b class="text-10">{{$cotizacion_cat_->duracion}}d</b>
+                                                    </div>
+                                                    <div class="col-4 mx-0 pr-0">
+                                                        <b class="text-10">{{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</b>
+                                                    </div>
+                                                    {{--<div class="col-1 px-0">--}}
+                                                    {{--<b class="text-12">{{ round(($confirmados*100)/$total,2)}}%</b>--}}
+                                                    {{--</div>--}}
+                                                </div>
+                                            </div>
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         @endif
                     @endif
                 @endif
@@ -344,42 +346,44 @@
                     $ultimo_dia=\Carbon\Carbon::createFromFormat('Y-m-d',$ultimo_dia);
                     $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
                 @endphp
-                @if($total>0)
-                    @if($confirmados>=1&&$confirmados<$total)
-                        @if($dias_restantes>=0)
-                            <div class="row mb-1 border border-top-0 border-right-0 border-left-0 mx-0 {{$color}}">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <b class="text-success text-12">{{$cotizacion_cat_->codigo}}</b>
-                                            <a href="#!" title="Itinerario" data-toggle="popover" data-trigger="focus" data-content="{{$itinerario}}"> <i class="fas fa-eye text-12"></i></a>
-                                        </div>
-                                        <div class="col-2 col-1 bg-grey-goto text-center text-white mx-0 px-0">
-                                            <b class="text-12">{{ round(($confirmados*100)/$total,1)}}%</b>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row px-0">
-                                                <div class="col-6 text-grey-goto pr-0">
-                                                    <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
-                                                        <b class="text-10">{{strtoupper($dato_cliente)}}</b>
-                                                    </a>
-                                                </div>
-                                                <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">
-                                                    <b class="text-10">x{{$cotizacion_cat_->nropersonas}}</b>
-                                                </div>
-                                                <div class="col-1 bg-danger text-center text-white mx-0 px-0">
-                                                    <b class="text-10">{{$cotizacion_cat_->duracion}}d</b>
-                                                </div>
-                                                <div class="col-4 mx-0 pr-0">
-                                                    <b class="text-10">{{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</b>
-                                                </div>
-
+                @if($cotizacion_cat_->anulado>0)
+                    @if($total>0)
+                        @if($confirmados>=1&&$confirmados<$total)
+                            @if($dias_restantes>=0)
+                                <div class="row mb-1 border border-top-0 border-right-0 border-left-0 mx-0 {{$color}}">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <b class="text-success text-12">{{$cotizacion_cat_->codigo}}</b>
+                                                <a href="#!" title="Itinerario" data-toggle="popover" data-trigger="focus" data-content="{{$itinerario}}"> <i class="fas fa-eye text-12"></i></a>
                                             </div>
-                                        </div>
+                                            <div class="col-2 col-1 bg-grey-goto text-center text-white mx-0 px-0">
+                                                <b class="text-12">{{ round(($confirmados*100)/$total,1)}}%</b>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="row px-0">
+                                                    <div class="col-6 text-grey-goto pr-0">
+                                                        <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
+                                                            <b class="text-10">{{strtoupper($dato_cliente)}}</b>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">
+                                                        <b class="text-10">x{{$cotizacion_cat_->nropersonas}}</b>
+                                                    </div>
+                                                    <div class="col-1 bg-danger text-center text-white mx-0 px-0">
+                                                        <b class="text-10">{{$cotizacion_cat_->duracion}}d</b>
+                                                    </div>
+                                                    <div class="col-4 mx-0 pr-0">
+                                                        <b class="text-10">{{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</b>
+                                                    </div>
 
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         @endif
                     @endif
                 @endif
@@ -534,41 +538,43 @@
                     $ultimo_dia=\Carbon\Carbon::createFromFormat('Y-m-d',$ultimo_dia);
                     $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
                 @endphp
-                @if($total>0)
-                    @if($confirmados==$total)
-                        @if($dias_restantes>=0)
-                            <div class="row mb-1 border border-top-0 border-right-0 border-left-0 mx-0">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <b class="text-success text-12">{{$cotizacion_cat_->codigo}}</b>
-                                            <a href="#!" title="Itinerario" data-toggle="popover" data-trigger="focus" data-content="{{$itinerario}}"> <i class="fas fa-eye text-12"></i></a>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row px-0">
-                                                <div class="col-6 text-grey-goto pr-0">
-                                                    <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
-                                                        <b class="text-10">{{strtoupper($dato_cliente)}}</b>
-                                                    </a>
-                                                </div>
-                                                <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">
-                                                    <b class="text-10">x{{$cotizacion_cat_->nropersonas}}</b>
-                                                </div>
-                                                <div class="col-1 bg-danger text-center text-white mx-0 px-0">
-                                                    <b class="text-10">{{$cotizacion_cat_->duracion}}d</b>
-                                                </div>
-                                                <div class="col-4 mx-0 pr-0">
-                                                    <b class="text-10">{{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</b>
-                                                </div>
-                                                {{--<div class="col-1 px-0">--}}
-                                                {{--<b class="text-12">{{ round(($confirmados*100)/$total,2)}}%</b>--}}
-                                                {{--</div>--}}
+                @if($cotizacion_cat_->anulado>0)
+                    @if($total>0)
+                        @if($confirmados==$total)
+                            @if($dias_restantes>=0)
+                                <div class="row mb-1 border border-top-0 border-right-0 border-left-0 mx-0">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <b class="text-success text-12">{{$cotizacion_cat_->codigo}}</b>
+                                                <a href="#!" title="Itinerario" data-toggle="popover" data-trigger="focus" data-content="{{$itinerario}}"> <i class="fas fa-eye text-12"></i></a>
                                             </div>
-                                        </div>
+                                            <div class="col-12">
+                                                <div class="row px-0">
+                                                    <div class="col-6 text-grey-goto pr-0">
+                                                        <a href="{{route('book_show_path',$cotizacion_cat_->id)}}">
+                                                            <b class="text-10">{{strtoupper($dato_cliente)}}</b>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-1 bg-grey-goto text-center text-white mx-0 px-0">
+                                                        <b class="text-10">x{{$cotizacion_cat_->nropersonas}}</b>
+                                                    </div>
+                                                    <div class="col-1 bg-danger text-center text-white mx-0 px-0">
+                                                        <b class="text-10">{{$cotizacion_cat_->duracion}}d</b>
+                                                    </div>
+                                                    <div class="col-4 mx-0 pr-0">
+                                                        <b class="text-10">{{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</b>
+                                                    </div>
+                                                    {{--<div class="col-1 px-0">--}}
+                                                    {{--<b class="text-12">{{ round(($confirmados*100)/$total,2)}}%</b>--}}
+                                                    {{--</div>--}}
+                                                </div>
+                                            </div>
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         @endif
                     @endif
                 @endif
@@ -725,13 +731,23 @@
                 @endphp
                 @if($total>0)
                     {{--@if($confirmados==$total)--}}
-                        @if($dias_restantes<0)
+                        @if($dias_restantes<0||$cotizacion_cat_->anulado==0)
                             <div class="row mb-1 border border-top-0 border-right-0 border-left-0 mx-0">
                                 <div class="col">
                                     <div class="row">
                                         <div class="col-12">
-                                            <b class="text-success text-12">{{$cotizacion_cat_->codigo}}</b>
-                                            <a href="#!" title="Itinerario" data-toggle="popover" data-trigger="focus" data-content="{{$itinerario}}"> <i class="fas fa-eye text-12"></i></a>
+                                                <div class="row">
+                                                        <div class="col-4">
+                                                            <b class="text-success text-12">{{$cotizacion_cat_->codigo}}</b>
+                                                            <a href="#!" title="Itinerario" data-toggle="popover" data-trigger="focus" data-content="{{$itinerario}}"> <i class="fas fa-eye text-12"></i></a>
+                                                        </div>
+                                                        <div class="col-8 text-right">    
+                                                        @if($cotizacion_cat_->anulado==0)
+                                                            <span class="badge badge-warning text-11">Anulado el {{MisFunciones::fecha_peru_hora($cotizacion_cat_->anulado_fecha)}}</span>
+                                                        @endif
+                                                        </div>
+                                                    </div> 
+                                            
                                         </div>
                                         <div class="col-12">
                                             <div class="row px-0">
