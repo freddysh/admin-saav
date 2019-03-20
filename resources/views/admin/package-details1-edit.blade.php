@@ -256,7 +256,7 @@
             <div class="modal fade" id="exampleModal_d" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <form id="frm_add_hotel" action="{{route('agregar_nuevo_hotel_path')}}" method="post">
+                        <form id="frm_add_dias" action="{{route('ventas.edit.agregar.dia')}}" method="post">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO HOTEL</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -266,38 +266,14 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="form-group">
-                                            <label for="dia">Ingrese el dia</label>
-                                            <select class="form-control" name="dia" id="dia">
-                                                @foreach($cotizaciones as $cotizacion)
-                                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
-                                                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
-                                                            <option value="{{$itinerario->id}}">DIA {{$itinerario->dias}}</option>
-                                                        @endforeach
-                                                    @endforeach
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
                                         {{csrf_field()}}
-                                        <select class="form-control" name="txt_destino" id="txt_destino" onchange="llamar_hoteles($(this).val(),'n','{{$itinerario->id}}')">
+                                        <select class="form-control" name="txt_destino" id="txt_destino" onchange="buscar_day_by_day_quotes_step1($(this).val())">
+                                            <option value="0">Escoja un destino</option>
                                             @foreach($destinations as $destino)
-                                                <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                                                <option value="{{$destino->id}}">{{$destino->destino}}</option>
                                             @endforeach
                                         </select>
-                                        <div id="lista_hoteles_n_{{$itinerario->id}}" class="row mt-4">
-                                            @foreach($hoteles as $hotel)
-                                                <div class="col">
-                                                    <input type="hidden" name="hotel_id_{{$hotel->estrellas}}" value="{{$hotel->id}}">
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" id="customRadio{{$hotel->estrellas}}" name="categoria_[]" class="custom-control-input" value="{{$hotel->estrellas}}">
-                                                        <label class="custom-control-label" for="customRadio{{$hotel->estrellas}}">{{$hotel->estrellas}} <i class="fas fa-star text-warning"></i></label>
-                                                    </div>
-                                                </div>
-                                            @endforeach
+                                        <div id="resultado_busqueda" class="text-left align-middle col-12 margin-top-5" style="height: 500px; overflow-y: auto;">
                                         </div>
                                     </div>
                                 </div>
@@ -306,14 +282,9 @@
                                 {{csrf_field()}}
                                 @foreach($cotizaciones as $cotizacion)
                                     <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
-                                    @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
-                                        @foreach($paquete->paquete_precios as $hotel)
-                                            <input type="hidden" name="pqt_precio" value="{{$hotel->id}}">
-                                        @endforeach
-                                    @endforeach
                                 @endforeach
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary" >Agregar servicio</button>
+                                <button type="submit" class="btn btn-primary" >Agregar dia</button>
                             </div>
                         </form>
                     </div>

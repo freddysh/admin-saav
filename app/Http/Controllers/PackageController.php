@@ -1140,6 +1140,15 @@ class PackageController extends Controller
             return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days'));
         }
     }
+    public function buscar_day_by_day_ajax_dia(Request $request)
+    {
+        //
+        $destino = $request->input('destino');
+        if ($destino != 0){
+            $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->groupBy('tipo','id')->get()->sortBy('tipo');
+            return view('admin.daybyday.get-day-by-day-x-destino-dia', compact('day_by_days'));
+        }
+    }
     public function itineraries_listar_pagina(Request $request)
     {
         set_time_limit(0);

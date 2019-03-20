@@ -1101,6 +1101,10 @@ Route::post('admin/package/buscar-day-by-day/ajax',[
     'uses' => 'PackageController@buscar_day_by_day_ajax',
     'as' => 'package_buscar_day_by_day_ajax_path',
 ]);
+Route::post('admin/package/buscar-day-by-day/ajax/dia',[
+    'uses' => 'PackageController@buscar_day_by_day_ajax_dia',
+    'as' => 'package_buscar_day_by_day_ajax_path',
+]);
 Route::post('admin/book/guardar-datos',[
     'uses' => 'BookController@guardar_datos',
     'as' => 'guardar_datos_flights_path',
@@ -1347,5 +1351,13 @@ Route::post('/admin/contabilidad/traer-datos', [
 Route::post('/admin/contabilidad/hotel/store', [
     'uses' => 'ContabilidadController@hotel_store',
     'as' => 'contabilidad.hotel.store',
+]);
+Route::post('/admin/ventas/edit/agregar/dia', [
+    'uses' => 'PackageCotizacionController@agregar_dia',
+    'as' => 'ventas.edit.agregar.dia',
+]);
+Route::post('/admin/show-cotizacion/agregar-pago', [
+    'uses' => 'PackageCotizacionController@agregar_pago',
+    'as' => 'guardar.paquete.pagos',
 ]);
 

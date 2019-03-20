@@ -280,11 +280,12 @@
                     <td>PLAN</td>
                     <td>FILE</td>
                     <td>TOTAL</td>
-                    <td>DETALLE</td>
+                    <td class="d-none">DETALLE</td>
                     <td>EDITAR</td>
                     <td>PDF</td>
                     <td>LINK</td>
                     <td>CREAR TEMPLATE</td>
+                    <td>PLAN DE PAGOS</td>
                     <td>AGREGAR ARCHIVOS</td>
                     <td>AGREGAR NOTAS</td>
                     <td>PEDIR DATOS</td>
@@ -322,15 +323,96 @@
                         @endforeach
                     </td>
                     <td><small class="display-block text-primary"><sup>$</sup>{{$valor}}</small></td>
-                    <td><a class="text-primary" href="#!" data-toggle="tooltip" data-placement="top" title="Detalles"><b><i class="fa fa-eye" aria-hidden="true"></i></b></a></td>
+                    <td class="d-none"><a class="text-primary" href="#!" data-toggle="tooltip" data-placement="top" title="Detalles"><b><i class="fa fa-eye" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-warning" href="{{route('show_current_paquete_edit_path',[$paquete->id])}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.com.pe/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a></td>
                     <td><a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a></td>
                     <td>
-                        <botton class="btn btn-primary" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_archivos">
-                            <i class="fas fa-file-alt"></i>
-                        </botton>
+                        <a class="text-primary small" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_plan_pagos">
+                            <i class="fas fa-file-alt"></i>Plan de pagos
+                        </a>
+                        <div class="modal fade" id="myModal_plan_pagos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                <form id="guardar_paquete_pagos_{{$paquete->id}}" action="{{route('guardar.paquete.pagos')}}" method="post">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel">Plan de pagos</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body clearfix">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <b><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}}) | <b class="text-primary">TOTAL:<sup>$</sup>{{$valor}}</b>
+                                                </div>
+                                                <div class="col-12">
+                                                    <p><b>PLAN DE PAGOS</b></p>
+                                                    <table class="table table-stripe table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>FECHA</th>
+                                                                <th>NOTA</th>
+                                                                <th>MONTO</th>
+                                                                <th>OPCIONES</th>
+                                                            </tr>
+                                                        </thead>
+                                                    <tbody id="lista_pagos_{{$paquete->id}}">
+                                                            @php
+                                                                $i=1;
+                                                            @endphp
+                                                            <tr id="pago_{{$paquete->id}}_{{$i}}">
+                                                            <td style="width:180px;"><input type="date" class="form-control" name="fecha_pago" id="fecha_pago_{{$paquete->id}}_{{$i}}" style="width:180px;" required></td>
+                                                            <td><input type="text" class="form-control" name="nota_pago" id="nota_pago_{{$paquete->id}}_{{$i}}"  required></td>
+                                                                <td style="width:100px"><input type="number" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$valor}}" onchange="sumar_pagos_monto()"  required></td>
+                                                                <td>
+                                                                    <input type="hidden" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">                
+                                                                    <button type="button" class="btn btn-unset" id="btn_confirmar_{{$paquete->id}}_{{$i}}" onclick="cambiar_estado('{{$paquete->id}}','{{$i}}')">
+                                                                        <i class="fas fa-unlock"></i>   
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-success" onclick="agregar_plan_pago('{{$paquete->id}}')">
+                                                                        <i class="fas fa-plus"></i>   
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            @php
+                                                                $i++;
+                                                            @endphp
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>TOTAL</b>   
+                                                                </td>
+                                                                <td>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control" name="nota_pago" id="total" disabled="disabled">
+                                                                </td>
+                                                                <td>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>   
+                                                    <input type="hidden" id="nro_pagos_{{$paquete->id}}" value="1">   
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{csrf_field()}}
+                                            <input type="hidden" name="id" value="{{$cotizacion_->id}}">
+                                            <input type="hidden" name="paquete" value="{{$paquete->id}}">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary" onclick="preparar_envio_pagos('guardar_paquete_pagos_{{$paquete->id}}')">Subir archivo</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <a class="text-primary small" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_archivos">
+                            <i class="fas fa-file-alt"></i>Subir archivos
+                        </a>
                         <div class="modal fade" id="myModal_archivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
