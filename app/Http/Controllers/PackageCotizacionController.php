@@ -46,6 +46,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use App\PaquetePagoCliente;
 
 class PackageCotizacionController extends Controller
 {
@@ -4261,7 +4262,58 @@ class PackageCotizacionController extends Controller
     }
 
     public function agregar_pago(Request $request){
-        return response()->json(['mensaje'=>$request->all()]);
+        //-- Lisita de pagos exstentes
+        $fecha_pago_=$request->input('fecha_pago_');
+        $nota_pago_=$request->input('nota_pago_');
+        $monto_pago_=$request->input('monto_pago_');
+        $estado_pago_=$request->input('estado_pago_');
+        $pago_id_=$request->input('pago_id_');
+        $cotizacion_id=$request->input('cotizacion_id');
+        $paquete_id=$request->input('paquete_id');
+        if(isset($pago_id_)){
+            $pagos=PaquetePagoCliente::where('paquete_cotizaciones_id',$paquete_id)->get();
+                    
+            // agregamos los nuevos pagos
+            foreach($pagos as $key => $value){
+                if(in_array($value->id,$pago_id_)){
+                    $arreglo_pos=array_keys($pago_id_,$value->id);
+                    $temp=PaquetePagoCliente::find($value->id);
+                    $temp->fecha=$fecha_pago_[$arreglo_pos[0]];
+                    $temp->nota=$nota_pago_[$arreglo_pos[0]];
+                    $temp->monto=$monto_pago_[$arreglo_pos[0]];
+                    $temp->estado=$estado_pago_[$arreglo_pos[0]];
+                    $temp->save();
+                    // dd($temp);
+                }
+                else{
+                    $temp=PaquetePagoCliente::find($value->id);
+                    $temp->delete();
+                }
+            }
+        }
+        // dd($request->all());
+        
+        $fecha_pago=$request->input('fecha_pago');
+        $nota_pago=$request->input('nota_pago');
+        $monto_pago=$request->input('monto_pago');
+        $estado_pago=$request->input('estado_pago');
+
+        if(isset($estado_pago)){
+            // agregamos los nuevos pagos
+            foreach($estado_pago as $key => $value1){
+                $paquete_pago_cliente=new PaquetePagoCliente();
+                $paquete_pago_cliente->fecha=$fecha_pago[$key];
+                $paquete_pago_cliente->nota=$nota_pago[$key];
+                $paquete_pago_cliente->monto=$monto_pago[$key];
+                $paquete_pago_cliente->estado=$estado_pago[$key];
+                $paquete_pago_cliente->paquete_cotizaciones_id=$paquete_id;
+                $paquete_pago_cliente->save();
+                // dd($paquete_pago_cliente);
+            }
+        }
+
+        
+        return redirect()->back();
     }
     
 }

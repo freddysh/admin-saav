@@ -336,7 +336,7 @@
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                 <form id="guardar_paquete_pagos_{{$paquete->id}}" action="{{route('guardar.paquete.pagos')}}" method="post">
-                                        <div class="modal-header">
+                                        <div class="modal-header bg-primary text-white">
                                             <h4 class="modal-title" id="myModalLabel">Plan de pagos</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
@@ -356,37 +356,89 @@
                                                                 <th>OPCIONES</th>
                                                             </tr>
                                                         </thead>
-                                                    <tbody id="lista_pagos_{{$paquete->id}}">
+                                                        <tbody id="lista_pagos_{{$paquete->id}}">
                                                             @php
-                                                                $i=1;
+                                                                $total_pago=0;
                                                             @endphp
-                                                            <tr id="pago_{{$paquete->id}}_{{$i}}">
-                                                            <td style="width:180px;"><input type="date" class="form-control" name="fecha_pago" id="fecha_pago_{{$paquete->id}}_{{$i}}" style="width:180px;" required></td>
-                                                            <td><input type="text" class="form-control" name="nota_pago" id="nota_pago_{{$paquete->id}}_{{$i}}"  required></td>
-                                                                <td style="width:100px"><input type="number" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$valor}}" onchange="sumar_pagos_monto()"  required></td>
-                                                                <td>
-                                                                    <input type="hidden" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">                
-                                                                    <button type="button" class="btn btn-unset" id="btn_confirmar_{{$paquete->id}}_{{$i}}" onclick="cambiar_estado('{{$paquete->id}}','{{$i}}')">
-                                                                        <i class="fas fa-unlock"></i>   
-                                                                    </button>
-                                                                    <button type="button" class="btn btn-success" onclick="agregar_plan_pago('{{$paquete->id}}')">
-                                                                        <i class="fas fa-plus"></i>   
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                            @php
-                                                                $i++;
-                                                            @endphp
+                                                            @if($paquete->pagos_cliente->count()==0)
+                                                                @php
+                                                                    $i=1;
+                                                                    $total_pago=$valor;
+                                                                @endphp
+                                                                <tr id="pago_{{$paquete->id}}_{{$i}}">
+                                                                    <td style="width:180px;">
+                                                                        <input type="date" class="form-control" name="fecha_pago[]" id="fecha_pago_{{$paquete->id}}_{{$i}}" style="width:180px;" required>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control" name="nota_pago[]" id="nota_pago_{{$paquete->id}}_{{$i}}"  required>
+                                                                    </td>
+                                                                    <td style="width:100px">
+                                                                        <input type="number" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$valor}}" onchange="sumar_pagos_monto('{{$paquete->id}}')"  required>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="hidden" name="estado_pago[]" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">             
+                                                                        <button type="button" class="btn btn-unset" id="btn_confirmar_{{$paquete->id}}_{{$i}}" onclick="cambiar_estado('{{$paquete->id}}','{{$i}}')">
+                                                                            <i class="fas fa-unlock"></i>   
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-primary" onclick="agregar_plan_pago('{{$paquete->id}}')">
+                                                                            <i class="fas fa-plus"></i>   
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                                @php
+                                                                    $i++;
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $k=0;
+                                                                @endphp
+                                                                @foreach ($paquete->pagos_cliente as $pagos_cliente)
+                                                                    @php
+                                                                        $total_pago+=$pagos_cliente->monto;
+                                                                        $k++;
+                                                                    @endphp
+                                                                    <tr id="pago_{{$paquete->id}}_{{$pagos_cliente->id}}">
+                                                                        <td style="width:180px;">
+                                                                        <input type="date" class="form-control" name="fecha_pago_[]" id="fecha_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->fecha}}" style="width:180px;" required>
+                                                                        </td>
+                                                                        <td>
+                                                                        <input type="text" class="form-control" name="nota_pago_[]" id="nota_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->nota}}" required>
+                                                                        </td>
+                                                                        <td style="width:100px">
+                                                                            <input type="number" class="form-control" name="monto_pago_[]" id="monto_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" style="width:100px" value="{{$pagos_cliente->monto}}" onchange="sumar_pagos_monto('{{$paquete->id}}')"  required>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="hidden" name="pago_id_[]" value="{{$pagos_cliente->id}}">
+                                                                            <input type="hidden" name="estado_pago_[]" id="confirmar_pagos_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->estado}}">
+                                                                                    
+                                                                            <button type="button" class="btn @if($pagos_cliente->estado=='0') btn-unset @else btn-success @endif " id="btn_confirmar_{{$paquete->id}}_{{$pagos_cliente->id}}" onclick="cambiar_estado('{{$paquete->id}}','{{$pagos_cliente->id}}')">
+                                                                                <i class="fas @if($pagos_cliente->estado=='0') fa-unlock @else fa-lock @endif"></i>   
+                                                                            </button>
+                                                                            @if($k==1)
+                                                                                <button type="button" class="btn btn-primary" onclick="agregar_plan_pago('{{$paquete->id}}')">
+                                                                                    <i class="fas fa-plus"></i>   
+                                                                                </button>
+                                                                            @else
+                                                                                <button type="button" class="btn btn-danger" onclick="borrar_plan_pago('{{$paquete->id}}','{{$pagos_cliente->id}}')">
+                                                                                    <i class="fas fa-trash-alt"></i>   
+                                                                                </button>
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endif
+                                                            
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
                                                                 <td>
-                                                                    <b>TOTAL</b>   
+                                                                    <b>SUMATORIA</b>   
                                                                 </td>
                                                                 <td>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" class="form-control" name="nota_pago" id="total" disabled="disabled">
+                                                                <input type="text" class="form-control" name="total" id="total_{{$paquete->id}}" value="{{$total_pago}}" readonly>
+                                                                <input type="hidden" name="total" id="total_pago_{{$paquete->id}}" value="{{$valor}}">
                                                                 </td>
                                                                 <td>
                                                                 </td>
@@ -399,10 +451,10 @@
                                         </div>
                                         <div class="modal-footer">
                                             {{csrf_field()}}
-                                            <input type="hidden" name="id" value="{{$cotizacion_->id}}">
-                                            <input type="hidden" name="paquete" value="{{$paquete->id}}">
+                                            <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
+                                            <input type="hidden" name="paquete_id" value="{{$paquete->id}}">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary" onclick="preparar_envio_pagos('guardar_paquete_pagos_{{$paquete->id}}')">Subir archivo</button>
+                                        <button type="submit" class="btn btn-primary" onclick="preparar_envio_pagos('guardar_paquete_pagos_{{$paquete->id}}','{{$paquete->id}}')">Guardar</button>
                                         </div>
                                     </form>
                                 </div>

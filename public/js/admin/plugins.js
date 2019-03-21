@@ -7059,11 +7059,11 @@ function agregar_plan_pago(paquete_id){
     
     var cadena=''+
             '<tr id="pago_'+paquete_id+'_'+nropagos+'">'+
-            '<td style="width:180px;"><input type="date" class="form-control" name="fecha_pago" id="fecha_pago_'+paquete_id+'_'+nropagos+'" style="width:180px"  required></td>'+
-            '<td><input type="text" class="form-control" name="nota_pago" id="nota_pago_'+paquete_id+'_'+nropagos+'" required></td>'+
-            '<td style="width:100px"><input type="number" class="form-control" name="monto_pago[]" id="monto_pago_'+paquete_id+'_'+nropagos+'" style="width:100px" onchange="sumar_pagos_monto()" required></td>'+
+            '<td style="width:180px;"><input type="date" class="form-control" name="fecha_pago[]" id="fecha_pago_'+paquete_id+'_'+nropagos+'" style="width:180px"  required></td>'+
+            '<td><input type="text" class="form-control" name="nota_pago[]" id="nota_pago_'+paquete_id+'_'+nropagos+'" required></td>'+
+            '<td style="width:100px"><input type="number" class="form-control" name="monto_pago[]" id="monto_pago_'+paquete_id+'_'+nropagos+'" style="width:100px" onchange="sumar_pagos_monto(\''+paquete_id+'\')" required></td>'+
             '<td>'+
-            '<input type="hidden" id="confirmar_pagos_'+paquete_id+'_'+nropagos+'" value="0">'+
+            '<input type="hidden" name="estado_pago[]" id="confirmar_pagos_'+paquete_id+'_'+nropagos+'" value="0"> '+
             '<button type="button"  class="btn btn-unset" id="btn_confirmar_'+paquete_id+'_'+nropagos+'" onclick="cambiar_estado(\''+paquete_id+'\',\''+nropagos+'\')">'+
             '       <i class="fas fa-unlock"></i>   '+
             '   </button>'+
@@ -7077,6 +7077,7 @@ function agregar_plan_pago(paquete_id){
 
 function borrar_plan_pago(paquete_id,nropagos){
     $('#pago_'+paquete_id+'_'+nropagos).remove();    
+    sumar_pagos_monto(paquete_id);
 } 
 
 function cambiar_estado(paquete_id,pos){
@@ -7086,75 +7087,103 @@ function cambiar_estado(paquete_id,pos){
         $('#btn_confirmar_'+paquete_id+'_'+pos).removeClass('btn-unset'); 
         $('#btn_confirmar_'+paquete_id+'_'+pos).addClass('btn-success');
         $('#btn_confirmar_'+paquete_id+'_'+pos).html('<i class="fas fa-lock"></i>');
-        $('#fecha_pago_'+paquete_id+'_'+pos).attr('disabled', true);   
-        $('#monto_pago_'+paquete_id+'_'+pos).attr('disabled', true);  
+        // $('#fecha_pago_'+paquete_id+'_'+pos).attr('readonly', true);   
+        // $('#monto_pago_'+paquete_id+'_'+pos).attr('readonly', true); 
+        // $('#nota_pago_'+paquete_id+'_'+pos).attr('readonly', true);    
         $('#confirmar_pagos_'+paquete_id+'_'+pos).val('1');
     }
     else if(estado==1){
         $('#btn_confirmar_'+paquete_id+'_'+pos).removeClass('btn-success'); 
         $('#btn_confirmar_'+paquete_id+'_'+pos).addClass('btn-unset');
         $('#btn_confirmar_'+paquete_id+'_'+pos).html('<i class="fas fa-unlock"></i>');
-        $('#fecha_pago_'+paquete_id+'_'+pos).attr('disabled', false);   
-        $('#monto_pago_'+paquete_id+'_'+pos).attr('disabled', false);  
+        // $('#fecha_pago_'+paquete_id+'_'+pos).attr('readonly', false);   
+        // $('#monto_pago_'+paquete_id+'_'+pos).attr('readonly', false);   
+        // $('#nota_pago_'+paquete_id+'_'+pos).attr('readonly', false);  
         $('#confirmar_pagos_'+paquete_id+'_'+pos).val('0');
     }
 }
 
-function preparar_envio_pagos(id){
-    // alert('hola');
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('[name="_token"]').val()
+function preparar_envio_pagos(id,paquete_id){
+    $('#'+id).submit(function() {
+        console.log('total:'+$('#total_'+paquete_id).val()+',total_pago'+$('#total_pago_'+paquete_id).val());
+        if(parseFloat($('#total_'+paquete_id).val())<parseFloat($('#total_pago_'+paquete_id).val())){
+            swal(
+                'MESANJE DEL SISTEMA',
+                'Las suma de los montos es menor al total.',
+                'warning'
+            )
+            return false;
         }
+        else if(parseFloat($('#total_'+paquete_id).val())>parseFloat($('#total_pago_'+paquete_id).val())){
+            swal(
+                'MESANJE DEL SISTEMA',
+                'Las suma de los montos es mayor al total.',
+                'warning'
+            )
+            return false;
+        }
+        // Enviamos el formulario usando AJAX
+        // $.ajax({
+        //     type: 'POST',
+        //     url: $(this).attr('action'),
+        //     data: $(this).serialize(),
+        //     // Mostramos un mensaje con la respuesta de PHP
+        //     success: function(data) {
+        //         if(data==1){
+        //             $('#for_'+id).addClass('d-none');
+
+        //             $('#result_'+id).removeClass('text-danger');
+        //             $('#result_'+id).addClass('text-success');
+        //             $('#result_'+id).html('Pago guardado Correctamente!');
+        //         }
+        //         else{
+        //             $('#result_'+id).removeClass('text-success');
+        //             $('#result_'+id).addClass('text-danger');
+        //             $('#result_'+id).html('Error al pagar, intentelo de nuevo');
+        //         }
+        //     }
+        // })
+        // return false;
     });
-    // var cost_s_serv=$('#cost_s_serv').val();
-    // var cost_d_serv=$('#cost_d_serv').val();
-    // var cost_m_serv=$('#cost_m_serv').val();
-    // var cost_t_serv=$('#cost_t_serv').val();
-    // var cost_sh_serv=$('#cost_sh_serv').val();
-
-    // var utilidad_s_serv=$('#utilidad_s_serv').val();
-    // var utilidad_d_serv=$('#utilidad_d_serv').val();
-    // var utilidad_m_serv=$('#utilidad_m_serv').val();
-    // var utilidad_t_serv=$('#utilidad_t_serv').val();
-    // var utilidad_sh_serv=$('#utilidad_sh_serv').val();
-
-    // var pv_s_serv=$('#pv_s_serv').val();
-    // var pv_d_serv=$('#pv_d_serv').val();
-    // var pv_m_serv=$('#pv_m_serv').val();
-    // var pv_t_serv=$('#pv_t_serv').val();
-    // var pv_sh_serv=$('#pv_sh_serv').val();
-
-    // var con_sin_hotel=$('#con_sin_hotel').val();
-    // var acomodacion_hotel=$('#acomodacion_hotel').val();
-    $.ajax({
-        url: $('#'+id).attr('action'),
-        type: 'post',
-        data: $('#'+id).serialize(),
-        success: function (data) {
-            console.log(data.mensaje);
-            // location.reload();
-            if(data.mensaje=='1'){
-                swal(
-                    'MESANJE DEL SISTEMA',
-                    'Datos guardados correctamente.',
-                    'success'
-                )
-            }
-        },
-        error: function () {
+    
+    // $.ajaxSetup({
+    //     headers: {
+    //         'X-CSRF-TOKEN': $('[name="_token"]').val()
+    //     }
+    // });
+    
+    // $.ajax({
+    //     url: $('#'+id).attr('action'),
+    //     type: 'post',
+    //     data: $('#'+id).serialize(),
+    //     success: function (data) {
+    //         console.log(data.mensaje);
+    //         // location.reload();
+    //         if(data.mensaje=='1'){
+    //             swal(
+    //                 'MESANJE DEL SISTEMA',
+    //                 'Datos guardados correctamente.',
+    //                 'success'
+    //             )
+    //         }
+    //     },
+    //     error: function () {
             
-        }
-    });
+    //     }
+    // });
 }
 
-function sumar_pagos_monto(){
+function sumar_pagos_monto(paquete_id){
     console.log('sumar_pagos_monto');
     var suma=0;
     $("input[name='monto_pago[]']").each(function(indice, elemento) {
         if($.isNumeric($(elemento).val()))
             suma+=parseFloat($(elemento).val());    
     });
-    $('#total').val(suma);
+    $("input[name='monto_pago_[]']").each(function(indice, elemento) {
+        if($.isNumeric($(elemento).val()))
+            suma+=parseFloat($(elemento).val());    
+    });
+    $('#total_'+paquete_id).val(suma);
     
 }

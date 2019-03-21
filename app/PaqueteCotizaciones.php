@@ -37,5 +37,8 @@ class PaqueteCotizaciones extends Model
     {
         return $this->hasMany(ItinerarioServiciosAcumPago::class, 'paquete_cotizaciones_id');
     }
-
+    public function pagos_cliente()
+    {
+        return $this->hasMany(PaquetePagoCliente::class, 'paquete_cotizaciones_id');
+    }
 }

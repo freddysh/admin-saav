@@ -70,7 +70,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="txt_codigo" class="font-weight-bold text-secondary">Codigo</label>
-                                        <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}" disabled="disabled">
+                                        <input class="form-control" type="text" id="txt_codigo" name="txt_codigo" value="{{$codigo}}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-6">
