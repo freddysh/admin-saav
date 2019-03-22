@@ -228,6 +228,56 @@
                             @endif
                         @endforeach
                     @endforeach
+                    @php
+                        $total=0;
+                        $sumatoria=0;
+                    @endphp
+                    @foreach($paquete->itinerario_cotizaciones as $itinerarios)
+                        @php
+                            $ultimo_dia=$itinerarios->fecha;
+                            $itinerario.='<p><b class="text-primary">Dia '.$itinerarios->dias.': </b>'.date_format(date_create($itinerarios->fecha), 'jS M Y').'</p>';
+                        @endphp
+                        @foreach($itinerarios->itinerario_servicios as $servicios)
+                            @php
+                                $total++;
+                            @endphp
+                            @if($servicios->precio_grupo==1)
+                                @php
+                                    $sumatoria+=$servicios->precio;
+                                @endphp
+                            @else
+                                @php
+                                    $sumatoria+=$servicios->precio*$cotizacion_cat_->nropersonas;
+                                @endphp
+                            @endif
+                        @endforeach
+                        @foreach($itinerarios->hotel as $hotel)
+                            @php
+                                $total++;
+                            @endphp
+                            @if($hotel->personas_s>0)
+                                @php
+                                    $sumatoria+=$hotel->personas_s*$hotel->precio_s;
+                                @endphp
+                            @endif
+                            @if($hotel->personas_d>0)
+                                @php
+                                    $sumatoria+=$hotel->personas_d*$hotel->precio_d*2;
+                                @endphp
+                            @endif
+                            @if($hotel->personas_m>0)
+                                @php
+                                    $sumatoria+=$hotel->personas_m*$hotel->precio_m*2;
+                                @endphp
+                            @endif
+                            @if($hotel->personas_t>0)
+                                @php
+                                    $sumatoria+=$hotel->personas_t*$hotel->precio_t*3;
+                                @endphp
+                            @endif
+
+                        @endforeach
+                    @endforeach
                 @endforeach
                 @php
                     $precio_hotel_s+=$precio_iti;
@@ -322,7 +372,7 @@
                             @endif
                         @endforeach
                     </td>
-                    <td><small class="display-block text-primary"><sup>$</sup>{{$valor}}</small></td>
+                    <td><small class="display-block text-primary"><sup>$</sup>{{$sumatoria}}</small></td>
                     <td class="d-none"><a class="text-primary" href="#!" data-toggle="tooltip" data-placement="top" title="Detalles"><b><i class="fa fa-eye" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-warning" href="{{route('show_current_paquete_edit_path',[$paquete->id])}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a></td>
@@ -343,7 +393,7 @@
                                         <div class="modal-body clearfix">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <b><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}}) | <b class="text-primary">TOTAL:<sup>$</sup>{{$valor}}</b>
+                                                    <b><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}}) | <b class="text-primary">TOTAL:<sup>$</sup>{{$sumatoria}}</b>
                                                 </div>
                                                 <div class="col-12">
                                                     <p><b>PLAN DE PAGOS</b></p>
@@ -363,7 +413,7 @@
                                                             @if($paquete->pagos_cliente->count()==0)
                                                                 @php
                                                                     $i=1;
-                                                                    $total_pago=$valor;
+                                                                    $total_pago=$sumatoria;
                                                                 @endphp
                                                                 <tr id="pago_{{$paquete->id}}_{{$i}}">
                                                                     <td style="width:180px;">
@@ -373,7 +423,7 @@
                                                                         <input type="text" class="form-control" name="nota_pago[]" id="nota_pago_{{$paquete->id}}_{{$i}}"  required>
                                                                     </td>
                                                                     <td style="width:100px">
-                                                                        <input type="text" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$valor}}" onkeyup="sumar_pagos_monto('{{$paquete->id}}')"  required>
+                                                                        <input type="text" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$sumatoria}}" onkeyup="sumar_pagos_monto('{{$paquete->id}}')"  required>
                                                                     </td>
                                                                     <td>
                                                                         <input type="hidden" name="estado_pago[]" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">             
@@ -438,7 +488,7 @@
                                                                 </td>
                                                                 <td>
                                                                 <input type="text" class="form-control" name="total" id="total_{{$paquete->id}}" value="{{$total_pago}}" readonly>
-                                                                <input type="hidden" name="total" id="total_pago_{{$paquete->id}}" value="{{$valor}}">
+                                                                <input type="hidden" name="total" id="total_pago_{{$paquete->id}}" value="{{$sumatoria}}">
                                                                 </td>
                                                                 <td>Falta:
                                                                 <b class="text-danger"><sup>$</sup><span id="falta_{{$paquete->id}}">0</span></b>   

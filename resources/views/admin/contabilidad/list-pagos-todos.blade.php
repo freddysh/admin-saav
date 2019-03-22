@@ -144,8 +144,8 @@
                         @foreach($cotizacion_cat_->paquete_cotizaciones->where('estado','2') as $pqts)
                             @php
                                 $total_pagado=0;
-                                $proximo_pago='aaaa-mm-dd';
-                                $proximo_monto=0;
+                                $proximo_pago='No hay pagos programados';
+                                $proximo_monto='';
                                 $recogido=0;
                             @endphp
                             @foreach($pqts->pagos_cliente as $pagos_cliente)
