@@ -6320,7 +6320,7 @@ function agregar_plan_pago(paquete_id){
             '<tr id="pago_'+paquete_id+'_'+nropagos+'">'+
             '<td style="width:180px;"><input type="date" class="form-control" name="fecha_pago[]" id="fecha_pago_'+paquete_id+'_'+nropagos+'" style="width:180px"  required></td>'+
             '<td><input type="text" class="form-control" name="nota_pago[]" id="nota_pago_'+paquete_id+'_'+nropagos+'" required></td>'+
-            '<td style="width:100px"><input type="number" class="form-control" name="monto_pago[]" id="monto_pago_'+paquete_id+'_'+nropagos+'" style="width:100px" onchange="sumar_pagos_monto(\''+paquete_id+'\')" required></td>'+
+            '<td style="width:100px"><input type="text" class="form-control" name="monto_pago[]" id="monto_pago_'+paquete_id+'_'+nropagos+'" style="width:100px" onkeyup="sumar_pagos_monto(\''+paquete_id+'\')" required></td>'+
             '<td>'+
             '<input type="hidden" name="estado_pago[]" id="confirmar_pagos_'+paquete_id+'_'+nropagos+'" value="0"> '+
             '<button type="button"  class="btn btn-unset" id="btn_confirmar_'+paquete_id+'_'+nropagos+'" onclick="cambiar_estado(\''+paquete_id+'\',\''+nropagos+'\')">'+
@@ -6355,9 +6355,9 @@ function cambiar_estado(paquete_id,pos){
         $('#btn_confirmar_'+paquete_id+'_'+pos).removeClass('btn-success'); 
         $('#btn_confirmar_'+paquete_id+'_'+pos).addClass('btn-unset');
         $('#btn_confirmar_'+paquete_id+'_'+pos).html('<i class="fas fa-unlock"></i>');
-        // $('#fecha_pago_'+paquete_id+'_'+pos).attr('readonly', false);   
-        // $('#monto_pago_'+paquete_id+'_'+pos).attr('readonly', false);   
-        // $('#nota_pago_'+paquete_id+'_'+pos).attr('readonly', false);  
+        // $('#fecha_pago_'+paquete_id+'_'+pos).attr('readonly', false);
+        // $('#monto_pago_'+paquete_id+'_'+pos).attr('readonly', false);
+        // $('#nota_pago_'+paquete_id+'_'+pos).attr('readonly', false);
         $('#confirmar_pagos_'+paquete_id+'_'+pos).val('0');
     }
 }
@@ -6444,5 +6444,32 @@ function sumar_pagos_monto(paquete_id){
             suma+=parseFloat($(elemento).val());    
     });
     $('#total_'+paquete_id).val(suma);
-    
+    var total_pago=$('#total_pago_'+paquete_id).val();
+    var falta=total_pago-suma;
+    $('#falta_'+paquete_id).html(falta);
+}
+
+function buscar_pagos(valor1,valor2,columna,campo,pagina){
+    console.log('valor1:'+valor1);
+    console.log('valor2:'+valor2);
+    console.log('columna:'+columna);
+    console.log('campo:'+campo);
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "../ingresos/lista-pagos",
+        data: 'valor1='+valor1+'&valor2='+valor2+'&campo='+campo+'&columna='+columna+'&pagina='+pagina,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#'+columna).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#'+columna).html(data);
+        }
+    });
 }

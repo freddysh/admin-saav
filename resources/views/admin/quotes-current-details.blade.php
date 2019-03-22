@@ -373,7 +373,7 @@
                                                                         <input type="text" class="form-control" name="nota_pago[]" id="nota_pago_{{$paquete->id}}_{{$i}}"  required>
                                                                     </td>
                                                                     <td style="width:100px">
-                                                                        <input type="number" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$valor}}" onchange="sumar_pagos_monto('{{$paquete->id}}')"  required>
+                                                                        <input type="text" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$valor}}" onkeyup="sumar_pagos_monto('{{$paquete->id}}')"  required>
                                                                     </td>
                                                                     <td>
                                                                         <input type="hidden" name="estado_pago[]" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">             
@@ -405,7 +405,7 @@
                                                                         <input type="text" class="form-control" name="nota_pago_[]" id="nota_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->nota}}" required>
                                                                         </td>
                                                                         <td style="width:100px">
-                                                                            <input type="number" class="form-control" name="monto_pago_[]" id="monto_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" style="width:100px" value="{{$pagos_cliente->monto}}" onchange="sumar_pagos_monto('{{$paquete->id}}')"  required>
+                                                                            <input type="text" class="form-control" name="monto_pago_[]" id="monto_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" style="width:100px" value="{{$pagos_cliente->monto}}" onkeyup="sumar_pagos_monto('{{$paquete->id}}')"  required>
                                                                         </td>
                                                                         <td>
                                                                             <input type="hidden" name="pago_id_[]" value="{{$pagos_cliente->id}}">
@@ -440,7 +440,8 @@
                                                                 <input type="text" class="form-control" name="total" id="total_{{$paquete->id}}" value="{{$total_pago}}" readonly>
                                                                 <input type="hidden" name="total" id="total_pago_{{$paquete->id}}" value="{{$valor}}">
                                                                 </td>
-                                                                <td>
+                                                                <td>Falta:
+                                                                <b class="text-danger"><sup>$</sup><span id="falta_{{$paquete->id}}">0</span></b>   
                                                                 </td>
                                                             </tr>
                                                         </tfoot>

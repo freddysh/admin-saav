@@ -2189,4 +2189,74 @@ class ContabilidadController extends Controller
        return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!!!</strong> Datos guardados correctamente</div>']);
     }
     
+    public function ingresos(){        
+        // return view('admin.contabilidad.ingresos');
+        $paquete_cotizacion = PaqueteCotizaciones::get();
+		$cot_cliente = CotizacionesCliente::with('cliente')->where('estado', 1)->get();
+		$cliente = Cliente::get();
+		$cotizacion_cat=Cotizacion::where('estado','2')->get();
+		$webs=Web::get();
+        return view('admin.contabilidad.ingresos', ['paquete_cotizacion'=>$paquete_cotizacion, 'cot_cliente'=>$cot_cliente, 'cliente'=>$cliente,'cotizacion_cat'=>$cotizacion_cat,'webs'=>$webs]);
+
+    }
+    public function list_pagos(Request $request)
+	{
+		$valor1 =strtoupper(trim($request->input('valor1')));
+		$valor2 =strtoupper(trim($request->input('valor2')));
+		$campo = $request->input('campo');
+        $columna= $request->input('columna');
+        $pagina= $request->input('pagina');
+        $cotizacion_cat =null;
+        $webs=Web::where('estado','1')->get();
+		if($campo=='CODIGO/NOMBRE'){
+			if(trim($valor1)==''){
+				$cotizacion_cat =Cotizacion::get();
+			}
+			elseif(trim($valor1)!=''){
+				// $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
+				// 	$query->where('estado','1');
+				// 	$query->whereHas('cliente',function ($query)use ($valor1){
+				// 		$query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
+				// 	});
+				// })
+				// 	->orWhere('codigo','like','%'.$valor1.'%')->get();
+				$cotizacion_cat =Cotizacion::where('nombre_pax','like','%'.$valor1.'%')
+					->orWhere('codigo','like','%'.$valor1.'%')->where('estado','2')->get();
+			}
+			// return dd($cotizacion_cat);
+			return view('admin.contabilidad.list-pagos-todos',compact('cotizacion_cat','columna','webs'));
+		}
+		elseif($campo=='CODIGO'){
+			if(trim($valor1)==''){
+				$cotizacion_cat =Cotizacion::get();
+			}
+			elseif(trim($valor1)!=''){
+				$cotizacion_cat =Cotizacion::where('codigo', 'like', '%'.$valor1.'%')->where('estado','2')->where('web',$pagina)->get();
+			}
+			return view('admin.contabilidad.list-pagos', compact('cotizacion_cat', 'columna','webs','pagina'));
+		}
+		elseif($campo=='NOMBRE'){
+			if(trim($valor1)==''){
+				$cotizacion_cat =Cotizacion::get();
+			}
+			elseif(trim($valor1)!=''){
+				$cotizacion_cat =Cotizacion::where('nombre_pax', 'like', '%'.$valor1.'%')->where('estado','2')->where('web',$pagina)->get();
+				// $cotizacion_cat =Cotizacion::whereHas('cotizaciones_cliente',function($query)use ($valor1){
+				// 	$query->where('estado','1');
+				// 	$query->whereHas('cliente',function ($query)use ($valor1){
+				// 		$query->where('nombres','like','%'.$valor1.'%')->orwhere('apellidos','like','%'.$valor1.'%');
+				// 	});
+				// })->get();
+			}
+			return view('admin.contabilidad.list-pagos',compact('cotizacion_cat','columna','webs','pagina'));
+		}
+		elseif($campo=='FECHAS'){
+			$cotizacion_cat =Cotizacion::whereBetween('fecha', [$valor1, $valor2])->where('estado','2')->where('web',$pagina)->get();
+			return view('admin.contabilidad.list-pagos', compact('cotizacion_cat', 'columna','webs','pagina'));
+		}
+		elseif( $campo == 'ANIO-MES' ) {
+			$cotizacion_cat =Cotizacion::whereYear('fecha', $valor1)->whereMonth('fecha', $valor2)->where('estado','2')->where('web',$pagina)->get();
+			return view('admin.contabilidad.list-pagos', compact('cotizacion_cat', 'columna','webs','pagina'));
+		}
+	}
 }

@@ -1360,4 +1360,12 @@ Route::post('/admin/show-cotizacion/agregar-pago', [
     'uses' => 'PackageCotizacionController@agregar_pago',
     'as' => 'guardar.paquete.pagos',
 ]);
+Route::get('/admin/contabilidad/ingresos/general', [
+    'uses' => 'ContabilidadController@ingresos',
+    'as' => 'contabilidad.ingresos',
+]);
+Route::post('admin/contabilidad/ingresos/lista-pagos', [
+    'uses' => 'ContabilidadController@list_pagos',
+    'as' => 'list_pagos_path',
+]);
 

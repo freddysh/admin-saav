@@ -117,7 +117,8 @@
             </li>  
             <ul class="sub-menu collapse menu2 @if(
               (url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id]))||
-              (url()->current()==route('pagos_pendientes_rango_fecha_path','HOTELS')||url()->current()==route('contabilidad.pagos_en_genral.filtrar'))) show @endif" id="contabilidad">
+              (url()->current()==route('pagos_pendientes_rango_fecha_path','HOTELS')||url()->current()==route('contabilidad.pagos_en_genral.filtrar'))||
+              (url()->current()==route('contabilidad.ingresos'))) show @endif" id="contabilidad">
               <li data-toggle="collapse" class="active1">
                 <a class="@if(url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id])) active @endif" href="{{route('contabilidad_index_path')}}">VIEW RESERVATIONS</a>
               </li>
@@ -127,6 +128,9 @@
               <li data-toggle="collapse" class="active1">
                 <a class="@if(url()->current()==route('contabilidad.pagos_en_genral.filtrar')) active @endif" href="{{route('contabilidad.pagos_en_genral.filtrar')}}">TODOS LOS PAGOS PENDIENTES</a>
               </li>
+              <li data-toggle="collapse" class="active1">
+                  <a class="@if(url()->current()==route('contabilidad.ingresos')) active @endif" href="{{route('contabilidad.ingresos')}}">INGRESOS</a>
+                </li>
             </ul>
 
             <li data-toggle="collapse" data-target="#operaciones" class="collapsed">
