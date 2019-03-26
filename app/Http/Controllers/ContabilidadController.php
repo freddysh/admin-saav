@@ -2059,26 +2059,38 @@ class ContabilidadController extends Controller
                     foreach ($itinerario_cotizaciones->hotel->where('proveedor_id','!=','')->whereBetween('fecha_venc', array($ini, $fin))->where('primera_confirmada','1') as $hotel){
                         $key=$cotizacion->id.'_'.$hotel->proveedor_id;
                         $monto=0;
+                        $monto_v=0;
+                        $monto_c=0;
                         $text_hotel='';
                         if($hotel->personas_s>0){
                             $monto+=$hotel->personas_s*$hotel->precio_s_r;
+                            $monto_v+=$hotel->personas_s*$hotel->precio_s;
+                            $monto_c+=$hotel->personas_s*$hotel->precio_s_c;
                             $text_hotel.='<p>'.$hotel->personas_s.'<i class="fas fa-bed"></i></p>';
                         }
                         if($hotel->personas_d>0){
                             $monto+=$hotel->personas_d*$hotel->precio_d_r;
+                            $monto_v+=$hotel->personas_d*$hotel->precio_d;
+                            $monto_c+=$hotel->personas_d*$hotel->precio_d_c;
                             $text_hotel.='<p>'.$hotel->personas_d.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i></p>';
                         }
                         if($hotel->personas_m>0){
                             $monto+=$hotel->personas_m*$hotel->precio_m_r;
+                            $monto_v+=$hotel->personas_m*$hotel->precio_m;
+                            $monto_c+=$hotel->personas_m*$hotel->precio_m_c;
                             $text_hotel.='<p>'.$hotel->personas_m.'<i class="fas fa-transgender"></i></p>';
                         }
                         if($hotel->personas_t>0){
                             $monto+=$hotel->personas_t*$hotel->precio_t_r;
+                            $monto_v+=$hotel->personas_t*$hotel->precio_t;
+                            $monto_c+=$hotel->personas_t*$hotel->precio_t_c;
                             $text_hotel.='<p>'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></p>';
                         }
                         if(array_key_exists($key,$array_pagos_pendientes)){
                             // dd($array_pagos_pendientes);
                             $array_pagos_pendientes[$key]['monto']+= $monto;
+                            $array_pagos_pendientes[$key]['monto_v']+= $monto_v;
+                            $array_pagos_pendientes[$key]['monto_c']+= $monto_c;
                             $array_pagos_pendientes[$key]['items'].= ','.$itinerario_cotizaciones->id;
                         }else{
                             // $proveedor='';
@@ -2100,6 +2112,8 @@ class ContabilidadController extends Controller
                                                             'fecha_pago'=>$hotel->fecha_venc,
                                                             'titulo'=> $text_hotel,
                                                             'monto'=>$monto,
+                                                            'monto_v'=>$monto_v,
+                                                            'monto_c'=>$monto_c,
                         'saldo'=>'');
                         }                        
                     }
@@ -2196,7 +2210,7 @@ class ContabilidadController extends Controller
 		$cliente = Cliente::get();
 		$cotizacion_cat=Cotizacion::where('estado','2')->get();
 		$webs=Web::get();
-        return view('admin.contabilidad.ingresos', ['paquete_cotizacion'=>$paquete_cotizacion, 'cot_cliente'=>$cot_cliente, 'cliente'=>$cliente,'cotizacion_cat'=>$cotizacion_cat,'webs'=>$webs]);
+        return view('admin.contabilidad.ingresos-nueva', ['paquete_cotizacion'=>$paquete_cotizacion, 'cot_cliente'=>$cot_cliente, 'cliente'=>$cliente,'cotizacion_cat'=>$cotizacion_cat,'webs'=>$webs]);
 
     }
     public function list_pagos(Request $request)
@@ -2258,5 +2272,40 @@ class ContabilidadController extends Controller
 			$cotizacion_cat =Cotizacion::whereYear('fecha', $valor1)->whereMonth('fecha', $valor2)->where('estado','2')->where('web',$pagina)->get();
 			return view('admin.contabilidad.list-pagos', compact('cotizacion_cat', 'columna','webs','pagina'));
 		}
-	}
+    }
+    
+    public function pagos_recientes(Request $request)
+	{
+        $filtro=$request->input('filtro');
+        $f1=$request->input('f1');
+        $f2=$request->input('f2');
+        $today=Carbon::now();
+        $mes='';
+        if($filtro=='ULTIMOS 7 DIAS'){
+            $f1=$today->subDays(7)->toDateString();
+            $f2=$today->now()->toDateString();
+        }
+        if($filtro=='ULTIMOS 30 DIAS'){
+            $f1=$today->subDays(30)->toDateString();
+            $f2=$today->now()->toDateString();
+        }
+        if($filtro=='ESTE MES'){
+            $mes=$today->month();
+        }
+        if($filtro=='ENTRE FECHAS'){
+            $f1=$f1;
+            $f2=$f2;
+        }
+        $cotizaciones=Cotizacion::where('anulado','>','0')
+        ->whereHas('paquete_cotizaciones',function($q){
+            $q->whereHas('pagos_cliente',function($q1){
+                $q1->where('estado','1')
+                ->where('fecha','1');
+            });
+        })->get();
+        dd('f1:'.$f1.',f2:'.$f2);
+        $pagina='';
+        return view('admin.contabilidad.list-pagos-recientes',compact('cotizaciones','pagina'));
+    }
+    
 }

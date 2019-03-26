@@ -388,11 +388,11 @@
                                             @endforeach
                                         @endforeach
                                     
-                                    @php
-                                        $hoy=\Carbon\Carbon::now();
-                                        $ultimo_dia=\Carbon\Carbon::createFromFormat('Y-m-d',$ultimo_dia);
-                                        $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
-                                    @endphp
+                                        @php
+                                            $hoy=\Carbon\Carbon::now();
+                                            $ultimo_dia=\Carbon\Carbon::createFromFormat('Y-m-d',$ultimo_dia);
+                                            $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
+                                        @endphp
                                         @if($valor-$total_pagado!=0)
                                             <tr>
                                                 <td class="text-11"><b class="text-success">{{$cotizacion_cat_->codigo}}</b> | {{strtoupper($cotizacion_cat_->nombre_pax)}} x {{$cotizacion_cat_->nropersonas}} {{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</td>

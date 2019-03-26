@@ -1369,3 +1369,7 @@ Route::post('admin/contabilidad/ingresos/lista-pagos', [
     'as' => 'list_pagos_path',
 ]);
 
+Route::post('admin/contabilidad/ingresos/buscar-pagos-recientes', [
+    'uses' => 'ContabilidadController@pagos_recientes',
+    'as' => 'pagos.recientes',
+]);
