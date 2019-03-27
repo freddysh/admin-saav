@@ -7218,17 +7218,11 @@ function buscar_pagos(valor1,valor2,columna,campo,pagina){
 function filtrar_(valor,tipo){
     
     if(valor!='ENTRE FECHAS'){
-<<<<<<< HEAD
         $('#fechas_'+tipo).addClass('d-none');
     }
     else if(valor=='ENTRE FECHAS'){
         $('#fechas_'+tipo).removeClass('d-none');
-=======
-        $('#filtro_'+tipo).addClass('d-none');
-    }
-    else if(valor=='ENTRE FECHAS'){
-        $('#filtro_'+tipo).removeClass('d-none');
->>>>>>> origin/master
+
     }
 }
 function pagos_recientes(filtro,f1,f2,rpt){

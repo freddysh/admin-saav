@@ -44,9 +44,10 @@
                 $utilidad_por_m=0;
                 $utilidad_t=0;
                 $utilidad_por_t=0;
+                $precio_venta_total=0;
             @endphp
 
-            @foreach($cotizacion_cat_->paquete_cotizaciones as $paquete)
+            @foreach($cotizacion_cat_->paquete_cotizaciones->take(1) as $paquete)
                 @foreach($paquete->paquete_precios as $precio)
                     @if($precio->personas_s>0)
                         @php
@@ -95,11 +96,13 @@
                             @php
                                 $precio_iti+=round($servicios->precio/$cotizacion_cat_->nropersonas,2);
                                 $preciom=round($servicios->precio/$cotizacion_cat_->nropersonas,2);
+                                $precio_venta_total+=$servicios->precio;
                             @endphp
                         @else
                             @php
                                 $precio_iti+=round($servicios->precio,2);
                                 $preciom=round($servicios->precio,2);
+                                $precio_venta_total+=$cotizacion_cat_->nropersonas*$servicios->precio;
                             @endphp
                         @endif
                     @endforeach
@@ -107,25 +110,25 @@
                         @if($hotel->personas_s>0)
                             @php
                                 $precio_hotel_s+=$hotel->precio_s;
-
+                                $precio_venta_total+=$hotel->personas_s*$hotel->precio_s;
                             @endphp
                         @endif
                         @if($hotel->personas_d>0)
                             @php
                                 $precio_hotel_d+=$hotel->precio_d/2;
-
+                                $precio_venta_total+=$hotel->personas_d*$hotel->precio_d;
                             @endphp
                         @endif
                         @if($hotel->personas_m>0)
                             @php
                                 $precio_hotel_m+=$hotel->precio_m/2;
-
+                                $precio_venta_total+=$hotel->personas_m*$hotel->precio_m;
                             @endphp
                         @endif
                         @if($hotel->personas_t>0)
                             @php
                                 $precio_hotel_t+=$hotel->precio_t/3;
-
+                                $precio_venta_total+=$hotel->personas_t*$hotel->precio_t;
                             @endphp
                         @endif
                     @endforeach
@@ -144,6 +147,7 @@
                 @foreach($cotizacion_cat_->paquete_cotizaciones->take(1) as $paquete)
                     @php
                         $valor=$precio_iti+$paquete->utilidad;
+                        $precio_venta_total+=$cotizacion_cat_->nropersonas*$paquete->utilidad;
                     @endphp
                 @endforeach
             @elseif($nro_dias>1)
@@ -151,27 +155,32 @@
                     @foreach($cotizacion_cat_->paquete_cotizaciones->take(1) as $paquete)
                         @php
                             $valor=$precio_iti+$paquete->utilidad;
+                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$paquete->utilidad;
                         @endphp
                     @endforeach
                 @else
                     @if($s!=0)
                         @php
                             $valor+=round($precio_hotel_s+$utilidad_s,2);
+                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$hotel->utilidad_s;
                         @endphp
                     @endif
                     @if($d!=0)
                         @php
                             $valor+=round($precio_hotel_d+$utilidad_d,2);
+                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$hotel->utilidad_d;
                         @endphp
                     @endif
                     @if($m!=0)
                         @php
                             $valor+=round($precio_hotel_m+$utilidad_m,2);
+                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$hotel->utilidad_m;
                         @endphp
                     @endif
                     @if($t!=0)
                         @php
                             $valor+=round($precio_hotel_t+$utilidad_t,2);
+                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$hotel->utilidad_t;
                         @endphp
                     @endif
                 @endif
@@ -194,7 +203,7 @@
                 $itinerario='';
                 $sumatoria=0;
             @endphp
-            @foreach($cotizacion_cat_/*->paquete_cotizaciones->where('estado','2')*/ as $pqts)
+            @foreach($cotizacion_cat_->paquete_cotizaciones/*->where('estado','2')*/ as $pqts)
 
                 @php
                     $total_pagado=0;
@@ -202,22 +211,24 @@
                     $proximo_monto='';
                     $recogido=0;
                 @endphp
-                @foreach($pqts->pagos_cliente as $pagos_cliente)
-                    @if($pagos_cliente->estado==1)
-                        @php
-                            $total_pagado+=$pagos_cliente->monto;
-                        @endphp
-                    @endif
-                    @if($recogido==0)
-                        @if($pagos_cliente->estado==0)
+                @if($pqts->pagos_cliente)
+                    @foreach($pqts->pagos_cliente as $pagos_cliente)
+                        @if($pagos_cliente->estado==1)
                             @php
-                                $proximo_pago=$pagos_cliente->fecha;
-                                $proximo_monto=$pagos_cliente->monto;
-                                $recogido++;
+                                $total_pagado+=$pagos_cliente->monto;
                             @endphp
                         @endif
-                    @endif
-                @endforeach
+                        @if($recogido==0)
+                            @if($pagos_cliente->estado==0)
+                                @php
+                                    $proximo_pago=$pagos_cliente->fecha;
+                                    $proximo_monto=$pagos_cliente->monto;
+                                    $recogido++;
+                                @endphp
+                            @endif
+                        @endif
+                    @endforeach
+                @endif
                 @foreach($pqts->itinerario_cotizaciones as $itinerarios)
                     @php
                         $ultimo_dia=$itinerarios->fecha;
@@ -270,12 +281,12 @@
                     $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
                 @endphp
             
-                @if($valor-$total_pagado!=0)
+                @if($precio_venta_total-$total_pagado!=0)
                     <tr>
                         <td class="text-11"><b class="text-success">{{$cotizacion_cat_->codigo}}</b> | {{strtoupper($cotizacion_cat_->nombre_pax)}} x {{$cotizacion_cat_->nropersonas}} {{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</td>
-                        <td class="text-right">{{number_format($valor,0)}}</td>
+                        <td class="text-right">{{number_format($precio_venta_total,0)}}</td>
                         <td class="text-right">{{number_format($total_pagado,0)}}</td>
-                        <td class="text-right">{{number_format($valor-$total_pagado,0)}}</td>
+                        <td class="text-right">{{number_format($precio_venta_total-$total_pagado,0)}}</td>
                         <td>{{$proximo_pago}} | {{$proximo_monto}}</td>
                         <td>
                             <a class="text-primary small" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_plan_pagos_{{$pqts->id}}">Detalle

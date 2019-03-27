@@ -2317,7 +2317,7 @@ class ContabilidadController extends Controller
             })->get();
         }
         // dd('filtro:'.$filtro.',mes:'.$mes.',f1:'.$f1.',f2:'.$f2);
-
+        // dd($cotizaciones);
         $pagina='';
         return view('admin.contabilidad.list-pagos-recientes',compact('cotizaciones','pagina'));
     }
