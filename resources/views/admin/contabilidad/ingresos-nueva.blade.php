@@ -14,6 +14,7 @@
     @endphp
 
 <div class="row">
+
     <div class="col-12 mt-4">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -32,6 +33,7 @@
                                     <div class="input-group-text">Filtro</div>
                                 </div>
                                 <select class="form-control" name="filtro" id="pr_filtro" onchange="filtrar_($(this).val(),'pr')">
+
                                     <option value="ULTIMOS 7 DIAS">ULTIMOS 7 DIAS</option>
                                     <option value="ULTIMOS 30 DIAS">ULTIMOS 30 DIAS</option>
                                     <option value="ESTE MES">ESTE MES</option>
@@ -45,6 +47,7 @@
                                     <div class="input-group-text"><i class="fas fa-calendar text-primary"></i></div>
                                 </div>
                                 <input class="form-control" type="date" name="pr_f1" id="pr_f1">
+
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-calendar text-primary"></i></div>
                                 </div>

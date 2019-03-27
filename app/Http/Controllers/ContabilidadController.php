@@ -2296,6 +2296,7 @@ class ContabilidadController extends Controller
             $f1=$f1;
             $f2=$f2;
         }
+        
         $cotizaciones=null;
         if($filtro=='ESTE MES'){
             $cotizaciones=Cotizacion::where('anulado','>','0')
@@ -2316,6 +2317,7 @@ class ContabilidadController extends Controller
             })->get();
         }
         // dd('filtro:'.$filtro.',mes:'.$mes.',f1:'.$f1.',f2:'.$f2);
+
         $pagina='';
         return view('admin.contabilidad.list-pagos-recientes',compact('cotizaciones','pagina'));
     }

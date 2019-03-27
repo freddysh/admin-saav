@@ -195,6 +195,7 @@
                 $sumatoria=0;
             @endphp
             @foreach($cotizacion_cat_/*->paquete_cotizaciones->where('estado','2')*/ as $pqts)
+
                 @php
                     $total_pagado=0;
                     $proximo_pago='No hay pagos programados';
