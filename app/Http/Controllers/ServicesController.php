@@ -691,7 +691,7 @@ class ServicesController extends Controller
         $servicios_id=$request->input('servicios_id');
         $proveedor_id=$request->input('proveedor_id');
         $clases=ProveedorClases::where('proveedor_id',$proveedor_id)->where('estado','1')->get();
-        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
+        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->where('estado','1')->get();
         $destinos=M_Destino::get();
         return view('admin.book.mostrar-servicios-localizacion',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));
     }
@@ -703,7 +703,7 @@ class ServicesController extends Controller
         $localizacion=$destino->destino;
         $grupo=$request->input('grupo');
         $servicios_id=$request->input('servicios_id');
-        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
+        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->where('estado','1')->get();
         $destinos=M_Destino::get();
         $proveedores=Proveedor::where('grupo',$grupo)->get();
         return view('admin.book.mostrar-servicios-paso1',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','proveedores','modo']));
@@ -715,7 +715,7 @@ class ServicesController extends Controller
         $servicios_id=$request->input('servicios_id');
         $proveedor_id=$request->input('proveedor_id');
         $clases=ProveedorClases::where('proveedor_id',$proveedor_id)->where('estado','1')->get();
-        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
+        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->where('estado','1')->orderBy('asc')->get();
         $destinos=M_Destino::get();
         return view('admin.book.mostrar-servicios-localizacion-paso1',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','clases']));
     }

@@ -92,6 +92,7 @@ class BookController extends Controller
 	 */
 	public function show($id)
 	{
+		set_time_limit(0);
 		$clientes1=Cliente::get();
 		$cotizacion=Cotizacion::FindOrFail($id);
 		$productos=M_Producto::get();

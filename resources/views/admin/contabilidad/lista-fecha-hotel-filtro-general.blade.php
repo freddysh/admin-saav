@@ -23,7 +23,9 @@
                                             <th class="text-grey-goto text-center">Proveedor</th>
                                             <th class="text-grey-goto text-center">Fecha de Servicio</th>
                                             <th class="text-grey-goto text-center">Fecha a Pagar</th>
-                                            <th class="text-grey-goto text-center">Total</th>
+                                            <th class="text-grey-goto text-center">Total Venta</th>
+                                            <th class="text-grey-goto text-center">Total Reserva</th>
+                                            <th class="text-grey-goto text-center">Total Conta</th>
                                             <th class="text-grey-goto text-center">Saldo</th>
                                             <th class="text-grey-goto text-center">Operaciones</th>
                                         </tr>
@@ -37,7 +39,9 @@
                                                     <td class="text-grey-goto text-left">{{$array_pagos_pendiente['proveedor']}}</td>
                                                     <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_servicio'])}}</td>
                                                     <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_pago'])}}</td>
+                                                    <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_v']}}</b></td>
                                                     <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto']}}</b></td>
+                                                    <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_c']}}</b></td>
                                                     <td class="text-grey-goto text-right">{{$array_pagos_pendiente['saldo']}}</td>
                                                     <td class="text-grey-goto text-right">
                                                         <!-- Button trigger modal -->
@@ -48,7 +52,7 @@
                                                         <div class="modal fade" id="modal_{{$key}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered modal-md" role="document">  
                                                                 <form id="form_{{$key}}" action="{{route('contabilidad.hotel.store')}}" method="POST" >   
-                                                                    <div class="modal-content">
+                                                                    <div class="modal-content modal-lg">
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title" id="exampleModalCenterTitle">Editar Costos</h5>
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">

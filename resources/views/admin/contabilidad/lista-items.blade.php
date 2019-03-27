@@ -5,14 +5,18 @@
             <th>FECHA USO</th>
             <th>FECHA PAGO</th>
             <th>HOTEL</th>
-            <th>MONTO</th>
+            <th>MONTO VENTA</th>
+            <th>MONTO RESERVA</th>
+            <th>MONTO CONTA</th>
         </tr>
     </thead>
     <tbody>
         @php
             $fecha_pago='';
             $pos=0;
-            $total=0;
+            $total_r=0;
+            $total_v=0;
+            $total_c=0;
         @endphp
         @foreach ($consulta as $itinerario_cotizaciones)
             @foreach ($itinerario_cotizaciones->hotel as $item)   
@@ -43,33 +47,101 @@
                     <td class="text-right">
                         @if ($item->personas_s>0)
                             @php
-                                $total+=$item->personas_s*$item->precio_s_r;    
+                                $total_v+=$item->personas_s*$item->precio_s;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->personas_s*$item->precio_s_r}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->personas_s*$item->precio_s}}">
                             <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                              
                         @endif
                         @if ($item->personas_d>0)
                             @php
-                                $total+=$item->personas_d*$item->precio_d_r;    
+                                $total_v+=$item->personas_d*$item->precio_d_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_d[]" value="{{$item->personas_d*$item->precio_d_r}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_d[]" value="{{$item->personas_d*$item->precio_d}}">
                             <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
                         @endif
                         @if ($item->personas_m>0)
                             @php
-                                $total+=$item->personas_m*$item->precio_m_r;    
+                                $total_v+=$item->personas_m*$item->precio_m_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_m[]" value="{{$item->personas_m*$item->precio_m_r}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_m[]" value="{{$item->personas_m*$item->precio_m}}">
                             <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
                         @endif
                         @if ($item->personas_t>0)
                             @php
-                                $total+=$item->personas_t*$item->precio_t_r;    
+                                $total_v+=$item->personas_t*$item->precio_t_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_t[]" value="{{$item->personas_t*$item->precio_t_r}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_t[]" value="{{$item->personas_t*$item->precio_t}}">
+                            <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
+                            <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
+                        @endif
+                    </td>
+                    <td class="text-right">
+                        @if ($item->personas_s>0)
+                            @php
+                                $total_r+=$item->personas_s*$item->precio_s_r;    
+                            @endphp
+                            <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->personas_s*$item->precio_s_r}}">
+                            <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
+                            <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                              
+                        @endif
+                        @if ($item->personas_d>0)
+                            @php
+                                $total_r+=$item->personas_d*$item->precio_d_r;    
+                            @endphp
+                            <input class="form-control" style="width:100px" type="number" name="precio_d_r[]" value="{{$item->personas_d*$item->precio_d_r}}">
+                            <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
+                            <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
+                        @endif
+                        @if ($item->personas_m>0)
+                            @php
+                                $total_r+=$item->personas_m*$item->precio_m_r;    
+                            @endphp
+                            <input class="form-control" style="width:100px" type="number" name="precio_m_r[]" value="{{$item->personas_m*$item->precio_m_r}}">
+                            <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
+                            <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
+                        @endif
+                        @if ($item->personas_t>0)
+                            @php
+                                $total_r+=$item->personas_t*$item->precio_t_r;    
+                            @endphp
+                            <input class="form-control" style="width:100px" type="number" name="precio_t_r[]" value="{{$item->personas_t*$item->precio_t_r}}">
+                            <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
+                            <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
+                        @endif
+                    </td>
+                    <td class="text-right">
+                        @if ($item->personas_s>0)
+                            @php
+                                $total_c+=$item->personas_s*$item->precio_s_c;    
+                            @endphp
+                            <input class="form-control" style="width:100px" type="number" name="precio_s_c[]" value="{{$item->personas_s*$item->precio_s_c}}">
+                            <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
+                            <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                              
+                        @endif
+                        @if ($item->personas_d>0)
+                            @php
+                                $total_c+=$item->personas_d*$item->precio_d_c;    
+                            @endphp
+                            <input class="form-control" style="width:100px" type="number" name="precio_d_c[]" value="{{$item->personas_d*$item->precio_d_c}}">
+                            <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
+                            <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
+                        @endif
+                        @if ($item->personas_m>0)
+                            @php
+                                $total_c+=$item->personas_m*$item->precio_m_c;    
+                            @endphp
+                            <input class="form-control" style="width:100px" type="number" name="precio_m_c[]" value="{{$item->personas_m*$item->precio_m_c}}">
+                            <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
+                            <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
+                        @endif
+                        @if ($item->personas_t>0)
+                            @php
+                                $total_c+=$item->personas_t*$item->precio_t_c;    
+                            @endphp
+                            <input class="form-control" style="width:100px" type="number" name="precio_t_c[]" value="{{$item->personas_t*$item->precio_t_c}}">
                             <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
                         @endif
@@ -79,8 +151,19 @@
         @endforeach        
             <tr>
                 <td colspan="3">TOTAL</td>
-                <td><b id="total" class="text-15">
-                        <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total}}" disabled></b></td></tr>
+                <td>
+                    <b id="total" class="text-15">
+                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_v}}" disabled></b>
+                </td>
+                <td>
+                    <b id="total" class="text-15">
+                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_r}}" disabled></b>
+                </td>
+                <td>
+                    <b id="total" class="text-15">
+                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_c}}" disabled></b>
+                </td>
+            </tr>
     </tbody>
 </table>
     
