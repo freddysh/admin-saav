@@ -147,7 +147,7 @@
                 @foreach($cotizacion_cat_->paquete_cotizaciones->take(1) as $paquete)
                     @php
                         $valor=$precio_iti+$paquete->utilidad;
-                        $precio_venta_total+=$cotizacion_cat_->nropersonas*$paquete->utilidad;
+                        // $precio_venta_total+=$cotizacion_cat_->nropersonas*$paquete->utilidad;
                     @endphp
                 @endforeach
             @elseif($nro_dias>1)
@@ -155,32 +155,32 @@
                     @foreach($cotizacion_cat_->paquete_cotizaciones->take(1) as $paquete)
                         @php
                             $valor=$precio_iti+$paquete->utilidad;
-                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$paquete->utilidad;
+                            // $precio_venta_total+=$cotizacion_cat_->nropersonas*$paquete->utilidad;
                         @endphp
                     @endforeach
                 @else
                     @if($s!=0)
                         @php
                             $valor+=round($precio_hotel_s+$utilidad_s,2);
-                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$hotel->utilidad_s;
+                            // $precio_venta_total+=$cotizacion_cat_->nropersonas*$utilidad_s;
                         @endphp
                     @endif
                     @if($d!=0)
                         @php
                             $valor+=round($precio_hotel_d+$utilidad_d,2);
-                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$hotel->utilidad_d;
+                            // $precio_venta_total+=$cotizacion_cat_->nropersonas*$utilidad_d;
                         @endphp
                     @endif
                     @if($m!=0)
                         @php
                             $valor+=round($precio_hotel_m+$utilidad_m,2);
-                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$hotel->utilidad_m;
+                            // $precio_venta_total+=$cotizacion_cat_->nropersonas*$utilidad_m;
                         @endphp
                     @endif
                     @if($t!=0)
                         @php
                             $valor+=round($precio_hotel_t+$utilidad_t,2);
-                            $precio_venta_total+=$cotizacion_cat_->nropersonas*$hotel->utilidad_t;
+                            // $precio_venta_total+=$cotizacion_cat_->nropersonas*$utilidad_t;
                         @endphp
                     @endif
                 @endif
