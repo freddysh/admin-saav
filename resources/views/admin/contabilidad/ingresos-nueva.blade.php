@@ -70,7 +70,7 @@
     </div>
 </div> 
 
-<div class="row mt-2 no-gutters">
+<div class="row mt-2 no-gutters d-none">
     <div class="col-12 border border-dark">
         <div class="row bg-dark mx-0 py-1 ">
             <div class="col-12">

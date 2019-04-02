@@ -290,47 +290,85 @@
                 @endphp
                 @php
                     $valor=0;
+                    $msj_utilidad='';
+                    $utilidad_hoteles_=0;
                 @endphp
                 @if($nro_dias==1)
                     @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                         @php
-                            $valor=$precio_iti+$paquete->utilidad;
-                            $precio_venta_total+=$cotizacion_->nropersonas*$paquete->utilidad;
+                            // $valor=$precio_iti+$paquete->utilidad;
+                            $utilidad_hoteles_+=$cotizacion_->nropersonas*$paquete->utilidad;
+                            $msj_utilidad.='solo tiene un dia';
                         @endphp
                     @endforeach
                 @elseif($nro_dias>1)
                     @if(($s+$d+$m+$t)==0)
                         @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
                             @php
-                                $valor=$precio_iti+$paquete->utilidad;
-                                $precio_venta_total+=$cotizacion_->nropersonas*$paquete->utilidad;
+                                // $valor=$precio_iti+$paquete->utilidad;
+                                $utilidad_hoteles_+=$cotizacion_->nropersonas*$paquete->utilidad;
+                                $msj_utilidad.='tiene mas de un dia peri sin hotel';
                             @endphp
                         @endforeach
                     @else
                         @if($s!=0)
                             @php
                                 $valor+=round($precio_hotel_s+$utilidad_s,2);
-                                $precio_venta_total+=$cotizacion_->nropersonas*$paquete->utilidad_s;
+                            @endphp
+                            @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                @foreach($paquete->paquete_precios as $precio)
+                                    @php
+                                        $utilidad_hoteles_+=$precio->personas_s*$precio->utilidad_s;
+                                    @endphp
+                                @endforeach
+                            @endforeach
+                            @php
+                                $msj_utilidad.='tiene mas de un dia, con single';
                             @endphp
                         @endif
                         @if($d!=0)
                             @php
                                 $valor+=round($precio_hotel_d+$utilidad_d,2);
-                                
-                                $precio_venta_total+=$cotizacion_->nropersonas*$paquete->utilidad_d;
+                            @endphp
+                            @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                @foreach($paquete->paquete_precios as $precio)
+                                    @php
+                                        $utilidad_hoteles_+=$precio->personas_d*$precio->utilidad_d*2;
+                                    @endphp
+                                @endforeach
+                            @endforeach
+                            @php
+                                $msj_utilidad.='tiene mas de un dia, con double';
                             @endphp
                         @endif
                         @if($m!=0)
                             @php
                                 $valor+=round($precio_hotel_m+$utilidad_m,2);
-                                
-                                $precio_venta_total+=$cotizacion_->nropersonas*$paquete->utilidad_m;
+                            @endphp
+                                @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                    @foreach($paquete->paquete_precios as $precio)
+                                        @php
+                                            $utilidad_hoteles_+=$precio->personas_m*$precio->utilidad_m*2;
+                                        @endphp
+                                    @endforeach
+                                @endforeach
+                            @php
+                                $msj_utilidad.='tiene mas de un dia, con matrimonial';
                             @endphp
                         @endif
                         @if($t!=0)
                             @php
                                 $valor+=round($precio_hotel_t+$utilidad_t,2);
-                                $precio_venta_total+=$cotizacion_->nropersonas*$paquete->utilidad_t;
+                            @endphp
+                            @foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete)
+                                @foreach($paquete->paquete_precios as $precio)
+                                    @php
+                                        $utilidad_hoteles_+=$precio->personas_t*$precio->utilidad_t*3;
+                                    @endphp
+                                @endforeach
+                            @endforeach
+                            @php
+                                $msj_utilidad.='tiene mas de un dia, con triple';
                             @endphp
                         @endif
                     @endif
@@ -383,7 +421,7 @@
                             @endif
                         @endforeach
                     </td>
-                <td><small class="display-block text-primary"><sup>$</sup>{{$precio_venta_total}}</small></td>
+                <td><small class="display-block text-primary"><sup>$</sup>{{$precio_venta_total+$utilidad_hoteles_}}</small></td>
                     <td class="d-none"><a class="text-primary" href="#!" data-toggle="tooltip" data-placement="top" title="Detalles"><b><i class="fa fa-eye" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-warning" href="{{route('show_current_paquete_edit_path',[$paquete->id])}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a></td>
@@ -404,7 +442,7 @@
                                         <div class="modal-body clearfix">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <b><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}}) | <b class="text-primary">TOTAL:<sup>$</sup>{{$precio_venta_total}}</b>
+                                                    <b><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}}) | <b class="text-primary">TOTAL:<sup>$</sup>{{$precio_venta_total+$utilidad_hoteles_}}</b>
                                                 </div>
                                                 <div class="col-12">
                                                     <p><b>PLAN DE PAGOS</b></p>
@@ -424,7 +462,7 @@
                                                             @if($paquete->pagos_cliente->count()==0)
                                                                 @php
                                                                     $i=1;
-                                                                    $total_pago=$precio_venta_total;
+                                                                    $total_pago=$precio_venta_total+$utilidad_hoteles_;
                                                                 @endphp
                                                                 <tr id="pago_{{$paquete->id}}_{{$i}}">
                                                                     <td style="width:180px;">
@@ -434,7 +472,7 @@
                                                                         <input type="text" class="form-control" name="nota_pago[]" id="nota_pago_{{$paquete->id}}_{{$i}}"  required>
                                                                     </td>
                                                                     <td style="width:100px">
-                                                                        <input type="text" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$precio_venta_total}}" onkeyup="sumar_pagos_monto('{{$paquete->id}}')"  required>
+                                                                        <input type="text" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$precio_venta_total+$utilidad_hoteles_}}" onkeyup="sumar_pagos_monto('{{$paquete->id}}')"  required>
                                                                     </td>
                                                                     <td>
                                                                         <input type="hidden" name="estado_pago[]" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">             
@@ -499,7 +537,7 @@
                                                                 </td>
                                                                 <td>
                                                                 <input type="text" class="form-control" name="total" id="total_{{$paquete->id}}" value="{{$total_pago}}" readonly>
-                                                                <input type="hidden" name="total" id="total_pago_{{$paquete->id}}" value="{{$precio_venta_total}}">
+                                                                <input type="hidden" name="total" id="total_pago_{{$paquete->id}}" value="{{$precio_venta_total+$utilidad_hoteles_}}">
                                                                 </td>
                                                                 <td>Falta:
                                                                 <b class="text-danger"><sup>$</sup><span id="falta_{{$paquete->id}}">0</span></b>   
