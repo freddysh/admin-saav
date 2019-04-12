@@ -2046,7 +2046,7 @@ class ContabilidadController extends Controller
     {
         $ini =$request->input('ini');
         $fin =$request->input('fin');
-        $cotizaciones=Cotizacion::where('fecha','>=',$ini)->get();
+        $cotizaciones=Cotizacion::where('estado','2')->get();
         // $pagos =PrecioHotelReservaPagos::get();
         // $proveedor = ItinerarioServicioProveedor::get();//-- se estara usando ?
         // $proveedores=Proveedor::where('grupo','HOTELS')->get();
@@ -2056,39 +2056,39 @@ class ContabilidadController extends Controller
         foreach ($cotizaciones as $cotizacion){
             foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
                 foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){                  
-                    foreach ($itinerario_cotizaciones->hotel->where('proveedor_id','!=','')->whereBetween('fecha_venc', array($ini, $fin))->where('primera_confirmada','1') as $hotel){
+                    foreach ($itinerario_cotizaciones->hotel->where('proveedor_id','!=','')->whereBetween('fecha_venc', array($ini, $fin))/*->where('primera_confirmada','1')*/ as $hotel){
                         $key=$cotizacion->id.'_'.$hotel->proveedor_id;
-                        $monto=0;
+                        $monto_r=0;
                         $monto_v=0;
                         $monto_c=0;
                         $text_hotel='';
                         if($hotel->personas_s>0){
-                            $monto+=$hotel->personas_s*$hotel->precio_s_r;
+                            $monto_r+=$hotel->personas_s*$hotel->precio_s_r;
                             $monto_v+=$hotel->personas_s*$hotel->precio_s;
                             $monto_c+=$hotel->personas_s*$hotel->precio_s_c;
                             $text_hotel.='<p>'.$hotel->personas_s.'<i class="fas fa-bed"></i></p>';
                         }
                         if($hotel->personas_d>0){
-                            $monto+=$hotel->personas_d*$hotel->precio_d_r;
+                            $monto_r+=$hotel->personas_d*$hotel->precio_d_r;
                             $monto_v+=$hotel->personas_d*$hotel->precio_d;
                             $monto_c+=$hotel->personas_d*$hotel->precio_d_c;
                             $text_hotel.='<p>'.$hotel->personas_d.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i></p>';
                         }
                         if($hotel->personas_m>0){
-                            $monto+=$hotel->personas_m*$hotel->precio_m_r;
+                            $monto_r+=$hotel->personas_m*$hotel->precio_m_r;
                             $monto_v+=$hotel->personas_m*$hotel->precio_m;
                             $monto_c+=$hotel->personas_m*$hotel->precio_m_c;
                             $text_hotel.='<p>'.$hotel->personas_m.'<i class="fas fa-transgender"></i></p>';
                         }
                         if($hotel->personas_t>0){
-                            $monto+=$hotel->personas_t*$hotel->precio_t_r;
+                            $monto_r+=$hotel->personas_t*$hotel->precio_t_r;
                             $monto_v+=$hotel->personas_t*$hotel->precio_t;
                             $monto_c+=$hotel->personas_t*$hotel->precio_t_c;
                             $text_hotel.='<p>'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></p>';
                         }
                         if(array_key_exists($key,$array_pagos_pendientes)){
                             // dd($array_pagos_pendientes);
-                            $array_pagos_pendientes[$key]['monto']+= $monto;
+                            $array_pagos_pendientes[$key]['monto_r']+= $monto_r;
                             $array_pagos_pendientes[$key]['monto_v']+= $monto_v;
                             $array_pagos_pendientes[$key]['monto_c']+= $monto_c;
                             $array_pagos_pendientes[$key]['items'].= ','.$itinerario_cotizaciones->id;
@@ -2111,7 +2111,7 @@ class ContabilidadController extends Controller
                                                             'fecha_servicio'=>$itinerario_cotizaciones->fecha,
                                                             'fecha_pago'=>$hotel->fecha_venc,
                                                             'titulo'=> $text_hotel,
-                                                            'monto'=>$monto,
+                                                            'monto_r'=>$monto_r,
                                                             'monto_v'=>$monto_v,
                                                             'monto_c'=>$monto_c,
                         'saldo'=>'');
@@ -2321,5 +2321,9 @@ class ContabilidadController extends Controller
         $pagina='';
         return view('admin.contabilidad.list-pagos-recientes',compact('cotizaciones','pagina'));
     }
-    
+ 
+    public function traer_lista_proveedores(Request $request){
+        $estrellas=$request->input('estrellas');
+        $localizacion=$request->input('localizacion');
+    }
 }

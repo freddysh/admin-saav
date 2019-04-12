@@ -1373,3 +1373,8 @@ Route::post('admin/contabilidad/ingresos/buscar-pagos-recientes', [
     'uses' => 'ContabilidadController@pagos_recientes',
     'as' => 'pagos.recientes',
 ]);
+
+Route::post('admin/book/hotel/traer-lista-proveedores', [
+    'uses' => 'ContabilidadController@traer_lista_proveedores',
+    'as' => 'hotel.traer.lista.proveedores',
+]);

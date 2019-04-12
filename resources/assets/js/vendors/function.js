@@ -2042,6 +2042,7 @@ function aumentar_acom(tipo,signo){
 }
 function enviar_form1(){
     $('#form_nuevo_pqt').submit(function() {
+        tinymce.triggerSave();
         $('#txt_country1').val($('#txt_country').val());
         $('#txt_name1').val($('#txt_name').val());
         $('#txt_email1').val($('#txt_email').val());
@@ -2055,7 +2056,7 @@ function enviar_form1(){
         $('#notas1').val($('#txt_notas').val());
         $('#estrellas_from').val($('#hotel').val());
         $('#txt_movilid1').val($('#txt_movilid').val());
-
+        
         if($('#notas1').val().trim()=='') {
             $('#notas1').focus();
             swal(
@@ -2525,7 +2526,9 @@ function validar_envio(){
     });
 }
 function enviar_form2(){
+    
     $('#form_nuevo_pqt_').submit(function() {
+        tinymce.triggerSave();
         $('#txt_country1_').val($('#txt_country').val());
         $('#txt_name1_').val($('#txt_name').val());
         $('#txt_email1_').val($('#txt_email').val());
@@ -2539,6 +2542,7 @@ function enviar_form2(){
         $('#notas_').val($('#txt_notas').val());
         $('#estrellas_from_').val($('#hotel').val());
         $('#txt_movilid2').val($('#txt_movilid').val());
+        
         if($('#notas_').val().trim()==''){
             $('#notas_').focus();
             swal(
@@ -3363,6 +3367,10 @@ function Guardar_proveedor(id,url,csrf_field,id_pro) {
         url: $('#asignar_proveedor_path_'+id).attr('action'),
         data: $('#asignar_proveedor_path_'+id).serialize(),
         // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function() {
+            $('#rpt_book_proveedor_'+id).html('');
+            $('#rpt_book_proveedor_'+id).html('<i class="fas fa-stroopwafel fa-spin fa-3x"></i>');
+        },
         success: function(data) {
             console.log('data:'+data);
             if(data==1){
@@ -3641,6 +3649,7 @@ function dato_producto_hotel(valor,hotel_proveedor_id,hotel_id,itinerario_id){
             $('#rpt_book_proveedor_fecha_h_'+hotel_id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
         success: function(data) {
+            console.log('data de la consulta:'+data);
             $('#rpt_book_proveedor_fecha_h_'+hotel_id).html(data);
         }
     })
@@ -5441,6 +5450,7 @@ function enviar_ask_request(pqt_id){
     });
 }
 function ingresar_notas(pqt_id){
+    tinymce.triggerSave();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5453,7 +5463,7 @@ function ingresar_notas(pqt_id){
         beforeSend:function(res){
             $('#response_notas_'+pqt_id).removeClass('text-danger');
             $('#response_notas_'+pqt_id).removeClass('text-success');
-            $('#response_notas_'+pqt_id).html('<i class="fa fa-circle-o-notch fa-spin"></i>Loading');
+            $('#response_notas_'+pqt_id).html('<i class="fas fa-stroopwafel fa-spin fa-2x"></i>');
         }
         ,success:  function (response) {
             console.log('response:'+response);
@@ -6113,8 +6123,8 @@ function pintar(id){
     $('#'+id).parent().addClass("btn-primary");
 }
 function buscar_pagos_pendientes(ini,fin){
-    $("#rpt_hotel").html('');
-    $("#rpt_hotel").html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+   
+    
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6128,9 +6138,15 @@ function buscar_pagos_pendientes(ini,fin){
     // });
 
     $.ajax({
+        dataType:'html',
         url: '/admin/contabilidad/pagos-en-genral/pendientes/filtrar',
         type: 'post',
         data: 'ini='+ini+'&fin='+fin,
+        beforeSend:function() {
+            $("#rpt_hotel").html('');
+            $("#rpt_hotel").html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            // Pace.restart();
+        },
         success: function (data) {
             $('#rpt_hotel').html(data);
         },
@@ -6494,6 +6510,26 @@ function pagos_recientes(filtro,f1,f2,rpt){
         type: 'POST',
         url: "../ingresos/buscar-pagos-recientes",
         data: 'filtro='+filtro+'&f1='+f1+'&f2='+f2,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#'+rpt).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#'+rpt).html(data);
+        }
+    });
+}
+
+function call_popup(estrellas,localizacion){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "../admin/book/traer-lista-proveedores",
+        data: 'estrellas='+estrellas+'&localizacion='+localizacion,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data1){
             $('#'+rpt).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');

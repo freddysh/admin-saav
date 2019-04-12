@@ -2942,6 +2942,8 @@ class PackageCotizacionController extends Controller
         $notas=$request->input('r_dir_notas');
         $coti=Cotizacion::find($cotizacion_id);
         $coti->notas=$notas;
+        // return $notas; 
+        
         if($coti->save())
             return 1;
         else
@@ -3849,26 +3851,46 @@ class PackageCotizacionController extends Controller
     }
     public function traer_fecha_pago_h(Request $request)
     {
-        $str_fecha='aaaa-mm-dd';
+        $str_fecha='yyyy-mm-dd';
         $hotel_proveedor_id = $request->input('hotel_proveedor_id');
         $hotel_id = $request->input('hotel_id');
-
-//        dd($hotel_id);
         $itinerario_id=$request->input('itinerario_id');
         $itinerario=ItinerarioCotizaciones::find($itinerario_id);
-
-        $fecha_uso=$itinerario->fecha;
-        $fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
-        $proveedor=Proveedor::find($hotel_proveedor_id);
-//        dd($proveedor);
-        if(strlen($proveedor->plazo)>0 && strlen($proveedor->desci)>0) {
-            if ($proveedor->desci == 'antes')
-                $fecha->subDays($proveedor->plazo);
-            else
-                $fecha->addDays($proveedor->plazo);
-
-            $str_fecha= $fecha->toDateString();
+// realizamos la busqueda de un registro con los datos de itinerario, hotel y proveedor, si existe uno igual lo que haremos en jalkar esa fecha pues es la primera fecha la que se mostrarara para pacer los pagos por paryte d ecotabilidad
+        $valor=$hotel_proveedor_id;
+		$itinerario_cotizaciones=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario->paquete_cotizaciones_id)
+			->whereHas('hotel',function($query)use ($valor){
+			$query->where('proveedor_id',$valor);
+		})->get();
+        // dd($itinerario_cotizaciones);
+        // return dd($itinerario_cotizaciones);
+        $encontrado=false;
+        if(count((array)$itinerario_cotizaciones)>0){
+            foreach($itinerario_cotizaciones as $itinerario_cotizacion){
+                foreach($itinerario_cotizacion->hotel as $hotel){
+                    if(!$encontrado){
+                        $str_fecha=$hotel->fecha_venc;
+                        $encontrado=true;
+                    }
+                }
+            }
         }
+        if(!$encontrado){
+            $itinerario=ItinerarioCotizaciones::find($itinerario_id);
+            $fecha_uso=$itinerario->fecha;
+            $fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
+            $proveedor=Proveedor::find($hotel_proveedor_id);
+            if(strlen($proveedor->plazo)>0 && strlen($proveedor->desci)>0) {
+                if ($proveedor->desci == 'antes')
+                    $fecha->subDays($proveedor->plazo);
+                else
+                    $fecha->addDays($proveedor->plazo);
+
+                $str_fecha= $fecha->toDateString();
+            }
+        }
+
+        
 //        dd($fecha->toDateString().'_'.$proveedor->plazo.'/'.$proveedor->desci);
 
         return '<label for="exampleInputEmail1">Fecha a pagar</label>

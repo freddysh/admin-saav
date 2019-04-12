@@ -40,7 +40,7 @@
                                                     <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_servicio'])}}</td>
                                                     <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_pago'])}}</td>
                                                     <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_v']}}</b></td>
-                                                    <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto']}}</b></td>
+                                                    <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_r']}}</b></td>
                                                     <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_c']}}</b></td>
                                                     <td class="text-grey-goto text-right">{{$array_pagos_pendiente['saldo']}}</td>
                                                     <td class="text-grey-goto text-right">
@@ -50,9 +50,9 @@
                                                         </button>    
                                                             <!-- Modal -->
                                                         <div class="modal fade" id="modal_{{$key}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered modal-md" role="document">  
+                                                            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">  
                                                                 <form id="form_{{$key}}" action="{{route('contabilidad.hotel.store')}}" method="POST" >   
-                                                                    <div class="modal-content modal-lg">
+                                                                    <div class="modal-content  modal-lg">
                                                                         <div class="modal-header">
                                                                             <h5 class="modal-title" id="exampleModalCenterTitle">Editar Costos</h5>
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">

@@ -1167,23 +1167,23 @@
             })
         }
         $(function () {
-            $('#txt_name').autocomplete({
-                source: function(request, response) {
-                    $.ajax({
-                        url: "buscar-cotizacion",
-                        dataType: "json",
-                        data: {
-                            term : request.term
-                            {{--localizacion : $("#localizacion1_{{$i}}").val(),--}}
-                            {{--grupo : '{{$tipoServicio_}}'--}}
-                        },
-                        success: function(data) {
-                            response(data);
-                        }
-                    });
-                },
-                minLength: 1
-            });
+            // $('#txt_name').autocomplete({
+            //     source: function(request, response) {
+            //         $.ajax({
+            //             url: "buscar-cotizacion",
+            //             dataType: "json",
+            //             data: {
+            //                 term : request.term
+            //                 {{--localizacion : $("#localizacion1_{{$i}}").val(),--}}
+            //                 {{--grupo : '{{$tipoServicio_}}'--}}
+            //             },
+            //             success: function(data) {
+            //                 response(data);
+            //             }
+            //         });
+            //     },
+            //     minLength: 1
+            // });
         });
     </script>
 @stop

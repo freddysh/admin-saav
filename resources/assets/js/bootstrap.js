@@ -12,6 +12,12 @@ try {
     window.$ = window.jQuery = require('jquery');
     window.Popper = require('popper.js').default;
     require('bootstrap');
+    require('tinymce/tinymce.js');    
+    require('tinymce/themes/silver/index.js');
+    require('tinymce/plugins/lists/index.js');
+    require('tinymce/plugins/advlist/plugin.js');
+    // require('@lgaitan/pace-progress/dist/pace.js');
+
 } catch (e) {}
 
 /**

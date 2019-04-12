@@ -10,6 +10,12 @@
 
 @import '~bootstrap/scss/bootstrap';
 
+//tinymce
+
+@import '~tinymce/skins/ui/oxide/skin.min.css';
+@import '~tinymce/skins/content/default/content.css';
+@import '~tinymce/skins/ui/oxide/content.min.css';
+// @import '~@lgaitan/pace-progress/dist/themes/black/pace-theme-loading-bar.css';
 //JQueryUI
 @import '~jquery-ui/themes/base/all.css';
 

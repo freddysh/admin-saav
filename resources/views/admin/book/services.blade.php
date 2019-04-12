@@ -1248,15 +1248,19 @@
                                                 </tr>
                                             @endforeach
                                             {{--{{dd($itinerario->hotel)}}--}}
+                                            @php
+                                                $titulo_hotel_='';
+                                                $titulo_hotel='';
+                                            @endphp
                                             @foreach($itinerario->hotel as $hotel)
                                                 <tr id="hotel_{{$hotel->id}}">
                                                     <td class="text-center">
                                                         <b>{{$hotel->estrellas}} <i class="fa fa-star text-warning" aria-hidden="true"></i></b>
+                                                        @php
+                                                            $titulo_hotel_='<p><b>Categoria:'.$hotel->estrellas.' <i class="fa fa-star text-warning" aria-hidden="true"></i></b></p>';
+                                                        @endphp
                                                     </td>
                                                     <td>
-                                                        {{--</td>--}}
-                                                        {{--<td>--}}
-                                                        {{--{{$hotel->id}}--}}
                                                         @php
                                                             $total=0;
                                                             $total_book=0;
@@ -1278,6 +1282,9 @@
                                                             @endphp
                                                             <span class="margin-bottom-5"><b>{{$hotel->personas_s}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
                                                             <br>
+                                                            @php
+                                                                $titulo_hotel.='<tr><td>'.$hotel->personas_s.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_s.' x '.$hotel->personas_s.'</span></td><td><span>$'.$hotel->personas_s*$hotel->precio_s.'</span></td></tr>';
+                                                            @endphp
                                                         @endif
                                                         @if($hotel->personas_d>0)
                                                             @php
@@ -1293,6 +1300,9 @@
                                                             @endphp
                                                             <span class="margin-bottom-5"><b>{{$hotel->personas_d}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
                                                             <br>
+                                                            @php
+                                                                $titulo_hotel.='<tr><td>'.$hotel->personas_d.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i><i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_d.' x '.$hotel->personas_d.'</span></td><td><span>$'.$hotel->personas_d*$hotel->precio_d.'</span></td></tr>';
+                                                            @endphp
                                                         @endif
                                                         @if($hotel->personas_m>0)
                                                             @php
@@ -1308,6 +1318,9 @@
                                                             @endphp
                                                             <span class="margin-bottom-5"><b>{{$hotel->personas_m}}</b> <span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
                                                             <br>
+                                                            @php
+                                                                $titulo_hotel.='<tr><td>'.$hotel->personas_m.'</td><td><span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_m.' x '.$hotel->personas_m.'</span></td><td><span>$'.$hotel->personas_m*$hotel->precio_m.'</span></td></tr>';
+                                                            @endphp
                                                         @endif
                                                         @if($hotel->personas_t>0)
                                                             @php
@@ -1322,6 +1335,9 @@
 
                                                             @endphp
                                                             <span class="margin-bottom-5"><b>{{$hotel->personas_t}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
+                                                            @php
+                                                                $titulo_hotel.='<tr><td>'.$hotel->personas_t.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_t.' x '.$hotel->personas_t.'</span></td><td><span>$'.$hotel->personas_t*$hotel->precio_t.'</span></td></tr>';
+                                                            @endphp
                                                         @endif
                                                     </td>
                                                     <td>
@@ -1490,7 +1506,7 @@
                                                                 {{$hotel->proveedor->nombre_comercial}}
                                                             @endif
                                                         </b>
-                                                        <a href="#!" id="boton_prove_hotel_{{$hotel->id}}" data-toggle="modal" data-target="#myModal_h_{{$hotel->id}}">
+                                                        <a href="#!" id="boton_prove_hotel_{{$hotel->id}}" data-toggle="modal" data-target="#myModal_h_{{$hotel->id}}" call_popup('{{$hotel->estrellas}}','{{$hotel->localizacion}}')>
                                                             @if($hotel->proveedor)
                                                                 <i class="fa fa-edit"></i>
                                                             @else
@@ -1508,13 +1524,31 @@
                                                                     @endphp
                                                                     <form id="asignar_proveedor_hotel_path_{{$hotel->id}}" action="{{route('asignar_proveedor_hotel_path')}}" method="post">
                                                                         <div class="modal-header">
-                                                                            <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Lista de proveedores para el hotel</h4>
+                                                                            <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Lista de proveedores para el hotel14</h4>
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                                                         </div>
                                                                         <div class="modal-body clearfix">
                                                                             <div class="row">
                                                                                 <div class="col-12">
-                                                                                    <div class="row">
+                                                                                    <div class="card">
+                                                                                            {!!$titulo_hotel_!!}
+                                                                                        <table class="table table-hover table-responsive table-bordered table-stripe ">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th>Cantidad</th>
+                                                                                                <th>Acomodación</th>
+                                                                                                <th>Calculo</th>
+                                                                                                <th>Sale</th>
+                                                                                            </tr>  
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            {!! $titulo_hotel !!}
+                                                                                        </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-12">
+                                                                                    <div class="row" id="lista_proveedores_{{$hotel->id}}">
                                                                                         @foreach($hotel_proveedor->where('estrellas',$hotel->estrellas)->where('localizacion',$hotel->localizacion) as $hotel_proveedor_)
                                                                                             @php
                                                                                                 $valor_class='';
@@ -1577,7 +1611,6 @@
                                                                                             </div>
                                                                                         @endforeach
                                                                                     </div>
-
                                                                                 </div>
                                                                                 <div class="col-12 bg-green-goto text-white">
                                                                                     <div class="row">
@@ -1611,7 +1644,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="row">
+                                                                                    {{-- <div class="row">
                                                                                         <div class="col">
                                                                                             <div class="form-group form-check-inline">
                                                                                                 <label for="lista_dia">Ingrese los dias afectados</label>
@@ -1623,7 +1656,7 @@
                                                                                                 @endfor
                                                                                             </div>
                                                                                         </div>
-                                                                                    </div>
+                                                                                    </div> --}}
                                                                                 </div>
                                                                                 <div class="col-12">
                                                                                     <b id="rpt_book_proveedor_hotel_{{$hotel->id}}" class="text-success"></b>

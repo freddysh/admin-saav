@@ -49,7 +49,7 @@
                             @php
                                 $total_v+=$item->personas_s*$item->precio_s;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->personas_s*$item->precio_s}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->personas_s*$item->precio_s}}" readonly>
                             <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                              
                         @endif
@@ -57,7 +57,7 @@
                             @php
                                 $total_v+=$item->personas_d*$item->precio_d_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_d[]" value="{{$item->personas_d*$item->precio_d}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_d[]" value="{{$item->personas_d*$item->precio_d}}" readonly>
                             <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
                         @endif
@@ -65,7 +65,7 @@
                             @php
                                 $total_v+=$item->personas_m*$item->precio_m_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_m[]" value="{{$item->personas_m*$item->precio_m}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_m[]" value="{{$item->personas_m*$item->precio_m}}" readonly>
                             <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
                         @endif
@@ -73,7 +73,7 @@
                             @php
                                 $total_v+=$item->personas_t*$item->precio_t_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_t[]" value="{{$item->personas_t*$item->precio_t}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_t[]" value="{{$item->personas_t*$item->precio_t}}" readonly>
                             <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
                         @endif
@@ -83,7 +83,7 @@
                             @php
                                 $total_r+=$item->personas_s*$item->precio_s_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->personas_s*$item->precio_s_r}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->personas_s*$item->precio_s_r}}" readonly>
                             <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                              
                         @endif
@@ -91,7 +91,7 @@
                             @php
                                 $total_r+=$item->personas_d*$item->precio_d_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_d_r[]" value="{{$item->personas_d*$item->precio_d_r}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_d_r[]" value="{{$item->personas_d*$item->precio_d_r}}" readonly>
                             <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
                         @endif
@@ -99,7 +99,7 @@
                             @php
                                 $total_r+=$item->personas_m*$item->precio_m_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_m_r[]" value="{{$item->personas_m*$item->precio_m_r}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_m_r[]" value="{{$item->personas_m*$item->precio_m_r}}" readonly>
                             <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
                         @endif
@@ -107,7 +107,7 @@
                             @php
                                 $total_r+=$item->personas_t*$item->precio_t_r;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_t_r[]" value="{{$item->personas_t*$item->precio_t_r}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_t_r[]" value="{{$item->personas_t*$item->precio_t_r}}" readonly>
                             <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
                         @endif
@@ -117,15 +117,15 @@
                             @php
                                 $total_c+=$item->personas_s*$item->precio_s_c;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_s_c[]" value="{{$item->personas_s*$item->precio_s_c}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_s_c[]" step="0.01" min="1" value="{{$item->personas_s*$item->precio_s_c}}">
                             <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
-                            <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                              
+                            <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                            
                         @endif
                         @if ($item->personas_d>0)
                             @php
                                 $total_c+=$item->personas_d*$item->precio_d_c;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_d_c[]" value="{{$item->personas_d*$item->precio_d_c}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_d_c[]" step="0.01" min="1" value="{{$item->personas_d*$item->precio_d_c}}">
                             <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
                         @endif
@@ -133,7 +133,7 @@
                             @php
                                 $total_c+=$item->personas_m*$item->precio_m_c;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_m_c[]" value="{{$item->personas_m*$item->precio_m_c}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_m_c[]" step="0.01" min="1" value="{{$item->personas_m*$item->precio_m_c}}">
                             <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
                         @endif
@@ -141,7 +141,7 @@
                             @php
                                 $total_c+=$item->personas_t*$item->precio_t_c;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_t_c[]" value="{{$item->personas_t*$item->precio_t_c}}">
+                            <input class="form-control" style="width:100px" type="number" name="precio_t_c[]" step="0.01" min="1" value="{{$item->personas_t*$item->precio_t_c}}">
                             <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
                         @endif
@@ -153,15 +153,15 @@
                 <td colspan="3">TOTAL</td>
                 <td>
                     <b id="total" class="text-15">
-                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_v}}" disabled></b>
+                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_v}}" readonly></b>
                 </td>
                 <td>
                     <b id="total" class="text-15">
-                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_r}}" disabled></b>
+                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_r}}" readonly></b>
                 </td>
                 <td>
                     <b id="total" class="text-15">
-                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_c}}" disabled></b>
+                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_c}}" readonly></b>
                 </td>
             </tr>
     </tbody>

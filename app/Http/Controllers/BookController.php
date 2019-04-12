@@ -191,6 +191,7 @@ class BookController extends Controller
 			return 0;
 	}
 	function asignar_proveedor_hotel(Request $request){
+		$id1=$request->input('id');
 		$fecha_pagar=$request->input('fecha_pagar');
 		$itinerario_paquete_id=$request->input('itinerario_paquete_id');
 		$id_='prioridad_'.$request->input('id');
@@ -206,30 +207,112 @@ class BookController extends Controller
 		$precio_m_r=$hotel_proveedor->matrimonial;
 		$precio_t_r=$hotel_proveedor->triple;
 
-		$itinerario_cotizaciones=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)->get();
-		foreach ($dias_afectados as $dias_afectados_){
-			foreach($itinerario_cotizaciones->where('dias',$dias_afectados_) as $itinerario_cotizaciones_){
-				foreach($itinerario_cotizaciones_->hotel as $hotel_){
-					$hotel=PrecioHotelReserva::Find($hotel_->id);
-					if($hotel_proveedor->estrellas==$hotel->estrellas){
-						if($hotel->personas_s>0)
-							$hotel->precio_s_r=$precio_s_r;
-						if($hotel->personas_d>0)
-							$hotel->precio_d_r=$precio_d_r;
-						if($hotel->personas_m>0)
-							$hotel->precio_m_r=$precio_m_r;
-						if($hotel->personas_t>0)
-							$hotel->precio_t_r=$precio_t_r;
+		// verificamos si existe un registro con os datos del proveedor escojido
+		// $valor=$hotel_proveedor->proveedor_id;
+		// $itinerario_cotizaciones=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)
+		// 	->whereHas('hotel',function($query)use ($valor){
+		// 	$query->where('proveedor_id',$valor);
+		// })->get();
+		// // dd($itinerario_cotizaciones);
+		// $encontrado=false;
+		// foreach($itinerario_cotizaciones as $itinerario_cotizacion){
+		// 	foreach($itinerario_cotizacion->hotel as $hotel){
+		// 		if(!$encontrado){
+		// 			$fecha_pagar=$hotel->fecha_venc;
+		// 			$encontrado=true;
+		// 		}
+		// 	}
+		// }
+		// agregamos el proveedor
+		$hotel=PrecioHotelReserva::Find($id1);
+		// preguntamos si existe un proveedor asignado
 
+		$valor=$hotel_proveedor->proveedor_id;
+		/*
+		if($hotel->proveedor_id>0){
+			if($hotel->proveedor_id!=$hotel_proveedor->proveedor_id){
+				$arreglo=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)
+					->whereHas('hotel',function($query)use ($valor){
+					$query->where('proveedor_id',$valor);
+				})->pluck('id')->toArray();
+				$arreglo2=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)
+					->whereHas('hotel',function($query)use ($valor){
+					$query->where('proveedor_id',$valor);
+				})->get();
+				if(array_search($hotel->id, $arreglo)==0){
+					if($hotel_proveedor->estrellas==$hotel->estrellas){
+						if($hotel->personas_s>0){
+							$hotel->precio_s_r=$precio_s_r;
+							$hotel->precio_s_c=$precio_s_r;
+						}
+						if($hotel->personas_d>0){
+							$hotel->precio_d_r=$precio_d_r;
+							$hotel->precio_d_c=$precio_d_r;
+						}
+						if($hotel->personas_m>0){
+							$hotel->precio_m_r=$precio_m_r;
+							$hotel->precio_m_c=$precio_m_r;
+						}
+						if($hotel->personas_t>0){
+							$hotel->precio_t_r=$precio_t_r;
+							$hotel->precio_t_c=$precio_t_r;
+						}
 						$hotel->prioridad=$prioridad;
 						$hotel->fecha_venc=$fecha_pagar;
 						$hotel->proveedor_id=$hotel_proveedor->proveedor_id;
 						$hotel->liquidacion=1;
 						$hotel->save();
 					}
+					//buscamos la fecvha de pago segun dia dia que se lleva
+					$itinerario=ItinerarioCotizaciones::find($hotel->itinerario_cotizaciones_id);
+					$fecha_uso=$itinerario->fecha;
+					$fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
+					$proveedor=Proveedor::find($hotel_proveedor->proveedor_id);
+					$str_fecha='aaaa-mm-dd';
+					if(strlen($proveedor->plazo)>0 && strlen($proveedor->desci)>0) {
+						if ($proveedor->desci == 'antes')
+							$fecha->subDays($proveedor->plazo);
+						else
+							$fecha->addDays($proveedor->plazo);
+
+						$str_fecha= $fecha->toDateString();
+					}
+
+					foreach($arreglo2 as $arreglo2_){
+						$hotel_=PrecioHotelReserva::Find($arreglo2_->id);
+						$hotel_->fecha_venc=$str_fecha;
+						$hotel_->save();
+					}
+					
 				}
 			}
 		}
+		else{*/
+			if($hotel_proveedor->estrellas==$hotel->estrellas){
+				if($hotel->personas_s>0){
+					$hotel->precio_s_r=$precio_s_r;
+					$hotel->precio_s_c=$precio_s_r;
+				}
+				if($hotel->personas_d>0){
+					$hotel->precio_d_r=$precio_d_r;
+					$hotel->precio_d_c=$precio_d_r;
+				}
+				if($hotel->personas_m>0){
+					$hotel->precio_m_r=$precio_m_r;
+					$hotel->precio_m_c=$precio_m_r;
+				}
+				if($hotel->personas_t>0){
+					$hotel->precio_t_r=$precio_t_r;
+					$hotel->precio_t_c=$precio_t_r;
+				}
+				$hotel->prioridad=$prioridad;
+				$hotel->fecha_venc=$fecha_pagar;
+				$hotel->proveedor_id=$hotel_proveedor->proveedor_id;
+				$hotel->liquidacion=1;
+				$hotel->save();
+			}
+		/*}*/
+		
 		return redirect()->back();
 }
 	function asignar_proveedor_costo(Request $request){
@@ -319,7 +402,6 @@ class BookController extends Controller
 								}
 							}
 						}
-
 					}
 					else{
 						$iti_temp=ItinerarioServicios::findOrfail($itinerario_servicios->id);
@@ -333,7 +415,7 @@ class BookController extends Controller
 								$fecha->addDays($proveedor->plazo);
 						}
 						$iti_temp->fecha_venc=$fecha->toDateString();
-						$iti_temp->save();
+						// $iti_temp->save();
 					}
 				}
 				$sutbTotal=0;
