@@ -3831,18 +3831,41 @@ class PackageCotizacionController extends Controller
         $id = $request->input('id');
 //        dd($id);
         $itinerario_id=$request->input('itinerario_id');
-        $itinerario=ItinerarioCotizaciones::find($itinerario_id);
-        $fecha_uso=$itinerario->fecha;
-        $fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
-        $proveedor=Proveedor::find($id);
-//        dd($proveedor);
-        if(strlen($proveedor->plazo)>0 && strlen($proveedor->desci)>0) {
-            if ($proveedor->desci == 'antes')
-                $fecha->subDays($proveedor->plazo);
-            else
-                $fecha->addDays($proveedor->plazo);
 
-            $str_fecha= $fecha->toDateString();
+// realizamos la busqueda de por lo menos un registro con los datos de itinerario, servicio y proveedor, si existe uno igual lo que haremos en jalkar esa fecha pues es la primera fecha la que se mostrarara para pacer los pagos por paryte d ecotabilidad
+        $valor_1=$id;
+        $itinerario=ItinerarioCotizaciones::find($itinerario_id);
+		$itinerario_cotizaciones=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario->paquete_cotizaciones_id)
+			->whereHas('itinerario_servicios',function($query)use ($valor_1){
+			$query->where('proveedor_id',$valor_1);
+        })->get();
+        // dd($itinerario_cotizaciones);
+        $encontrado=false;
+        if(count((array)$itinerario_cotizaciones)>0){
+            foreach($itinerario_cotizaciones as $itinerario_cotizacion){
+                foreach($itinerario_cotizacion->itinerario_servicios->where('proveedor_id',$valor_1) as $servicio){
+                    if(!$encontrado){
+                        
+                        $str_fecha=$servicio->fecha_venc;
+                        $encontrado=true;
+                    }
+                }
+            }
+        }
+        if(!$encontrado){
+            $itinerario=ItinerarioCotizaciones::find($itinerario_id);
+            $fecha_uso=$itinerario->fecha;
+            $fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
+            $proveedor=Proveedor::find($id);
+    //        dd($proveedor);
+            if(strlen($proveedor->plazo)>0 && strlen($proveedor->desci)>0) {
+                if ($proveedor->desci == 'antes')
+                    $fecha->subDays($proveedor->plazo);
+                else
+                    $fecha->addDays($proveedor->plazo);
+
+                $str_fecha= $fecha->toDateString();
+            }
         }
 //        dd($fecha->toDateString().'_'.$proveedor->plazo.'/'.$proveedor->desci);
 

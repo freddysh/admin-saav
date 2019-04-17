@@ -173,6 +173,7 @@ class BookController extends Controller
 
 		$itinerario1=ItinerarioServicios::FindOrFail($dato[1]);
 		$itinerario1->precio_proveedor=$dato[3];
+		$itinerario1->precio_c=$dato[3];
 		$itinerario1->proveedor_id=$dato[2];
 		// $itinerario1->proveedor_id_nuevo=$itinerario_serv_pro->id;
 		$itinerario1->fecha_venc=$fecha_pagar;
@@ -2028,5 +2029,48 @@ class BookController extends Controller
 //        $cotizacion_cat =Cotizacion::where('codigo',$codigo)->get();
 //        return view('admin.book.list-paquetes',compact('cotizacion_cat'));
 	}
+	public function traer_lista_proveedores(Request $request){
+        $estrellas=$request->input('estrellas');
+		$localizacion=$request->input('localizacion');
+		$hotel_id=$request->input('hotel_id');
+		$itinerario_cotizaciones_id=$request->input('itinerario_cotizaciones_id');
+
+		$cotizacion_id=$request->input('cotizacion_id');
+		
+		$hotel_proveedor=HotelProveedor::where('estrellas',$estrellas)->where('localizacion',$localizacion)->get();
+		$hotel=PrecioHotelReserva::find($hotel_id);
+        return view('admin.book.traer-lista-proveedores-hotel',compact('hotel_proveedor','hotel','itinerario_cotizaciones_id','cotizacion_id'));
+	}
+	public function traer_lista_proveedores_servicios(Request $request){
+        // $estrellas=$request->input('estrellas');
+		// $localizacion=$request->input('localizacion');
+		// $hotel_id=$request->input('hotel_id');
+		// $itinerario_cotizaciones_id=$request->input('itinerario_cotizaciones_id');
+
+		// $cotizacion_id=$request->input('cotizacion_id');
+		
+		// $hotel_proveedor=HotelProveedor::where('estrellas',$estrellas)->where('localizacion',$localizacion)->get();
+		// $hotel=PrecioHotelReserva::find($hotel_id);
+
+		$action = $request->input('action');
+		$cotizacion_id = $request->input('cotizacion_id');
+		$servicio_id=$request->input('servicio_id');
+		$arregloo=$request->input('arreglo');
+		$arregloo=explode('_',$arregloo);
+		// dd($arregloo);
+		$itinerario_id = $request->input('itinerario_id');
+		$cotizacion=Cotizacion::find($cotizacion_id);
+		$servicios=ItinerarioServicios::find($servicio_id);
+
+		if($action=='a'){
+			$productos=M_Producto::where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->get();
+		}
+		else if($action=='e'){
+			$productos=M_Producto::where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->get();
+		}
+		return view('admin.book.traer-lista-proveedores-servicios',compact('productos','cotizacion','servicios','itinerario_id','action'));	
+	}
+
+	
 
 }

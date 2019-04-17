@@ -1375,6 +1375,11 @@ Route::post('admin/contabilidad/ingresos/buscar-pagos-recientes', [
 ]);
 
 Route::post('admin/book/hotel/traer-lista-proveedores', [
-    'uses' => 'ContabilidadController@traer_lista_proveedores',
+    'uses' => 'BookController@traer_lista_proveedores',
     'as' => 'hotel.traer.lista.proveedores',
 ]);
+Route::post('admin/book/servicios/traer-lista-proveedores', [
+    'uses' => 'BookController@traer_lista_proveedores_servicios',
+    'as' => 'servicios.traer.lista.proveedores',
+]);
+

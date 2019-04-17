@@ -161,7 +161,7 @@
                 </td>
                 <td>
                     <b id="total" class="text-15">
-                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_c}}" readonly></b>
+                    <input class="form-control" style="width:100px" type="number" id="precio_total_{{1}}" name="precio" value="{{$total_c}}" readonly></b>
                 </td>
             </tr>
     </tbody>
@@ -185,5 +185,11 @@
     <div class="col-12" id="rpt_{{$clave}}">
     </div>
 </div>
+
+<script>
+    funciton sumar(valor,item){
+
+    }
+</script>
 @endif
 

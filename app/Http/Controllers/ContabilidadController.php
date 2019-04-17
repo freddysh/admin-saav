@@ -2322,8 +2322,5 @@ class ContabilidadController extends Controller
         return view('admin.contabilidad.list-pagos-recientes',compact('cotizaciones','pagina'));
     }
  
-    public function traer_lista_proveedores(Request $request){
-        $estrellas=$request->input('estrellas');
-        $localizacion=$request->input('localizacion');
-    }
+    
 }

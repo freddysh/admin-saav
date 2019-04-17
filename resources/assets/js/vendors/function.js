@@ -6520,7 +6520,7 @@ function pagos_recientes(filtro,f1,f2,rpt){
     });
 }
 
-function call_popup(estrellas,localizacion){
+function call_popup(estrellas,localizacion,rpt_id,hotel_id,itinerario_cotizaciones_id,cotizacion_id){
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6528,14 +6528,33 @@ function call_popup(estrellas,localizacion){
     });
     $.ajax({
         type: 'POST',
-        url: "../admin/book/traer-lista-proveedores",
-        data: 'estrellas='+estrellas+'&localizacion='+localizacion,
+        url: "../book/hotel/traer-lista-proveedores",
+        data: 'estrellas='+estrellas+'&localizacion='+localizacion+'&hotel_id='+hotel_id+'&itinerario_cotizaciones_id='+itinerario_cotizaciones_id+'&cotizacion_id='+cotizacion_id,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data1){
-            $('#'+rpt).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            $('#'+rpt_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
         success: function(data){
-            $('#'+rpt).html(data);
+            $('#'+rpt_id).html(data);
+        }
+    });
+}
+function call_popup_servicios(rpt_id,servicio_id,arreglo,cotizacion_id,itinerario_id,action){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "../book/servicios/traer-lista-proveedores",
+        data: 'servicio_id='+servicio_id+'&arreglo='+arreglo+'&cotizacion_id='+cotizacion_id+'&itinerario_id='+itinerario_id+'&action='+action,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#'+rpt_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#'+rpt_id).html(data);
         }
     });
 }

@@ -747,7 +747,13 @@
                                                                     $grupe=$m_ser->grupo;
                                                                 @endphp
                                                             @endforeach --}}
-                                                            <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_{{$servicios->id}}">
+                                                            @php
+                                                                $arregloo[]='GROUP';
+                                                                $arregloo[]='SIC';
+                                                                $arregloo[]=$servicios->tipoServicio;
+                                                                $arreglito='GROUP_SIC_'.$servicios->tipoServicio
+                                                            @endphp
+                                                            <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_{{$servicios->id}}" onclick="call_popup_servicios('lista_proveedores_srevicios_{{$servicios->id}}','{{$servicios->id}}','{{$arreglito}}','{{$cotizacion->id}}','{{$itinerario->id}}','a')">
                                                                 <i class="fa fa-plus-circle fa-2x"></i>
                                                             </a>
                                                             <div class="modal fade" id="myModal_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -785,78 +791,19 @@
                                                                             </div>
                                                                             <div class="modal-body clearfix">
                                                                                 <div class="col-md-12">
-                                                                                    @php
-                                                                                        $arregloo[]='GROUP';
-                                                                                        $arregloo[]='SIC';
-                                                                                        $arregloo[]=$servicios->tipoServicio;
-                                                                                    @endphp
-                                                                                    @if($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()==0)
-                                                                                        <b class="text-danger">No tenemos proveedores disponibles!</b>
-                                                                                    @else
-                                                                                    {{-- if($servicios->servicio) --}}
-                                                                                        <p class="d-none">
-                                                                                            {{$productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()}}
-                                                                                        </p>
-                                                                                        <div class="row">
-                                                                                            <div class="col-lg-12 bg-green-goto">
-                                                                                                <b class="small text-white">{{$servicios->nombre}}</b> |
-                                                                                                <span class="small badge badge-g-yellow">{{$servicios->tipoServicio}}</span> |
-                                                                                                <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
-                                                                                            </div>
+                                                                                    <p class="d-none">
+                                                                                        {{$productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()}}
+                                                                                    </p>
+                                                                                    <div class="row">
+                                                                                        <div class="col-lg-12 bg-green-goto">
+                                                                                            <b class="small text-white">{{$servicios->nombre}}</b> |
+                                                                                            <span class="small badge badge-g-yellow">{{$servicios->tipoServicio}}</span> |
+                                                                                            <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
                                                                                         </div>
-                                                                                        <div class="row mt-1">
-                                                                                            @foreach($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre) as $producto)
-                                                                                                {{-- @if($producto->m_servicios_id==$servicios->m_servicios_id) --}}
-                                                                                                    @if($producto->precio_grupo==1)
-                                                                                                        @php
-                                                                                                            $valor=$cotizacion->nropersonas;
-                                                                                                        @endphp
-                                                                                                    @else
-                                                                                                        @php
-                                                                                                            $valor=1;
-                                                                                                        @endphp
-                                                                                                    @endif
-                                                                                                    @php
-                                                                                                        $precio_book=$producto->precio_costo*1;
-                                                                                                    @endphp
-                                                                                                    @if($producto->precio_grupo==0)
-                                                                                                        @php
-                                                                                                            $precio_book=$producto->precio_costo*$cotizacion->nropersonas;
-                                                                                                        @endphp
-                                                                                                    @endif
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="card  bg-light mb-3">
-                                                                                                            <div class="card-body">
-                                                                                                                    <label class="text-grey-goto">
-                                                                                                                            <p class="text-grey-goto">
-                                                                                                                                <b>{{$producto->proveedor->nombre_comercial}} para {{$producto->tipo_producto}} - {{$producto->clase}}
-                                                                                                                                @if($producto->grupo=='TRAINS')
-                                                                                                                                    <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
-                                                                                                                                @endif
-                                                                                                                                </b>
-                                                                                                                            </p>
-                                                                                                                            <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
-                                                                                                                            <input class="grupo" type="radio" onchange="dato_producto('{{$producto->id}}','{{$producto->proveedor_id}}','{{$servicios->id}}','{{$itinerario->id}}')" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}">
-                                                                                                                            <small>$</small>
-                                                                                                                            @if($producto->precio_grupo==1)
-                                                                                                                                {{$producto->precio_costo*1}}
-                                                                                                                                <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*1}}">
-                                                                                                                            @else
-                                                                                                                                {{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}
-                                                                                                                                {{--<input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}">--}}
-                                                                                                                                <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*$cotizacion->nropersonas}}">
-                                                                                                                            @endif
-                                                                                                                            <span class="text-primary"> Se paga {{$producto->proveedor->plazo}} {{$producto->proveedor->desci}}</span>
-                                                                                                                        </label>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        
-                                                                                                    </div>
-                                                                                                    {{--@endif--}}
-                                                                                                {{-- @endif --}}
-                                                                                            @endforeach
-                                                                                        </div>
-                                                                                    @endif
+                                                                                    </div>
+                                                                                    <div id="lista_proveedores_srevicios_{{$servicios->id}}" class="row mt-1">
+                                                                                        
+                                                                                    </div>
                                                                                 </div>
                                                                                 <div class="col-12 bg-green-goto">
                                                                                     <div class="row">
@@ -906,7 +853,7 @@
                                                                 </div>
                                                             </div>
                                                         @else
-                                                            <a id="boton_prove_{{$servicios->id}}" href="#" class="" data-toggle="modal" data-target="#myModal_{{$servicios->id}}">
+                                                            <a id="boton_prove_{{$servicios->id}}" href="#" class="" data-toggle="modal" data-target="#myModal_{{$servicios->id}}" onclick="call_popup_servicios('e_lista_proveedores_srevicios_{{$servicios->id}}','{{$servicios->id}}','{{$arreglito}}','{{$cotizacion->id}}','{{$itinerario->id}}','e')">
                                                                 <i class="fa fa-edit"></i>
                                                             </a>
                                                             <div class="modal fade" id="myModal_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -949,80 +896,20 @@
                                                                                         @php
                                                                                         $producto_id_=0;   
                                                                                         @endphp
-                                                                                        @if($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->count()==0)
-                                                                                            <b class="text-danger">No tenemos proveedores disponibles!</b>
-                                                                                        @else
+                                                                                        
                                                                                         {{-- if($servicios->servicio) --}}
-                                                                                            <div class="row">
-                                                                                                <div class="col-lg-12 bg-green-goto">
-                                                                                                    <b class="small text-white">{{$servicios->nombre}}</b> |
-                                                                                                    <span class="small badge badge-g-yellow">{{$servicios->tipoServicio}}</span> |
-                                                                                                    <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
-                                                                                                </div>
+                                                                                        <div class="row">
+                                                                                            <div class="col-lg-12 bg-green-goto">
+                                                                                                <b class="small text-white">{{$servicios->nombre}}</b> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->tipoServicio}}</span> |
+                                                                                                <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
                                                                                             </div>
-                                                                                            <div class="row px-1 mt-1">
-                                                                                            @foreach($productos->where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre) as $producto)
-                                                                                                @php
-                                                                                                    $valor_chk='';
-                                                                                                @endphp
-                                                                                                @if($producto->proveedor_id==$servicios->proveedor_id)
-                                                                                                    @php
-                                                                                                        $valor_chk='checked=\'checked\'';
-                                                                                                    @endphp
-                                                                                                @endif
-                                                                                                {{-- @if($producto->m_servicios_id==$servicios->m_servicios_id) --}}
-                                                                                                    @if($producto->precio_grupo==1)
-                                                                                                        @php
-                                                                                                            $valor=$cotizacion->nropersonas;
-                                                                                                        @endphp
-                                                                                                    @else
-                                                                                                        @php
-                                                                                                            $valor=1;
-                                                                                                        @endphp
-                                                                                                    @endif
-                                                                                                    @php
-                                                                                                        $precio_book=$producto->precio_costo*1;
-                                                                                                    @endphp
-                                                                                                    @if($producto->precio_grupo==0)
-                                                                                                        @php
-                                                                                                            $precio_book=$producto->precio_costo*$cotizacion->nropersonas;
-                                                                                                        @endphp
-                                                                                                    @endif
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="card bg-light mb-3">
-                                                                                                            <div class="card-body">
-                                                                                                                    <label class="text-grey-goto">
-                                                                                                                            <p class="text-grey-goto">
-                                                                                                                            <b>{{$producto->proveedor->nombre_comercial}} para {{$producto->tipo_producto}} - {{$producto->clase}}
-                                                                                                                                    @if($producto->grupo=='TRAINS')
-                                                                                                                                        <span class="small text-grey-goto" >[Sal: {{$servicios->salida}} - Lleg:{{$servicios->llegada}}]</span>
-                                                                                                                                    @endif
-                                                                                                                                    </b>
-                                                                                                                            </p>
-                                                                                                                            <input type="hidden" id="proveedor_servicio_{{$producto->id}}" value="{{$producto->proveedor->nombre_comercial}}">
-                                                                                                                            <input class="grupo" type="radio" onchange="dato_producto('{{$producto->id}}','{{$producto->proveedor_id}}','{{$servicios->id}}','{{$itinerario->id}}')" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>
-                                                                                                                            <small>$</small>
-                                                                                                                            {{--<input class="grupo" type="radio" onchange="dato_producto({{$producto->id}})" name="precio[]" value="{{$cotizacion->id}}_{{$servicios->id}}_{{$producto->proveedor->id}}_{{$precio_book}}" {!! $valor_chk !!}>--}}
-                                                                                                                            @php
-                                                                                                                                $producto_id_=$producto->id;   
-                                                                                                                            @endphp
-                                                                                                                            @if($producto->precio_grupo==1)
-                                                                                                                                {{$producto->precio_costo*1}}
-                                                                                                                                <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*1}}">
-                                                                                                                            @else
-                                                                                                                                {{$producto->precio_costo}}x{{$cotizacion->nropersonas}}={{$producto->precio_costo*$cotizacion->nropersonas}}
-                                                                                                                                <input type="hidden" id="book_price_{{$producto->id}}" value="{{$producto->precio_costo*$cotizacion->nropersonas}}">
-                                                                                                                            @endif
-                                                                                                                            <span class="text-primary"> Se paga {{$producto->proveedor->plazo}} {{$producto->proveedor->desci}}</span>
-                                                                                                                        </label>        
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    {{--@endif--}}
-                                                                                                {{-- @endif --}}
-                                                                                            @endforeach
-                                                                                            </div>
-                                                                                        @endif
+                                                                                        </div>
+                                                                                        <div id="e_lista_proveedores_srevicios_{{$servicios->id}}" class="row px-1 mt-1">
+
+                                                                                        
+                                                                                        </div>
+                                                                                        
                                                                                     </div>
                                                                                     <div class="col-md-12 bg-green-goto">
                                                                                         <div class="row">
@@ -1506,7 +1393,7 @@
                                                                 {{$hotel->proveedor->nombre_comercial}}
                                                             @endif
                                                         </b>
-                                                        <a href="#!" id="boton_prove_hotel_{{$hotel->id}}" data-toggle="modal" data-target="#myModal_h_{{$hotel->id}}" call_popup('{{$hotel->estrellas}}','{{$hotel->localizacion}}')>
+                                                    <a href="#!" id="boton_prove_hotel_{{$hotel->id}}" data-toggle="modal" data-target="#myModal_h_{{$hotel->id}}" onclick="call_popup('{{$hotel->estrellas}}','{{$hotel->localizacion}}','lista_proveedores_{{$hotel->id}}','{{$hotel->id}}','{{$itinerario->id}}','{{$cotizacion->id}}')">
                                                             @if($hotel->proveedor)
                                                                 <i class="fa fa-edit"></i>
                                                             @else
@@ -1549,67 +1436,9 @@
                                                                                 </div>
                                                                                 <div class="col-12">
                                                                                     <div class="row" id="lista_proveedores_{{$hotel->id}}">
-                                                                                        @foreach($hotel_proveedor->where('estrellas',$hotel->estrellas)->where('localizacion',$hotel->localizacion) as $hotel_proveedor_)
-                                                                                            @php
-                                                                                                $valor_class='';
-                                                                                            @endphp
-                                                                                            @if($hotel_proveedor_->proveedor_id==$hotel->proveedor_id)
-                                                                                                @php
-                                                                                                    $valor_class='checked=\'checked\'';
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                            <div class="col-md-6">
-                                                                                                <div class="checkbox11 text-left caja_current">
-                                                                                                    <label>
-                                                                                                        <input class="grupo" onchange="dato_producto_hotel('{{$hotel_proveedor_->id}}','{{$hotel_proveedor_->proveedor_id}}','{{$hotel->id}}','{{$itinerario->id}}')" type="radio" name="precio" value="{{$cotizacion->id}}_{{$hotel->id}}_{{$hotel_proveedor_->proveedor_id}}_{{$hotel_proveedor_->id}}" {!! $valor_class !!}>
-                                                                                                        <b>{{$hotel_proveedor_->proveedor->nombre_comercial}} | {{$hotel_proveedor_->estrellas}}<i class="fa fa-star text-warning" aria-hidden="true"></i></b>
-                                                                                                        <span class="d-none" id="proveedor_servicio_hotel_{{$hotel_proveedor_->id}}">
-                                                                                                            {{$hotel_proveedor_->proveedor->nombre_comercial}}
-                                                                                                        </span>
-                                                                                                    </label>
 
-                                                                                                    @if($hotel->personas_s>0)
-                                                                                                        @php
-                                                                                                            $s=1;
-                                                                                                        @endphp
-                                                                                                        <p class="text-grey-goto">Single: ${{($hotel_proveedor_->single*$hotel->personas_s)}}</p>
-                                                                                                    @endif
-                                                                                                    @if($hotel->personas_d>0)
-                                                                                                        @php
-                                                                                                            $d=1;
-                                                                                                        @endphp
-                                                                                                        <p class="text-grey-goto">Double: ${{$hotel_proveedor_->doble*$hotel->personas_d}}</p>
-                                                                                                    @endif
-                                                                                                    @if($hotel->personas_m>0)
-                                                                                                        @php
-                                                                                                            $m=1;
-                                                                                                        @endphp
-                                                                                                        <p class="text-grey-goto">Matrimonial: ${{$hotel_proveedor_->matrimonial*$hotel->personas_m}}</p>
-                                                                                                    @endif
-                                                                                                    @if($hotel->personas_t>0)
-                                                                                                        @php
-                                                                                                            $t=1;
-                                                                                                        @endphp
-                                                                                                        <p class="text-grey-goto">Triple: ${{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
-                                                                                                    @endif
-                                                                                                    <span class="d-none" id="book_price_hotel_{{$hotel_proveedor_->id}}">
-                                                                                                        @if($hotel->personas_s>0)
-                                                                                                            <p id="book_price_s_{{$hotel_proveedor_->id}}">{{($hotel_proveedor_->single*$hotel->personas_s)}}</p>
-                                                                                                        @endif
-                                                                                                        @if($hotel->personas_d>0)
-                                                                                                            <p id="book_price_d_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->doble*$hotel->personas_d}}</p>
-                                                                                                        @endif
-                                                                                                        @if($hotel->personas_m>0)
-                                                                                                            <p id="book_price_m_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->matrimonial*$hotel->personas_m}}</p>
-                                                                                                        @endif
-                                                                                                        @if($hotel->personas_t>0)
-                                                                                                            <p id="book_price_t_{{$hotel_proveedor_->id}}">{{$hotel_proveedor_->triple*$hotel->personas_t}}</p>
-                                                                                                        @endif
-                                                                                            </span>
-                                                                                                    <span class="text-primary"> Se paga {{$hotel_proveedor_->proveedor->plazo}} {{$hotel_proveedor_->proveedor->desci}}</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        @endforeach
+                                                                                        
+
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-12 bg-green-goto text-white">
