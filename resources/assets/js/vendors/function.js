@@ -5598,7 +5598,7 @@ function validarSiNumero(numero){
 }
 function guardar_nota(id) {
     console.log('nueva nota');
-
+    tinymce.triggerSave();
         // Enviamos el formulario usando AJAX
         $.ajax({
             type: 'POST',
@@ -6122,23 +6122,52 @@ function pintar(id){
     $('#'+id).parent().removeClass("btn-info");
     $('#'+id).parent().addClass("btn-primary");
 }
-function buscar_pagos_pendientes(ini,fin){
-   
-    
+// function doProgress(evt) {
+//     if (evt.lengthComputable) {
+//         var percentComplete = evt.loaded / evt.total;
+//         console.log(percentComplete);
+//         $('.progress').attr({
+//             value: percentComplete * 100
+//         });
+//         if (percentComplete === 1) {
+//             $('.progress').addClass('hide');
+//         }
+//     }
+//   }
+function buscar_pagos_pendientes(ini,fin){    
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-
     // $.post('/admin/contabilidad/pagos-en-genral/pendientes/filtrar', 'ini='+ini+'&fin='+fin, function (data) {
     //         $('#rpt_hotel').html(data);
 
     // }).fail(function (data) {
     // });
-
     $.ajax({
-        dataType:'html',
+//         xhr: function()
+//   {
+//     var xhr = new window.XMLHttpRequest();
+//     //Upload progress
+//     xhr.upload.addEventListener("progress", function(evt){
+//       if (evt.lengthComputable) {
+//         var percentComplete = evt.loaded / evt.total;
+//         //Do something with upload progress
+//         console.log(percentComplete);
+//       }
+//     }, false);
+//     //Download progress
+//     xhr.addEventListener("progress", function(evt){
+//       if (evt.lengthComputable) {
+//         var percentComplete = evt.loaded / evt.total;
+//         //Do something with download progress
+//         console.log(percentComplete);
+//       }
+//     }, false);
+//     return xhr;
+//   },
+        // dataType:'html',
         url: '/admin/contabilidad/pagos-en-genral/pendientes/filtrar',
         type: 'post',
         data: 'ini='+ini+'&fin='+fin,
@@ -6198,6 +6227,12 @@ function contabilidad_hotel_store(clave){
         // contentType:false,
         // cache:false,
         // processData: false,
+        beforeSend:
+        function() {
+            
+            $('#rpt_'+clave).html('');
+            $('#rpt_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
         success: function (data) {
             $('#rpt_'+clave).html('');
             $('#rpt_'+clave).html(data.mensaje);
@@ -6557,4 +6592,43 @@ function call_popup_servicios(rpt_id,servicio_id,arreglo,cotizacion_id,itinerari
             $('#'+rpt_id).html(data);
         }
     });
+}
+
+
+function sumar_hotel_subtotales(clave){
+    var suma=0;
+    // sumamos los single
+    $("input[name='precio_s_c[]']").each(function(index,value) {
+        console.log('valor_s:'+$(value).val());
+        if($.isNumeric($(value).val())){
+            suma+=parseFloat($(value).val());
+        } 
+    });
+    // sumamos los double
+    $("input[name='precio_d_c[]']").each(function(index,value) {
+        
+        console.log('valor_d:'+$(value).val());
+        if($.isNumeric($(value).val())){                
+            suma+=parseFloat($(value).val());   
+        }
+    });
+    // sumamos los double
+    $("input[name='precio_m_c[]']").each(function(index,value) {
+        
+        console.log('valor_m:'+$(value).val());
+        if($.isNumeric($(value).val())){
+            suma+=parseFloat($(value).val());   
+        } 
+    });
+    // sumamos los double
+    $("input[name='precio_t_c[]']").each(function(index,value) {
+        
+        console.log('valor_t:'+$(value).val());
+        if($.isNumeric($(value).val())){
+            suma+=parseFloat($(value).val());
+        }    
+    });
+    console.log('suma:'+suma);
+    $('#precio_total_'+clave).val(suma);
+    
 }

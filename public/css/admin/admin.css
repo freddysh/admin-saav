@@ -682,6 +682,22 @@
   background: #e4e4e4 !important;
 }
 
+.progress {
+  background: red;
+  display: block;
+  height: 20px;
+  text-align: center;
+  -webkit-transition: width .3s;
+  transition: width .3s;
+  width: 0;
+}
+
+.progress.hide {
+  opacity: 0;
+  -webkit-transition: opacity 1.3s;
+  transition: opacity 1.3s;
+}
+
 .nav-pills .nav-link.active {
   background: #f9a825 !important;
 }

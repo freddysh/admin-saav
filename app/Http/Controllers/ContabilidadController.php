@@ -2153,17 +2153,17 @@ class ContabilidadController extends Controller
         $nro_personas_d=$request->input('personas_d');
         $nro_personas_m=$request->input('personas_m');
         $nro_personas_t=$request->input('personas_t');
-        $precio_s=$request->input('precio_s');
-        $precio_d=$request->input('precio_d');
-        $precio_m=$request->input('precio_m');
-        $precio_t=$request->input('precio_t');
+        $precio_s=$request->input('precio_s_c');
+        $precio_d=$request->input('precio_d_c');
+        $precio_m=$request->input('precio_m_c');
+        $precio_t=$request->input('precio_t_c');
         
         
         // if(isset($hotel_id_s)){   
             if(!empty($hotel_id_s)){
                 foreach($hotel_id_s as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_s_r=number_format($precio_s[$key]/($nro_personas_s[$key]),2);
+                    $hotel->precio_s_c=number_format($precio_s[$key],2);
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2174,7 +2174,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_d)){
                 foreach($hotel_id_d as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_d_r=number_format($precio_d[$key]/($nro_personas_d[$key]),2);
+                    $hotel->precio_d_c=number_format($precio_d[$key],2);
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2184,7 +2184,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_m)){
                 foreach($hotel_id_m as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_m_r=number_format($precio_m[$key]/($nro_personas_m[$key]),2);
+                    $hotel->precio_m_c=number_format($precio_m[$key],2);
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2194,7 +2194,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_t)){
                 foreach($hotel_id_t as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_t_r=number_format($precio_t[$key]/($nro_personas_t[$key]),2);
+                    $hotel->precio_t_c=number_format($precio_t[$key],2);
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }

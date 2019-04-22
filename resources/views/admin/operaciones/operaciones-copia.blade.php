@@ -211,7 +211,7 @@
                                 @endif
                             @endforeach
                         </td>
-                        <td>{{$valor1[5]}}</td>
+                        <td>{!!$valor1[5]!!}</td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -73,6 +73,7 @@
                                 </div>
                             </div>
                             <div class="row my-3">
+                                <div class="col-12"><progress class="progress" value="0" max="100"></progress></div>
                                 <div class="col-12" id="rpt_hotel">
                                                
                                 </div>

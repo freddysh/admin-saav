@@ -664,3 +664,17 @@ a{
 .menu2 li .active{
   background: #e4e4e4 !important;
 }
+
+.progress {
+  background: red;
+  display: block;
+  height: 20px;
+  text-align: center;
+  transition: width .3s;
+  width: 0;
+}
+
+.progress.hide {
+  opacity: 0;
+  transition: opacity 1.3s;
+}
