@@ -735,6 +735,7 @@
                                                         </b>
                                                         @php
                                                             $grupe='ninguno';
+                                                            $arreglito='GROUP_SIC'
                                                         @endphp
                                                             
                                                         @if(!$servicios->itinerario_proveedor)
@@ -751,7 +752,7 @@
                                                                 $arregloo[]='GROUP';
                                                                 $arregloo[]='SIC';
                                                                 $arregloo[]=$servicios->tipoServicio;
-                                                                $arreglito='GROUP_SIC_'.$servicios->tipoServicio
+                                                                $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
                                                             @endphp
                                                             <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_{{$servicios->id}}" onclick="call_popup_servicios('lista_proveedores_srevicios_{{$servicios->id}}','{{$servicios->id}}','{{$arreglito}}','{{$cotizacion->id}}','{{$itinerario->id}}','a')">
                                                                 <i class="fa fa-plus-circle fa-2x"></i>
