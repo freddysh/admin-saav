@@ -207,31 +207,89 @@ class BookController extends Controller
 		$precio_d_r=$hotel_proveedor->doble;
 		$precio_m_r=$hotel_proveedor->matrimonial;
 		$precio_t_r=$hotel_proveedor->triple;
-
-		// verificamos si existe un registro con os datos del proveedor escojido
-		// $valor=$hotel_proveedor->proveedor_id;
-		// $itinerario_cotizaciones=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)
-		// 	->whereHas('hotel',function($query)use ($valor){
-		// 	$query->where('proveedor_id',$valor);
-		// })->get();
-		// // dd($itinerario_cotizaciones);
-		// $encontrado=false;
-		// foreach($itinerario_cotizaciones as $itinerario_cotizacion){
-		// 	foreach($itinerario_cotizacion->hotel as $hotel){
-		// 		if(!$encontrado){
-		// 			$fecha_pagar=$hotel->fecha_venc;
-		// 			$encontrado=true;
-		// 		}
-		// 	}
-		// }
+		
 		// agregamos el proveedor
 		$hotel=PrecioHotelReserva::Find($id1);
 		// preguntamos si existe un proveedor asignado
+		if($hotel_proveedor->estrellas==$hotel->estrellas){
+			if($hotel->personas_s>0){
+				$hotel->precio_s_r=$precio_s_r;
+				$hotel->precio_s_c=$precio_s_r;
+			}
+			if($hotel->personas_d>0){
+				$hotel->precio_d_r=$precio_d_r;
+				$hotel->precio_d_c=$precio_d_r;
+			}
+			if($hotel->personas_m>0){
+				$hotel->precio_m_r=$precio_m_r;
+				$hotel->precio_m_c=$precio_m_r;
+			}
+			if($hotel->personas_t>0){
+				$hotel->precio_t_r=$precio_t_r;
+				$hotel->precio_t_c=$precio_t_r;
+			}
+			$hotel->prioridad=$prioridad;
+			$hotel->fecha_venc=$fecha_pagar;
+			$hotel->proveedor_id=$hotel_proveedor->proveedor_id;
+			$hotel->liquidacion=1;
+			$hotel->save();
+		}
 
+		// verificamos si existe un registro con los datos del proveedor escojido
 		$valor=$hotel_proveedor->proveedor_id;
-		/*
-		if($hotel->proveedor_id>0){
-			if($hotel->proveedor_id!=$hotel_proveedor->proveedor_id){
+		$itinerario_cotizaciones=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)
+			->whereHas('hotel',function($query)use ($valor){
+			$query->where('proveedor_id',$valor);
+		})->get();
+		// dd($itinerario_cotizaciones);
+		$nro_hoteles_con_mismo_proveedor=$itinerario_cotizaciones->count();	
+		$encontrado=false;
+		$posicion=1;
+		$primera_fecha=$fecha_pagar;
+		foreach($itinerario_cotizaciones as $itinerario_cotizacion){
+			foreach($itinerario_cotizacion->hotel as $hotel_){
+				// $arreglo_hotel_proveedor_asignado[] =$hotel->id;	
+				if($posicion==1){
+					$primera_fecha=$hotel_->fecha_venc;
+				}			
+				if(!$encontrado){
+					if($hotel->id==$hotel_->id){
+						$encontrado=true;
+					}
+					$posicion++;
+					// $fecha_pagar=$hotel->fecha_venc;
+				}
+			}
+		}
+		
+		if($nro_hoteles_con_mismo_proveedor>1){
+			if($posicion==1){
+				foreach($itinerario_cotizaciones as $itinerario_cotizacion){
+					foreach($itinerario_cotizacion->hotel as $hotel_){
+						$temp=PrecioHotelReserva::Find($hotel_->id);
+						$temp->fecha_venc=$fecha_pagar;
+						$temp->save();
+					}
+				}
+			}
+			elseif($posicion>1){
+				foreach($itinerario_cotizaciones as $itinerario_cotizacion){
+					foreach($itinerario_cotizacion->hotel as $hotel_){
+						$temp=PrecioHotelReserva::Find($hotel_->id);
+						$temp->fecha_venc=$primera_fecha;
+						$temp->save();
+					}
+				}
+			}
+		}
+		
+
+
+/*
+		$valor=$hotel_proveedor->proveedor_id;
+		
+		// if($hotel->proveedor_id>0){
+		/*	if($hotel->proveedor_id!=$hotel_proveedor->proveedor_id){
 				$arreglo=ItinerarioCotizaciones::where('paquete_cotizaciones_id',$itinerario_paquete_id)
 					->whereHas('hotel',function($query)use ($valor){
 					$query->where('proveedor_id',$valor);
@@ -264,7 +322,7 @@ class BookController extends Controller
 						$hotel->liquidacion=1;
 						$hotel->save();
 					}
-					//buscamos la fecvha de pago segun dia dia que se lleva
+					// buscamos la fecvha de pago segun dia dia que se lleva
 					$itinerario=ItinerarioCotizaciones::find($hotel->itinerario_cotizaciones_id);
 					$fecha_uso=$itinerario->fecha;
 					$fecha= Carbon::createFromFormat('Y-m-d',$fecha_uso);
@@ -287,31 +345,36 @@ class BookController extends Controller
 					
 				}
 			}
-		}
-		else{*/
-			if($hotel_proveedor->estrellas==$hotel->estrellas){
-				if($hotel->personas_s>0){
-					$hotel->precio_s_r=$precio_s_r;
-					$hotel->precio_s_c=$precio_s_r;
-				}
-				if($hotel->personas_d>0){
-					$hotel->precio_d_r=$precio_d_r;
-					$hotel->precio_d_c=$precio_d_r;
-				}
-				if($hotel->personas_m>0){
-					$hotel->precio_m_r=$precio_m_r;
-					$hotel->precio_m_c=$precio_m_r;
-				}
-				if($hotel->personas_t>0){
-					$hotel->precio_t_r=$precio_t_r;
-					$hotel->precio_t_c=$precio_t_r;
-				}
-				$hotel->prioridad=$prioridad;
-				$hotel->fecha_venc=$fecha_pagar;
-				$hotel->proveedor_id=$hotel_proveedor->proveedor_id;
-				$hotel->liquidacion=1;
-				$hotel->save();
-			}
+		// }
+		// else{*/
+			// if($hotel_proveedor->estrellas==$hotel->estrellas){
+			// 	if($hotel->personas_s>0){
+			// 		$hotel->precio_s_r=$precio_s_r;
+			// 		$hotel->precio_s_c=$precio_s_r;
+			// 	}
+			// 	if($hotel->personas_d>0){
+			// 		$hotel->precio_d_r=$precio_d_r;
+			// 		$hotel->precio_d_c=$precio_d_r;
+			// 	}
+			// 	if($hotel->personas_m>0){
+			// 		$hotel->precio_m_r=$precio_m_r;
+			// 		$hotel->precio_m_c=$precio_m_r;
+			// 	}
+			// 	if($hotel->personas_t>0){
+			// 		$hotel->precio_t_r=$precio_t_r;
+			// 		$hotel->precio_t_c=$precio_t_r;
+			// 	}
+			// 	$hotel->prioridad=$prioridad;
+			// 	$hotel->fecha_venc=$fecha_pagar;
+			// 	$hotel->proveedor_id=$hotel_proveedor->proveedor_id;
+			// 	$hotel->liquidacion=1;
+			// 	$hotel->save();
+			// }
+
+			// RECORREMOS TODAS LAS RESERVAS QUE TIENE EL MISMO HOTEL
+
+		// verificamos si existe un registro con os datos del proveedor escojido
+		
 		/*}*/
 		
 		return redirect()->back();

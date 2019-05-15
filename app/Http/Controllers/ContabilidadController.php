@@ -16,6 +16,7 @@ use App\Liquidacion;
 use App\ConsultaPago;
 use App\M_Itinerario;
 use App\P_Itinerario;
+use App\Requerimiento;
 use App\HotelProveedor;
 use App\EntidadBancaria;
 use App\ConsultaPagoHotel;
@@ -2044,19 +2045,84 @@ class ContabilidadController extends Controller
     }
     public function pagos_pendientes_general_filtro_datos(Request $request)
     {
+        
+        $opcion=$request->input('opcion');
+        $nombre=$request->input('nombre');
+        $codigo=$request->input('codigo');
         $ini =$request->input('ini');
         $fin =$request->input('fin');
-        $cotizaciones=Cotizacion::where('estado','2')->get();
-        // $pagos =PrecioHotelReservaPagos::get();
-        // $proveedor = ItinerarioServicioProveedor::get();//-- se estara usando ?
-        // $proveedores=Proveedor::where('grupo','HOTELS')->get();
-        // $hoteles =PrecioHotelReserva::with('proveedor')->get();
-        // dd($cotizaciones);
+        $grupo=$request->input('grupo');
+        $cotizaciones=[];
+
+        $prioridad='';
+        if($opcion=='TODOS LOS PENDIENTES'){
+            $prioridad='NORMAL';
+        }
+        elseif($opcion=='TODOS LOS URGENTES'){
+            $prioridad='URGENTE';
+        }
+        if($opcion=='POR CODIGO'){
+            $cotizaciones=Cotizacion::where('codigo',$codigo)->where('estado','2')
+            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
+                        $query->where('proveedor_id','!=','')
+                        // ->whereBetween('fecha_venc', array($ini, $fin))
+                        ->where('requerimientos_id','0');
+            })->get();
+        }
+        elseif($opcion=='POR NOMBRE'){
+            $cotizaciones=Cotizacion::where('nombre_pax',$nombre)->where('estado','2')
+            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
+                        $query->where('proveedor_id','!=','')
+                        // ->whereBetween('fecha_venc', array($ini, $fin))
+                        ->where('requerimientos_id','0');
+            })->get();
+        }
+        elseif($opcion=='TODOS LOS URGENTES'||$opcion=='TODOS LOS PENDIENTES'){
+            $cotizaciones=Cotizacion::where('estado','2')
+            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin,$prioridad){
+                        $query->where('proveedor_id','!=','')
+                        // ->whereBetween('fecha_venc', array($ini, $fin))
+                        ->where('requerimientos_id','0')
+                        ->where('prioridad',$prioridad);
+            })->get();
+            
+        }
+        // elseif($opcion=='TODOS LOS PENDIENTES'){
+        //     $cotizaciones=Cotizacion::where('estado','2')
+        //     ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin,$prioridad){
+        //                 $query->where('proveedor_id','!=','')
+        //                 // ->whereBetween('fecha_venc', array($ini, $fin))
+        //                 ->where('requerimientos_id','0')
+        //                 ->where('prioridad',$prioridad);
+        //     })->get();
+            
+        // }
+        elseif($opcion=='ENTRE DOS FECHAS'){
+            $cotizaciones=Cotizacion::where('estado','2')
+            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
+                        $query->where('proveedor_id','!=','')
+                        ->whereBetween('fecha_venc', array($ini, $fin))
+                        ->where('requerimientos_id','0');
+                        // ->where('prioridad','URGENTE');
+            })->get();
+        }
+        elseif($opcion=='ENTRE DOS FECHAS URGENTES'){
+            $cotizaciones=Cotizacion::where('estado','2')
+            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
+                        $query->where('proveedor_id','!=','')
+                        ->whereBetween('fecha_venc', array($ini, $fin))
+                        ->where('requerimientos_id','0')
+                        ->where('prioridad','URGENTE');
+            })->get();
+        }
+
+        // $cotizaciones=Cotizacion::where('estado','2')->get();
+
         $array_pagos_pendientes = array();
         foreach ($cotizaciones as $cotizacion){
             foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
                 foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){                  
-                    foreach ($itinerario_cotizaciones->hotel->where('proveedor_id','!=','')->whereBetween('fecha_venc', array($ini, $fin))/*->where('primera_confirmada','1')*/ as $hotel){
+                    foreach ($itinerario_cotizaciones->hotel->where('proveedor_id','!=','')->whereBetween('fecha_venc', array($ini, $fin))->where('requerimientos_id','0')/*->where('primera_confirmada','1')*/ as $hotel){
                         $key=$cotizacion->id.'_'.$hotel->proveedor_id;
                         $monto_r=0;
                         $monto_v=0;
@@ -2066,25 +2132,25 @@ class ContabilidadController extends Controller
                             $monto_r+=$hotel->personas_s*$hotel->precio_s_r;
                             $monto_v+=$hotel->personas_s*$hotel->precio_s;
                             $monto_c+=$hotel->personas_s*$hotel->precio_s_c;
-                            $text_hotel.='<p>'.$hotel->personas_s.'<i class="fas fa-bed"></i></p>';
+                            $text_hotel.='| <b class="text-primary">'.$hotel->personas_s.'<i class="fas fa-bed"></i></b>';
                         }
                         if($hotel->personas_d>0){
                             $monto_r+=$hotel->personas_d*$hotel->precio_d_r;
                             $monto_v+=$hotel->personas_d*$hotel->precio_d;
                             $monto_c+=$hotel->personas_d*$hotel->precio_d_c;
-                            $text_hotel.='<p>'.$hotel->personas_d.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i></p>';
+                            $text_hotel.='| <b class="text-primary">'.$hotel->personas_d.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
                         }
                         if($hotel->personas_m>0){
                             $monto_r+=$hotel->personas_m*$hotel->precio_m_r;
                             $monto_v+=$hotel->personas_m*$hotel->precio_m;
                             $monto_c+=$hotel->personas_m*$hotel->precio_m_c;
-                            $text_hotel.='<p>'.$hotel->personas_m.'<i class="fas fa-transgender"></i></p>';
+                            $text_hotel.='| <b class="text-primary">'.$hotel->personas_m.'<i class="fas fa-transgender"></i></b>';
                         }
                         if($hotel->personas_t>0){
                             $monto_r+=$hotel->personas_t*$hotel->precio_t_r;
                             $monto_v+=$hotel->personas_t*$hotel->precio_t;
                             $monto_c+=$hotel->personas_t*$hotel->precio_t_c;
-                            $text_hotel.='<p>'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></p>';
+                            $text_hotel.='| <b class="text-primary">'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
                         }
                         if(array_key_exists($key,$array_pagos_pendientes)){
                             // dd($array_pagos_pendientes);
@@ -2121,10 +2187,13 @@ class ContabilidadController extends Controller
             }   
         }
         $sort1=array();
+        $sort_codigo=array();
+        
         foreach ($array_pagos_pendientes as $key => $part) {
             $sort1[$key] = strtotime($part['fecha_pago']);
+            $sort_codigo[$key] = $part['codigo'];
         }
-        array_multisort($sort1, SORT_ASC, $array_pagos_pendientes);
+        array_multisort($sort1, SORT_ASC,$sort_codigo, SORT_ASC, $array_pagos_pendientes);
         
         // dd($array_pagos_pendientes);
         
@@ -2144,7 +2213,8 @@ class ContabilidadController extends Controller
         //return dd($consulta);
         return view('admin.contabilidad.lista-items',compact(['consulta','grupo','clave','nro_personas']));
     }
-    public function hotel_store(Request $request){        
+    public function hotel_store(Request $request){    
+        $clave=$request->input('clave');    
         $hotel_id_s=$request->input('hotel_id_s');
         $hotel_id_d=$request->input('hotel_id_d');
         $hotel_id_m=$request->input('hotel_id_m');
@@ -2153,17 +2223,17 @@ class ContabilidadController extends Controller
         $nro_personas_d=$request->input('personas_d');
         $nro_personas_m=$request->input('personas_m');
         $nro_personas_t=$request->input('personas_t');
-        $precio_s=$request->input('precio_s_c');
-        $precio_d=$request->input('precio_d_c');
-        $precio_m=$request->input('precio_m_c');
-        $precio_t=$request->input('precio_t_c');
-        
-        
+        $precio_s=$request->input('precio_s_c_'.$clave);
+        $precio_d=$request->input('precio_d_c_'.$clave);
+        $precio_m=$request->input('precio_m_c_'.$clave);
+        $precio_t=$request->input('precio_t_c_'.$clave);
+        $total=$request->input('precio_total_'.$clave);
+        // dd($total);
         // if(isset($hotel_id_s)){   
             if(!empty($hotel_id_s)){
                 foreach($hotel_id_s as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_s_c=number_format($precio_s[$key],2);
+                    $hotel->precio_s_c=number_format($precio_s[$key],2)/$hotel->personas_s;
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2174,7 +2244,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_d)){
                 foreach($hotel_id_d as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_d_c=number_format($precio_d[$key],2);
+                    $hotel->precio_d_c=number_format($precio_d[$key],2)/$hotel->personas_d;
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2184,7 +2254,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_m)){
                 foreach($hotel_id_m as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_m_c=number_format($precio_m[$key],2);
+                    $hotel->precio_m_c=number_format($precio_m[$key],2)/$hotel->personas_m;
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2194,13 +2264,13 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_t)){
                 foreach($hotel_id_t as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_t_c=number_format($precio_t[$key],2);
+                    $hotel->precio_t_c=number_format($precio_t[$key],2)/$hotel->personas_t;
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
             }
         // }
-       return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!!!</strong> Datos guardados correctamente</div>']);
+       return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!!!</strong> Datos guardados correctamente</div>','total'=>$total]);
     }
     
     public function ingresos(){        
@@ -2322,5 +2392,198 @@ class ContabilidadController extends Controller
         return view('admin.contabilidad.list-pagos-recientes',compact('cotizaciones','pagina'));
     }
  
-    
+    public function preparar_requerimiento(Request $request)
+	{
+        $txt_ini=$request->input('txt_ini');
+        $txt_fin=$request->input('txt_fin');
+        // dd($request->all());
+        $chb_h_pagos=$request->input('chb_h_pagos');
+        $arreglo_h=$request->input('arreglo_h');
+        if(isset($chb_h_pagos)){
+            $lista_cotizaciones=[];
+            
+            $lista_cotizaciones_proveedor=[];
+            foreach($chb_h_pagos as $chb_h_pago){
+                $valor=explode('_',$chb_h_pago);
+                $cotizacion_id=$valor[0];
+                $proveedor_id=$valor[1];
+                
+                if(!array_key_exists($cotizacion_id,$lista_cotizaciones)){
+                    $lista_cotizaciones[]=$cotizacion_id;
+                }
+                if(array_key_exists($cotizacion_id,$lista_cotizaciones_proveedor)){
+                    $lista_cotizaciones_proveedor[$cotizacion_id]['proveedores'].= ','.$proveedor_id;                    
+                }else{         
+                    $lista_cotizaciones_proveedor[$cotizacion_id]=array('proveedores'=>$proveedor_id);
+                }
+            }
+            // dd($lista_cotizaciones_proveedor['405']['proveedores']);
+            $cotizaciones=Cotizacion::whereIn('id',$lista_cotizaciones)->get();
+            $array_pagos_pendientes = [];
+            $key='';
+            foreach ($cotizaciones as $cotizacion){
+                foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
+                    foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){     
+
+                        // dd($itinerario_cotizaciones->hotel->where('proveedor_id','153'));
+// dd($lista_cotizaciones_proveedor[$cotizacion->id]['proveedores']);
+                        foreach ($itinerario_cotizaciones->hotel->whereIn('proveedor_id',explode(',',$lista_cotizaciones_proveedor[$cotizacion->id]['proveedores']))/*->where('primera_confirmada','1')*/ as $hotel){
+                            $key=$cotizacion->id.'_'.$hotel->proveedor_id;
+                            $monto_r=0;
+                            $monto_v=0;
+                            $monto_c=0;
+                            $text_hotel='';
+                            if($hotel->personas_s>0){
+                                $monto_r+=$hotel->personas_s*$hotel->precio_s_r;
+                                $monto_v+=$hotel->personas_s*$hotel->precio_s;
+                                $monto_c+=$hotel->personas_s*$hotel->precio_s_c;
+                                $text_hotel.='| <b class="text-primary">'.$hotel->personas_s.'<i class="fas fa-bed"></i></b>';
+                            }
+                            if($hotel->personas_d>0){
+                                $monto_r+=$hotel->personas_d*$hotel->precio_d_r;
+                                $monto_v+=$hotel->personas_d*$hotel->precio_d;
+                                $monto_c+=$hotel->personas_d*$hotel->precio_d_c;
+                                $text_hotel.='| <b class="text-primary">'.$hotel->personas_d.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
+                            }
+                            if($hotel->personas_m>0){
+                                $monto_r+=$hotel->personas_m*$hotel->precio_m_r;
+                                $monto_v+=$hotel->personas_m*$hotel->precio_m;
+                                $monto_c+=$hotel->personas_m*$hotel->precio_m_c;
+                                $text_hotel.='| <b class="text-primary">'.$hotel->personas_m.'<i class="fas fa-transgender"></i></b>';
+                            }
+                            if($hotel->personas_t>0){
+                                $monto_r+=$hotel->personas_t*$hotel->precio_t_r;
+                                $monto_v+=$hotel->personas_t*$hotel->precio_t;
+                                $monto_c+=$hotel->personas_t*$hotel->precio_t_c;
+                                $text_hotel.='| <b class="text-primary">'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
+                            }
+                            if(array_key_exists($key,$array_pagos_pendientes)){
+                                // dd($array_pagos_pendientes);
+                                $array_pagos_pendientes[$key]['monto_r']+= $monto_r;
+                                $array_pagos_pendientes[$key]['monto_v']+= $monto_v;
+                                $array_pagos_pendientes[$key]['monto_c']+= $monto_c;
+                                $array_pagos_pendientes[$key]['items'].= ','.$hotel->id;
+                                $array_pagos_pendientes[$key]['items_itinerario'].= ','.$itinerario_cotizaciones->id;
+                                $array_pagos_pendientes[$key]['notas_cotabilidad']= $hotel->notas_contabilidad;
+                            }else{
+                                // $proveedor='';
+                                // if($hotel->proveedor_id>0){
+                                    $proveedor_=Proveedor::where('id',$hotel->proveedor_id)->first();
+                                    if(count((array)$proveedor_)>0)
+                                        $proveedor=$proveedor_->nombre_comercial;
+                                // }
+                                // $fecha_venc='';
+                                // if($hotel->fecha_venc)
+                                //     $fecha_venc=$hotel->fecha_venc;
+                                        
+                                $array_pagos_pendientes[$key]=array('proveedor'=>$proveedor,
+                                                                'items'=>$hotel->id,
+                                                                'items_itinerario'=>$itinerario_cotizaciones->id,
+                                                                'codigo'=>$cotizacion->codigo,                                
+                                                                'pax'=>$cotizacion->nombre_pax,
+                                                                'nro'=>$cotizacion->nropersonas,
+                                                                'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                'fecha_pago'=>$hotel->fecha_venc,
+                                                                'titulo'=> $text_hotel,
+                                                                'notas_cotabilidad'=> $hotel->notas_contabilidad,
+                                                                'monto_r'=>$monto_r,
+                                                                'monto_v'=>$monto_v,
+                                                                'monto_c'=>$monto_c,
+                            'saldo'=>'');
+                            }                        
+                        }
+                    }
+                }   
+            }
+
+            
+            $sort1=array();
+            $sort_codigo=array();
+            
+            foreach ($array_pagos_pendientes as $key => $part) {
+                $sort1[$key] = strtotime($part['fecha_pago']);
+                $sort_codigo[$key] = $part['codigo'];
+            }
+            array_multisort($sort1, SORT_ASC,$sort_codigo, SORT_ASC, $array_pagos_pendientes);
+            // dd($array_pagos_pendientes);
+        // dd($chb_h_pagos);
+        // dd($arreglo_h);
+        // dd($array_pagos_pendientes);
+        $ini='';
+        $fin='';
+        $grupo='HOTELS';
+        $webs = Web::get();
+        // return view('admin.contabilidad.requerimiento-preparado',compact(['array_pagos_pendientes']));
+        return view('admin.contabilidad.requerimiento-preparado',compact(['proveedor','array_pagos_pendientes', 'pagos', 'cotizacion', 'txt_ini', 'txt_fin','proveedores','webs','grupo']));
+        }
+    }
+    public function hotel_store_notas(Request $request){
+        try{       
+            $notas=$request->input('notas');
+            $items_cadena=$request->input('items');
+            $items=explode(',',$items_cadena);
+            if(isset($items)){
+                foreach($items as $item){
+                    $hotel=PrecioHotelReserva::FindOrFail($item);
+                    $hotel->notas_contabilidad=$notas;
+                    $hotel->save();
+                }
+                return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Notas guardadas correctamente</div>','total'=>1]);    
+            }
+        }
+        catch (Exception $e){
+            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al ingresar las notas, vuelva a intentarlo ('.$e.')</div>','total'=>1]);    
+        }
+    }
+    public function enviar_requerimiento(Request $request){
+        try{       
+            $chb_h_pagos=$request->input('chb_h_pagos');
+            $fecha_ini=$request->input('txt_ini');
+            $fecha_fin=$request->input('txt_fin');
+            // dd($request->all());
+            if(isset($chb_h_pagos)){
+                $data=Carbon::now()->subHour(5);
+                $requerimiento=new Requerimiento();
+                $requerimiento->servicio='HOTEL';
+                $requerimiento->fecha_ini=$fecha_ini;
+                $requerimiento->fecha_fin=$fecha_fin;
+                $requerimiento->estado=2;
+                $requerimiento->updated_at=$data->year.'-'.$data->month.'-'.$data->day;
+                $requerimiento->save();
+                // dd($chb_h_pagos);
+                foreach($chb_h_pagos as $chb_h_pago){
+                    $valor=explode(',',$chb_h_pago);
+                    $hoteles=PrecioHotelReserva::whereIn('id',$valor)->get();
+                    foreach($hoteles as $hotel){
+                        $hot=PrecioHotelReserva::find($hotel->id);
+                        $hot->estado_contabilidad=2;
+                        $hot->requerimientos_id=$requerimiento->id;
+                        $hot->save();
+                    }
+                }
+                // dd($requerimiento);
+            }
+
+            // $items_cadena=$request->input('items');
+            // $items=explode(',',$items_cadena);
+            // if(isset($items)){
+            //     foreach($items as $item){
+            //         $hotel=PrecioHotelReserva::FindOrFail($item);
+            //         $hotel->notas_contabilidad=$notas;
+            //         $hotel->save();
+            //     }
+            //     return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Notas guardadas correctamente</div>','total'=>1]);    
+            // }
+        }
+        catch (Exception $e){
+            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al ingresar las notas, vuelva a intentarlo ('.$e.')</div>','total'=>1]);    
+        }
+    }
+
+    public function revisar_requerimiento(){
+        $requerimientos=Requerimiento::get();
+        // dd($requerimientos);
+        $webs = Web::get();
+        return view('admin.contabilidad.revisar-requerimiento',compact('requerimientos','webs'));
+    }
 }

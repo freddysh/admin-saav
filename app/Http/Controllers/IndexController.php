@@ -331,4 +331,7 @@ class IndexController extends Controller
     public function inventory(){
         return view('admin.inventory');
     }
+    public function atras(){
+        return redirect()->back();
+    }
 }

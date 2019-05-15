@@ -530,7 +530,9 @@ class QouteController extends Controller
                         // $nro_codigo=Cotizacion::where('web','expedia.com')->count()+1;
                         // $codigo_auto='E'.$nro_codigo;
 
-                        $codigo_auto=MisFunciones::generar_codigo('expedia.com');
+                        // $codigo_auto=MisFunciones::generar_codigo('expedia.com');
+                        $codigo_auto=MisFunciones::generar_codigo($web);
+                        
                         // buscamos el paquete para crear la cotizacion
                         // $ppaquete = P_Paquete::where('codigo', $codigo)->first();
 
@@ -538,7 +540,6 @@ class QouteController extends Controller
                             // if(count($f)>1){
                             //     if(strlen($f[0]==10)){
                             //         $fech=$f[0];
-
                             //     }
                             // }
                             // else{

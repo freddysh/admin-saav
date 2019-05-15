@@ -48,7 +48,61 @@
                                 <div class="col-12">
                                     <div class="card w-100">
                                         <div class="card-body">
-                                            <div class="row">
+                                                <div class="row mt-3 my-3">
+                                                    <div class="col-md-12">
+                                                        <div class="card w-100">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-2">
+                                                                        @php
+                                                                            $ToDay=new Carbon();
+                                                                        @endphp
+                                                                        {{csrf_field()}}
+                                                                        <div class="form-group">
+                                                                            <label for="tipo_filtro" class="text-secondary font-weight-bold pr-2">Escoja una opcion </label>
+                                                                            <select form="form_guardar" name="tipo_filtro" id="tipo_filtro" class="form-control" onchange="mostrar_opcion($(this).val())">
+                                                                                <option value="POR CODIGO">POR CODIGO</option>
+                                                                                <option value="POR NOMBRE">POR NOMBRE</option>
+                                                                                <option value="TODOS LOS PENDIENTES">TODOS LOS PENDIENTES</option>
+                                                                                <option value="TODOS LOS URGENTES">TODOS LOS URGENTES</option>
+                                                                                <option value="ENTRE DOS FECHAS">ENTRE DOS FECHAS</option>
+                                                                                <option value="ENTRE DOS FECHAS URGENTES">ENTRE DOS FECHAS URGENTES</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id=bloque_filtros class="col-4">
+                                                                        <div class="row">
+                                                                            @php
+                                                                                $ToDay=new Carbon();
+                                                                            @endphp
+                                                                            {{csrf_field()}}
+                                                                            <div class="col d-none" id="nombre">
+                                                                                <label for="nombre_form" class="text-secondary font-weight-bold pr-2">Nombre </label>
+                                                                                <input type="text" class="form-control" form="form_guardar" name="nombre_form" id="nombre_form" value="" placeholder="Ingrese el nombre de la venta">
+                                                                            </div>
+                                                                            <div class="col " id="codigo">
+                                                                                <label for="codigo_form" class="text-secondary font-weight-bold pr-2">Codigo </label>
+                                                                                <input type="text" class="form-control" form="form_guardar" name="codigo_form" id="codigo_form" value="" placeholder="Ingrese el codigo de la venta">
+                                                                            </div>
+                                                                            <div class="col-6 d-none" id="from">
+                                                                                <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
+                                                                                <input type="date" class="form-control" form="form_guardar" name="txt_ini" id="f_ini_ENTRADA" value="{{$ToDay->toDateString()}}" required>
+                                                                            </div>
+                                                                            <div class="col-6 d-none" id="to">
+                                                                                <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
+                                                                                <input type="date" class="form-control" form="form_guardar" name="txt_fin" id="f_fin_ENTRADA" value="{{$ToDay->toDateString()}}" required>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-2 mt-4">
+                                                                        <button type="button" class="btn btn-primary mt-2 mx-2 btn-block" onclick="buscar_pagos_pendientes($('#tipo_filtro').val(),$('#nombre_form').val(),$('#codigo_form').val(),$('#f_ini_ENTRADA').val(),$('#f_fin_ENTRADA').val(),'ENTRANCES')"><i class="fas fa-search"></i> Filtrar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="row d-none">
                                                 <div class="col-12 form-inline">
                                                     @php
                                                         $ToDay=new Carbon();
@@ -57,11 +111,11 @@
                                                     {{csrf_field()}}
                                                     <div class="form-group">
                                                         <label for="f_ini" class="text-secondary font-weight-bold pr-2">From </label>
-                                                        <input type="date" class="form-control" placeholder="from" name="txt_ini" id="f_ini" value="{{$ToDay->toDateString()}}" required>
+                                                        <input type="date" class="form-control" form="preparar_requerimiento" placeholder="from" name="txt_ini" id="f_ini" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="f_fin" class="text-secondary font-weight-bold px-2"> To </label>
-                                                        <input type="date" class="form-control" placeholder="to" name="txt_fin" id="f_fin" value="{{$ToDay->toDateString()}}" required>
+                                                        <input type="date" class="form-control" form="preparar_requerimiento" placeholder="to" name="txt_fin" id="f_fin" value="{{$ToDay->toDateString()}}" required>
                                                     </div>
                                                     <button type="button" class="btn btn-default mx-2 mx-2" onclick="buscar_pagos_pendientes($('#f_ini').val(),$('#f_fin').val())">Filtrar</button>
                                                     {{--</form>--}}
@@ -160,12 +214,20 @@
         }
         var total=0;
         function sumar(valor) {
-            total += valor;
-            document.getElementById('s_total').innerHTML   = total;
+            console.log('valor sumar:'+valor);
+            var num=parseFloat(valor);
+            total +=  num;
+            console.log('total:'+total);
+            $('#s_total').html(total);
+            // document.getElementById('s_total').innerHTML   = total;
         }
         function restar(valor) {
-            total-=valor;
-            document.getElementById('s_total').innerHTML   = total;
+            console.log('valor restar:'+valor);
+            var num=parseFloat(valor);
+            total -=  num;
+            console.log('total:'+total);
+            $('#s_total').html(total);
+            // document.getElementById('s_total').innerHTML   = total;
         }
 
     </script>

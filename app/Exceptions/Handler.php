@@ -47,6 +47,52 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // dd($exception);
+        // if ($exception->getStatusCode() == 500||$exception->getStatusCode() == 0) {
+        //     return response()->view('errors.500', [], 500);
+        // }
         return parent::render($request, $exception);
+
+
+        // 404 page when a model is not found
+        // if ($exception instanceof ModelNotFoundException) {
+        //     return response()->view('errors.404', [], 404);
+        // }
+
+        // if ($this->isHttpException($exception)) {
+        //     return $this->renderHttpException($exception);
+        // } else {
+        //     // Custom error 500 view on production
+        //     // if (app()->environment() == 'production') {
+        //     //     return response()->view('errors.500', [], 500);
+        //     // }
+        //     if($exception instanceof \Symfony\Component\Debug\Exception\FatalErrorException) {
+        //         $statusCode = 500;
+        //         return response()->view('errors.500', [], 500);
+        //     }
+        //     return parent::render($request, $exception);
+        // }
+
+        // custom error message
+        // if ($exception instanceof \ErrorException) {
+        //     return response()->view('errors.500', [], 500);
+        // } else {
+        //     return parent::render($request, $exception);
+        // }
+
+        // $exception = FlattenException::create($e);
+        // $statusCode = $exception->getStatusCode($exception);
+
+        // if ($statusCode === 404 or $statusCode === 500 and app()->environment() == 'production') {
+        //     return response()->view('errors.' . $statusCode, [], $statusCode);
+        // }
     }
+    // protected function convertExceptionToResponse(Exception $e)
+    // {
+    //     if (config('app.debug')) {
+    //         return parent::convertExceptionToResponse($e);
+    //     }
+    //     ob_clean();
+    //     return response()->view('errors.500', [], 500);
+    // }
 }

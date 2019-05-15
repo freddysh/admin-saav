@@ -30,14 +30,16 @@ class OperacionesController extends Controller
         $array_datos_coti= array();
         $array_datos_cotizacion= array();
         $array_hotel=array();
-
+       
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
-            $clientes_ ='';
-            // foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
-            //     foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_='<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
-            //     }
-            // }
+            $cel='No tiene';
+            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+                if(strlen($cotizacion_cliente->cliente->telefono) > 4){
+                    $cel=$cotizacion_cliente->cliente->telefono;
+                }
+            }
+            $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cel.'</span> ';
+            
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
                 foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
@@ -172,10 +174,20 @@ class OperacionesController extends Controller
         $array_hotel= array();
 
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
-            $clientes_ ='';
+            $cel='No tiene';
+            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+                if(strlen($cotizacion_cliente->cliente->telefono) > 4){
+                    $cel=$cotizacion_cliente->cliente->telefono;
+                }
+            }
+            $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cel.'</span> ';
+            
+            // $clientes_ ='';
             // foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
             //     foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
+                    // $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
+                    // $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cotizacion->cotizaciones_cliente->where('estado','1')->cliente->telefono.'</span> ';
+           
             //     }
             // }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
@@ -310,10 +322,20 @@ class OperacionesController extends Controller
         $array_hotel=array();
 
         foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
-            $clientes_ ='';
+            $cel='No tiene';
+            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+                if(strlen($cotizacion_cliente->cliente->telefono) > 4){
+                    $cel=$cotizacion_cliente->cliente->telefono;
+                }
+            }
+            $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cel.'</span> ';
+            
+            // $clientes_ ='';
             // foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
             //     foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
+                    // $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
+                    // $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cotizacion->cotizaciones_cliente->where('estado','1')->cliente->telefono.'</span> ';
+           
             //     }
             // }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {

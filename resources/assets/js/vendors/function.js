@@ -6134,47 +6134,19 @@ function pintar(id){
 //         }
 //     }
 //   }
-function buscar_pagos_pendientes(ini,fin){    
+function buscar_pagos_pendientes(opcion,nombre,codigo,ini,fin,servicio){    
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
     });
-    // $.post('/admin/contabilidad/pagos-en-genral/pendientes/filtrar', 'ini='+ini+'&fin='+fin, function (data) {
-    //         $('#rpt_hotel').html(data);
-
-    // }).fail(function (data) {
-    // });
     $.ajax({
-//         xhr: function()
-//   {
-//     var xhr = new window.XMLHttpRequest();
-//     //Upload progress
-//     xhr.upload.addEventListener("progress", function(evt){
-//       if (evt.lengthComputable) {
-//         var percentComplete = evt.loaded / evt.total;
-//         //Do something with upload progress
-//         console.log(percentComplete);
-//       }
-//     }, false);
-//     //Download progress
-//     xhr.addEventListener("progress", function(evt){
-//       if (evt.lengthComputable) {
-//         var percentComplete = evt.loaded / evt.total;
-//         //Do something with download progress
-//         console.log(percentComplete);
-//       }
-//     }, false);
-//     return xhr;
-//   },
-        // dataType:'html',
         url: '/admin/contabilidad/pagos-en-genral/pendientes/filtrar',
         type: 'post',
-        data: 'ini='+ini+'&fin='+fin,
+        data: 'opcion=' + opcion +'&nombre=' + nombre+'&codigo=' + codigo+'&ini=' + ini + '&fin=' + fin + '&grupo=' + servicio,
         beforeSend:function() {
             $("#rpt_hotel").html('');
             $("#rpt_hotel").html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
-            // Pace.restart();
         },
         success: function (data) {
             $('#rpt_hotel').html(data);
@@ -6203,7 +6175,7 @@ function traer_datos(clave,grupo,lista_items,nro_personas){
         success: function (data) {
             $('#datos_'+clave).removeClass('text-center');
             $('#datos_'+clave).html('');
-            $('#datos_'+clave).html(data);
+            $('#datos_'+clave).html(data);            
         },
         error: function () {
             
@@ -6234,8 +6206,23 @@ function contabilidad_hotel_store(clave){
             $('#rpt_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
         success: function (data) {
+            $('#monto_c_'+clave).html($('#precio_total_'+clave).val());
             $('#rpt_'+clave).html('');
             $('#rpt_'+clave).html(data.mensaje);
+            console.log('total obtenido:'+data.total);
+            if(data.total>0){
+                
+            console.log('total>0:'+data.total);
+                $("#chb_"+clave).prop('disabled', false);  
+                $("#warning_"+clave).addClass('d-none');
+                $("#warning_"+clave).html('costo ingresado');
+                
+            }
+            else{
+                console.log('total<=0:'+data.total);
+                $("#chb_"+clave).prop('disabled', true);
+        
+            }
         },
         error: function () {
             
@@ -6494,6 +6481,7 @@ function sumar_pagos_monto(paquete_id){
         if($.isNumeric($(elemento).val()))
             suma+=parseFloat($(elemento).val());    
     });
+    suma=suma.toFixed(2);
     $('#total_'+paquete_id).val(suma);
     var total_pago=$('#total_pago_'+paquete_id).val();
     var falta=total_pago-suma;
@@ -6598,14 +6586,14 @@ function call_popup_servicios(rpt_id,servicio_id,arreglo,cotizacion_id,itinerari
 function sumar_hotel_subtotales(clave){
     var suma=0;
     // sumamos los single
-    $("input[name='precio_s_c[]']").each(function(index,value) {
+    $("input[name='precio_s_c_"+clave+"[]']").each(function(index,value) {
         console.log('valor_s:'+$(value).val());
         if($.isNumeric($(value).val())){
             suma+=parseFloat($(value).val());
         } 
     });
     // sumamos los double
-    $("input[name='precio_d_c[]']").each(function(index,value) {
+    $("input[name='precio_d_c_"+clave+"[]']").each(function(index,value) {
         
         console.log('valor_d:'+$(value).val());
         if($.isNumeric($(value).val())){                
@@ -6613,7 +6601,7 @@ function sumar_hotel_subtotales(clave){
         }
     });
     // sumamos los double
-    $("input[name='precio_m_c[]']").each(function(index,value) {
+    $("input[name='precio_m_c_"+clave+"[]']").each(function(index,value) {
         
         console.log('valor_m:'+$(value).val());
         if($.isNumeric($(value).val())){
@@ -6621,7 +6609,7 @@ function sumar_hotel_subtotales(clave){
         } 
     });
     // sumamos los double
-    $("input[name='precio_t_c[]']").each(function(index,value) {
+    $("input[name='precio_t_c_"+clave+"[]']").each(function(index,value) {
         
         console.log('valor_t:'+$(value).val());
         if($.isNumeric($(value).val())){
@@ -6630,5 +6618,33 @@ function sumar_hotel_subtotales(clave){
     });
     console.log('suma:'+suma);
     $('#precio_total_'+clave).val(suma);
+    
+}
+function contabilidad_guardar_notas_requerimiento(clave,servicio){
+    tinymce.triggerSave();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        url: $('#form_notas_'+clave).attr('action'),
+        type: 'post',
+        data: $('#form_notas_'+clave).serialize(),
+        beforeSend: function() {
+            $('#rpt_notas_'+clave).html('');
+            $('#rpt_notas_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function (data) {
+            $('#rpt_notas_'+clave).html('');
+            $('#rpt_notas_'+clave).html(data.mensaje);
+        },
+        error: function () {
+            
+        }
+    });
+}
+
+function sr_programar_pagos_h(clave){
     
 }

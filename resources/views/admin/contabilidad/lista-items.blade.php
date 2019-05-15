@@ -109,7 +109,7 @@
                             @php
                                 $total_c+=$item->personas_s*$item->precio_s_c;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_s_c[]" step="0.01" min="1" value="{{$item->personas_s*$item->precio_s_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')">
+                            <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_s*$item->precio_s_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')">
                             <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                            
                         @endif
@@ -117,7 +117,7 @@
                             @php
                                 $total_c+=$item->personas_d*$item->precio_d_c;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_d_c[]" step="0.01" min="1" value="{{$item->personas_d*$item->precio_d_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')">
+                            <input class="form-control" style="width:100px" type="number" name="precio_d_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_d*$item->precio_d_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')">
                             <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
                         @endif
@@ -125,7 +125,7 @@
                             @php
                                 $total_c+=$item->personas_m*$item->precio_m_c;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_m_c[]" step="0.01" min="1" value="{{$item->personas_m*$item->precio_m_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')">
+                            <input class="form-control" style="width:100px" type="number" name="precio_m_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_m*$item->precio_m_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')">
                             <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
                             <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
                         @endif
@@ -133,7 +133,7 @@
                             @php
                                 $total_c+=$item->personas_t*$item->precio_t_c;    
                             @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_t_c[]" step="0.01" min="1" value="{{$item->personas_t*$item->precio_t_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')">
+                            <input class="form-control" style="width:100px" type="number" name="precio_t_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_t*$item->precio_t_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')">
                             <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
                             <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
                         @endif
@@ -153,7 +153,7 @@
                 </td>
                 <td>
                     <b id="total" class="text-15">
-                    <input class="form-control" style="width:100px" type="number" id="precio_total_{{$clave}}" name="precio" value="{{$total_c}}" readonly></b>
+                    <input class="form-control" style="width:100px" type="number" name="precio_total_{{$clave}}" id="precio_total_{{$clave}}" name="precio" value="{{$total_c}}" readonly></b>
                 </td>
             </tr>
     </tbody>
@@ -172,6 +172,7 @@
     <div class="col-4">
         {{ csrf_field() }}
         <input type="hidden"  name="nro_personas" value="{{$nro_personas}}">
+        <input type="hidden"  name="clave" value="{{$clave}}">
         <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store('{{$clave}}')">Guardar</button>
     </div>
     <div class="col-12" id="rpt_{{$clave}}">

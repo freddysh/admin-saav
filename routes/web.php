@@ -26,6 +26,11 @@ Route::get('/',[
     'uses' => 'IndexController@inicio',
     'as' => 'inicio_path',
 ]);
+Route::get('/atras',[
+    'uses' => 'IndexController@atras',
+    'as' => 'atras_path',
+]);
+
 Route::get('/menu',[
     'uses' => 'IndexController@menu',
     'as' => 'menu_path',
@@ -1383,3 +1388,23 @@ Route::post('admin/book/servicios/traer-lista-proveedores', [
     'as' => 'servicios.traer.lista.proveedores',
 ]);
 
+Route::post('/admin/contabilidad/preparar-requerimiento', [
+    'uses' => 'ContabilidadController@preparar_requerimiento',
+    'as' => 'contabilidad.preparar_requerimiento',
+]);
+Route::post('/admin/contabilidad/hotel/store/notas', [
+    'uses' => 'ContabilidadController@hotel_store_notas',
+    'as' => 'contabilidad.hotel.store.notas',
+]);
+Route::post('/admin/contabilidad/enviar-requerimiento', [
+    'uses' => 'ContabilidadController@enviar_requerimiento',
+    'as' => 'contabilidad.enviar_requerimiento',
+]);
+// Route::get('/admin/contabilidad/revisar-requerimientoss', [
+//     'uses' => 'ContabilidadController@pagos_pendientes_general',
+//     'as' => 'contabilidad.revisar_requerimiento',
+// ]);
+Route::get('admin/contabilidad/revisar/requerimientos', [
+    'uses' => 'ContabilidadController@revisar_requerimiento',
+    'as' => 'contabilidad.revisar_requerimiento',
+]);
