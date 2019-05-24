@@ -167,6 +167,9 @@
                                                         <input type="hidden" name="prueba" value="hola">
                                                         <input type="hidden" name="txt_ini" value="{{$txt_ini}}">
                                                         <input type="hidden" name="txt_fin" value="{{$txt_fin}}">
+                                                        <input type="hidden" name="modo_busqueda" value="{{$modo_busqueda}}">
+                                                        <input type="hidden" name="monto_solicitado" value="{{$total}}">
+                                                        
                                                         <button type="submit" class="btn btn-info display-block w-100">Enviar requerimiento</button>
                                                     </form>
                                                 </div>

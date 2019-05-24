@@ -6644,7 +6644,133 @@ function contabilidad_guardar_notas_requerimiento(clave,servicio){
         }
     });
 }
+function estado_contabilidad(id,proveedor,hoteles) {
+    
+    var solicitado=$('#s_total').html();
+    var aprovado=$('#s_total_aprovado').html();
+    var suma_resta=$('#monto_c_'+id).val();
+    
 
+    var anular=$('#hestado_contabilidad_'+id).val();
+    var valor=4;
+    var msj='Aprobar';
+    if(anular==4){
+        valor=3;
+        msj='Descartar';
+    }
+    if(valor==3){
+        aprovado=aprovado+suma_resta;
+    }
+    else if(valor==4){
+        aprovado=aprovado-suma_resta;    
+    }
+    $('#s_total_aprovado').html(aprovado);
+    // alert('holaaa');
+    // swal({
+    //     title: 'MENSAJE DEL SISTEMA',
+    //     text: "¿Estas seguro de "+msj+" el pago para el proveedor "+proveedor+"?",
+    //     type: 'warning',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     confirmButtonText: 'Yes'
+    // }).then(function () {
+        // $('#estado_contabilidad_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>'); 
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.post('../requerimientos/estado-contabiliadad/cambiar', 'id='+id+'&valor='+valor+'&hoteles='+hoteles, function(data) {
+            if(data==1){
+                if(anular==3){
+                    $('#estado_view_'+id).html('<b class="badge badge-danger">Observado</b>'); 
+                    $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-off fa-3x text-danger"></i>');    
+                    $('#hestado_contabilidad_'+id).val('4');
+                }
+                else if(anular==4){
+                    $('#estado_view_'+id).html('<b class="badge badge-success">Aprovado</b>'); 
+                    $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-on fa-3x text-success"></i>');   
+                    $('#hestado_contabilidad_'+id).val('3'); 
+                }
+            }
+        }).fail(function (data) {
+            console.log(data);
+        });
+
+    // })
+}
 function sr_programar_pagos_h(clave){
     
+}
+function traer_datos_detalle(clave,grupo,lista_items,nro_personas){
+    
+    $('#datos_'+clave).html('');
+    $('#datos_'+clave).addClass('text-center');
+    $('#datos_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+
+    $.ajax({
+        url: '/admin/contabilidad/traer-datos',
+        type: 'post',
+        data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&view=no-edit',
+        success: function (data) {
+            $('#datos_'+clave).removeClass('text-center');
+            $('#datos_'+clave).html('');
+            $('#datos_'+clave).html(data);            
+        },
+        error: function () {
+            
+        }
+    });
+}
+function contabilidad_hotel_store_notas(clave){
+    console.log('clave:'+clave);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+
+    $.ajax({
+        url: $('#form_'+clave).attr('action'),
+        type: 'post',
+        data: $('#form_'+clave).serialize(),
+        // dataType:'json',
+        // contentType:false,
+        // cache:false,
+        // processData: false,
+        beforeSend:
+        function() {
+            
+            $('#rpt_'+clave).html('');
+            $('#rpt_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function (data) {
+            // $('#monto_c_'+clave).html($('#precio_total_'+clave).val());
+            $('#rpt_'+clave).html('');
+            $('#rpt_'+clave).html(data.mensaje);
+            // console.log('total obtenido:'+data.total);
+            // if(data.total>0){
+                
+            // console.log('total>0:'+data.total);
+            //     $("#chb_"+clave).prop('disabled', false);  
+            //     $("#warning_"+clave).addClass('d-none');
+            //     $("#warning_"+clave).html('costo ingresado');
+                
+            // }
+            // else{
+            //     console.log('total<=0:'+data.total);
+            //     $("#chb_"+clave).prop('disabled', true);
+        
+            // }
+        },
+        error: function () {
+            
+        }
+    });
 }

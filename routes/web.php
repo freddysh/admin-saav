@@ -1408,3 +1408,15 @@ Route::get('admin/contabilidad/revisar/requerimientos', [
     'uses' => 'ContabilidadController@revisar_requerimiento',
     'as' => 'contabilidad.revisar_requerimiento',
 ]);
+Route::get('admin/contabilidad/operaciones/requerimientos/{id}', [
+    'uses' => 'ContabilidadController@operaciones_requerimiento',
+    'as' => 'contabilidad.operaciones_requerimiento',
+]);
+Route::post('admin/contabilidad/operaciones/requerimientos/estado-contabiliadad/cambiar', [
+    'uses' => 'ContabilidadController@operaciones_requerimiento_estado_contabiliadad',
+    'as' => 'contabilidad.operaciones_requerimiento_estado_contabiliadad',
+]);
+Route::post('/admin/contabilidad/hotel/store/notas/revisor', [
+    'uses' => 'ContabilidadController@hotel_store_notas_revisor',
+    'as' => 'contabilidad.hotel.store.revisor',
+]);
