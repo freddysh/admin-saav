@@ -2607,15 +2607,15 @@ class ContabilidadController extends Controller
     }
 
     public function revisar_requerimiento(){
-        $requerimientos=Requerimiento::paginate(5);;
+        $requerimientos=Requerimiento::paginate(10);
         // dd($requerimientos);
         $webs = Web::get();
         $usuarios=User::get();
         return view('admin.contabilidad.revisar-requerimiento',compact('requerimientos','webs','usuarios'));
     }
     
-    public function operaciones_requerimiento($requerimiento_id){
-        // $requerimiento=Requerimiento::find($requerimiento_id);        
+    public function operaciones_requerimiento($requerimiento_id,$operacion){
+        // $requerimiento=Requerimiento::find($requerimiento_id);
         $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel',function($query) use($requerimiento_id){
             $query->where('proveedor_id','!=','')
             ->where('requerimientos_id',$requerimiento_id);
@@ -2711,8 +2711,10 @@ class ContabilidadController extends Controller
         $fin='';
         $grupo='HOTELS';
         $webs = Web::get();
+        $requerimiento=Requerimiento::find($requerimiento_id);
+        $usuarios=User::get();
         // return view('admin.contabilidad.requerimiento-preparado',compact(['array_pagos_pendientes']));
-        return view('admin.contabilidad.requerimiento-operaciones',compact(['proveedor','array_pagos_pendientes', 'pagos', 'cotizacion', 'txt_ini', 'txt_fin','proveedores','webs','grupo','modo_busqueda']));
+        return view('admin.contabilidad.requerimiento-operaciones',compact(['proveedor','array_pagos_pendientes', 'pagos', 'cotizacion', 'txt_ini', 'txt_fin','proveedores','webs','grupo','modo_busqueda','requerimiento','usuarios','operacion']));
 
 // dd($cotizaciones);
     
@@ -2746,5 +2748,31 @@ class ContabilidadController extends Controller
             $oHotel->save();
         }
         return '1';
+    }
+    
+    public function enviar_requerimiento_revisor(Request $request){
+        try {
+            //code...
+            $data=Carbon::now()->subHour(5);
+            $operacion=$request->input('operacion');
+            $requerimiento_id=$request->input('requerimiento_id');
+            $requerimiento=Requerimiento::find($requerimiento_id);
+            if($operacion=='pagar')
+                $requerimiento->estado=5;
+            else
+                $requerimiento->estado=3;
+            
+            $requerimiento->revisador_id=auth()->guard('admin')->user()->id;
+            $requerimiento->revisador_fecha=$data->year.'-'.$data->month.'-'.$data->day;
+            if($requerimiento->save()){
+                return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Requerimiento guardado correctamente.</div>']);
+            }
+            else{
+                return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> Hubo un error al guardar el requerimiento.</div>']);
+            }
+
+        }catch (Exception $e){
+            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al guardar el requerimiento, vuelva a intentarlo ('.$e.')</div>']);
+        }
     }
 }

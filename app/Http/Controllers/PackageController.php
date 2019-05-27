@@ -1136,7 +1136,7 @@ class PackageController extends Controller
         //
         $destino = $request->input('destino');
         if ($destino != 0){
-            $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->groupBy('tipo','id')->get()->sortBy('tipo');
+            $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->get()->sortBy('titulo');
             return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days'));
         }
     }

@@ -89,22 +89,22 @@
                                                 @if($requerimiento->estado=='2')
                                                     <b class="badge badge-danger">Pendiente</b>
                                                 @elseif($requerimiento->estado=='3')
-                                                    <b class="badge badge-danger">Aprobado 100%</b>
+                                                    <b class="badge badge-primary">Aprobado 100%</b>
                                                 @elseif($requerimiento->estado=='4')
                                                     <b class="badge badge-danger">Observado</b>
                                                 @elseif($requerimiento->estado=='5')
-                                                    <b class="badge badge-danger">Pagado</b>
+                                                    <b class="badge badge-success">Pagado</b>
                                                 @endif
                                             @endif
                                         </td>
                                         <td>
                                             @if(isset($requerimiento->estado))
                                                 @if($requerimiento->estado=='2')
-                                                    <a href="{{route('contabilidad.operaciones_requerimiento',$requerimiento->id)}}" class="btn btn-sm btn-warning">Ver</a>    
+                                                    <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'ver'])}}" class="btn btn-sm btn-warning">Ver</a>    
                                                 @elseif($requerimiento->estado=='3'||$requerimiento->estado=='4')
-                                                    <button class="btn btn-sm btn-success">Pagar</button>    
+                                                    <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'pagar'])}}" class="btn btn-sm btn-primary">Pagar</a>    
                                                 @elseif($requerimiento->estado=='5')
-                                                    <button class="btn btn-sm btn-primary">Revisar</button>    
+                                                <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'revisar'])}}" class="btn btn-sm btn-success">Revisar</a>    
                                                 {{-- @else
                                                     <button class="btn btn-sm btn-dark">Pendiente</button>     --}}
                                                 @endif

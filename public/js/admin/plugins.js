@@ -7388,8 +7388,8 @@ function contabilidad_guardar_notas_requerimiento(clave,servicio){
 function estado_contabilidad(id,proveedor,hoteles) {
     
     var solicitado=$('#s_total').html();
-    var aprovado=$('#s_total_aprovado').html();
-    var suma_resta=$('#monto_c_'+id).val();
+    var aprovado=parseFloat($('#s_total_aprovado').html());
+    var suma_resta=parseFloat($('#monto_c_'+id).html());
     
 
     var anular=$('#hestado_contabilidad_'+id).val();
@@ -7399,13 +7399,7 @@ function estado_contabilidad(id,proveedor,hoteles) {
         valor=3;
         msj='Descartar';
     }
-    if(valor==3){
-        aprovado=aprovado+suma_resta;
-    }
-    else if(valor==4){
-        aprovado=aprovado-suma_resta;    
-    }
-    $('#s_total_aprovado').html(aprovado);
+    
     // alert('holaaa');
     // swal({
     //     title: 'MENSAJE DEL SISTEMA',
@@ -7422,18 +7416,21 @@ function estado_contabilidad(id,proveedor,hoteles) {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
             }
         });
-        $.post('../requerimientos/estado-contabiliadad/cambiar', 'id='+id+'&valor='+valor+'&hoteles='+hoteles, function(data) {
+        $.post('../requerimientos/estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles, function(data) {
             if(data==1){
                 if(anular==3){
                     $('#estado_view_'+id).html('<b class="badge badge-danger">Observado</b>'); 
                     $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-off fa-3x text-danger"></i>');    
                     $('#hestado_contabilidad_'+id).val('4');
+                    aprovado-=suma_resta;
                 }
                 else if(anular==4){
-                    $('#estado_view_'+id).html('<b class="badge badge-success">Aprovado</b>'); 
+                    $('#estado_view_'+id).html('<b class="badge badge-primary">Aprovado</b>'); 
                     $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-on fa-3x text-success"></i>');   
                     $('#hestado_contabilidad_'+id).val('3'); 
+                    aprovado+=suma_resta;
                 }
+                $('#s_total_aprovado').html(aprovado);
             }
         }).fail(function (data) {
             console.log(data);
@@ -7514,4 +7511,95 @@ function contabilidad_hotel_store_notas(clave){
             
         }
     });
+}
+function requerimiento_revisado(){
+    // console.log('clave:'+clave);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+
+    $.ajax({
+        url: $('#form_').attr('action'),
+        type: 'post',
+        data: $('#form_').serialize(),
+        // dataType:'json',
+        // contentType:false,
+        // cache:false,
+        // processData: false,
+        beforeSend:
+        function() {
+            
+            $('#rpt_').html('');
+            $('#rpt_').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function (data) {
+            $('#rpt_').html('');
+            $('#rpt_').html(data.mensaje);
+        },
+        error: function () {
+            
+        }
+    });
+}
+
+function pagar_proveedor(id,proveedor,hoteles) {
+    
+    var solicitado=$('#s_total').html();
+    var aprovado=parseFloat($('#s_total_aprovado').html());
+    var suma_resta=parseFloat($('#monto_c_'+id).html());
+    
+
+    var anular=$('#hestado_contabilidad_'+id).val();
+    var valor=5;
+    var msj='Aprobar';
+    if(anular==5){
+        valor=3;
+        msj='Descartar';
+    }
+    
+    // alert('holaaa');
+    // swal({
+    //     title: 'MENSAJE DEL SISTEMA',
+    //     text: "¿Estas seguro de "+msj+" el pago para el proveedor "+proveedor+"?",
+    //     type: 'warning',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     confirmButtonText: 'Yes'
+    // }).then(function () {
+        // $('#estado_contabilidad_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>'); 
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.post('../../requerimientos/estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles, function(data) {
+            if(data==1){
+                if(anular==3){
+                    $('#estado_view_'+id).html('<b class="badge badge-success">Pagado</b>'); 
+                    // $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-off fa-3x text-danger"></i>');    
+                    $('#hestado_contabilidad_'+id).val('5');
+                    $('#btn_pagar_'+id).html('Pagado');
+                    $('#btn_pagar_'+id).removeClass('btn-primary');
+                    $('#btn_pagar_'+id).addClass('btn-success');
+                    // aprovado-=suma_resta;
+                }
+                else if(anular==5){
+                    $('#estado_view_'+id).html('<b class="badge badge-primary">Aprovado</b>'); 
+                    // $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-on fa-3x text-success"></i>');   
+                    $('#hestado_contabilidad_'+id).val('3'); 
+                    $('#btn_pagar_'+id).html('Pagar');
+                    $('#btn_pagar_'+id).removeClass('btn-success');
+                    $('#btn_pagar_'+id).addClass('btn-primary');
+                    // aprovado+=suma_resta;
+                }
+                // $('#s_total_aprovado').html(aprovado);
+            }
+        }).fail(function (data) {
+            console.log(data);
+        });
+
+    // })
 }
