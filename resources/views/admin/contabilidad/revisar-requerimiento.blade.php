@@ -100,11 +100,11 @@
                                         <td>
                                             @if(isset($requerimiento->estado))
                                                 @if($requerimiento->estado=='2')
-                                                    <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'ver'])}}" class="btn btn-sm btn-warning">Ver</a>    
+                                                    <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'ver'])}}" class="btn btn-sm btn-warning">Ver</a>
                                                 @elseif($requerimiento->estado=='3'||$requerimiento->estado=='4')
-                                                    <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'pagar'])}}" class="btn btn-sm btn-primary">Pagar</a>    
+                                                    <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'pagar'])}}" class="btn btn-sm btn-primary">Pagar</a>
                                                 @elseif($requerimiento->estado=='5')
-                                                <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'revisar'])}}" class="btn btn-sm btn-success">Revisar</a>    
+                                                <a href="{{route('contabilidad.operaciones_requerimiento',[$requerimiento->id,'pagar'])}}" class="btn btn-sm btn-success">Revisar</a>
                                                 {{-- @else
                                                     <button class="btn btn-sm btn-dark">Pendiente</button>     --}}
                                                 @endif

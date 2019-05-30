@@ -6675,7 +6675,7 @@ function estado_contabilidad(id,proveedor,hoteles) {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
             }
         });
-        $.post('../requerimientos/estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles, function(data) {
+        $.post('../estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles, function(data) {
             if(data==1){
                 if(anular==3){
                     $('#estado_view_'+id).html('<b class="badge badge-danger">Observado</b>'); 
@@ -6712,7 +6712,7 @@ function traer_datos_detalle(clave,grupo,lista_items,nro_personas){
     });
 
     $.ajax({
-        url: '/admin/contabilidad/traer-datos',
+        url: '/admin/contabilidad/operaciones/traer-datos',
         type: 'post',
         data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&view=no-edit',
         success: function (data) {
@@ -6795,7 +6795,12 @@ function requerimiento_revisado(){
         },
         success: function (data) {
             $('#rpt_').html('');
-            $('#rpt_').html(data.mensaje);
+            if(data.operacion=='pagar'){
+                window.location.reload();
+            }
+            else{
+                $('#rpt_').html(data.mensaje);
+            }
         },
         error: function () {
             

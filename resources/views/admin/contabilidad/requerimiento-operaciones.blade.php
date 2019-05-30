@@ -84,7 +84,7 @@
                                         $total_aprovado=0;
                                     @endphp
                                     @foreach($array_pagos_pendientes as $key => $array_pagos_pendiente)
-                                        @if($array_pagos_pendiente['estado_contabilidad']=='3')
+                                        @if($array_pagos_pendiente['estado_contabilidad']=='3'|| $array_pagos_pendiente['estado_contabilidad']=='5')
                                             @php
                                                 $total_aprovado+=$array_pagos_pendiente['monto_c'];
                                             @endphp
@@ -131,6 +131,9 @@
                                             </td>
                                             {{-- <td class="text-grey-goto text-right">{{$array_pagos_pendiente['saldo']}}</td> --}}
                                             <td class="text-grey-goto">
+                                                @if($array_pagos_pendiente['estado_contabilidad']=='3'||$array_pagos_pendiente['estado_contabilidad']=='5')
+                                                    <input type="hidden" name="lista_pagar[]" form="form_" value="{{$array_pagos_pendiente['items']}}">
+                                                @endif
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos_detalle('{{$key}}','HOTELS','{{$array_pagos_pendiente['items_itinerario']}}','{{$array_pagos_pendiente['nro']}}')">
                                                             <i class="fas fa-eye"></i>
@@ -182,6 +185,8 @@
                                                 @endif   
                                                 
                                                 <input type="hidden" id="hestado_contabilidad_{{$key}}" value="{{$valor}}">
+
+                                                @if($operacion=='pagar'||$operacion=='aprobar')
                                                 <a class="text-12 @if($operacion=='pagar') d-none @endif" id="estado_contabilidad_{{$key}}" href="#" onclick="estado_contabilidad('{{$key}}','{{$array_pagos_pendiente['proveedor']}}','{{$array_pagos_pendiente['items']}}')">
                                                     @if($array_pagos_pendiente['estado_contabilidad']=='3')
                                                         <i class="fas fa-toggle-on fa-3x text-primary"></i>
@@ -193,6 +198,7 @@
                                                         <i class="fas fa-toggle-off fa-3x text-grey-goto"></i>
                                                     @endif
                                                 </a>
+                                                @endif
                                                 @if($operacion=='pagar')
                                                     @if($array_pagos_pendiente['estado_contabilidad']=='3')
                                                         <a id="btn_pagar_{{$key}}" href="#!" class="btn btn-sm btn-primary" onclick="pagar_proveedor('{{$key}}','{{$array_pagos_pendiente['proveedor']}}','{{$array_pagos_pendiente['items']}}')">Pagar</a>
@@ -214,7 +220,7 @@
                             <div class="card w-100">
                                 <div class="card-body text-center">
                                     <div class="row">
-                                        
+                                        @csrf
                                         <div class="col-6 text-left">
                                             <h2 class="text-15">Solicitado:</h2>
                                         </div>        
@@ -228,18 +234,20 @@
                                             <h2 class="text-15"><sup><small>$usd</small></sup><b id="s_total_aprovado">{{$total_aprovado}}</b></h2>
                                         </div>
                                     </div>
+                                    @if($operacion=='pagar'||$operacion=='aprobar')
                                     <form id="form_" action="{{route('contabilidad.enviar_requerimiento_revisor')}}" method="POST">
                                         @csrf
                                         <input type="hidden" name="operacion" value="{{$operacion}}">
                                         <input type="hidden" name="requerimiento_id" value="{{$requerimiento->id}}">
                                         <input type="hidden" id="monto_total_aprovado" name="monto_total_aprovado" value="{{$total_aprovado}}">
                                         <input type="hidden" name="monto_aprovado" id="monto_aprovado" value="{{$total}}">
-                                        <button type="button" class="btn btn-info display-block w-100" onclick="requerimiento_revisado()">@if($operacion=='Pagar') Enviar revision @else Cerrar requerimiento @endif </button>
+                                        <button type="button" class="btn btn-info display-block w-100" onclick="requerimiento_revisado()">@if($operacion=='aprobar') Enviar revision @elseif($operacion=='pagar') Pagar todo @endif </button>
                                     </form>
                                     <div class="row">
                                         <div class="col-12" id="rpt_">
                                         </div>
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

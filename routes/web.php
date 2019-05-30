@@ -1349,7 +1349,7 @@ Route::post('/admin/contabilidad/pagos-en-genral/pendientes/filtrar', [
     'uses' => 'ContabilidadController@pagos_pendientes_general_filtro_datos',
     'as' => 'contabilidad.pagos_en_genral.filtrar.buscar',
 ]);
-Route::post('/admin/contabilidad/traer-datos', [
+Route::post('/admin/contabilidad/operaciones/traer-datos', [
     'uses' => 'ContabilidadController@traer_datos',
     'as' => 'contabilidad.traer_datos',
 ]);
@@ -1404,6 +1404,31 @@ Route::post('/admin/contabilidad/enviar-requerimiento', [
 //     'uses' => 'ContabilidadController@pagos_pendientes_general',
 //     'as' => 'contabilidad.revisar_requerimiento',
 // ]);
+Route::get('admin/revisor/revisar/requerimientos', [
+    'uses' => 'ContabilidadController@revisar_requerimiento_revisor',
+    'as' => 'revisor.revisar_requerimiento',
+]);
+Route::get('admin/contabilidad/operaciones/requerimientos/{id}/{operacion}', [
+    'uses' => 'ContabilidadController@operaciones_requerimiento_revisor',
+    'as' => 'revisor.operaciones_requerimiento',
+]);
+Route::post('admin/contabilidad/operaciones/requerimientos/estado-contabiliadad/cambiar/contabilidad', [
+    'uses' => 'ContabilidadController@operaciones_requerimiento_estado_contabiliadad_revisor',
+    'as' => 'revisor.operaciones_requerimiento_estado_contabiliadad',
+]);
+Route::post('/admin/contabilidad/hotel/store/notas/revisor', [
+    'uses' => 'ContabilidadController@hotel_store_notas_revisor_revisor',
+    'as' => 'revisor.hotel.store.revisor',
+]);
+Route::post('/admin/contabilidad/enviar-requerimiento/revisor', [
+    'uses' => 'ContabilidadController@enviar_requerimiento_revisor_revisor',
+    'as' => 'revisor.enviar_requerimiento_revisor',
+]);
+//-- contabilidad
+Route::get('admin/contabilidad/revisar/requerimientos', [
+    'uses' => 'ContabilidadController@revisar_requerimiento',
+    'as' => 'contabilidad.revisar_requerimiento',
+]);
 Route::get('admin/contabilidad/revisar/requerimientos', [
     'uses' => 'ContabilidadController@revisar_requerimiento',
     'as' => 'contabilidad.revisar_requerimiento',

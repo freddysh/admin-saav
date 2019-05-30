@@ -2613,7 +2613,13 @@ class ContabilidadController extends Controller
         $usuarios=User::get();
         return view('admin.contabilidad.revisar-requerimiento',compact('requerimientos','webs','usuarios'));
     }
-    
+    public function revisar_requerimiento_revisor(){
+        $requerimientos=Requerimiento::paginate(10);
+        // dd($requerimientos);
+        $webs = Web::get();
+        $usuarios=User::get();
+        return view('admin.contabilidad.revisar-requerimiento-revisor',compact('requerimientos','webs','usuarios'));
+    }
     public function operaciones_requerimiento($requerimiento_id,$operacion){
         // $requerimiento=Requerimiento::find($requerimiento_id);
         $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel',function($query) use($requerimiento_id){
@@ -2757,22 +2763,70 @@ class ContabilidadController extends Controller
             $operacion=$request->input('operacion');
             $requerimiento_id=$request->input('requerimiento_id');
             $requerimiento=Requerimiento::find($requerimiento_id);
-            if($operacion=='pagar')
+            if($operacion=='pagar'){
                 $requerimiento->estado=5;
-            else
-                $requerimiento->estado=3;
-            
-            $requerimiento->revisador_id=auth()->guard('admin')->user()->id;
-            $requerimiento->revisador_fecha=$data->year.'-'.$data->month.'-'.$data->day;
-            if($requerimiento->save()){
-                return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Requerimiento guardado correctamente.</div>']);
+                $lista_pagar=$request->input('lista_pagar');
+                $texto='';
+                if(isset($lista_pagar)){
+                    //dd($lista_pagar);
+                    foreach($lista_pagar as $hoteles){
+                        $hoteles=explode(',',$hoteles);
+                        // echo var_dump($hoteles);
+                        if(is_array($hoteles)){
+                            // $texto.='_'.$hoteles.toString();
+                            if(count($hoteles)>0){
+                                foreach($hoteles as $hotelito){
+                                    // $texto.='_'.$hotelito;
+                                    $oHotel=PrecioHotelReserva::find($hotelito);
+                                    $oHotel->estado_contabilidad='5';
+                                    $oHotel->save();
+                                }
+                            }
+                        }
+                        else{
+
+                        }
+                        // foreach($hoteles as $hotel){
+                        //     $oHotel=PrecioHotelReserva::find($hotel);
+                        //     $oHotel->estado_contabilidad='5';
+                        //     $oHotel->save();
+                        // }
+                        // $array_items=explode(',',$lista_pagar_);
+                        // // dd($array_items);
+                        // // dd(is_array($array_items));
+                        // if(is_array($array_items)){
+                        //     foreach($array_items as $array_item){
+                        //         $oHotel=PrecioHotelReserva::find($array_item);
+                        //         $oHotel->estado_contabilidad=5;
+                        //         $oHotel->save();
+                        //     }
+                        // }
+                        // else{
+                        //     // dd($array_items);
+                        //     // $oHotel=PrecioHotelReserva::find($array_items);
+                        //     // $oHotel->estado_contabilidad=5;
+                        //     // $oHotel->save();
+                        // }
+                        
+                    }
+                    // return redirect()->route('contabilidad.operaciones_requerimiento',[$requerimiento_id,$operacion]);
+                }
             }
             else{
-                return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> Hubo un error al guardar el requerimiento.</div>']);
+                $requerimiento->estado=3;
+                $requerimiento->revisador_id=auth()->guard('admin')->user()->id;
+                $requerimiento->revisador_fecha=$data->year.'-'.$data->month.'-'.$data->day;
+            }
+            
+            if($requerimiento->save()){
+                return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Datos guardado correctamente.</div>','operacion'=>$operacion]);
+            }
+            else{
+                return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> Hubo un error al guardar los datos.</div>','operacion'=>$operacion]);
             }
 
         }catch (Exception $e){
-            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al guardar el requerimiento, vuelva a intentarlo ('.$e.')</div>']);
+            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>']);
         }
     }
 }

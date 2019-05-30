@@ -146,6 +146,19 @@
                 <a class="@if(url()->current()==route('operaciones_path')||url()->current()==route('operaciones_lista_path')) active @endif" href="{{route('operaciones_path')}}">VIEW RESERVATIONS</a>
               </li>
             </ul>
+
+
+            <li data-toggle="collapse" data-target="#administracion" class="collapsed">
+                <a href="#" class="bg-green-goto text-white"><i class="fas fa-chart-pie"></i> ADMINISTRACION </a>
+            </li>
+            <ul class="sub-menu collapse menu2 @if(
+              (url()->current()==route('revisor.revisar_requerimiento'))) show @endif" id="administracion">
+              <li data-toggle="collapse" class="active1">
+                  <a class="@if(url()->current()==route('revisor.revisar_requerimiento')) active @endif" href="{{route('revisor.revisar_requerimiento')}}">REVISAR REQUERIMIENTOS</a>
+                </li>  
+            </ul>
+
+
             <li data-toggle="collapse" data-target="#reportes" class="collapsed">
                 <a href="#" class="bg-dange-goto-light text-white"><i class="fas fa-chart-pie"></i> REPORTS </a>
             </li>  
