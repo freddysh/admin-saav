@@ -1449,3 +1449,7 @@ Route::post('/admin/contabilidad/enviar-requerimiento/revisor', [
     'uses' => 'ContabilidadController@enviar_requerimiento_revisor',
     'as' => 'contabilidad.enviar_requerimiento_revisor',
 ]);
+Route::post('/admin/revisor/revisar/requerimientos/buscar', [
+    'uses' => 'ContabilidadController@revisar_requerimiento_revisor_buscar',
+    'as' => 'contabilidad.revisar_requerimiento_revisor_buscar',
+]);

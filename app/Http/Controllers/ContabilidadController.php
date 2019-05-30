@@ -2614,11 +2614,35 @@ class ContabilidadController extends Controller
         return view('admin.contabilidad.revisar-requerimiento',compact('requerimientos','webs','usuarios'));
     }
     public function revisar_requerimiento_revisor(){
-        $requerimientos=Requerimiento::paginate(10);
+        $requerimientos_nuevo=Requerimiento::where('estado','2')->get();
+        $requerimientos_aprovado=Requerimiento::whereIn('estado',['3','4'])->get();
+        $requerimientos_pagado=[];
         // dd($requerimientos);
         $webs = Web::get();
         $usuarios=User::get();
-        return view('admin.contabilidad.revisar-requerimiento-revisor',compact('requerimientos','webs','usuarios'));
+        return view('admin.contabilidad.revisar-requerimiento-revisor',compact('requerimientos_nuevo','requerimientos_aprovado','requerimientos_pagado','webs','usuarios'));
+    }
+    public function revisar_requerimiento_revisor_buscar(Request $request){
+        
+        $codigo=$request->input('codigo');
+        $codigo=trim($codigo);
+        $requerimientos_nuevo=[];
+        $requerimientos_aprovado=[];
+        $requerimientos_pagado=[];
+        if($codigo!=''){
+            $requerimientos_nuevo=Requerimiento::where('estado','2')->where('codigo',$codigo)->get();
+            $requerimientos_aprovado=Requerimiento::whereIn('estado',['3','4'])->where('codigo',$codigo)->get();
+            $requerimientos_pagado=Requerimiento::where('estado','5')->where('codigo',$codigo)->get();
+        }
+        else{
+            $requerimientos_nuevo=Requerimiento::where('estado','2')->get();
+            $requerimientos_aprovado=Requerimiento::whereIn('estado',['3','4'])->get();
+            $requerimientos_pagado=[];
+        }
+        // dd($requerimientos);
+        $webs = Web::get();
+        $usuarios=User::get();
+        return view('admin.contabilidad.revisar-requerimiento-revisor',compact('requerimientos_nuevo','requerimientos_aprovado','requerimientos_pagado','webs','usuarios'));
     }
     public function operaciones_requerimiento($requerimiento_id,$operacion){
         // $requerimiento=Requerimiento::find($requerimiento_id);
@@ -2829,4 +2853,15 @@ class ContabilidadController extends Controller
             return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>']);
         }
     }
+    public function codigo(Request $request){
+        try {
+            //code...
+            $codigo=$request->input('codigo');
+            $requerimiento=Requerimiento::where('codigo',$codigo)->get();
+
+        }catch (Exception $e){
+            // return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>']);
+        }
+    }
+    
 }
