@@ -253,6 +253,7 @@ class QouteController extends Controller
     public function generar_codigo(Request $request)
     {
         $web=$request->input('web');
+        // return $web;
         $codigo= MisFunciones::generar_codigo($web);
         return $codigo;
     }
@@ -623,7 +624,6 @@ class QouteController extends Controller
                         $pqt->proceso_complete = 1;
 //                        $pqt->pedir_datos ='';
                         $pqt->save();
-                        $coti->save();
                         if ($ppaquete->duracion > 1) {
                             $pqt_precio = P_PaquetePrecio::where('estrellas', $estrellas)->get();
                             foreach ($pqt_precio as $pqt_temp_2) {

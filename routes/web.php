@@ -1408,6 +1408,10 @@ Route::get('admin/revisor/revisar/requerimientos', [
     'uses' => 'ContabilidadController@revisar_requerimiento_revisor',
     'as' => 'revisor.revisar_requerimiento',
 ]);
+Route::post('/admin/revisor/revisar/requerimientos/buscar', [
+    'uses' => 'ContabilidadController@revisar_requerimiento_revisor_buscar',
+    'as' => 'contabilidad.revisar_requerimiento_revisor_buscar',
+]);
 Route::get('admin/contabilidad/operaciones/requerimientos/{id}/{operacion}', [
     'uses' => 'ContabilidadController@operaciones_requerimiento_revisor',
     'as' => 'revisor.operaciones_requerimiento',
@@ -1420,14 +1424,18 @@ Route::post('/admin/contabilidad/hotel/store/notas/revisor', [
     'uses' => 'ContabilidadController@hotel_store_notas_revisor_revisor',
     'as' => 'revisor.hotel.store.revisor',
 ]);
-Route::post('/admin/contabilidad/enviar-requerimiento/revisor', [
-    'uses' => 'ContabilidadController@enviar_requerimiento_revisor_revisor',
-    'as' => 'revisor.enviar_requerimiento_revisor',
-]);
+// Route::post('/admin/contabilidad/enviar-requerimiento/revisor', [
+//     'uses' => 'ContabilidadController@enviar_requerimiento_revisor_revisor',
+//     'as' => 'revisor.enviar_requerimiento_revisor',
+// ]);
 //-- contabilidad
 Route::get('admin/contabilidad/revisar/requerimientos', [
     'uses' => 'ContabilidadController@revisar_requerimiento',
     'as' => 'contabilidad.revisar_requerimiento',
+]);
+Route::post('/admin/contabilidad/revisar/requerimientos/buscar', [
+    'uses' => 'ContabilidadController@revisar_requerimiento_contabilidad_buscar',
+    'as' => 'contabilidad.revisar_requerimiento_contabilidad_buscar',
 ]);
 Route::get('admin/contabilidad/revisar/requerimientos', [
     'uses' => 'ContabilidadController@revisar_requerimiento',
@@ -1448,8 +1456,4 @@ Route::post('/admin/contabilidad/hotel/store/notas/revisor', [
 Route::post('/admin/contabilidad/enviar-requerimiento/revisor', [
     'uses' => 'ContabilidadController@enviar_requerimiento_revisor',
     'as' => 'contabilidad.enviar_requerimiento_revisor',
-]);
-Route::post('/admin/revisor/revisar/requerimientos/buscar', [
-    'uses' => 'ContabilidadController@revisar_requerimiento_revisor_buscar',
-    'as' => 'contabilidad.revisar_requerimiento_revisor_buscar',
 ]);

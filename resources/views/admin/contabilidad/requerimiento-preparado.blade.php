@@ -65,12 +65,13 @@
                                                 <tbody>
                                                     @php
                                                         $total=0;
+                                                        $arreglo='';
                                                     @endphp
                                                     @foreach($array_pagos_pendientes as $key => $array_pagos_pendiente)
                                                     @php
                                                         $total+=$array_pagos_pendiente['monto_c'];
                                                     @endphp
-                                                        <tr>
+                                                        <tr id="fila_{{$key}}">
                                                             <td class="text-grey-goto text-left">
                                                                 <div class="form-check">
                                                                 <input class="form-check-input d-none" type="hidden" form="enviar_requerimiento" value="{{$array_pagos_pendiente['items']}}" name="chb_h_pagos[]" id="chb_{{$key}}" onclick="if(this.checked) sumar($('#monto_c_{{$key}}').html()); else restar($('#monto_c_{{$key}}').html());" @if($array_pagos_pendiente['monto_r']>0 && $array_pagos_pendiente['monto_c']<=0) disabled @endif>
@@ -91,9 +92,14 @@
                                                             <td class="text-grey-goto text-right">{{$array_pagos_pendiente['saldo']}}</td>
                                                             <td class="text-grey-goto text-right">
                                                                 <!-- Button trigger modal -->
-                                                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos('{{$key}}','HOTELS','{{$array_pagos_pendiente['items_itinerario']}}','{{$array_pagos_pendiente['nro']}}')">
-                                                                            <i class="fas fa-edit"></i>
-                                                                </button>    
+                                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos('{{$key}}','HOTELS','{{$array_pagos_pendiente['items_itinerario']}}','{{$array_pagos_pendiente['nro']}}')">
+                                                                                <i class="fas fa-edit"></i>
+                                                                    </button> 
+                                                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_notas_{{$key}}" ><i class="fas fa-book"></i></button>
+
+                                                                <button type="button" class="btn btn-danger btn-sm" onclick="borrar_item_pago('{{$key}}','{{str_replace(',','_',$array_pagos_pendiente['items_itinerario'])}}')"><i class="fas fa-trash-alt"></i></button>
+                                                                </div>
                                                                     <!-- Modal -->
                                                                 <div class="modal fade" id="modal_{{$key}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                                     <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">  
@@ -120,18 +126,19 @@
                                                                         </form>                                                                   
                                                                     </div>
                                                                 </div>    
-                                                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_notas_{{$key}}" ><i class="fas fa-book"></i></button>
+                                                                
                                                                 <div class="modal fade" id="modal_notas_{{$key}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                                    <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">  
-                                                                        <form id="form_notas_{{$key}}" action="{{route('contabilidad.hotel.store.notas')}}" method="POST" >   
-                                                                            <div class="modal-content  modal-lg">
-                                                                                <div class="modal-header bg-primary text-white">
-                                                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Agregar notas</h5>
-                                                                                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                                                                        <span aria-hidden="true">&times;</span>
-                                                                                    </button>
-                                                                                </div>
-                                                                                <div class="modal-body text-left">
+                                                                    <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                                                                        <div class="modal-content  modal-lg">
+                                                                            <div class="modal-header bg-primary text-white">
+                                                                                <h5 class="modal-title" id="exampleModalCenterTitle">Agregar notas</h5>
+                                                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body text-left">
+                                                                                <form id="form_notas_{{$key}}" action="{{route('contabilidad.hotel.store.notas')}}" method="POST" >
+
                                                                                     <div class="row">
                                                                                         <div class="form-group">
                                                                                             <label class="d-none" for="notas_{{$key}}">Notas</label>
@@ -142,36 +149,49 @@
                                                                                     <div class="row">
                                                                                         <div class="col-12" id="rpt_notas_{{$key}}">
                                                                                         </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cerrar</button>
-                                                                                    <button type="button" class="btn btn-primary" onclick="contabilidad_guardar_notas_requerimiento('{{$key}}','HOTELS')">Guardar</button>
-                                                                                </div>
-                                                                            </div>   
-                                                                        </form>                                                                   
+                                                                                    </div> 
+                                                                                </form> 
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cerrar</button>
+                                                                                <button type="button" class="btn btn-primary" onclick="contabilidad_guardar_notas_requerimiento('{{$key}}','HOTELS')">Guardar</button>
+                                                                            </div>
+                                                                        </div>                                                                    
                                                                     </div>
-                                                                </div>  
+                                                                </div>
                                                             </td>
                                                         </tr>
+                                                        @php
+                                                            $arreglo.=str_replace(',','_',$array_pagos_pendiente['items_itinerario']) .',';
+                                                        @endphp
                                                     @endforeach
+                                                    @php
+                                                        $arreglo=substr($arreglo,0,strlen($arreglo)-1);
+                                                        // $arreglo.=$array_pagos_pendiente['items_itinerario'].','.;
+                                                    @endphp
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="col-3">
                                             <div class="card w-100">
                                                 <div class="card-body text-center">
+                                                    <input type="text" id="chb_h_pagos" value="{{$arreglo}}">
                                                     <h2 class="text-40"><sup><small>$usd</small></sup><b id="s_total">{{$total}}</b></h2>
                                                     <form id="enviar_requerimiento" action="{{route('contabilidad.enviar_requerimiento')}}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="prueba" value="hola">
-                                                        <input type="hidden" name="txt_ini" value="{{$txt_ini}}">
-                                                        <input type="hidden" name="txt_fin" value="{{$txt_fin}}">
-                                                        <input type="hidden" name="modo_busqueda" value="{{$modo_busqueda}}">
-                                                        <input type="hidden" name="monto_solicitado" value="{{$total}}">
+                                                        <input type="hidden" name="txt_ini" id="txt_ini" value="{{$txt_ini}}">
+                                                        <input type="hidden" name="txt_fin" id="txt_fin" value="{{$txt_fin}}">
+                                                        <input type="hidden" name="modo_busqueda" id="modo_busqueda" value="{{$modo_busqueda}}">
+                                                        <input type="hidden" name="monto_solicitado" id="monto_solicitado" value="{{$total}}">
                                                         
-                                                        <button type="submit" class="btn btn-info display-block w-100">Enviar requerimiento</button>
+                                                        <button id="btn_enviar" type="button" onclick="enviar_consulta('enviar_requerimiento')" class="btn btn-info display-block w-100">Enviar requerimiento</button>
                                                     </form>
+                                                    <div class="row">
+                                                        <div id="rpt_" class="col-12">
+
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

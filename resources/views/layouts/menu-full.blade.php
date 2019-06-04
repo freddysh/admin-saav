@@ -118,7 +118,7 @@
             <ul class="sub-menu collapse menu2 @if(
               (url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id]))||
               (url()->current()==route('pagos_pendientes_rango_fecha_path','HOTELS')||url()->current()==route('contabilidad.pagos_en_genral.filtrar')||url()->current()==route('contabilidad.revisar_requerimiento'))||
-              (url()->current()==route('contabilidad.ingresos'))) show @endif" id="contabilidad">
+              (url()->current()==route('contabilidad.ingresos')||url()->current()==route('contabilidad.revisar_requerimiento_contabilidad_buscar'))) show @endif" id="contabilidad">
               <li data-toggle="collapse" class="active1">
                 <a class="@if(url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id])) active @endif" href="{{route('contabilidad_index_path')}}">VIEW RESERVATIONS</a>
               </li>
@@ -129,7 +129,7 @@
                 <a class="@if(url()->current()==route('contabilidad.pagos_en_genral.filtrar')) active @endif" href="{{route('contabilidad.pagos_en_genral.filtrar')}}">TODOS LOS PAGOS PENDIENTES</a>
               </li>
               <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('contabilidad.revisar_requerimiento')) active @endif" href="{{route('contabilidad.revisar_requerimiento')}}">REVISAR REQUERIMIENTOS</a>
+                  <a class="@if(url()->current()==route('contabilidad.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_contabilidad_buscar')) active @endif" href="{{route('contabilidad.revisar_requerimiento')}}">REVISAR REQUERIMIENTOS</a>
                 </li>              
                   
               <li data-toggle="collapse" class="active1">
@@ -152,9 +152,9 @@
                 <a href="#" class="bg-green-goto text-white"><i class="fas fa-chart-pie"></i> ADMINISTRACION </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
-              (url()->current()==route('revisor.revisar_requerimiento'))) show @endif" id="administracion">
+              (url()->current()==route('revisor.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_revisor_buscar'))) show @endif" id="administracion">
               <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('revisor.revisar_requerimiento')) active @endif" href="{{route('revisor.revisar_requerimiento')}}">REVISAR REQUERIMIENTOS</a>
+                  <a class="@if(url()->current()==route('revisor.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_revisor_buscar')  ) active @endif" href="{{route('revisor.revisar_requerimiento')}}">REVISAR REQUERIMIENTOS</a>
                 </li>  
             </ul>
 

@@ -6876,6 +6876,7 @@ function pintar(id){
 //     }
 //   }
 function buscar_pagos_pendientes(opcion,nombre,codigo,ini,fin,servicio){    
+    console.log('opcion:'+opcion+',nombre:'+nombre+',codigo:'+codigo+',ini:'+ini+',fin:'+fin+',servicio:'+servicio);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6910,7 +6911,7 @@ function traer_datos(clave,grupo,lista_items,nro_personas){
     });
 
     $.ajax({
-        url: '/admin/contabilidad/traer-datos',
+        url: '/admin/contabilidad/operaciones/traer-datos',
         type: 'post',
         data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas,
         success: function (data) {
@@ -7605,6 +7606,84 @@ function pagar_proveedor(id,proveedor,hoteles) {
         }).fail(function (data) {
             console.log(data);
         });
-
     // })
+}
+function enviar_consulta(form){
+    // console.log('clave:'+clave);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+
+    $.ajax({
+        url: $('#'+form).attr('action'),
+        type: 'post',
+        data: $('#'+form).serialize(),
+        // dataType:'json',
+        // contentType:false,
+        // cache:false,
+        // processData: false,
+        beforeSend:
+        function() {
+            
+            $('#rpt_').html('');
+            $('#rpt_').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function (data) {
+            $('#rpt_').html('');
+            $('#rpt_').html(data.mensaje);
+            
+        $("#btn_enviar").prop('disabled', true);
+            // if(data.operacion=='pagar'){
+            //     window.location.reload();
+            // }
+            // else{
+            //     $('#rpt_').html(data.mensaje);
+            // }
+        },
+        error: function () {
+            
+        }
+    });
+}
+
+function borrar_item_pago(key,items){
+var txt_ini=$('#txt_ini').val();
+var txt_fin=$('#txt_fin').val();
+// dd($request->all());
+var arreglo_h=$('#arreglo_h').val();
+var modo_busqueda=$('#modo_busqueda').val();
+var chb_h_pagos=$('#chb_h_pagos').val();
+
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Esta seguro de borrar de la lista el pago al proveedor",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        var total=parseFloat($('#s_total').html());
+        var monto_c=parseFloat($('#monto_c_'+key).html());
+        $('#s_total').html(total-monto_c);
+        $('#monto_solicitado').val(total-monto_c);
+        $("#fila_"+key).remove();
+        
+        // $.ajaxSetup({
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('[name="_token"]').val()
+        //     }
+        // });
+        // $.post('/admin/contabilidad/preparar-requerimiento', 'key='+items+'&txt_ini='+txt_ini+'&txt_fin='+txt_fin+'&arreglo_h='+arreglo_h+'&modo_busqueda='+modo_busqueda+'&chb_h_pagos='+chb_h_pagos, function(data) {
+        //     // if(data==1){
+        //     //     $("#fila"+key).fadeOut( "slow");
+        //     //     $("#fila"+key).remove();
+        //     // }
+        // }).fail(function (data) {
+
+        // });
+
+    })
 }

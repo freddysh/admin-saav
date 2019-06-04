@@ -41,6 +41,7 @@
                     <div class="row">
                         <div class="col-12">
                             <p>
+                                <b class="text-success">{{$requerimiento->codigo}}</b><b class="text-danger">|</b>
                                 {{$requerimiento->modo_busqueda}}:
                                 <b class="">
                                     @if($requerimiento->modo_busqueda=='ENTRE DOS FECHAS'||$requerimiento->modo_busqueda=='ENTRE DOS FECHAS URGENTES')

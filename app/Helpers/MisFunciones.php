@@ -3,6 +3,7 @@ namespace App\Helpers;
 
 use App\Web;
 use App\Cotizacion;
+use App\Requerimiento;
 
 class MisFunciones{
     public static function fecha_peru($fecha){
@@ -49,11 +50,43 @@ class MisFunciones{
             $codigo_db =Cotizacion::where('web',$web)->orderBy('id', 'DESC')->first()->codigo;
             $nro_codigo = str_replace($precodigo[$web], "", $codigo_db);
         }
-        
         // $codigoo=$codigo_db ->last()->pluck('codigo');
         
         $nro=intval($nro_codigo)+1;
         $codigo=$precodigo[$web].$nro;
         return $codigo;
+    }
+    public static function requerimiento_nuevo_codigo($nro_ceros_maximo)
+    {
+
+        $requerimiento=Requerimiento::all()->sortByDesc("id")->first();
+        $pre='';
+        $codigo=$requerimiento->codigo;
+        // // return $codigo;
+        $codigo_int=1;
+        if(count($requerimiento)>0){
+            if(strlen(trim($codigo))>0){
+                $codigo_int=intval($codigo);
+                $codigo_int++;
+                $long=strlen($codigo_int);
+                $long_ceros=$nro_ceros_maximo-$long;
+                for($i=1;$i<=$long_ceros;$i++){
+                    $pre.='0';
+                }
+                
+            }
+            else{
+                for($i=1;$i<$nro_ceros_maximo;$i++){
+                    $pre.='0';
+                }
+            }
+        }
+        else{
+            for($i=1;$i<$nro_ceros_maximo;$i++){
+                $pre.='0';
+            }
+        }
+        return $pre.$codigo_int;
+        // return $nro_ceros_maximo;
     }
 }
