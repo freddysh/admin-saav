@@ -2919,9 +2919,7 @@ function enviar_form1(){
             )
             return false;
         }
-
         // verificamos que las acomodacion y nro de pazx sea el correcto
-
         var total_com=(parseInt($('#a_s_1').val())*1)+(parseInt($('#a_d_1').val())*2)+(parseInt($('#a_m_1').val())*2)+(parseInt($('#a_t_1').val())*3);
         var total_paxs=$('#txt_travellers').val();
         if(total_com>total_paxs){
@@ -7608,46 +7606,55 @@ function pagar_proveedor(id,proveedor,hoteles) {
         });
     // })
 }
-function enviar_consulta(form){
-    // console.log('clave:'+clave);
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('[name="_token"]').val()
-        }
-    });
+// function enviar_consulta(form){
+//     $.ajaxSetup({
+//         headers: {
+//             'X-CSRF-TOKEN': $('[name="_token"]').val()
+//         }
+//     });
+//     $.ajax({
+//         url: $('#'+form).attr('action'),
+//         type: 'post',
+//         data: $('#'+form).serialize(),
+//         beforeSend:
+//         function() {
+//             $('#rpt_').html('');
+//             $('#rpt_').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+//         },
+//         success: function (data) {
+//             $('#rpt_').html('');
+//             $('#rpt_').html(data.mensaje);
+//             $("#btn_enviar").prop('disabled', true);
+//         },
+//         error: function () {            
+//         }
+//     });
+// }
 
-    $.ajax({
-        url: $('#'+form).attr('action'),
-        type: 'post',
-        data: $('#'+form).serialize(),
-        // dataType:'json',
-        // contentType:false,
-        // cache:false,
-        // processData: false,
-        beforeSend:
-        function() {
-            
-            $('#rpt_').html('');
-            $('#rpt_').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
-        },
-        success: function (data) {
-            $('#rpt_').html('');
-            $('#rpt_').html(data.mensaje);
-            
-        $("#btn_enviar").prop('disabled', true);
-            // if(data.operacion=='pagar'){
-            //     window.location.reload();
-            // }
-            // else{
-            //     $('#rpt_').html(data.mensaje);
-            // }
-        },
-        error: function () {
-            
-        }
+function enviar_consulta(form){
+    $('#'+form).submit(function() {
+
+        // Enviamos el formulario usando AJAX
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend:
+                function() {
+                    $('#rpt_').html('');
+                    $('#rpt_').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+                },
+            success: function (data) {
+                $('#rpt_').html('');
+                $('#rpt_').html(data.mensaje);
+                $("#btn_enviar").prop('disabled', true);
+            },
+            error: function () {            
+            }
+        })
     });
 }
-
 function borrar_item_pago(key,items){
 var txt_ini=$('#txt_ini').val();
 var txt_fin=$('#txt_fin').val();
@@ -7670,20 +7677,37 @@ var chb_h_pagos=$('#chb_h_pagos').val();
         $('#s_total').html(total-monto_c);
         $('#monto_solicitado').val(total-monto_c);
         $("#fila_"+key).remove();
-        
-        // $.ajaxSetup({
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('[name="_token"]').val()
-        //     }
-        // });
-        // $.post('/admin/contabilidad/preparar-requerimiento', 'key='+items+'&txt_ini='+txt_ini+'&txt_fin='+txt_fin+'&arreglo_h='+arreglo_h+'&modo_busqueda='+modo_busqueda+'&chb_h_pagos='+chb_h_pagos, function(data) {
-        //     // if(data==1){
-        //     //     $("#fila"+key).fadeOut( "slow");
-        //     //     $("#fila"+key).remove();
-        //     // }
-        // }).fail(function (data) {
-
-        // });
-
     })
 }
+function borrar_items_pago(key,codigo){
+        swal({
+            title: 'MENSAJE DEL SISTEMA',
+            text: "¿Esta seguro de borrar el grupo de pagos con codigo: "+codigo+"?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('[name="_token"]').val()
+                }
+            });
+            $.post('/admin/contabilidad/revisar/requerimientos/borrar-lista', 'key='+key, function(data) {
+                if(data.estado==1){
+                    $("#fila_"+key).remove();     
+                    toastr.success(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
+                }
+                else if(data.estado==0){
+                    $("#fila_"+key).remove();
+                    toastr.error(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
+                }
+            }).fail(function (data) {
+    
+            });
+    
+        })
+    }
+
+

@@ -476,7 +476,7 @@
                                                                     </td>
                                                                     <td>
                                                                         <input type="hidden" name="estado_pago[]" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">             
-                                                                        <button type="button" class="btn btn-unset" id="btn_confirmar_{{$paquete->id}}_{{$i}}" onclick="cambiar_estado('{{$paquete->id}}','{{$i}}')">
+                                                                        <button type="button" class="btn btn-unset" id="btn_confirmar_{{$paquete->id}}_{{$i}}" onclick="cambiar_estado_plan_pagos('{{$paquete->id}}','{{$i}}')">
                                                                             <i class="fas fa-unlock"></i>   
                                                                         </button>
                                                                         <button type="button" class="btn btn-primary" onclick="agregar_plan_pago('{{$paquete->id}}')">
@@ -510,7 +510,7 @@
                                                                             <input type="hidden" name="pago_id_[]" value="{{$pagos_cliente->id}}">
                                                                             <input type="hidden" name="estado_pago_[]" id="confirmar_pagos_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->estado}}">
                                                                                     
-                                                                            <button type="button" class="btn @if($pagos_cliente->estado=='0') btn-unset @else btn-success @endif " id="btn_confirmar_{{$paquete->id}}_{{$pagos_cliente->id}}" onclick="cambiar_estado('{{$paquete->id}}','{{$pagos_cliente->id}}')">
+                                                                            <button type="button" class="btn @if($pagos_cliente->estado=='0') btn-unset @else btn-success @endif " id="btn_confirmar_{{$paquete->id}}_{{$pagos_cliente->id}}" onclick="cambiar_estado_plan_pagos('{{$paquete->id}}','{{$pagos_cliente->id}}')">
                                                                                 <i class="fas @if($pagos_cliente->estado=='0') fa-unlock @else fa-lock @endif"></i>   
                                                                             </button>
                                                                             @if($k==1)

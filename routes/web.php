@@ -1437,10 +1437,10 @@ Route::post('/admin/contabilidad/revisar/requerimientos/buscar', [
     'uses' => 'ContabilidadController@revisar_requerimiento_contabilidad_buscar',
     'as' => 'contabilidad.revisar_requerimiento_contabilidad_buscar',
 ]);
-Route::get('admin/contabilidad/revisar/requerimientos', [
-    'uses' => 'ContabilidadController@revisar_requerimiento',
-    'as' => 'contabilidad.revisar_requerimiento',
-]);
+// Route::get('admin/contabilidad/revisar/requerimientos', [
+//     'uses' => 'ContabilidadController@revisar_requerimiento',
+//     'as' => 'contabilidad.revisar_requerimiento',
+// ]);
 Route::get('admin/contabilidad/operaciones/requerimientos/{id}/{operacion}', [
     'uses' => 'ContabilidadController@operaciones_requerimiento',
     'as' => 'contabilidad.operaciones_requerimiento',
@@ -1456,4 +1456,8 @@ Route::post('/admin/contabilidad/hotel/store/notas/revisor', [
 Route::post('/admin/contabilidad/enviar-requerimiento/revisor', [
     'uses' => 'ContabilidadController@enviar_requerimiento_revisor',
     'as' => 'contabilidad.enviar_requerimiento_revisor',
+]);
+Route::post('admin/contabilidad/revisar/requerimientos/borrar-lista', [
+    'uses' => 'ContabilidadController@requerimientos_borrar_lista',
+    'as' => 'contabilidad.requerimientos_borrar_lista',
 ]);

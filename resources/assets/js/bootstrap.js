@@ -11,6 +11,8 @@ window.Popper = require('popper.js').default;
 try {
     window.$ = window.jQuery = require('jquery');
     window.Popper = require('popper.js').default;
+    
+    window.toastr =require('toastr/build/toastr.min.js');
     require('bootstrap');
     require('tinymce/tinymce.js');    
     require('tinymce/themes/silver/index.js');

@@ -38,6 +38,42 @@
         <div class="col-lg-12">
             <div class="card w-100">
                 <div class="card-body">
+                    @if (Session::has('message'))
+                        @php
+                            $type=Session::get('alert-type');
+                        @endphp
+                        @switch($type)
+                            @case('info')
+                                
+                                    <script>
+                                        toastr.info('{{Session::get('message')}}')
+                                    </script>
+                                
+                                @break
+                            @case('success')
+                                
+                                    <script>
+                                        toastr.success('{{Session::get('message')}}')
+                                    </script>
+                                
+                                @break
+                            @case('warning')
+                                
+                                    <script>
+                                        toastr.warning('{{Session::get('message')}}')
+                                    </script>
+                                
+                                @break
+                            @case('error')
+                                
+                                    <script>
+                                        toastr.error('{{Session::get('message')}}')
+                                    </script>
+                                
+                                @break
+                                
+                        @endswitch
+                    @endif
                     <div class="row">
                         <div class="col-12 border-dark">
                             <form action="{{route('contabilidad.revisar_requerimiento_contabilidad_buscar')}}" method="post">
@@ -70,7 +106,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     @foreach ($requerimientos_nuevo as $key => $requerimiento)
-                                        <div class="row mb-2 border border-top-0 border-right-0 border-left-0">
+                                        <div id="fila_{{$requerimiento->id}}" class="row mb-2 border border-top-0 border-right-0 border-left-0">
                                             <div class="col-3 px-1 text-left text-11">
                                                 @if(isset($requerimiento->estado))
                                                     @if($requerimiento->estado=='2')
@@ -89,7 +125,7 @@
                                                 @endif
                                                 {{--  <a href="#!"><b class="text-success">{{$requerimiento->codigo}}</b> <b><i class="fas fa-eye"></i></b></a>  --}}
                                             </div>
-                                            <div class="col-9 px-1 text-left text-10">
+                                            <div class="col-7 px-1 text-left text-10">
                                                 | <b><i class="fas fa-filter"></i></b>
                                                 <span>{{$requerimiento->modo_busqueda}} </span>
                                                 <span class="">
@@ -103,6 +139,9 @@
                                                         @endisset
                                                     @endif
                                                 </span>
+                                            </div>
+                                            <div class="col-2 text-left text-10">
+                                                <a href="#!" class="text-danger pointer" onclick="borrar_items_pago('{{$requerimiento->id}}','{{$requerimiento->codigo}}')"> <i class="fas fa-trash-alt"></i> </a>
                                             </div>
                                             <div class="col-3 px-1 text-left text-12">
                                                 @if(isset($requerimiento->estado))

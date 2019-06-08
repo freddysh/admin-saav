@@ -2572,10 +2572,8 @@ class ContabilidadController extends Controller
             $modo_busqueda=$request->input('modo_busqueda');
             $monto_solicitado=$request->input('monto_solicitado');
             
-            // dd($request->all());
             if(isset($chb_h_pagos)){
                 $codigo=MisFunciones::requerimiento_nuevo_codigo(10);
-                // return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Notas guardadas correctamente ['.$codigo.']</div>','total'=>1]); 
                 $data=Carbon::now()->subHour(5);
                 $requerimiento=new Requerimiento();
                 $requerimiento->codigo=$codigo;
@@ -2588,30 +2586,25 @@ class ContabilidadController extends Controller
                 $requerimiento->estado=2;
                 $requerimiento->updated_at=$data->year.'-'.$data->month.'-'.$data->day;
                 $requerimiento->save();
-                // dd($chb_h_pagos);
                 foreach($chb_h_pagos as $chb_h_pago){
                     $valor=explode(',',$chb_h_pago);
                     $hoteles=PrecioHotelReserva::whereIn('id',$valor)->get();
                     foreach($hoteles as $hotel){
                         $hot=PrecioHotelReserva::find($hotel->id);
-                        $hot->estado_contabilidad=2;
-                        $hot->requerimientos_id=$requerimiento->id;
-                        $hot->save();
+                        if(!$hot->requerimientos_id>0){
+                            $hot->estado_contabilidad=2;
+                            $hot->requerimientos_id=$requerimiento->id;
+                            $hot->save();
+                        }
                     }
                 }
-                // dd($requerimiento);
-            }
 
-            // $items_cadena=$request->input('items');
-            // $items=explode(',',$items_cadena);
-            // if(isset($items)){
-            //     foreach($items as $item){
-            //         $hotel=PrecioHotelReserva::FindOrFail($item);
-            //         $hotel->notas_contabilidad=$notas;
-            //         $hotel->save();
-            //     }
-            return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Datos guardados correctamente</div>','total'=>1]);    
-            // }
+                $mensajes = array('message'=>'Datos guardados correctamente, con codigo:'.$codigo.'.','alert-type'=>'success');
+                return redirect()->route('contabilidad.revisar_requerimiento')->with($mensajes);    
+            }
+            else{
+                return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> no tenemos pagos para guardar, por favor vuelva a filtrar.</div>','total'=>1]);
+            }
         }
         catch (Exception $e){
             return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al ingresar los datos, vuelva a intentarlo ('.$e.')</div>','total'=>1]);    
@@ -2623,7 +2616,6 @@ class ContabilidadController extends Controller
         $requerimientos_nuevo=Requerimiento::where('estado','2')->get();
         $requerimientos_aprovado=Requerimiento::whereIn('estado',['3','4'])->get();
         $requerimientos_pagado=[];
-        // dd($requerimientos);
         $webs = Web::get();
         $usuarios=User::get();
         return view('admin.contabilidad.revisar-requerimiento',compact('requerimientos_nuevo','requerimientos_aprovado','requerimientos_pagado','requerimientos','webs','usuarios'));
@@ -2857,7 +2849,7 @@ class ContabilidadController extends Controller
             $data=Carbon::now()->subHour(5);
             $operacion=$request->input('operacion');
             $requerimientos_id=$request->input('requerimiento_id');
-            $requerimiento=Requerimiento::find($requerimiento_id);
+            $requerimiento=Requerimiento::find($requerimientos_id);
             if($operacion=='pagar'){
                 $requerimiento->estado=5;
                 $lista_pagar=$request->input('lista_pagar');
@@ -2935,6 +2927,44 @@ class ContabilidadController extends Controller
             // return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>']);
         }
     }
-    
+    public function requerimientos_borrar_lista(Request $request){
+        try {
+            //code...
+            $key=$request->input('key');
+            $requerimiento=Requerimiento::find($key);
 
+            if($requerimiento->delete()){
+                $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel',function($query) use($key){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id',$key);
+                })->get();
+
+                foreach($cotizaciones as $cotizacion){
+                    foreach($cotizacion->paquete_cotizaciones as $paquete_cotizacion){
+                        foreach($paquete_cotizacion->itinerario_cotizaciones as $itinerario_cotizacion){
+                            foreach($itinerario_cotizacion->hotel as $hotel){
+                                if($hotel->requerimientos_id==$key){
+                                    $hotelito=PrecioHotelReserva::find($key);
+                                    $hotelito->requerimientos_id=0;
+                                    $hotelito->notas_contabilidad='';
+                                    $hotelito->notas_contabilidad_revisor='';
+                                    $hotelito->estado_contabilidad=0;
+                                    $hotelito->save();
+                                }
+                            }   
+                        }   
+                    }   
+                }
+                return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Good!</strong>Datos guardados correctamente.</div>','mensaje_toastr'=>'<strong>Good!</strong>Datos guardados correctamente.','estado'=>1]);
+            }
+            else{
+                return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>','mensaje_toastr'=>'<strong>Opps!</strong> hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')','estado'=>0]);
+            }
+
+        }catch (Exception $e){
+            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong>Hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>','mensaje_toastr'=>'<strong>Opps!</strong>Hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')','estado'=>0]);
+        }
+    }
+    
+    
 }
