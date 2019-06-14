@@ -1412,18 +1412,18 @@ Route::post('/admin/revisor/revisar/requerimientos/buscar', [
     'uses' => 'ContabilidadController@revisar_requerimiento_revisor_buscar',
     'as' => 'contabilidad.revisar_requerimiento_revisor_buscar',
 ]);
-Route::get('admin/contabilidad/operaciones/requerimientos/{id}/{operacion}', [
-    'uses' => 'ContabilidadController@operaciones_requerimiento_revisor',
-    'as' => 'revisor.operaciones_requerimiento',
-]);
+// Route::get('admin/contabilidad/operaciones/requerimientos/{id}/{operacion}', [
+//     'uses' => 'ContabilidadController@operaciones_requerimiento_revisor',
+//     'as' => 'revisor.operaciones_requerimiento',
+// ]);
 Route::post('admin/contabilidad/operaciones/requerimientos/estado-contabiliadad/cambiar/contabilidad', [
     'uses' => 'ContabilidadController@operaciones_requerimiento_estado_contabiliadad_revisor',
     'as' => 'revisor.operaciones_requerimiento_estado_contabiliadad',
 ]);
-Route::post('/admin/contabilidad/hotel/store/notas/revisor', [
-    'uses' => 'ContabilidadController@hotel_store_notas_revisor_revisor',
-    'as' => 'revisor.hotel.store.revisor',
-]);
+// Route::post('/admin/contabilidad/hotel/store/notas/revisor', [
+//     'uses' => 'ContabilidadController@hotel_store_notas_revisor_revisor',
+//     'as' => 'revisor.hotel.store.revisor',
+// ]);
 // Route::post('/admin/contabilidad/enviar-requerimiento/revisor', [
 //     'uses' => 'ContabilidadController@enviar_requerimiento_revisor_revisor',
 //     'as' => 'revisor.enviar_requerimiento_revisor',
@@ -1460,4 +1460,34 @@ Route::post('/admin/contabilidad/enviar-requerimiento/revisor', [
 Route::post('admin/contabilidad/revisar/requerimientos/borrar-lista', [
     'uses' => 'ContabilidadController@requerimientos_borrar_lista',
     'as' => 'contabilidad.requerimientos_borrar_lista',
+]);
+Route::post('admin/contabilidad/revisar/requerimientos/borrar-lista/uno', [
+    'uses' => 'ContabilidadController@requerimientos_borrar_lista_uno',
+    'as' => 'contabilidad.requerimientos_borrar_lista',
+]);
+// Route::post('admin/contabilidad/operaciones/requerimientos/borrar-file-programacion', [
+//     'uses' => 'ContabilidadController@borrar_file_programacion',
+//     'as' => 'contabilidad.borrar_file_programacion',
+// ]);
+
+//-- estado de pagos de un file 
+// Rutas para contabilidad, facturaciones 
+Route::get('/admin/contabilidad/facturacion/{anio}/{mes}/{page}/{tipo_filtro}', [
+    'uses' => 'ContabilidadController@contabilidad_facturacion_path',  
+    'as' => 'contabilidad.facturacion.path',
+]);
+Route::get('admin/contabilidad/facturacion/show/{id}', [
+    'uses' => 'ContabilidadController@show_cotizacion_id',
+    'as' => 'cotizacion_id_show_facturado_path',
+]);
+
+
+//RESERVAS
+Route::get('admin/contabilidad/estado-de-pagos/files', [
+    'uses' => 'ContabilidadController@estado_de_pagos',
+    'as' => 'contabilidad_lista_total_path',
+]);
+Route::get('admin/contabilidad/lista-total/{id}', [
+    'uses' => 'ContabilidadController@lista_total_show',
+    'as' => 'contabilidad_lista_total_show_path',
 ]);

@@ -39,6 +39,15 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
+                                        <label for="tipo">Tipo</label>
+                                        <select class="form-control" name="tipo" id="tipo">
+                                            <option value="FACTURA">FACTURA</option>
+                                            <option value="BOLETA" >BOLETA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
 
                                         <label for="txt_nombre" class="font-weight-bold text-secondary">Nombre</label>
 
@@ -82,6 +91,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>tipo</th>
                     <th>Nombre</th>
                     <th>Periodo pago</th>
                     <th>Operaciones</th>
@@ -91,6 +101,7 @@
             <tfoot>
             <tr>
                 <th>#</th>
+                <th>tipo</th>
                 <th>Nombre</th>
                 <th>Periodo pago</th>
                 <th>Operaciones</th>
@@ -101,7 +112,7 @@
             @foreach($categorias as $categoria)
                 <tr id="lista_categoria_{{$categoria->id}}">
                     <td>{{$i++}}</td>
-
+                    <td>{{ucwords(strtolower($categoria->tipo))}}</td>
                     <td>{{ucwords(strtolower($categoria->nombre))}}</td>
                     <td>{{$categoria->periodo}} {{$categoria->tipo_periodo}}</td>
                     <td class="text-center">
@@ -131,6 +142,15 @@
                             <div class="modal-body">
 
                                 <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                        <label for="txt_tipo_{{$categoria->id}}">Tipo</label>
+                                            <select class="form-control" name="txt_tipo" id="txt_tipo_{{$categoria->id}}">
+                                                <option value="FACTURA" @if($categoria->tipo=='FACTURA') selected @endif>FACTURA</option>
+                                                <option value="BOLETA" @if($categoria->tipo=='BOLETA') selected @endif>BOLETA</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="txt_nombre">Nombre</label>

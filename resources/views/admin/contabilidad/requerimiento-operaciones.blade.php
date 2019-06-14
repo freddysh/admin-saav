@@ -93,7 +93,7 @@
                                     @php
                                         $total+=$array_pagos_pendiente['monto_c'];
                                     @endphp
-                                        <tr>
+                                        <tr id="fila_{{$key}}">
                                             <td class="text-grey-goto text-left">
                                                 <div class="form-check">
                                                 <input class="form-check-input d-none" type="hidden" form="enviar_requerimiento" value="{{$array_pagos_pendiente['items']}}" name="chb_h_pagos[]" id="chb_{{$key}}" onclick="if(this.checked) sumar($('#monto_c_{{$key}}').html()); else restar($('#monto_c_{{$key}}').html());" @if($array_pagos_pendiente['monto_r']>0 && $array_pagos_pendiente['monto_c']<=0) disabled @endif>
@@ -104,7 +104,7 @@
                                                 </div>
                                             </td>
                                             <td class="text-grey-goto text-center">{{$array_pagos_pendiente['nro']}}<b><i class="fas fa-user text-primary"></i></b></td>
-                                            <td class="text-grey-goto text-left">{!!$array_pagos_pendiente['titulo']!!}</td>
+                                            <td id="titulo_{{$key}}" class="text-grey-goto text-left">{!!$array_pagos_pendiente['titulo']!!}</td>
                                             <td class="text-grey-goto text-left">{{$array_pagos_pendiente['proveedor']}}</td>
                                             <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_servicio'])}}</td>
                                             <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_pago'])}}</td>
@@ -136,7 +136,7 @@
                                                     <input type="hidden" name="lista_pagar[]" form="form_" value="{{$array_pagos_pendiente['items']}}">
                                                 @endif
                                                 <!-- Button trigger modal -->
-                                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos_detalle('{{$key}}','HOTELS','{{$array_pagos_pendiente['items_itinerario']}}','{{$array_pagos_pendiente['nro']}}')">
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos_detalle('{{$key}}','HOTELS','{{$array_pagos_pendiente['items_itinerario']}}','{{$array_pagos_pendiente['nro']}}','{{$operacion}}','{{$array_pagos_pendiente['estado_contabilidad']}}')">
                                                             <i class="fas fa-eye"></i>
                                                 </button>    
                                                     <!-- Modal -->
@@ -188,7 +188,7 @@
                                                 <input type="hidden" id="hestado_contabilidad_{{$key}}" value="{{$valor}}">
 
                                                 @if($operacion=='pagar'||$operacion=='aprobar')
-                                                <a class="text-12 @if($operacion=='pagar') d-none @endif" id="estado_contabilidad_{{$key}}" href="#" onclick="estado_contabilidad('{{$key}}','{{$array_pagos_pendiente['proveedor']}}','{{$array_pagos_pendiente['items']}}')">
+                                                <a class="text-12 @if($operacion=='pagar') d-none @endif" id="estado_contabilidad_{{$key}}" href="#!" onclick="estado_contabilidad('{{$key}}','{{$array_pagos_pendiente['proveedor']}}','{{$array_pagos_pendiente['items']}}')">
                                                     @if($array_pagos_pendiente['estado_contabilidad']=='3')
                                                         <i class="fas fa-toggle-on fa-3x text-primary"></i>
                                                     @elseif($array_pagos_pendiente['estado_contabilidad']=='5')
@@ -203,6 +203,10 @@
                                                 @if($operacion=='pagar')
                                                     @if($array_pagos_pendiente['estado_contabilidad']=='3')
                                                         <a id="btn_pagar_{{$key}}" href="#!" class="btn btn-sm btn-primary" onclick="pagar_proveedor('{{$key}}','{{$array_pagos_pendiente['proveedor']}}','{{$array_pagos_pendiente['items']}}')">Pagar</a>
+                                                        {{-- <i class="fas fa-toggle-on fa-3x text-success"></i> --}}
+                                                    @elseif($array_pagos_pendiente['estado_contabilidad']=='4')
+                                                        {{-- <a id="btn_pagar_{{$key}}" href="#!" class="btn btn-sm btn-danger" onclick="pagar_proveedor_borrar('{{$array_pagos_pendiente['items']}}','{{$key}}')">Borrar</a> --}}
+                                                        {{-- <a id="btn_pagar_{{$key}}" href="#!" class="btn btn-sm btn-danger" onclick="borrar_items_pago_uno('{{$key}}','{{$array_pagos_pendiente['items']}}')">Borrar</a> --}}
                                                         {{-- <i class="fas fa-toggle-on fa-3x text-success"></i> --}}
                                                     @elseif($array_pagos_pendiente['estado_contabilidad']=='5')
                                                         <a id="btn_pagar_{{$key}}" href="#!" class="btn btn-sm btn-success" onclick="pagar_proveedor('{{$key}}','{{$array_pagos_pendiente['proveedor']}}','{{$array_pagos_pendiente['items']}}')">Pagado</a>

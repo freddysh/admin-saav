@@ -53,7 +53,7 @@
                                                             <td class="text-grey-goto text-right">{{$array_pagos_pendiente['saldo']}}</td>
                                                             <td class="text-grey-goto text-right">
                                                                 <!-- Button trigger modal -->
-                                                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos('{{$key}}','HOTELS','{{$array_pagos_pendiente['items']}}','{{$array_pagos_pendiente['nro']}}')">
+                                                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos('{{$key}}','HOTELS','{{$array_pagos_pendiente['items']}}','{{$array_pagos_pendiente['nro']}}','2')">
                                                                             <i class="fas fa-edit"></i>
                                                                 </button>    
                                                                     <!-- Modal -->

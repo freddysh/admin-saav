@@ -78,7 +78,7 @@
 <div class="menu-list text-12">
         <ul id="menu-content" class="menu-content collapsed menu1">
             <li data-toggle="collapse" data-target="#ventas" class="collapsed active1">
-              <a href="#" class="bg-green-goto text-white"><i class="fas fa-handshake"></i> SALES </a>
+              <a href="#!" class="bg-green-goto text-white"><i class="fas fa-handshake"></i> SALES </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
               (url()->current()==route('current_sales_type_page_path',[$anio,$mes,$page,$tipo_filtro])||url()->current()==route('cotizacion_id_show_path',[$cotizacion_id])||url()->current()==route('quotes_new1_expedia_path')||url()->current()==route('quotes_new1_pagina_path',$web))) show @endif" id="ventas">
@@ -90,7 +90,7 @@
             </ul>
 
             <li data-toggle="collapse" data-target="#reservations" class="collapsed">
-              <a href="#" class="bg-orange-goto text-white"><i class="fas fa-book"></i> RESERVATIONS </a>
+              <a href="#!" class="bg-orange-goto text-white"><i class="fas fa-book"></i> RESERVATIONS </a>
             </li>  
             <ul class="sub-menu collapse menu2 @if(
               (url()->current()==route('book_path')||url()->current()==route('book_show_path',[$id])||url()->current()==route('servicios_add_path',[$cotizaciones_id,$itinerartio_cotis_id,$dia]))||
@@ -113,21 +113,43 @@
             </ul>
 
             <li data-toggle="collapse" data-target="#contabilidad" class="collapsed">
-                <a href="#" class="bg-grey-goto text-white"><i class="fas fa-cubes"></i> ACCOUNTING </a>
-            </li>  
-            <ul class="sub-menu collapse menu2 @if(
+                <a href="#!" class="bg-grey-goto text-white"><i class="fas fa-cubes"></i> ACCOUNTING </a>
+            </li>
+            <ul class=" menu-content collapsed menu1 sub-menu collapse menu2 @if(
+              (url()->current()==route('contabilidad.facturacion.path',[$anio,$mes,$item->pagina,$tipo_filtro]))||
+
               (url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id]))||
               (url()->current()==route('pagos_pendientes_rango_fecha_path','HOTELS')||url()->current()==route('contabilidad.pagos_en_genral.filtrar')||url()->current()==route('contabilidad.revisar_requerimiento'))||
-              (url()->current()==route('contabilidad.ingresos')||url()->current()==route('contabilidad.revisar_requerimiento_contabilidad_buscar'))) show @endif" id="contabilidad">
+              (url()->current()==route('contabilidad.ingresos')||url()->current()==route('contabilidad.revisar_requerimiento_contabilidad_buscar'))||
+              (url()->current()==route('contabilidad_lista_total_path'))
+              ) show @endif" id="contabilidad">
+
+              <li data-toggle="collapse" data-target="#facturacion" class="collapsed">
+                  <a href="#!" class="bg-grey-goto text-white"><i class="fas fa-cubes"></i> FACTURACION </a>
+              </li>
+              <ul class="sub-menu collapse menu2" id="facturacion">
+                  @foreach ($webs->sortBy('pagina')->where('estado',1) as $item)
+                    <li data-toggle="collapse" class="active1">
+                      <a class="@if(url()->current()==route('contabilidad.facturacion.path',[$anio,$mes,$item->pagina,$tipo_filtro]))) active @endif " href="{{route('contabilidad.facturacion.path',[$anio,$mes,$item->pagina,$tipo_filtro])}}">{{strtoupper($item->pagina)}}</a>
+                    </li>
+                  @endforeach
+              </ul>
+              
+              
+              <br>
               <li data-toggle="collapse" class="active1">
                 <a class="@if(url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id])) active @endif" href="{{route('contabilidad_index_path')}}">VIEW RESERVATIONS</a>
               </li>
               <li data-toggle="collapse" class="active1">
                 <a class="@if(url()->current()==route('pagos_pendientes_rango_fecha_path','HOTELS')) active @endif" href="{{route('pagos_pendientes_rango_fecha_path','HOTELS')}}">PENDING PAYMENTS</a>
               </li>
+              
               <li data-toggle="collapse" class="active1">
-                <a class="@if(url()->current()==route('contabilidad.pagos_en_genral.filtrar')) active @endif" href="{{route('contabilidad.pagos_en_genral.filtrar')}}">TODOS LOS PAGOS PENDIENTES</a>
+                <a class="@if(url()->current()==route('contabilidad_lista_total_path')) active @endif" href="{{route('contabilidad_lista_total_path')}}">TODOS ESTADO ACTUAL DE PAGOS</a>
               </li>
+              <li data-toggle="collapse" class="active1">
+                  <a class="@if(url()->current()==route('contabilidad.pagos_en_genral.filtrar')) active @endif" href="{{route('contabilidad.pagos_en_genral.filtrar')}}">TODOS LOS PAGOS PENDIENTES</a>
+                </li>
               <li data-toggle="collapse" class="active1">
                   <a class="@if(url()->current()==route('contabilidad.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_contabilidad_buscar')) active @endif" href="{{route('contabilidad.revisar_requerimiento')}}">REVISAR REQUERIMIENTOS</a>
                 </li>              
@@ -138,7 +160,7 @@
             </ul>
 
             <li data-toggle="collapse" data-target="#operaciones" class="collapsed">
-                <a href="#" class="bg-dark text-white"><i class="fas fa-list-alt"></i> OPERATIONS </a>
+                <a href="#!" class="bg-dark text-white"><i class="fas fa-list-alt"></i> OPERATIONS </a>
             </li>  
             <ul class="sub-menu collapse menu2 @if(
               (url()->current()==route('operaciones_path')||url()->current()==route('operaciones_lista_path'))) show @endif" id="operaciones">
@@ -149,7 +171,7 @@
 
 
             <li data-toggle="collapse" data-target="#administracion" class="collapsed">
-                <a href="#" class="bg-green-goto text-white"><i class="fas fa-chart-pie"></i> ADMINISTRACION </a>
+                <a href="#!" class="bg-green-goto text-white"><i class="fas fa-chart-pie"></i> ADMINISTRACION </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
               (url()->current()==route('revisor.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_revisor_buscar'))) show @endif" id="administracion">
@@ -160,7 +182,7 @@
 
 
             <li data-toggle="collapse" data-target="#reportes" class="collapsed">
-                <a href="#" class="bg-dange-goto-light text-white"><i class="fas fa-chart-pie"></i> REPORTS </a>
+                <a href="#!" class="bg-dange-goto-light text-white"><i class="fas fa-chart-pie"></i> REPORTS </a>
             </li>  
             <ul class="sub-menu collapse menu2 @if(
               (url()->current()==route('reportes_path')||url()->current()==route('lista_de_cotizaciones_path',[$web,$fecha_ini,$fecha_fin,$filtro]))) show @endif" id="reportes">
@@ -169,7 +191,7 @@
               </li>
             </ul>
             <li data-toggle="collapse" data-target="#inventary" class="collapsed">
-                <a href="#"><i class="fas fa-database"></i> INVENTARY </a>
+                <a href="#!"><i class="fas fa-database"></i> INVENTARY </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
             (url()->current()==route('profits_index_path',$anio))||

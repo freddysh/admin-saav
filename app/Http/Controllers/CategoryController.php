@@ -18,9 +18,11 @@ class CategoryController extends Controller
     }
     public function store(Request $request){
         $txt_nombre=strtoupper($request->input('txt_nombre'));
+        $txt_tipo=strtoupper($request->input('tipo'));
         $periodo=strtoupper($request->input('periodo'));
         $tipo_periodo=strtoupper($request->input('tipo_periodo'));
         $categoria=new M_Category();
+        $categoria->tipo=$txt_tipo;
         $categoria->nombre=$txt_nombre;
 //        $categoria->periodo=$periodo;
 //        $categoria->tipo_periodo=$tipo_periodo;
@@ -32,13 +34,13 @@ class CategoryController extends Controller
     }
     public function edit(Request $request){
         $txt_id=strtoupper($request->input('id'));
+        $txt_tipo=strtoupper($request->input('txt_tipo'));
         $txt_nombre=strtoupper($request->input('txt_nombre'));
         $periodo=strtoupper($request->input('periodo'));
         $tipo_periodo=strtoupper($request->input('tipo_periodo'));
         $categoria=M_Category::FindOrFail($txt_id);
+        $categoria->tipo=$txt_tipo;
         $categoria->nombre=$txt_nombre;
-//        $categoria->periodo=$periodo;
-//        $categoria->tipo_periodo=$tipo_periodo;
         $categoria->save();
         $webs=Web::get();
         $categorias=M_Category::get();

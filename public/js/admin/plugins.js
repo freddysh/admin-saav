@@ -6897,7 +6897,7 @@ function buscar_pagos_pendientes(opcion,nombre,codigo,ini,fin,servicio){
     });
 }
 
-function traer_datos(clave,grupo,lista_items,nro_personas){
+function traer_datos(clave,grupo,lista_items,nro_personas,estado_contabilidad){
     
     $('#datos_'+clave).html('');
     $('#datos_'+clave).addClass('text-center');
@@ -6911,7 +6911,7 @@ function traer_datos(clave,grupo,lista_items,nro_personas){
     $.ajax({
         url: '/admin/contabilidad/operaciones/traer-datos',
         type: 'post',
-        data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas,
+        data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&estado_contabilidad='+estado_contabilidad+'&operacion=ver',
         success: function (data) {
             $('#datos_'+clave).removeClass('text-center');
             $('#datos_'+clave).html('');
@@ -7101,7 +7101,7 @@ function agregar_plan_pago(paquete_id){
             '<td style="width:100px"><input type="text" class="form-control" name="monto_pago[]" id="monto_pago_'+paquete_id+'_'+nropagos+'" style="width:100px" onkeyup="sumar_pagos_monto(\''+paquete_id+'\')" required></td>'+
             '<td>'+
             '<input type="hidden" name="estado_pago[]" id="confirmar_pagos_'+paquete_id+'_'+nropagos+'" value="0"> '+
-            '<button type="button"  class="btn btn-unset" id="btn_confirmar_'+paquete_id+'_'+nropagos+'" onclick="cambiar_estado(\''+paquete_id+'\',\''+nropagos+'\')">'+
+            '<button type="button"  class="btn btn-unset" id="btn_confirmar_'+paquete_id+'_'+nropagos+'" onclick="cambiar_estado_plan_pagos(\''+paquete_id+'\',\''+nropagos+'\')">'+
             '       <i class="fas fa-unlock"></i>   '+
             '   </button>'+
             '   <button type="button"  class="btn btn-danger" onclick="borrar_plan_pago(\''+paquete_id+'\',\''+nropagos+'\')">'+
@@ -7116,8 +7116,8 @@ function borrar_plan_pago(paquete_id,nropagos){
     $('#pago_'+paquete_id+'_'+nropagos).remove();    
     sumar_pagos_monto(paquete_id);
 } 
-
-function cambiar_estado(paquete_id,pos){
+//-- Revisar esta funcion porque ya se tiene otra con el mismo nombre, al parecer tiene que ver con los palnes de pagos de las cotizaciones
+function cambiar_estado_plan_pagos(paquete_id,pos){
     console.log('paquete_id:'+paquete_id+',pos:'+pos);
     var estado=$('#confirmar_pagos_'+paquete_id+'_'+pos).val();
     if(estado==0){
@@ -7440,7 +7440,7 @@ function estado_contabilidad(id,proveedor,hoteles) {
 function sr_programar_pagos_h(clave){
     
 }
-function traer_datos_detalle(clave,grupo,lista_items,nro_personas){
+function traer_datos_detalle(clave,grupo,lista_items,nro_personas,operacion,estado_contabilidad){
     
     $('#datos_'+clave).html('');
     $('#datos_'+clave).addClass('text-center');
@@ -7454,11 +7454,27 @@ function traer_datos_detalle(clave,grupo,lista_items,nro_personas){
     $.ajax({
         url: '/admin/contabilidad/operaciones/traer-datos',
         type: 'post',
-        data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&view=no-edit',
+        data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&view=no-edit'+'&operacion='+operacion+'&estado_contabilidad='+estado_contabilidad,
         success: function (data) {
-            $('#datos_'+clave).removeClass('text-center');
             $('#datos_'+clave).html('');
-            $('#datos_'+clave).html(data);            
+            $('#datos_'+clave).html(data);
+                
+            // if(data.estado=='1'){                
+            //     toastr.success('Datos modificados correctamente.','MENSAJE DEL SISTEMA');
+            //     $('#fila_'+clave).remove();
+            //     $('#datos_'+clave).removeClass('text-center');
+            //     $('#datos_'+clave).html('');
+            //     $('#datos_'+clave).html(data.mensaje);
+            //     // $('#s_total').html(data.s_total);
+            //     // $('#s_total_aprovado').html(data.s_total_aprovado);
+            // }
+            // else if(data.estado=='2'){
+            //     $('#datos_'+clave).removeClass('text-center');
+            //     $('#datos_'+clave).html('');
+            //     $('#datos_'+clave).html(data.mensaje);
+            //     // $('#s_total').html(data.s_total);
+            //     // $('#s_total_aprovado').html(data.s_total_aprovado);
+            // }            
         },
         error: function () {
             
@@ -7632,7 +7648,7 @@ function pagar_proveedor(id,proveedor,hoteles) {
 // }
 
 function enviar_consulta(form){
-    $('#'+form).submit(function() {
+    // $('#'+form).submit(function() {
 
         // Enviamos el formulario usando AJAX
         $.ajax({
@@ -7653,7 +7669,7 @@ function enviar_consulta(form){
             error: function () {            
             }
         })
-    });
+    // });
 }
 function borrar_item_pago(key,items){
 var txt_ini=$('#txt_ini').val();
@@ -7680,34 +7696,59 @@ var chb_h_pagos=$('#chb_h_pagos').val();
     })
 }
 function borrar_items_pago(key,codigo){
-        swal({
-            title: 'MENSAJE DEL SISTEMA',
-            text: "¿Esta seguro de borrar el grupo de pagos con codigo: "+codigo+"?",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('[name="_token"]').val()
-                }
-            });
-            $.post('/admin/contabilidad/revisar/requerimientos/borrar-lista', 'key='+key, function(data) {
-                if(data.estado==1){
-                    $("#fila_"+key).remove();     
-                    toastr.success(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
-                }
-                else if(data.estado==0){
-                    $("#fila_"+key).remove();
-                    toastr.error(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
-                }
-            }).fail(function (data) {
-    
-            });
-    
-        })
-    }
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Esta seguro de borrar el grupo de pagos con codigo: "+codigo+"?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.post('/admin/contabilidad/revisar/requerimientos/borrar-lista', 'key='+key, function(data) {
+            if(data.estado==1){
+                $("#fila_"+key).remove();     
+                toastr.success(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
+            }
+            // else if(data.estado==0){
+            //     $("#fila_"+key).remove();
+            //     toastr.error(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
+            // }
+        }).fail(function (data) {
+        });
+    })
+}
 
-
+function borrar_items_pago_uno(key,grupo,estado_contabilidad){
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Esta seguro de borrar el grupo de pagos con codigo?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.post('/admin/contabilidad/revisar/requerimientos/borrar-lista/uno', 'key='+key+'&grupo='+grupo+'&estado_contabilidad='+estado_contabilidad, function(data) {
+            if(data.estado==1){
+                $("#fila_"+key).remove();
+                toastr.success(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
+            }
+            // else if(data.estado==0){
+            //     $("#fila_"+key).remove();
+            //     toastr.error(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
+            // }
+        }).fail(function (data) {
+        });
+    });
+}

@@ -9,6 +9,8 @@ use App\Cliente;
 use App\Proveedor;
 use Carbon\Carbon;
 use App\Cotizacion;
+use App\GoalProfit;
+use App\M_Category;
 use App\M_Producto;
 use App\M_Servicio;
 use App\CuentasGoto;
@@ -20,6 +22,7 @@ use App\Requerimiento;
 use App\HotelProveedor;
 use App\EntidadBancaria;
 use App\ConsultaPagoHotel;
+use App\CotizacionArchivos;
 use App\PrecioHotelReserva;
 use App\CotizacionesCliente;
 use App\ItinerarioServicios;
@@ -2186,7 +2189,13 @@ class ContabilidadController extends Controller
         return view('admin.contabilidad.lista-fecha-hotel-filtro-general',compact(['proveedor','array_pagos_pendientes', 'pagos', 'cotizacion', 'ini', 'fin','proveedores']));
     }
     public function traer_datos(Request $request){
-        
+
+        $estado_contabilidad='4';
+        // if(!isset($request->input('estado_contabilidad'))){
+            $estado_contabilidad=$request->input('estado_contabilidad');
+        // }
+
+        $operacion=$request->input('operacion');
         $view=$request->input('view');
         $clave=$request->input('clave');
         $grupo=$request->input('grupo');
@@ -2199,7 +2208,7 @@ class ContabilidadController extends Controller
         // else
         //     $consulta=ItinerarioCotizaciones::whereIn('id',$lista_items)->get();
         //return dd($consulta);
-        return view('admin.contabilidad.lista-items',compact(['consulta','grupo','clave','nro_personas','view']));
+        return view('admin.contabilidad.lista-items',compact(['consulta','grupo','clave','nro_personas','view','operacion','estado_contabilidad']));
     }
     public function hotel_store(Request $request){    
         $clave=$request->input('clave');    
@@ -2221,7 +2230,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_s)){
                 foreach($hotel_id_s as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_s_c=number_format($precio_s[$key],2)/$hotel->personas_s;
+                    $hotel->precio_s_c=round($precio_s[$key],2)/$hotel->personas_s;
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2232,7 +2241,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_d)){
                 foreach($hotel_id_d as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_d_c=number_format($precio_d[$key],2)/$hotel->personas_d;
+                    $hotel->precio_d_c=round($precio_d[$key],2)/$hotel->personas_d;
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2242,7 +2251,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_m)){
                 foreach($hotel_id_m as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_m_c=number_format($precio_m[$key],2)/$hotel->personas_m;
+                    $hotel->precio_m_c=round($precio_m[$key],2)/$hotel->personas_m;
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2252,7 +2261,7 @@ class ContabilidadController extends Controller
             if(!empty($hotel_id_t)){
                 foreach($hotel_id_t as $key => $hotel_id){
                     $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
-                    $hotel->precio_t_c=number_format($precio_t[$key],2)/$hotel->personas_t;
+                    $hotel->precio_t_c=round($precio_t[$key],2)/$hotel->personas_t;
                     $hotel->fecha_venc=$request->input('fecha_venc');
                     $hotel->save();
                 }
@@ -2548,20 +2557,102 @@ class ContabilidadController extends Controller
     }
     public function hotel_store_notas_revisor(Request $request){
         try{       
-            $notas=$request->input('notas');
-            $items_cadena=$request->input('items');
-            $items=explode(',',$items_cadena);
-            if(isset($items)){
-                foreach($items as $item){
-                    $hotel=PrecioHotelReserva::FindOrFail($item);
-                    $hotel->notas_contabilidad_aprovador=$notas;
-                    $hotel->save();
-                }
-                return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Notas guardadas correctamente</div>','total'=>1]);    
+            if($request->input('operacion')=='ver'||$request->input('operacion')=='pagar'){
+                $clave=$request->input('clave');    
+                $hotel_id_s=$request->input('hotel_id_s');
+                $hotel_id_d=$request->input('hotel_id_d');
+                $hotel_id_m=$request->input('hotel_id_m');
+                $hotel_id_t=$request->input('hotel_id_t');
+                $nro_personas_s=$request->input('personas_s');
+                $nro_personas_d=$request->input('personas_d');
+                $nro_personas_m=$request->input('personas_m');
+                $nro_personas_t=$request->input('personas_t');
+                $precio_s=$request->input('precio_s_c_'.$clave);
+                $precio_d=$request->input('precio_d_c_'.$clave);
+                $precio_m=$request->input('precio_m_c_'.$clave);
+                $precio_t=$request->input('precio_t_c_'.$clave);
+                $total=$request->input('precio_total_'.$clave);
+
+                // $s_total=0;
+                // $s_total_aprovado=0;
+                
+
+                // dd($total);
+                // if(isset($hotel_id_s)){   
+                    if(!empty($hotel_id_s)){
+                        foreach($hotel_id_s as $key => $hotel_id){
+                            $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
+                            $hotel->precio_s_c=round($precio_s[$key],2)/$hotel->personas_s;
+                            if($hotel->fecha_venc!=$request->input('fecha_venc')){
+                                $hotel->requerimientos_id=0;
+                            }
+                            $hotel->fecha_venc=$request->input('fecha_venc');
+                            $hotel->save();
+                        }
+                    }
+                // }
+                
+                // if(isset($hotel_id_d)){   
+                    if(!empty($hotel_id_d)){
+                        foreach($hotel_id_d as $key => $hotel_id){
+                            $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
+                            $hotel->precio_d_c=round($precio_d[$key],2)/$hotel->personas_d;
+                            if($hotel->fecha_venc!=$request->input('fecha_venc')){
+                                $hotel->requerimientos_id=0;
+                            }
+                            $hotel->fecha_venc=$request->input('fecha_venc');
+                            $hotel->save();
+                        }
+                    }
+                // }
+                // if(isset($hotel_id_m)){     
+                    if(!empty($hotel_id_m)){
+                        foreach($hotel_id_m as $key => $hotel_id){
+                            $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
+                            $hotel->precio_m_c=round($precio_m[$key],2)/$hotel->personas_m;
+                            if($hotel->fecha_venc!=$request->input('fecha_venc')){
+                                $hotel->requerimientos_id=0;
+                            }
+                            $hotel->fecha_venc=$request->input('fecha_venc');
+                            $hotel->save();
+                        }
+                    }
+                // }
+                // if(isset($hotel_id_t)){       
+                    if(!empty($hotel_id_t)){
+                        foreach($hotel_id_t as $key => $hotel_id){
+                            $hotel=PrecioHotelReserva::FindOrFail($hotel_id);
+                            $hotel->precio_t_c=round($precio_t[$key],2)/$hotel->personas_t;
+                            if($hotel->fecha_venc!=$request->input('fecha_venc')){
+                                $hotel->requerimientos_id=0;
+                            }
+                            $hotel->fecha_venc=$request->input('fecha_venc');
+                            $hotel->save();
+                        }
+                    }
+                    
+                    //-- haremos la sumatoria para hallar los valores de 's_total','s_total_aprovador'
+  
+                    return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Datos guardadas correctamente</div>','total'=>1,'estado'=>'1']);
             }
+            else if($request->input('operacion')=='aprobar'){
+                $notas=$request->input('notas');
+                $items_cadena=$request->input('items');
+                $items=explode(',',$items_cadena);
+                if(isset($items)){
+                    foreach($items as $item){
+                        $hotel=PrecioHotelReserva::FindOrFail($item);
+                        $hotel->notas_contabilidad_aprovador=$notas;
+                        $hotel->save();
+                    }
+                    return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!</strong> Notas guardadas correctamente</div>','total'=>1,'estado'=>'1']);
+                }
+            }
+
+            
         }
         catch (Exception $e){
-            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al ingresar las notas, vuelva a intentarlo ('.$e.')</div>','total'=>1]);    
+            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al ingresar las notas, vuelva a intentarlo ('.$e.')</div>','total'=>1,'estado'=>'2']);    
         }
     }
     public function enviar_requerimiento(Request $request){
@@ -2944,7 +3035,7 @@ class ContabilidadController extends Controller
                         foreach($paquete_cotizacion->itinerario_cotizaciones as $itinerario_cotizacion){
                             foreach($itinerario_cotizacion->hotel as $hotel){
                                 if($hotel->requerimientos_id==$key){
-                                    $hotelito=PrecioHotelReserva::find($key);
+                                    $hotelito=PrecioHotelReserva::find($hotel->id);
                                     $hotelito->requerimientos_id=0;
                                     $hotelito->notas_contabilidad='';
                                     $hotelito->notas_contabilidad_revisor='';
@@ -2965,6 +3056,261 @@ class ContabilidadController extends Controller
             return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong>Hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>','mensaje_toastr'=>'<strong>Opps!</strong>Hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')','estado'=>0]);
         }
     }
+    public function requerimientos_borrar_lista_uno(Request $request){
+        try {
+            //code...
+            
+            $grupo=$request->input('grupo');
+            $hoteles=explode(',',$grupo);
+            $hotelitos=PrecioHotelReserva::whereIn('id',$hoteles)->get();
+            foreach($hotelitos as $hotel){
+                    $hotelito=PrecioHotelReserva::find($hotel->id);
+                    $hotelito->requerimientos_id=0;
+                    $hotelito->notas_contabilidad='';
+                    $hotelito->notas_contabilidad_aprovador='';
+                    $hotelito->estado_contabilidad=0;
+                    $hotelito->save();
+            }
+            
+            // $key=$request->input('key');
+            // $requerimiento=Requerimiento::find($key);
+            // if($requerimiento->delete()){
+            //     $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel',function($query) use($key){
+            //         $query->where('proveedor_id','!=','')
+            //         ->where('requerimientos_id',$key);
+            //     })->get();
+
+            //     foreach($cotizaciones as $cotizacion){
+            //         foreach($cotizacion->paquete_cotizaciones as $paquete_cotizacion){
+            //             foreach($paquete_cotizacion->itinerario_cotizaciones as $itinerario_cotizacion){
+            //                 foreach($itinerario_cotizacion->hotel as $hotel){
+            //                     if($hotel->requerimientos_id==$key){
+            //                         $hotelito=PrecioHotelReserva::find($key);
+            //                         $hotelito->requerimientos_id=0;
+            //                         $hotelito->notas_contabilidad='';
+            //                         $hotelito->notas_contabilidad_revisor='';
+            //                         $hotelito->estado_contabilidad=0;
+            //                         $hotelito->save();
+            //                     }
+            //                 }   
+            //             }   
+            //         }   
+            //     }
+                return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Good!</strong>Datos guardados correctamente.</div>','mensaje_toastr'=>'<strong>Good!</strong>Datos guardados correctamente.','estado'=>1]);
+            // }
+            // else{
+            //     return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong> hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>','mensaje_toastr'=>'<strong>Opps!</strong> hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')','estado'=>0]);
+            // }
+
+        }catch (Exception $e){
+            return response()->json(['mensaje'=>'<div class="alert alert-danger text-left"><strong>Opps!</strong>Hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')</div>','mensaje_toastr'=>'<strong>Opps!</strong>Hubo un error al guardar los datos, vuelva a intentarlo ('.$e.')','estado'=>0]);
+        }
+    }
     
+    public function estado_de_pagos(){
+        
+// dd('holi');
+        set_time_limit(0);
+        $cotizaciones_new=Cotizacion::where('estado',2)
+        ->whereBetween('categorizado',['C','S'])
+        /*->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel',function($query){
+            $query->where('requerimientos_id','==','0');
+        })
+        ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.itinerario_servicios',function($query){
+            $query->where('requerimientos_id','==','0');
+        })*/
+        ->get();
+
+        $cotizaciones_current_complete=Cotizacion::where('estado',2)
+        ->whereBetween('categorizado',['C','S'])
+        /*->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel',function($query){
+            $query->where('requerimientos_id','>','0');
+        })
+        ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.itinerario_servicios',function($query){
+            $query->where('requerimientos_id','>','0');
+        })*/
+        ->get();
+        // dd($cotizaciones);
+		// $paquete_cotizacion = PaqueteCotizaciones::where('estado', 2)->get();
+		// $cot_cliente = CotizacionesCliente::with('cliente')->where('estado', 1)->get();
+		// $cliente = Cliente::get();
+		// $cotizacion_cat=Cotizacion::where('estado',2)
+        //     ->whereBetween('categorizado',['C','S'])->get();
+		// session()->put('menu', 'reservas');
+		$webs=Web::get();
+		return view('admin.contabilidad.estado-de-pagos',compact('cotizaciones_new','webs','cotizaciones_current_complete'));
+    }
     
+    public function contabilidad_facturacion_path($anio,$mes,$page,$tipo_filtro)
+    {
+        $user_name=auth()->guard('admin')->user()->name;
+        $user_tipo=auth()->guard('admin')->user()->tipo_user;
+        // if($user_tipo=='ventas') {
+        //     $cotizacion = Cotizacion::where('web', $page)->where('users_id', auth()->guard('admin')->user()->id)->get();
+        // }
+        // else {
+        //     $cotizacion = Cotizacion::where('web', $page)->get();
+        // }
+        $filtro_sale='fecha_venta';
+        if($tipo_filtro=='arrival-date'){
+            $filtro_sale='fecha';
+        }
+
+        if($user_tipo=='ventas') {
+            if($tipo_filtro=='arrival-date'){
+                $cotizacion = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio)->whereMonth($filtro_sale,$mes)->where('users_id', auth()->guard('admin')->user()->id)->get();
+            }
+            else{
+                $cotizacion = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio)->whereMonth($filtro_sale,$mes)->where('users_id', auth()->guard('admin')->user()->id)->get();
+            }
+            
+        }
+        else {
+            if($tipo_filtro=='arrival-date'){
+                $cotizacion = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio)->whereMonth($filtro_sale,$mes)->get();
+            }
+            else{
+                $cotizacion = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio)->whereMonth($filtro_sale,$mes)->get();
+            }
+        }
+        // dd($cotizacion);
+        session()->put('menu-lateral', 'quotes/current');
+        $webs=Web::get();
+        
+        $goal= GoalProfit::where('pagina',$page)->where('anio',$anio)->where('mes',$mes)->get()->first();
+        $profit_tope =0;
+        if(count((array)$goal)>0)
+            $profit_tope =$goal->goal;
+        
+        $profit_suma=0;
+        // profit alcanzado
+        foreach ($cotizacion->sortByDesc($filtro_sale) as $cotizacion_){
+            $profit=0;
+            $profit_st=0;
+            foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete_cotizaciones){
+                if($paquete_cotizaciones->duracion==1){
+                    $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                }                    
+                else{
+                    $nro_personas=0;
+                    $uti=0;
+                    
+                    if($paquete_cotizaciones->paquete_precios->count()>=1){
+                        foreach($paquete_cotizaciones->paquete_precios as $precio){
+                            $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
+                            if($precio->personas_s>0)
+                                $uti+=$precio->utilidad_s*$precio->personas_s;
+                            
+                            if($precio->personas_d>0)
+                                    $uti+=$precio->utilidad_d*$precio->personas_d*2;
+                            
+                            if($precio->personas_m>0)
+                                    $uti+=$precio->utilidad_m*$precio->personas_m*2;
+                            
+                            if($precio->personas_t>0)
+                                $uti+=$precio->utilidad_t*$precio->personas_t*3;
+                        
+                        }
+
+                        if($nro_personas>0)
+                            $profit+=$uti;
+                        else
+                            $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                            
+                    }
+                    else
+                        $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                    
+                }
+            }            
+            $profit_suma+=$profit;
+        }
+        $profit_alcanzado = $profit_suma;
+        
+        $profit_suma_anio_pasado=0;
+        // profit alcanzado anio pasado
+        $cotizacion_anio_pasado=null;
+        $anio_pasado=$anio-1;
+        // dd($anio_pasado);
+        // if($user_tipo=='ventas') {
+        //     $cotizacion_anio_pasado = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio_pasado)->whereMonth($filtro_sale,$mes)->where('users_id', auth()->guard('admin')->user()->id)->get();
+        // }
+        // else {
+            $cotizacion_anio_pasado = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio_pasado)->whereMonth($filtro_sale,$mes)->get();
+        // }
+        // dd($cotizacion_anio_pasado);
+        foreach ($cotizacion_anio_pasado->sortByDesc($filtro_sale) as $cotizacion_){
+            $profit=0;
+            $profit_st=0;
+            foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete_cotizaciones){
+                if($paquete_cotizaciones->duracion==1){
+                    $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                }                    
+                else{
+                    $nro_personas=0;
+                    $uti=0;
+                    
+                    if($paquete_cotizaciones->paquete_precios->count()>=1){
+                        foreach($paquete_cotizaciones->paquete_precios as $precio){
+                            $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
+                            if($precio->personas_s>0)
+                                $uti+=$precio->utilidad_s*$precio->personas_s;
+                            
+                            if($precio->personas_d>0)
+                                    $uti+=$precio->utilidad_d*$precio->personas_d*2;
+                            
+                            if($precio->personas_m>0)
+                                    $uti+=$precio->utilidad_m*$precio->personas_m*2;
+                            
+                            if($precio->personas_t>0)
+                                $uti+=$precio->utilidad_t*$precio->personas_t*3;
+                        
+                        }
+
+                        if($nro_personas>0)
+                            $profit+=$uti;
+                        else
+                            $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                            
+                    }
+                    else
+                        $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
+                    
+                }
+            }            
+            $profit_suma_anio_pasado+=$profit;
+        }
+        $profit_anio_pasado = $profit_suma_anio_pasado;
+
+        // if($page=='expedia.com'){
+        //     return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs]);
+        // }
+        // else{
+            return view('admin.contabilidad.contabilidad-facturacion',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs,'profit_tope'=>$profit_tope,'profit_alcanzado'=>$profit_alcanzado,'profit_anio_pasado'=>$profit_anio_pasado,'tipo_filtro'=>$tipo_filtro]);
+        // }
+    }
+    public function show_cotizacion_id($id)
+	{
+		set_time_limit(0);
+		$clientes1=Cliente::get();
+		$cotizacion=Cotizacion::FindOrFail($id);
+		$productos=M_Producto::get();
+		$proveedores=Proveedor::get();
+		$hotel_proveedor=HotelProveedor::get();
+		$m_servicios=M_Servicio::get();
+		$pqt_coti=PaqueteCotizaciones::where('cotizaciones_id',$id)->where('estado',2)->get();
+		$pqt_id=0;
+		foreach ($pqt_coti as $pqt){
+			$pqt_id=$pqt->id;
+		}
+		$ItinerarioServiciosAcumPagos=ItinerarioServiciosAcumPago::where('paquete_cotizaciones_id',$pqt_id)->get();
+		$ItinerarioHotleesAcumPagos=PrecioHotelReservaPagos::where('paquete_cotizaciones_id',$pqt_id)->get();
+		$cotizacion_archivos=CotizacionArchivos::where('cotizaciones_id',$id)->get();
+		$usuario=User::get();
+        $webs=Web::get();
+        $paraBoleta=M_Category::where('tipo','BOLETA')->pluck('nombre')->toArray();
+        // dd($paraBoleta);
+        $paraFactura=M_Category::where('tipo','FACTURA')->pluck('nombre')->toArray();;
+		return view('admin.contabilidad.contabilidad-facturacion-details',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id,'paraBoleta'=>$paraBoleta,'paraFactura'=>$paraFactura]);
+	}
 }

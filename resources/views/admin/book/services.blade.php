@@ -48,6 +48,10 @@
                         <div id="itinerario" class="tab-pane fade show active">
                             <div class="row">
                                 <div class="col-9">
+                                    <b class="text-primary">By:{{$usuario->where('id',$cotizacion->users_id)->first()->name}}</b>, 
+                                    
+                                    <b class="text-primary"> <i class="fas fa-calendar"></i> {{ MisFunciones::fecha_peru($cotizacion->fecha_venta)}}</b>
+                                    <b class="text-20">|</b>
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
@@ -60,6 +64,7 @@
                                     @endforeach
                                     <i class="fa fa-check d-none text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Hidalgo esta activo"></i>
                                     <b class="text-success text-20">@if($cotizacion->categorizado=='C'){{'Con factura'}}@elseif($cotizacion->categorizado=='S'){{'Sin factura'}}@else{{'No esta filtrado'}}@endif</b>
+                                    
                                     <div class="dropdown pull-right d-none">
                                         <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                             Opciones
