@@ -3311,6 +3311,35 @@ class ContabilidadController extends Controller
         $paraBoleta=M_Category::where('tipo','BOLETA')->pluck('nombre')->toArray();
         // dd($paraBoleta);
         $paraFactura=M_Category::where('tipo','FACTURA')->pluck('nombre')->toArray();;
-		return view('admin.contabilidad.contabilidad-facturacion-details',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id,'paraBoleta'=>$paraBoleta,'paraFactura'=>$paraFactura]);
-	}
+		// dd($paraFactura);
+        return view('admin.contabilidad.contabilidad-facturacion-details',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id,'paraBoleta'=>$paraBoleta,'paraFactura'=>$paraFactura]);
+    }
+    public function ingresar_factura(Request $request){
+        // try {
+            $nro_c_boleta=$request->input('nro_c_boleta');
+            $total_c_boleta=$request->input('total_c_boleta');
+            $total_c_profit=$request->input('total_c_profit');
+            $nro_c_factura=$request->input('nro_c_factura');
+            $total_c_factura=$request->input('total_c_factura');
+            $total_c_vendido=$request->input('total_c_vendido');
+            
+            $paquete_id=$request->input('paquete_id');
+            $paquete=PaqueteCotizaciones::find($paquete_id);
+            $paquete->c_nro_factura='';
+            $paquete->c_monto_factura='';
+            $paquete->c_nro_boleta='';
+            $paquete->c_monto_boleta='';
+            $paquete->c_monto_profit='';
+            $paquete->c_monto_venta='';
+            $paquete->facturado_estado=1;
+            $paquete->save();
+            
+            $anio=$request->input('anio');
+            $mes=$request->input('mes');
+            $pagina=$request->input('pagina');
+            $filtro=$request->input('filtro');
+
+            return view('contabilidad.facturacion.path',compact('anio','mes','pagina','filtro'));
+        // }
+    }
 }

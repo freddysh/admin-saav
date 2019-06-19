@@ -7752,3 +7752,32 @@ function borrar_items_pago_uno(key,grupo,estado_contabilidad){
         });
     });
 }
+
+function calcular_venta_contabilidad(tipo){
+    if(tipo=='profit'){
+        console.log('holaaaaaa');
+        var total_c_boleta=parseFloat($("#total_c_boleta").val());
+        var total_c_profit=parseFloat($("#total_c_profit").val());
+        if(!$.isNumeric(total_c_profit)){
+            toastr.success('Ingrese un numero','MENSAJE DEL SISTEMA');
+        }
+        console.log('total_c_profit:'+total_c_profit);
+        var total_c_vendido=parseFloat($("#total_c_vendido").val());
+        var total_c_factura=Number(total_c_vendido-(total_c_boleta+total_c_profit)).toFixed(2);
+        console.log('total_c_boleta:'+total_c_boleta+',total_c_profit+',total_c_profit+',total_c_vendido:'+total_c_vendido+',total_c_factura:'+total_c_factura);
+        $("#total_c_factura").val(total_c_factura);   
+    }
+    else if(tipo=='venta'){
+        console.log('holaaaaaa');
+        var total_c_boleta=parseFloat($("#total_c_boleta").val());
+        var total_c_profit=parseFloat($("#total_c_profit").val());
+        if(!$.isNumeric(total_c_profit)){
+            toastr.success('Ingrese un numero','MENSAJE DEL SISTEMA');
+        }
+        console.log('total_c_profit:'+total_c_profit);
+        var total_c_vendido=parseFloat($("#total_c_vendido").val());
+        var total_c_factura=Number(total_c_vendido-(total_c_boleta+total_c_profit)).toFixed(2);
+        console.log('total_c_boleta:'+total_c_boleta+',total_c_profit+',total_c_profit+',total_c_vendido:'+total_c_vendido+',total_c_factura:'+total_c_factura);
+        $("#total_c_factura").val(total_c_factura);   
+    }
+}

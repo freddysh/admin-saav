@@ -1491,3 +1491,10 @@ Route::get('admin/contabilidad/lista-total/{id}', [
     'uses' => 'ContabilidadController@lista_total_show',
     'as' => 'contabilidad_lista_total_show_path',
 ]);
+
+Route::get('admin/contabilidad/ingresar-factura', [
+    'uses' => 'ContabilidadController@ingresar_factura',
+    'as' => 'ingresar_factura_path',
+]);
+
+
