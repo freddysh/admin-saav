@@ -1476,7 +1476,7 @@ Route::get('/admin/contabilidad/facturacion/{anio}/{mes}/{page}/{tipo_filtro}', 
     'uses' => 'ContabilidadController@contabilidad_facturacion_path',  
     'as' => 'contabilidad.facturacion.path',
 ]);
-Route::get('admin/contabilidad/facturacion/show/{id}', [
+Route::get('admin/contabilidad/facturacion/show/{id}/{anio}/{mes}/{pagina}/{filtro}', [
     'uses' => 'ContabilidadController@show_cotizacion_id',
     'as' => 'cotizacion_id_show_facturado_path',
 ]);
@@ -1492,7 +1492,7 @@ Route::get('admin/contabilidad/lista-total/{id}', [
     'as' => 'contabilidad_lista_total_show_path',
 ]);
 
-Route::get('admin/contabilidad/ingresar-factura', [
+Route::post('admin/contabilidad/ingresar-factura', [
     'uses' => 'ContabilidadController@ingresar_factura',
     'as' => 'ingresar_factura_path',
 ]);

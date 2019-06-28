@@ -7012,31 +7012,71 @@ function borrar_items_pago_uno(key,grupo,estado_contabilidad){
     });
 }
 
-function calcular_venta_contabilidad(tipo){
+function calcular_venta_contabilidad(tipo,nropersonas){
     if(tipo=='profit'){
         console.log('holaaaaaa');
         var total_c_boleta=parseFloat($("#total_c_boleta").val());
         var total_c_profit=parseFloat($("#total_c_profit").val());
         if(!$.isNumeric(total_c_profit)){
+            $("#total_c_profit").focus();
             toastr.success('Ingrese un numero','MENSAJE DEL SISTEMA');
         }
         console.log('total_c_profit:'+total_c_profit);
         var total_c_vendido=parseFloat($("#total_c_vendido").val());
-        var total_c_factura=Number(total_c_vendido-(total_c_boleta+total_c_profit)).toFixed(2);
+        var total_c_boleta_=Number(total_c_boleta+total_c_profit*nropersonas).toFixed(2)
+        var total_c_factura=Number(total_c_vendido-(total_c_boleta+total_c_profit*nropersonas)).toFixed(2);
         console.log('total_c_boleta:'+total_c_boleta+',total_c_profit+',total_c_profit+',total_c_vendido:'+total_c_vendido+',total_c_factura:'+total_c_factura);
-        $("#total_c_factura").val(total_c_factura);   
+        $("#total_c_boleta_").val(total_c_boleta_);    
+        $("#total_c_factura").val(total_c_factura);
     }
     else if(tipo=='venta'){
         console.log('holaaaaaa');
-        var total_c_boleta=parseFloat($("#total_c_boleta").val());
-        var total_c_profit=parseFloat($("#total_c_profit").val());
-        if(!$.isNumeric(total_c_profit)){
+        var total_c_vendido=parseFloat($("#total_c_vendido").val());
+        var total_c_boleta=parseFloat($("#total_c_boleta_").val());
+        // var total_c_factura=parseFloat($("#total_c_factura_html").html());
+
+        if(!$.isNumeric(total_c_vendido)){
+            $("#total_c_vendido").focus();
             toastr.success('Ingrese un numero','MENSAJE DEL SISTEMA');
         }
-        console.log('total_c_profit:'+total_c_profit);
-        var total_c_vendido=parseFloat($("#total_c_vendido").val());
-        var total_c_factura=Number(total_c_vendido-(total_c_boleta+total_c_profit)).toFixed(2);
+        var total_c_factura=Number(total_c_vendido-total_c_boleta).toFixed(2);
         console.log('total_c_boleta:'+total_c_boleta+',total_c_profit+',total_c_profit+',total_c_vendido:'+total_c_vendido+',total_c_factura:'+total_c_factura);
         $("#total_c_factura").val(total_c_factura);   
     }
+}
+function cambiar_a(para,itinerario_id,servicio_id){
+    if(para=='f'){
+        var sub_total_v=$("#sub_total_c_boleta_html").html();
+        var profit_v=$("#total_c_profit_html").html();
+        var total_venta_v=$("#total_c_boleta_html").html();
+        var total_factura_v=$("#total_c_factura_html").html();
+        var total_venvidido_v=$("#total_c_vendido_html").html();
+        
+        var icon=$("#icon_"+itinerario_id+"_"+servicio_id).html();
+        var concepto=$("#concepto_"+itinerario_id+"_"+servicio_id).html();
+        var calculado=$("#calculado_"+itinerario_id+"_"+servicio_id).html();
+        var subtotal=$("#subtotal_"+itinerario_id+"_"+servicio_id).html();
+        var proveedor=$("#proveedor_"+itinerario_id+"_"+servicio_id).html();
+
+
+        var div_creado_copiado='<div id="b_'+itinerario_id+'_'+servicio_id+'" class="row border-0-5 mb-0-5">'+
+        '<div class="col-1 pr-0">'+icon+
+        '</div>'+
+        '<div class="col-3 pr-0">'+concepto+
+        '</div>'+
+        '<div class="col-2 pr-0">'+calculado+
+        '</div>'+
+        '<div class="col-2 pr-0 bg-info">'+subtotal+
+        '</div>'+
+        '<div class="col-3 pr-0">'+proveedor+
+        '</div>'+
+        '<div class="col-1">'+
+            '<button class="btn btn-dark btn-sm" onclick="cambiar_a(\'b\',\''+itinerario_id+'\',\''+servicio_id+'\')"><i class="fas fa-arrow-circle-left"></i></button>'+
+        '</div>'+
+        '</div>';
+        
+        $("#b_"+itinerario_id+"_"+servicio_id).remove();
+        $("#f_"+itinerario_id).append(div_creado_copiado);
+    }
+    
 }

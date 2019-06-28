@@ -289,1552 +289,1141 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
-                                            <table class="table table-bordered table-sm table-hover">
-                                                <thead>
-                                                <tr class="small d-none">
-                                                    <th></th>
-                                                    <th class="d-none">GROUP</th>
-                                                    <th>SERVICE</th>
-                                                    <th>DESTINATION</th>
-                                                    <th>CALCULO</th>
-                                                    <th>SALES</th>
-                                                    <th>RESERVED</th>
-                                                    <th>PROVIDER</th>
-                                                    <th></th>
-                                                </tr>
-                                                <tr class="small">
-                                                    <th colspan="6" class="bg-primary text-white text-center">BOLETA</th>
-                                                    <th colspan="6" class="bg-info text-white text-center">FACTURA</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @php
-                                                    $sumatotal_v=0;
-                                                    $sumatotal_v_r=0;
-                                                    
-                                                    $sumatotal_v_boleta=0;
-                                                    $sumatotal_v_r_boleta=0;
-                                                    
-                                                    $sumatotal_v_factura=0;
-                                                    $sumatotal_v_r_factura=0;
 
-                                                    $profit=0;
-                                                @endphp
-                                                @foreach($cotizacion->paquete_cotizaciones as $paquete)
-                                                    @if($paquete->estado==2)
+                                            {{-- DISEÑO DE LA NUEVA DITRIBUCION --}}
+                                            <div class="row">
+                                                <div class="col-6 bg-primary text-white text-center">BOLETA</div>
+                                                <div class="col-6 bg-info text-white text-center">FACTURA</div>
+                                            </div>
+                                            @php
+                                                $sumatotal_v=0;
+                                                $sumatotal_v_r=0;
+                                                $sumatotal_v_boleta=0;
+                                                $sumatotal_v_r_boleta=0;
+                                                $sumatotal_v_factura=0;
+                                                $sumatotal_v_r_factura=0;
+                                                $profit=0;
+                                                $nro_c_boleta_='';
+                                                $sub_monto_boleta_=0;
+                                                $monto_c_boleta_=0;
+                                                $monto_c_profit_=0;
+                                                $nro_c_factura_='';
+                                                $monto_c_factura_=0;
+                                                $monto_c_vendido_=0;
+                                                $facturado_estado=0;
+                                            @endphp
+                                            
+                                        @foreach($cotizacion->paquete_cotizaciones as $paquete)
+                                            @if($paquete->estado==2)
+                                                @if ($paquete->facturado_estado==1)
+                                                    @php
+                                                        $facturado_estado=$paquete->facturado_estado;
+                                                        $nro_c_boleta_=$paquete->c_nro_boleta;
+                                                        $sub_monto_boleta_=$paquete->c_sub_monto_boleta;
+                                                        $monto_c_boleta_=$paquete->c_monto_boleta;
+                                                        $monto_c_profit_=$paquete->c_monto_profit;
+                                                        $nro_c_factura_=$paquete->c_nro_factura;
+                                                        $monto_c_factura_=$paquete->c_monto_factura;
+                                                    @endphp
+                                                @endif
+                                                @if($paquete->duracion==1)
+                                                    @php
+                                                        $profit=$paquete->utilidad*$cotizacion->nropersonas;    
+                                                    @endphp   
+                                                @else
+                                                    @php
+                                                        $nro_personas=0;
+                                                        $uti=0;
+                                                    @endphp
                                                     
-                                                        @if($paquete->duracion==1)
+                                                    @if($paquete->paquete_precios->count()>=1)
+                                                        @foreach($paquete->paquete_precios as $precio)
                                                             @php
-                                                                $profit=$paquete->utilidad*$cotizacion->nropersonas;    
-                                                            @endphp   
+                                                                $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;    
+                                                            @endphp    
+                                                            @if($precio->personas_s>0)
+                                                                @php
+                                                                    $uti+=$precio->utilidad_s*$precio->personas_s;    
+                                                                @endphp    
+                                                            @endif
+                                                            @if($precio->personas_d>0)
+                                                                @php
+                                                                    $uti+=$precio->utilidad_d*$precio->personas_d*2;
+                                                                @endphp    
+                                                            @endif
+                                                            @if($precio->personas_m>0)
+                                                                @php
+                                                                    $uti+=$precio->utilidad_m*$precio->personas_m*2;
+                                                                @endphp    
+                                                            @endif
+                                                            @if($precio->personas_t>0)
+                                                                @php
+                                                                    $uti+=$precio->utilidad_t*$precio->personas_t*3;
+                                                                 @endphp    
+                                                            @endif 
+                                                        @endforeach
+                                                        @if($nro_personas>0)
+                                                            @php
+                                                                $profit+=$uti;
+                                                            @endphp    
                                                         @else
                                                             @php
-                                                                $nro_personas=0;
-                                                                $uti=0;
+                                                                $profit=$paquete->utilidad*$cotizacion->nropersonas;    
                                                             @endphp
-                                                            
-                                                            @if($paquete->paquete_precios->count()>=1)
-                                                                @foreach($paquete->paquete_precios as $precio)
-                                                                    @php
-                                                                        $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;    
-                                                                    @endphp    
-                                                                    @if($precio->personas_s>0)
-                                                                        @php
-                                                                            $uti+=$precio->utilidad_s*$precio->personas_s;    
-                                                                        @endphp    
-                                                                    @endif
-                                                                    @if($precio->personas_d>0)
-                                                                        @php
-                                                                            $uti+=$precio->utilidad_d*$precio->personas_d*2;
-                                                                        @endphp    
-                                                                    @endif
-                                                                    @if($precio->personas_m>0)
-                                                                        @php
-                                                                            $uti+=$precio->utilidad_m*$precio->personas_m*2;
-                                                                        @endphp    
-                                                                    @endif
-                                                                    @if($precio->personas_t>0)
-                                                                        @php
-                                                                            $uti+=$precio->utilidad_t*$precio->personas_t*3;
-                                                                         @endphp    
-                                                                    @endif 
-                                                                @endforeach
-                                                                @if($nro_personas>0)
-                                                                    @php
-                                                                        $profit+=$uti;
-                                                                    @endphp    
-                                                                @else
-                                                                    @php
-                                                                        $profit=$paquete->utilidad*$cotizacion->nropersonas;    
-                                                                    @endphp
-                                                                @endif   
-                                                            
-                                                            @else
+                                                        @endif   
+                                                    
+                                                    @else
+                                                        @php
+                                                            $profit=$paquete->utilidad*$cotizacion->nropersonas;    
+                                                        @endphp
+                                                    @endif
+                                                @endif
+
+                                                @foreach($paquete->itinerario_cotizaciones->sortBy('dias') as $itinerario)
+                                                    @php
+                                                        $nro_servicios=0;
+                                                    @endphp
+                                                    @foreach($itinerario->itinerario_servicios as $servicios)
+                                                        @if($servicios->itinerario_proveedor)
+                                                            @foreach($servicios->itinerario_proveedor as $proveedor)
                                                                 @php
-                                                                    $profit=$paquete->utilidad*$cotizacion->nropersonas;    
+                                                                    $nro_servicios++;
                                                                 @endphp
-                                                            @endif
+                                                            @endforeach
                                                         @endif
-
-                                                        @foreach($paquete->itinerario_cotizaciones->sortBy('dias') as $itinerario)
-                                                            @php
-                                                                $nro_servicios=0;
-                                                            @endphp
-                                                            @foreach($itinerario->itinerario_servicios as $servicios)
-                                                                @if($servicios->itinerario_proveedor)
-                                                                    @foreach($servicios->itinerario_proveedor as $proveedor)
+                                                    @endforeach                                                            
+                                                    @php
+                                                        $itinerario->hotel->count();
+                                                    @endphp
+                                                    <div class="row">
+                                                        <div class="col-12 bg-dark">
+                                                            <b class="text-white"><i class="fas fa-angle-right"></i>DAY {{$itinerario->dias}}</b>
+                                                            <b class="badge badge-warning">{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
+                                                            <b class="text-white">{{$itinerario->titulo}}</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div id="b_{{$itinerario->id}}" class="col-6">
+                                                            @foreach($itinerario->itinerario_servicios->sortBy('pos')/*->whereIn('grupo',$paraBoleta)*/ as $servicios)
+                                                                @if($servicios->boleta_factura=='0')
+                                                                    @if (($servicios->grupo=='REPRESENT'&&($servicios->tipoServicio=='GUIDE'||$servicios->tipoServicio=='ASSISTANCE'))||($servicios->grupo=='ENTRANCES')||($servicios->grupo=='MOVILID'&&$servicios->clase=='BOLETO'))
+                                                                    <div id="b_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
+                                                                        <div id="icon_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">
+                                                                                @php
+                                                                                $grupe='ninguno';
+                                                                                $destino='ninguno';
+                                                                                $tipoServicio='ninguno';
+                                                                                $clase='ninguno';
+                                                                            @endphp
+                                                                            {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
+                                                                                @if($servicios->grupo)
+                                                                                    @php
+                                                                                        $grupe=$servicios->grupo;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->localizacion)
+                                                                                    @php
+                                                                                        $destino=$servicios->localizacion;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->tipoServicio)
+                                                                                    @php
+                                                                                        $tipoServicio=$servicios->tipoServicio;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->clase)
+                                                                                    @php
+                                                                                        $clase=$servicios->clase;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            {{-- @endforeach --}}
+                                                                            @if($grupe=='TOURS')
+                                                                                <i class="fas fa-map text-info" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='MOVILID')
+                                                                                @if($clase=='BOLETO')
+                                                                                    <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                                                                                @else
+                                                                                    <i class="fa fa-bus text-warning" aria-hidden="true"></i>
+                                                                                @endif
+                                                                            @endif
+                                                                            @if($grupe=='REPRESENT')
+                                                                                <i class="fa fa-users text-success" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='ENTRANCES')
+                                                                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='FOOD')
+                                                                                <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='TRAINS')
+                                                                                <i class="fa fa-train text-info" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='FLIGHTS')
+                                                                                <i class="fa fa-plane text-primary" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='OTHERS')
+                                                                                <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
+                                                                            @endif
+                                                                        </div>
+                                                                        <div id="concepto_{{$itinerario->id}}_{{$servicios->id}}" class="col-3 pr-0">
+                                                                            <span class="small">
+                                                                                <b>{{$servicios->nombre}}</b>
+                                                                                (<span class="small text-primary">{{$tipoServicio}}</span>)
+                                                                                @if($grupe=='FLIGHTS')
+                                                                                    <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
+                                                                                        <i class="fa fa-plus-circle fa-2x"></i>
+                                                                                    </a>
+                                                                                    <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                                                        <div class="modal-dialog" role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <form action="{{route('guardar_datos_flights_path')}}" method="post">
+                                                                                                    <div class="modal-header">
+                                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                                        <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
+                                                                                                    </div>
+                                                                                                    <div class="modal-body clearfix">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
+                                                                                                                    <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
+                                                                                                                    <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="col-md-12">
+                                                                                                            <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="modal-footer">
+                                                                                                        {{csrf_field()}}
+                                                                                                        <input type="hidden" name="id" value="{{$servicios->id}}">
+                                                                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                                        <button type="submit" class="btn btn-primary">Guardar Datos</button>
+                                                                                                    </div>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @endif
+                                                                                @if($grupe=='FLIGHTS')
+                                                                                    <br>
+                                                                                    <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
+                                                                                @endif
+                                                                                @if($grupe=='TRAINS')
+                                                                                    <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
+                                                                                @endif
+                                                                            </span>
+                                                                            <span class="small text-success">({{$destino}})</span>
+                                                                        </div>
                                                                         @php
-                                                                            $nro_servicios++;
+                                                                            $mate='$';
+                                                                            $mate_SALE='$';
                                                                         @endphp
-                                                                    @endforeach
-                                                                @endif
-                                                            @endforeach
-                                                            
-                                                            @php
-                                                                $itinerario->hotel->count();
+                                                                        @if($servicios->precio_grupo==1)
+                                                                            @php
+                                                                                $mate.=round($servicios->precio/$cotizacion->nropersonas,2);
+                                                                            @endphp
+                                                                        @else
+                                                                            @php
+                                                                                $mate.=$servicios->precio;
+                                                                            @endphp
+                                                                        @endif
+                                                                        @php
+                                                                            $person='<b class="text-primary">'.$cotizacion->nropersonas.'<i class="fa fa-male"></i></b>';
+                                                                        @endphp
 
-                                                            @endphp
-
-                                                            @if($cotizacion->duracion==1)
-                                                            
-                                                            @else
-
-                                                            @endif
-
-                                                            @foreach($itinerario->itinerario_servicios as $serv)
-
-                                                            @endforeach
-                                                            <tr>
-                                                                {{--<td rowspan="{{$nro_servicios}}"><b class="text-primary">Day {{$itinerario->dias}}</b></td>--}}
-                                                                <td class="bg-g-dark text-white" colspan="12">
-                                                                    <div class="row align-items-center">
-                                                                        <div class="col-10">
-                                                                        <b class="px-2"><i class="fas fa-angle-right"></i> Day {{$itinerario->dias}}</b>
-                                                                        <b class="text-18 badge badge-g-yellow">{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
-                                                                        <b>{{$itinerario->titulo}}</b>
+                                                                        @php
+                                                                            $mate.=" x ".$person;
+                                                                        @endphp
+                                                                        @if($servicios->precio_grupo==1)
+                                                                            @php
+                                                                                $mate_SALE.=$servicios->precio;
+                                                                                $sumatotal_v+=$servicios->precio;
+                                                                                $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_boleta+=$servicios->precio;
+                                                                                $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
+                                                                            @endphp
+                                                                        @else
+                                                                            @php
+                                                                                $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
+                                                                                $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
+                                                                                $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_boleta+=$servicios->precio*$cotizacion->nropersonas;
+                                                                                $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
+                                                                            @endphp
+                                                                        @endif
+                                                                        <div id="calculado_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
+                                                                            @if($servicios->precio_grupo==1)
+                                                                                {!! $mate !!}
+                                                                            @elseif($servicios->precio_grupo==0)
+                                                                                {!! $mate !!}
+                                                                            @endif
+                                                                        </div>
+                                                                        <div id="subtotal_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0 bg-info">{{$mate_SALE}}</div>
+                                                                        <div id="proveedor_{{$itinerario->id}}_{{$servicios->id}}" class="col-3 pr-0">
+                                                                            <b class="small" id="book_proveedor_{{$servicios->id}}">
+                                                                                @if($servicios->itinerario_proveedor)
+                                                                                    {{$servicios->itinerario_proveedor->nombre_comercial}}
+                                                                                @endif
+                                                                            </b>
+                                                                            @php
+                                                                                $grupe='ninguno';
+                                                                                $arreglito='GROUP_SIC'
+                                                                            @endphp
+                                                                                
+                                                                            @if(!$servicios->itinerario_proveedor)
+                                                                                @php
+                                                                                    $grupe='ninguno';
+                                                                                    $grupe=$servicios->grupo;
+                                                                                @endphp
+                                                                                @php
+                                                                                    $arregloo[]='GROUP';
+                                                                                    $arregloo[]='SIC';
+                                                                                    $arregloo[]=$servicios->tipoServicio;
+                                                                                    $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
+                                                                                @endphp
+                                                                                                                                            
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                        <button class="btn btn-dark btn-sm" onclick="cambiar_a('f','{{$itinerario->id}}','{{$servicios->id}}')"><i class="fas fa-arrow-circle-right"></i></button>
                                                                         </div>
                                                                     </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td colspan="6" class="text-11 pl-0">
-                                                                    <table>
-                                                                        @foreach($itinerario->itinerario_servicios->sortBy('pos')->whereIn('grupo',$paraBoleta) as $servicios)
-                                                                            @if (($servicios->grupo=='REPRESENT'&&$servicios->clase=='GUIDE')||($servicios->grupo=='ENTRANCES')||($servicios->grupo=='BUS'&&$servicios->clase=='BOLETO'))
-                                                                                
-                                                                            <tr id="servicio_{{$servicios->id}}" class="@if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
-                                                                                <td class="text-center" style="width:20px;">
+                                                                    @endif
+                                                                @elseif($servicios->boleta_factura=='1')
+                                                                    <div id="b_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
+                                                                        <div class="col-1 pr-0">
+                                                                                @php
+                                                                                $grupe='ninguno';
+                                                                                $destino='ninguno';
+                                                                                $tipoServicio='ninguno';
+                                                                                $clase='ninguno';
+                                                                            @endphp
+                                                                            {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
+                                                                                @if($servicios->grupo)
                                                                                     @php
-                                                                                        $grupe='ninguno';
-                                                                                        $destino='ninguno';
-                                                                                        $tipoServicio='ninguno';
-                                                                                        $clase='ninguno';
+                                                                                        $grupe=$servicios->grupo;
                                                                                     @endphp
-                                                                                    {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
-                                                                                        @if($servicios->grupo)
-                                                                                            @php
-                                                                                                $grupe=$servicios->grupo;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                        @if($servicios->localizacion)
-                                                                                            @php
-                                                                                                $destino=$servicios->localizacion;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                        @if($servicios->tipoServicio)
-                                                                                            @php
-                                                                                                $tipoServicio=$servicios->tipoServicio;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                        @if($servicios->clase)
-                                                                                            @php
-                                                                                                $clase=$servicios->clase;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                    {{-- @endforeach --}}
-                                                                                    @if($grupe=='TOURS')
-                                                                                        <i class="fas fa-map text-info" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='MOVILID')
-                                                                                        @if($clase=='BOLETO')
-                                                                                            <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                        @else
-                                                                                            <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                    @if($grupe=='REPRESENT')
-                                                                                        <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='ENTRANCES')
-                                                                                        <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='FOOD')
-                                                                                        <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='TRAINS')
-                                                                                        <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='FLIGHTS')
-                                                                                        <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='OTHERS')
-                                                                                        <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td class="d-none">{{$grupe}}</td>
-                                                                                <td style="width:210px;" class="lefts">
-                                                                                    <span class="small">
-                                                                                        <b>{{$servicios->nombre}}</b>
-                                                                                        (<span class="small text-primary">{{$tipoServicio}}</span>)
-                                                                                        @if($grupe=='FLIGHTS')
-                                                                                            <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
-                                                                                                <i class="fa fa-plus-circle fa-2x"></i>
-                                                                                            </a>
-                                                                                            <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                                <div class="modal-dialog" role="document">
-                                                                                                    <div class="modal-content">
-                                                                                                        <form action="{{route('guardar_datos_flights_path')}}" method="post">
-                                                                                                            <div class="modal-header">
-                                                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                                                <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
-                                                                                                            </div>
-                                                                                                            <div class="modal-body clearfix">
-                                                                                                                <div class="col-md-12">
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <div class="form-group">
-                                                                                                                            <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
-                                                                                                                            <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <div class="form-group">
-                                                                                                                            <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
-                                                                                                                            <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="col-md-12">
-                                                                                                                    <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="modal-footer">
-                                                                                                                {{csrf_field()}}
-                                                                                                                <input type="hidden" name="id" value="{{$servicios->id}}">
-                                                                                                                <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
-                                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                                <button type="submit" class="btn btn-primary">Guardar Datos</button>
-                                                                                                            </div>
-                                                                                                        </form>
+                                                                                @endif
+                                                                                @if($servicios->localizacion)
+                                                                                    @php
+                                                                                        $destino=$servicios->localizacion;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->tipoServicio)
+                                                                                    @php
+                                                                                        $tipoServicio=$servicios->tipoServicio;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->clase)
+                                                                                    @php
+                                                                                        $clase=$servicios->clase;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            {{-- @endforeach --}}
+                                                                            @if($grupe=='TOURS')
+                                                                                <i class="fas fa-map text-info" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='MOVILID')
+                                                                                @if($clase=='BOLETO')
+                                                                                    <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                                                                                @else
+                                                                                    <i class="fa fa-bus text-warning" aria-hidden="true"></i>
+                                                                                @endif
+                                                                            @endif
+                                                                            @if($grupe=='REPRESENT')
+                                                                                <i class="fa fa-users text-success" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='ENTRANCES')
+                                                                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='FOOD')
+                                                                                <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='TRAINS')
+                                                                                <i class="fa fa-train text-info" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='FLIGHTS')
+                                                                                <i class="fa fa-plane text-primary" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='OTHERS')
+                                                                                <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-3 pr-0">
+                                                                            <span class="small">
+                                                                                <b>{{$servicios->nombre}}</b>
+                                                                                (<span class="small text-primary">{{$tipoServicio}}</span>)
+                                                                                @if($grupe=='FLIGHTS')
+                                                                                    <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
+                                                                                        <i class="fa fa-plus-circle fa-2x"></i>
+                                                                                    </a>
+                                                                                    <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                                                        <div class="modal-dialog" role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <form action="{{route('guardar_datos_flights_path')}}" method="post">
+                                                                                                    <div class="modal-header">
+                                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                                        <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
                                                                                                     </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        @endif
-                                                                                        @if($grupe=='FLIGHTS')
-                                                                                            <br>
-                                                                                            <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
-                                                                                        @endif
-                                                                                        @if($grupe=='TRAINS')
-                                                                                            <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
-                                                                                        @endif
-                                                                                    </span>
-                                                                                    <span class="small text-warning">({{$destino}})</span>
-                                                                                </td>
-                                                                                {{-- <td class="d-none"><span class="small text-warning">({{$destino}})</span></td> --}}
-                                                                                @php
-                                                                                    $mate='$';
-                                                                                    $mate_SALE='$';
-                                                                                @endphp
-                                                                                @if($servicios->precio_grupo==1)
-                                                                                    @php
-                                                                                        $mate.=round($servicios->precio/$cotizacion->nropersonas,2);
-                                                                                    @endphp
-                                                                                @else
-                                                                                    @php
-                                                                                        $mate.=$servicios->precio;
-                                                                                    @endphp
-                                                                                @endif
-                                                                                @php
-                                                                                    $person='<b class="text-primary">'.$cotizacion->nropersonas.'<i class="fa fa-male"></i></b>';
-                                                                                @endphp
-                            
-                                                                                @php
-                                                                                    $mate.=" x ".$person;
-                                                                                @endphp
-                                                                                @if($servicios->precio_grupo==1)
-                                                                                    @php
-                                                                                        $mate_SALE.=$servicios->precio;
-                                                                                        $sumatotal_v+=$servicios->precio;
-                                                                                        $sumatotal_v_r+=$servicios->precio_proveedor;
-                                                                                        $sumatotal_v_boleta+=$servicios->precio;
-                                                                                        $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
-                                                                                    @endphp
-                                                                                @else
-                                                                                    @php
-                                                                                        $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
-                                                                                        $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
-                                                                                        $sumatotal_v_r+=$servicios->precio_proveedor;
-                                                                                        $sumatotal_v_boleta+=$servicios->precio*$cotizacion->nropersonas;
-                                                                                        $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
-                                                                                    @endphp
-                                                                                @endif
-                            
-                                                                                <td style="width:100px;" class="rights">
-                                                                                    @if($servicios->precio_grupo==1)
-                                                                                        {!! $mate !!}
-                                                                                    @elseif($servicios->precio_grupo==0)
-                                                                                        {!! $mate !!}
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td style="width:50px;" class="rights bg-success text-right">
-                                                                                    {{$mate_SALE}}
-                                                                                </td>
-                                                                                <td style="width:50px;" class="rights bg-warning text-right d-none" id="book_precio_asig_{{$servicios->id}}">
-                                                                                    @if($servicios->precio_proveedor)
-                                                                                        <span id="costo_servicio_{{$servicios->id}}">${{$servicios->precio_proveedor}}</span>
-                                                                                        <a href="#!" id="boton_prove_costo_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_costo_{{$servicios->id}}" class="d-none">
-                                                                                            <i class="fa fa-edit"></i>
-                                                                                        </a>
-                                                                                        <div class="modal fade" id="myModal_costo_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                            <div class="modal-dialog" role="document">
-                                                                                                <div class="modal-content">
-                                                                                                    <form id="asignar_proveedor_costo_path_{{$servicios->id}}" action="{{route('asignar_proveedor_costo_path')}}" method="post">
-                                                                                                        <div class="modal-header">
-                                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                                            <h4 class="modal-title" id="myModalLabel">
-                                                                                                                @if($grupe=='TOURS')
-                                                                                                                    <i class="fas fa-map text-info" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='MOVILID')
-                                                                                                                    <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='REPRESENT')
-                                                                                                                    <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='ENTRANCES')
-                                                                                                                    <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='FOOD')
-                                                                                                                    <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='TRAINS')
-                                                                                                                    <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='FLIGHTS')
-                                                                                                                    <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='OTHERS')
-                                                                                                                    <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                Editar Costo</h4>
-                                                                                                        </div>
-                                                                                                        <div class="modal-body clearfix">
+                                                                                                    <div class="modal-body clearfix">
+                                                                                                        <div class="col-md-12">
                                                                                                             <div class="col-md-12">
-                            
-                                                                                                                <div class="form-group col-md-3">
-                                                                                                                    <label for="txt_name">Costo actual</label>
-                                                                                                                    <input type="number" class="form-control" id="book_price_edit_{{$servicios->id}}" name="txt_costo_edit" value="{{$servicios->precio_proveedor}}">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
+                                                                                                                    <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
                                                                                                                 </div>
-                                                                                                                <div class="form-group col-md-9">
-                                                                                                                    <label for="txt_name">Justificacion</label>
-                                                                                                                    <input type="text" class="form-control" id="txt_justificacion_{{$servicios->id}}" name="txt_justificacion" value="{{$servicios->justificacion_precio_proveedor}}">
-                                                                                                                </div>
-                            
                                                                                                             </div>
                                                                                                             <div class="col-md-12">
-                                                                                                                <b id="rpt_book_proveedor_costo_{{$servicios->id}}" class="text-success"></b>
+                                                                                                                <div class="form-group">
+                                                                                                                    <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
+                                                                                                                    <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
+                                                                                                                </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        <div class="modal-footer">
-                                                                                                            {{csrf_field()}}
-                                                                                                            <input type="hidden" name="id" value="{{$servicios->id}}">
-                                                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                            <button type="button" class="btn btn-primary" onclick="Guardar_proveedor_costo({{$servicios->id}})">Guardar cambios</button>
+                                                                                                        <div class="col-md-12">
+                                                                                                            <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
                                                                                                         </div>
-                                                                                                    </form>
-                                                                                                </div>
+                                                                                                    </div>
+                                                                                                    <div class="modal-footer">
+                                                                                                        {{csrf_field()}}
+                                                                                                        <input type="hidden" name="id" value="{{$servicios->id}}">
+                                                                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                                        <button type="submit" class="btn btn-primary">Guardar Datos</button>
+                                                                                                    </div>
+                                                                                                </form>
                                                                                             </div>
                                                                                         </div>
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td style="width:150px;" class="boton">
-                                                                                    <b class="small" id="book_proveedor_{{$servicios->id}}">
-                                                                                        @if($servicios->itinerario_proveedor)
-                                                                                            {{$servicios->itinerario_proveedor->nombre_comercial}}
-                                                                                        @endif
-                                                                                    </b>
-                                                                                    @php
-                                                                                        $grupe='ninguno';
-                                                                                        $arreglito='GROUP_SIC'
-                                                                                    @endphp
-                                                                                        
-                                                                                    @if(!$servicios->itinerario_proveedor)
-                                                                                        @php
-                                                                                            $grupe='ninguno';
-                                                                                            $grupe=$servicios->grupo;
-                                                                                        @endphp
-                                                                                        @php
-                                                                                            $arregloo[]='GROUP';
-                                                                                            $arregloo[]='SIC';
-                                                                                            $arregloo[]=$servicios->tipoServicio;
-                                                                                            $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
-                                                                                        @endphp
-                                                                                                                                                    
-                                                                                    @endif
-                                                                                </td>
-                                                                            </tr>
-                                                                            @else
-                                                                            <tr id="servicio_{{$servicios->id}}" class="@if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
-                                                                                    <td class="text-center" style="width:20px;">
-                                                                                        @php
-                                                                                            $grupe='ninguno';
-                                                                                            $destino='ninguno';
-                                                                                            $tipoServicio='ninguno';
-                                                                                            $clase='ninguno';
-                                                                                        @endphp
-                                                                                        {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
-                                                                                            @if($servicios->grupo)
-                                                                                                @php
-                                                                                                    $grupe=$servicios->grupo;
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                            @if($servicios->localizacion)
-                                                                                                @php
-                                                                                                    $destino=$servicios->localizacion;
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                            @if($servicios->tipoServicio)
-                                                                                                @php
-                                                                                                    $tipoServicio=$servicios->tipoServicio;
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                            @if($servicios->clase)
-                                                                                                @php
-                                                                                                    $clase=$servicios->clase;
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                        {{-- @endforeach --}}
-                                                                                        @if($grupe=='TOURS')
-                                                                                            <i class="fas fa-map text-info" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='MOVILID')
-                                                                                            @if($clase=='BOLETO')
-                                                                                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                            @else
-                                                                                                <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                            @endif
-                                                                                        @endif
-                                                                                        @if($grupe=='REPRESENT')
-                                                                                            <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='ENTRANCES')
-                                                                                            <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='FOOD')
-                                                                                            <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='TRAINS')
-                                                                                            <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='FLIGHTS')
-                                                                                            <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='OTHERS')
-                                                                                            <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                    </td>
-                                                                                    <td class="d-none">{{$grupe}}</td>
-                                                                                    <td style="width:210px;" class="lefts">
-                                                                                        <span class="small">
-                                                                                            <b>{{$servicios->nombre}}</b>
-                                                                                            (<span class="small text-primary">{{$tipoServicio}}</span>)
-                                                                                            @if($grupe=='FLIGHTS')
-                                                                                                <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
-                                                                                                    <i class="fa fa-plus-circle fa-2x"></i>
-                                                                                                </a>
-                                                                                                <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                                    <div class="modal-dialog" role="document">
-                                                                                                        <div class="modal-content">
-                                                                                                            <form action="{{route('guardar_datos_flights_path')}}" method="post">
-                                                                                                                <div class="modal-header">
-                                                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                                                    <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
-                                                                                                                </div>
-                                                                                                                <div class="modal-body clearfix">
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <div class="col-md-12">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
-                                                                                                                                <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="col-md-12">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
-                                                                                                                                <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="modal-footer">
-                                                                                                                    {{csrf_field()}}
-                                                                                                                    <input type="hidden" name="id" value="{{$servicios->id}}">
-                                                                                                                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
-                                                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                                    <button type="submit" class="btn btn-primary">Guardar Datos</button>
-                                                                                                                </div>
-                                                                                                            </form>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            @endif
-                                                                                            @if($grupe=='FLIGHTS')
-                                                                                                <br>
-                                                                                                <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
-                                                                                            @endif
-                                                                                            @if($grupe=='TRAINS')
-                                                                                                <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
-                                                                                            @endif
-                                                                                        </span>
-                                                                                        <span class="small text-warning">({{$destino}})</span>
-                                                                                    </td>
-                                                                                    {{-- <td><span class="small text-warning">({{$destino}})</span></td> --}}
-                                                                                    @php
-                                                                                        $mate='$';
-                                                                                        $mate_SALE='$';
-                                                                                    @endphp
-                                                                                    @if($servicios->precio_grupo==1)
-                                                                                        @php
-                                                                                            $mate.=round($servicios->precio/$cotizacion->nropersonas,2);
-                                                                                        @endphp
-                                                                                    @else
-                                                                                        @php
-                                                                                            $mate.=$servicios->precio;
-                                                                                        @endphp
-                                                                                    @endif
-                                                                                    @php
-                                                                                        $person='<b class="text-primary">'.$cotizacion->nropersonas.'<i class="fa fa-male"></i></b>';
-                                                                                    @endphp
-                                
-                                                                                    @php
-                                                                                        $mate.=" x ".$person;
-                                                                                    @endphp
-                                                                                    @if($servicios->precio_grupo==1)
-                                                                                        @php
-                                                                                            $mate_SALE.=$servicios->precio;
-                                                                                            $sumatotal_v+=$servicios->precio;
-                                                                                            $sumatotal_v_r+=$servicios->precio_proveedor;
-                                                                                            $sumatotal_v_boleta+=$servicios->precio;
-                                                                                            $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
-                                                                                        @endphp
-                                                                                    @else
-                                                                                        @php
-                                                                                            $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
-                                                                                            $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
-                                                                                            $sumatotal_v_r+=$servicios->precio_proveedor;
-                                                                                            $sumatotal_v_boleta+=$servicios->precio*$cotizacion->nropersonas;;
-                                                                                            $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
-                                                                                        @endphp
-                                                                                    @endif
-                                
-                                                                                    <td style="width:100px;" class="rights">
-                                                                                        @if($servicios->precio_grupo==1)
-                                                                                            {!! $mate !!}
-                                                                                        @elseif($servicios->precio_grupo==0)
-                                                                                            {!! $mate !!}
-                                                                                        @endif
-                                                                                    </td>
-                                                                                    <td style="width:50px;" class="rights bg-success text-right">
-                                                                                        {{$mate_SALE}}
-                                                                                    </td>
-                                                                                    <td style="width:50px;" class="rights bg-warning text-right d-none" id="book_precio_asig_{{$servicios->id}}">
-                                                                                        @if($servicios->precio_proveedor)
-                                                                                            <span id="costo_servicio_{{$servicios->id}}">${{$servicios->precio_proveedor}}</span>
-                                                                                            <a href="#!" id="boton_prove_costo_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_costo_{{$servicios->id}}" class="d-none">
-                                                                                                <i class="fa fa-edit"></i>
-                                                                                            </a>
-                                                                                            <div class="modal fade" id="myModal_costo_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                                <div class="modal-dialog" role="document">
-                                                                                                    <div class="modal-content">
-                                                                                                        <form id="asignar_proveedor_costo_path_{{$servicios->id}}" action="{{route('asignar_proveedor_costo_path')}}" method="post">
-                                                                                                            <div class="modal-header">
-                                                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                                                <h4 class="modal-title" id="myModalLabel">
-                                                                                                                    @if($grupe=='TOURS')
-                                                                                                                        <i class="fas fa-map text-info" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='MOVILID')
-                                                                                                                        <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='REPRESENT')
-                                                                                                                        <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='ENTRANCES')
-                                                                                                                        <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='FOOD')
-                                                                                                                        <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='TRAINS')
-                                                                                                                        <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='FLIGHTS')
-                                                                                                                        <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='OTHERS')
-                                                                                                                        <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    Editar Costo</h4>
-                                                                                                            </div>
-                                                                                                            <div class="modal-body clearfix">
-                                                                                                                <div class="col-md-12">
-                                
-                                                                                                                    <div class="form-group col-md-3">
-                                                                                                                        <label for="txt_name">Costo actual</label>
-                                                                                                                        <input type="number" class="form-control" id="book_price_edit_{{$servicios->id}}" name="txt_costo_edit" value="{{$servicios->precio_proveedor}}">
-                                                                                                                    </div>
-                                                                                                                    <div class="form-group col-md-9">
-                                                                                                                        <label for="txt_name">Justificacion</label>
-                                                                                                                        <input type="text" class="form-control" id="txt_justificacion_{{$servicios->id}}" name="txt_justificacion" value="{{$servicios->justificacion_precio_proveedor}}">
-                                                                                                                    </div>
-                                
-                                                                                                                </div>
-                                                                                                                <div class="col-md-12">
-                                                                                                                    <b id="rpt_book_proveedor_costo_{{$servicios->id}}" class="text-success"></b>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="modal-footer">
-                                                                                                                {{csrf_field()}}
-                                                                                                                <input type="hidden" name="id" value="{{$servicios->id}}">
-                                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor_costo({{$servicios->id}})">Guardar cambios</button>
-                                                                                                            </div>
-                                                                                                        </form>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        @endif
-                                                                                    </td>
-                                                                                    <td style="width:150px;" class="boton">
-                                                                                        <b class="small" id="book_proveedor_{{$servicios->id}}">
-                                                                                            @if($servicios->itinerario_proveedor)
-                                                                                                {{$servicios->itinerario_proveedor->nombre_comercial}}
-                                                                                            @endif
-                                                                                        </b>
-                                                                                        @php
-                                                                                            $grupe='ninguno';
-                                                                                            $arreglito='GROUP_SIC'
-                                                                                        @endphp
-                                                                                            
-                                                                                        @if(!$servicios->itinerario_proveedor)
-                                                                                            @php
-                                                                                                $grupe='ninguno';
-                                                                                                $grupe=$servicios->grupo;
-                                                                                            @endphp
-                                                                                            @php
-                                                                                                $arregloo[]='GROUP';
-                                                                                                $arregloo[]='SIC';
-                                                                                                $arregloo[]=$servicios->tipoServicio;
-                                                                                                $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
-                                                                                            @endphp
-                                                                                                                                                        
-                                                                                        @endif
-                                                                                    </td>
-                                                                                </tr>
-                                                                            @endif
-                                                                        @endforeach
+                                                                                    </div>
+                                                                                @endif
+                                                                                @if($grupe=='FLIGHTS')
+                                                                                    <br>
+                                                                                    <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
+                                                                                @endif
+                                                                                @if($grupe=='TRAINS')
+                                                                                    <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
+                                                                                @endif
+                                                                            </span>
+                                                                            <span class="small text-success">({{$destino}})</span>
+                                                                        </div>
                                                                         @php
-                                                                            $titulo_hotel_='';
-                                                                            $titulo_hotel='';
+                                                                            $mate='$';
+                                                                            $mate_SALE='$';
                                                                         @endphp
-                                                                        @foreach($itinerario->hotel as $hotel)
-                                                                            <tr id="hotel_{{$hotel->id}}">
-                                                                                <td class="text-center">
-                                                                                    <b>{{$hotel->estrellas}} <i class="fa fa-star text-warning" aria-hidden="true"></i></b>
-                                                                                    @php
-                                                                                        $titulo_hotel_='<p><b>Categoria:'.$hotel->estrellas.' <i class="fa fa-star text-warning" aria-hidden="true"></i></b></p>';
-                                                                                    @endphp
-                                                                                </td>
-                                                                                <td style="width:210px;">
-                                                                                    @php
-                                                                                        $total=0;
-                                                                                        $total_book=0;
-                                                                                        $cadena_total='';
-                                                                                        $cadena_total_book='';
-                                                                                    $cadena_total_coti='';
-                                                                                    @endphp
-                                                                                    @if($hotel->personas_s>0)
-                                                                                        @php
-                                                                                            $total+=$hotel->personas_s*$hotel->precio_s;
-                                                                                            $total_book+=$hotel->personas_s*$hotel->precio_s_r;
-                                                                                            $cadena_total.="<span>$".$hotel->precio_s." x ".$hotel->personas_s."</span><br>";
-                                                                                            $cadena_total_coti.="<span>$".$hotel->personas_s*$hotel->precio_s."</span><br>";
-                                                                                            if($hotel->precio_s_r){
-                                                                                                $cadena_total_book.="<span>$".$hotel->personas_s*$hotel->precio_s_r."</span><br>";
-                                                                                            }
-                                                                                            $sumatotal_v+=$hotel->personas_s*$hotel->precio_s;
-                                                                                            $sumatotal_v_boleta+=$hotel->personas_s*$hotel->precio_s;
-                                                                                        @endphp
-                                                                                        <span class="margin-bottom-5"><b>{{$hotel->personas_s}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
-                                                                                        <br>
-                                                                                        @php
-                                                                                            $titulo_hotel.='<tr><td>'.$hotel->personas_s.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_s.' x '.$hotel->personas_s.'</span></td><td><span>$'.$hotel->personas_s*$hotel->precio_s.'</span></td></tr>';
-                                                                                        @endphp
-                                                                                    @endif
-                                                                                    @if($hotel->personas_d>0)
-                                                                                        @php
-                                                                                            $total+=$hotel->personas_d*$hotel->precio_d;
-                                                                                            $total_book+=$hotel->personas_d*$hotel->precio_d_r;
-                                                                                            $cadena_total.="<span>$".$hotel->precio_d." x ".$hotel->personas_d." </span><br>";
-                                                                                            $cadena_total_coti.="<span>$".($hotel->personas_d*$hotel->precio_d)."</span><br>";
-                                                                                            if($hotel->precio_d_r){
-                                                                                            $cadena_total_book.="<span>$".($hotel->personas_d*$hotel->precio_d_r)."</span><br>";
-                                                                                            }
-                                                                                            $sumatotal_v+=$hotel->personas_d*$hotel->precio_d;
-                                                                                            $sumatotal_v_boleta+=$hotel->personas_d*$hotel->precio_d;
-                                                                                        @endphp
-                                                                                        <span class="margin-bottom-5"><b>{{$hotel->personas_d}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
-                                                                                        <br>
-                                                                                        @php
-                                                                                            $titulo_hotel.='<tr><td>'.$hotel->personas_d.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i><i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_d.' x '.$hotel->personas_d.'</span></td><td><span>$'.$hotel->personas_d*$hotel->precio_d.'</span></td></tr>';
-                                                                                        @endphp
-                                                                                    @endif
-                                                                                    @if($hotel->personas_m>0)
-                                                                                        @php
-                                                                                            $total+=$hotel->personas_m*$hotel->precio_m;
-                                                                                            $total_book+=$hotel->personas_m*$hotel->precio_m_r;
-                                                                                            $cadena_total.="<span>$".$hotel->precio_m." x ".($hotel->personas_m)."</span><br>";
-                                                                                            $cadena_total_coti.="<span>$".$hotel->personas_m." x ".($hotel->precio_m)." </span><br>";
-                                                                                            if($hotel->precio_m_r){
-                                                                                                $cadena_total_book.="<span>$".$hotel->personas_m." x ".($hotel->precio_m_r)." </span><br>";
-                                                                                            }
-                                                                                            $sumatotal_v+=$hotel->personas_m*$hotel->precio_m;
-                                                                                            $sumatotal_v_boleta+=$hotel->personas_m*$hotel->precio_m;
-                                                                                        @endphp
-                                                                                        <span class="margin-bottom-5"><b>{{$hotel->personas_m}}</b> <span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
-                                                                                        <br>
-                                                                                        @php
-                                                                                            $titulo_hotel.='<tr><td>'.$hotel->personas_m.'</td><td><span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_m.' x '.$hotel->personas_m.'</span></td><td><span>$'.$hotel->personas_m*$hotel->precio_m.'</span></td></tr>';
-                                                                                        @endphp
-                                                                                    @endif
-                                                                                    @if($hotel->personas_t>0)
-                                                                                        @php
-                                                                                            $total+=$hotel->personas_t*$hotel->precio_t;
-                                                                                            $total_book+=$hotel->personas_t*$hotel->precio_t_r;
-                                                                                            $cadena_total.="<span>$".$hotel->precio_t." x ".($hotel->personas_t)."</span><br>";
-                                                                                            $cadena_total_coti.="<span>$".$hotel->personas_t." x ".($hotel->precio_t)."</span><br>";
-                                                                                            if($hotel->precio_t_r){
-                                                                                                $cadena_total_book.="<span>$".$hotel->personas_t." x ".($hotel->precio_t_r)."</span><br>";
-                                                                                            }
-                                                                                            $sumatotal_v+=$hotel->personas_t*$hotel->precio_t;
-                                                                                            $sumatotal_v_boleta+=$hotel->personas_t*$hotel->precio_t;
-                                                                                        @endphp
-                                                                                        <span class="margin-bottom-5"><b>{{$hotel->personas_t}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
-                                                                                        @php
-                                                                                            $titulo_hotel.='<tr><td>'.$hotel->personas_t.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_t.' x '.$hotel->personas_t.'</span></td><td><span>$'.$hotel->personas_t*$hotel->precio_t.'</span></td></tr>';
-                                                                                        @endphp
-                                                                                    @endif
-                                                                                
-                                                                                    <span class="small text-warning">({{$hotel->localizacion}})</span>
-                                                                                </td>
-                                                                                <td style="width:100px;" class="rights">
-                                                                                    {!! $cadena_total !!}
-                            
-                                                                                    <p class="d-none"><i class="fa fa-users" aria-hidden="true"></i> {{$total}}
-                                                                                        <a id="hpropover_{{$hotel->id}}" data-toggle="popover" title="Detalle" data-content="{{$cadena_total}}"> <i class="fa fa-calculator text-primary" aria-hidden="true"></i></a>
-                                                                                    </p>
-                                                                                </td>
-                                                                                <td style="width:80px;" class="rights bg-success text-right">
-                                                                                    {!! $cadena_total_coti !!}
-                                                                                </td>
-                                                                                @php
-                                                                                    $sumatotal_v_r+=$total_book;
-                                                                                    $sumatotal_v_r_boleta+=$total_book;
-                                                                                @endphp
-                                                                                <td style="width:50px;" id="book_precio_asig_hotel_{{$hotel->id}}"  class="rights bg-warning text-right d-none">
-                                                                                    @if($hotel->personas_s>0)
-                                                                                        @if($hotel->precio_s_r>0)
-                                                                                            <p id="book_price_edit_h_s_{{$hotel->id}}">${{$hotel->precio_s_r}}</p>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                    @if($hotel->personas_d>0)
-                                                                                        @if($hotel->precio_d_r>0)
-                                                                                            <p id="book_price_edit_h_d_{{$hotel->id}}">${{$hotel->precio_d_r}}</p>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                    @if($hotel->personas_m>0)
-                                                                                        @if($hotel->precio_m_r>0)
-                                                                                            <p id="book_price_edit_h_m_{{$hotel->id}}">${{$hotel->precio_m_r}}</p>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                    @if($hotel->personas_t>0)
-                                                                                        @if($hotel->precio_t_r>0)
-                                                                                            <p id="book_price_edit_h_t_{{$hotel->id}}">${{$hotel->precio_t_r}}</p>
-                                                                                        @endif
-                                                                                    @endif
-                            
-                                                                                    @if($hotel->proveedor)
-                                                                                        <a href="#!" id="boton_prove_hotel_edit_cost_{{$hotel->id}}" data-toggle="modal" data-target="#myModal_edit_cost_h_{{$hotel->id}}" class="d-none">
-                                                                                            <i class="fa fa-edit"></i>
-                                                                                        </a>
-                                                                                        <div class="modal fade" id="myModal_edit_cost_h_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                            <div class="modal-dialog" role="document">
-                                                                                                <div class="modal-content text-left">
-                                                                                                    <form id="asignar_proveedor_hotel_costo_path_{{$hotel->id}}" action="{{route('asignar_proveedor_costo_hotel')}}" method="post">
-                                                                                                        <div class="modal-header">
-                                                                                                            <h4 class="modal-title" id="myModalLabel"><i class="fa fa-building" aria-hidden="true"></i> Editar costo del hotel</h4>
-                                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                                                                                        </div>
-                                                                                                        <div class="modal-body clearfix">
-                                                                                                            <table class="table m-0">
-                                                                                                                @php
-                                                                                                                    $s=0;
-                                                                                                                    $d=0;
-                                                                                                                    $m=0;
-                                                                                                                    $t=0;
-                                                                                                                @endphp
-                                                                                                                @if($hotel->personas_s>0)
-                                                                                                                    @php
-                                                                                                                        $s=$hotel->personas_s;
-                                                                                                                    @endphp
-                                                                                                                    @if($hotel->precio_s_r>0)
-                                                                                                                        <tr class="text-left">
-                                                                                                                            <td width="100px">
-                                                                                                                            <span class="margin-bottom-5">
-                                                                                                                                <b>{{$hotel->personas_s}}</b>
-                                                                                                                                <span class="stick">
-                                                                                                                                    <i class="fa fa-bed" aria-hidden="true"></i>
-                                                                                                                                </span>
-                                                                                                                            </span>
-                                                                                                                            </td>
-                                                                                                                            <td width="100px">
-                                                                                                                                <input type="number" class="form-control" id="book_price_edit_h_s_p_{{$hotel->id}}" name="txt_costo_edit_s" value="{{$hotel->precio_s_r}}">
-                                                                                                                            </td>
-                                                                                                                        </tr>
-                                                                                                                    @endif
-                                                                                                                @endif
-                                                                                                                @if($hotel->personas_d>0)
-                                                                                                                    @php
-                                                                                                                        $d=$hotel->personas_d;
-                                                                                                                    @endphp
-                                                                                                                    @if($hotel->precio_d_r>0)
-                                                                                                                        <tr class="text-left">
-                                                                                                                            <td width="100px">
-                                                                                                                        <span class="margin-bottom-5">
-                                                                                                                            <b>{{$hotel->personas_d}}</b>
-                                                                                                                            <span class="stick">
-                                                                                                                                <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i>
-                                                                                                                            </span>
-                                                                                                                        </span>
-                                                                                                                            </td>
-                                                                                                                            <td width="100px">
-                                                                                                                                <input type="number" class="form-control" id="book_price_edit_h_d_p_{{$hotel->id}}" name="txt_costo_edit_d" value="{{$hotel->precio_d_r}}">
-                                                                                                                            </td>
-                                                                                                                        </tr>
-                                                                                                                    @endif
-                                                                                                                @endif
-                                                                                                                @if($hotel->personas_m>0)
-                                                                                                                    @php
-                                                                                                                        $m=$hotel->personas_m;
-                                                                                                                    @endphp
-                                                                                                                    @if($hotel->precio_m_r>0)
-                                                                                                                        <tr class="text-left">
-                                                                                                                            <td width="100px">
-                                                                                                                            <span class="margin-bottom-5">
-                                                                                                                                <b>{{$hotel->personas_m}}</b>
-                                                                                                                                <span class="stick">
-                                                                                                                                    <i class="fa fa-venus-mars" aria-hidden="true"></i>
-                                                                                                                                </span>
-                                                                                                                            </span>
-                                                                                                                            </td>
-                                                                                                                            <td width="100px">
-                                                                                                                                <input type="number" class="form-control" id="book_price_edit_h_m_p_{{$hotel->id}}" name="txt_costo_edit_m" value="{{$hotel->precio_m_r}}">
-                                                                                                                            </td>
-                                                                                                                        </tr>
-                                                                                                                    @endif
-                                                                                                                @endif
-                                                                                                                @if($hotel->personas_t>0)
-                                                                                                                    @php
-                                                                                                                        $t=$hotel->personas_t;
-                                                                                                                    @endphp
-                                                                                                                    @if($hotel->precio_t_r>0)
-                                                                                                                        <tr class="text-left">
-                                                                                                                            <td width="100px">
-                                                                                                                            <span class="margin-bottom-5">
-                                                                                                                                <b>{{$hotel->personas_t}}</b>
-                                                                                                                                <span class="stick">
-                                                                                                                                    <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i>
-                                                                                                                                </span>
-                                                                                                                            </span>
-                                                                                                                            </td>
-                                                                                                                            <td width="100px">
-                                                                                                                                <input type="number" class="form-control" id="book_price_edit_h_t_p_{{$hotel->id}}" name="txt_costo_edit_t" value="{{$hotel->precio_t_r}}">
-                                                                                                                            </td>
-                                                                                                                        </tr>
-                                                                                                                    @endif
-                                                                                                                @endif
-                                                                                                            </table>
-                                                                                                            <div class="col-md-12">
-                                                                                                                <b id="rpt_precio_proveedor_hotel_{{$hotel->id}}" class="text-success"></b>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                        <div class="modal-footer">
-                                                                                                            {{csrf_field()}}
-                                                                                                            <input type="hidden" name="id" value="{{$hotel->id}}">
-                                                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                            <button type="button" class="btn btn-primary" onclick="Guardar_proveedor_hotel_costo('{{$hotel->id}}','{{$s}}','{{$d}}','{{$m}}','{{$t}}')">Guardar cambios</button>
-                                                                                                        </div>
-                                                                                                    </form>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    @endif
-                                                                                    <p class="d-none"> {{$total_book}}
-                                                                                        <a id="h_rpropover_{{$hotel->id}}" data-toggle="popover" title="Detalle" data-content="{{$cadena_total_book}}"> <i class="fa fa-calculator text-primary" aria-hidden="true"></i></a>
-                                                                                    </p>
-                                                                                </td>
-                                                                                <td style="width:150px;" class="boton">
-                                                                                    <b class="small" id="book_proveedor_hotel_{{$hotel->id}}">
-                                                                                        @if($hotel->proveedor)
-                                                                                            {{$hotel->proveedor->nombre_comercial}}
-                                                                                        @endif
-                                                                                    </b>
-                                                                                </td>                                                                                   
-                                                                            </tr>
-                                                                        @endforeach
-                                                                    </table>
-                                                                </td>
-                                                                <td colspan="6" class="text-11 pr-0">
-                                                                    <table>
-                                                                        @foreach($itinerario->itinerario_servicios->sortBy('pos')->whereIn('grupo',$paraFactura) as $servicios)
-                                                                            @if (($servicios->grupo=='REPRESENT'&&($servicios->clase=='TRANSFER'||$servicios->clase=='ASSISTANCE'))||($servicios->grupo=='BUS'&&$servicios->clase=='DEFAULT'))
-                                                                                <tr id="servicio_{{$servicios->id}}" class="@if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
-                                                                                    <td class="text-center" sty
-                                                                                    
-                                                                                    >
-                                                                                        @php
-                                                                                            $grupe='ninguno';
-                                                                                            $destino='ninguno';
-                                                                                            $tipoServicio='ninguno';
-                                                                                            $clase='ninguno';
-                                                                                        @endphp
-                                                                                        {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
-                                                                                            @if($servicios->grupo)
-                                                                                                @php
-                                                                                                    $grupe=$servicios->grupo;
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                            @if($servicios->localizacion)
-                                                                                                @php
-                                                                                                    $destino=$servicios->localizacion;
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                            @if($servicios->tipoServicio)
-                                                                                                @php
-                                                                                                    $tipoServicio=$servicios->tipoServicio;
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                            @if($servicios->clase)
-                                                                                                @php
-                                                                                                    $clase=$servicios->clase;
-                                                                                                @endphp
-                                                                                            @endif
-                                                                                        {{-- @endforeach --}}
-                                                                                        @if($grupe=='TOURS')
-                                                                                            <i class="fas fa-map text-info" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='MOVILID')
-                                                                                            @if($clase=='BOLETO')
-                                                                                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                            @else
-                                                                                                <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                            @endif
-                                                                                        @endif
-                                                                                        @if($grupe=='REPRESENT')
-                                                                                            <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='ENTRANCES')
-                                                                                            <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='FOOD')
-                                                                                            <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='TRAINS')
-                                                                                            <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='FLIGHTS')
-                                                                                            <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                        @if($grupe=='OTHERS')
-                                                                                            <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                    </td>
-                                                                                    <td class="d-none">{{$grupe}}</td>
-                                                                                    <td style="width:210px;" class="lefts">
-                                                                                        <span class="small">
-                                                                                            <b>{{$servicios->nombre}}</b>
-                                                                                            (<span class="small text-primary">{{$tipoServicio}}</span>)
-                                                                                            @if($grupe=='FLIGHTS')
-                                                                                                <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
-                                                                                                    <i class="fa fa-plus-circle fa-2x"></i>
-                                                                                                </a>
-                                                                                                <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                                    <div class="modal-dialog" role="document">
-                                                                                                        <div class="modal-content">
-                                                                                                            <form action="{{route('guardar_datos_flights_path')}}" method="post">
-                                                                                                                <div class="modal-header">
-                                                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                                                    <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
-                                                                                                                </div>
-                                                                                                                <div class="modal-body clearfix">
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <div class="col-md-12">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
-                                                                                                                                <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="col-md-12">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
-                                                                                                                                <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="modal-footer">
-                                                                                                                    {{csrf_field()}}
-                                                                                                                    <input type="hidden" name="id" value="{{$servicios->id}}">
-                                                                                                                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
-                                                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                                    <button type="submit" class="btn btn-primary">Guardar Datos</button>
-                                                                                                                </div>
-                                                                                                            </form>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            @endif
-                                                                                            @if($grupe=='FLIGHTS')
-                                                                                                <br>
-                                                                                                <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
-                                                                                            @endif
-                                                                                            @if($grupe=='TRAINS')
-                                                                                                <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
-                                                                                            @endif
-                                                                                        </span>
-                                                                                    </td>
-                                                                                    {{-- <td><span class="small text-warning">({{$destino}})</span></td> --}}
-                                                                                    @php
-                                                                                        $mate='$';
-                                                                                        $mate_SALE='$';
-                                                                                    @endphp
-                                                                                    @if($servicios->precio_grupo==1)
-                                                                                        @php
-                                                                                            $mate.=round($servicios->precio/$cotizacion->nropersonas,2);
-                                                                                        @endphp
-                                                                                    @else
-                                                                                        @php
-                                                                                            $mate.=$servicios->precio;
-                                                                                        @endphp
-                                                                                    @endif
-                                                                                    @php
-                                                                                        $person='<b class="text-primary">'.$cotizacion->nropersonas.'<i class="fa fa-male"></i></b>';
-                                                                                    @endphp
-                                
-                                                                                    @php
-                                                                                        $mate.=" x ".$person;
-                                                                                    @endphp
-                                                                                    @if($servicios->precio_grupo==1)
-                                                                                        @php
-                                                                                            $mate_SALE.=$servicios->precio;
-                                                                                            $sumatotal_v+=$servicios->precio;
-                                                                                            $sumatotal_v_r+=$servicios->precio_proveedor;
-                                                                                            $sumatotal_v_factura+=$servicios->precio;
-                                                                                            $sumatotal_v_r_factura+=$servicios->precio_proveedor;
-                                                                                        @endphp
-                                                                                    @else
-                                                                                        @php
-                                                                                            $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
-                                                                                            $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
-                                                                                            $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                        @if($servicios->precio_grupo==1)
+                                                                            @php
+                                                                                $mate.=round($servicios->precio/$cotizacion->nropersonas,2);
+                                                                            @endphp
+                                                                        @else
+                                                                            @php
+                                                                                $mate.=$servicios->precio;
+                                                                            @endphp
+                                                                        @endif
+                                                                        @php
+                                                                            $person='<b class="text-primary">'.$cotizacion->nropersonas.'<i class="fa fa-male"></i></b>';
+                                                                        @endphp
 
-                                                                                            $sumatotal_v_factura+=$servicios->precio*$cotizacion->nropersonas;;
-                                                                                            $sumatotal_v_r_factura+=$servicios->precio_proveedor;
-                                                                                        @endphp
-                                                                                    @endif
-                                
-                                                                                    <td style="width:100px;" class="rights">
-                                                                                        @if($servicios->precio_grupo==1)
-                                                                                            {!! $mate !!}
-                                                                                        @elseif($servicios->precio_grupo==0)
-                                                                                            {!! $mate !!}
-                                                                                        @endif
-                                                                                    </td>
-                                                                                    <td style="width:50px;" class="rights bg-success text-right">
-                                                                                        {{$mate_SALE}}
-                                                                                    </td>
-                                                                                    <td style="width:50px;" class="rights bg-warning text-right d-none" id="book_precio_asig_{{$servicios->id}}">
-                                                                                        @if($servicios->precio_proveedor)
-                                                                                            <span id="costo_servicio_{{$servicios->id}}">${{$servicios->precio_proveedor}}</span>
-                                                                                            <a href="#!" id="boton_prove_costo_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_costo_{{$servicios->id}}" class="d-none">
-                                                                                                <i class="fa fa-edit"></i>
-                                                                                            </a>
-                                                                                            <div class="modal fade" id="myModal_costo_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                                <div class="modal-dialog" role="document">
-                                                                                                    <div class="modal-content">
-                                                                                                        <form id="asignar_proveedor_costo_path_{{$servicios->id}}" action="{{route('asignar_proveedor_costo_path')}}" method="post">
-                                                                                                            <div class="modal-header">
-                                                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                                                <h4 class="modal-title" id="myModalLabel">
-                                                                                                                    @if($grupe=='TOURS')
-                                                                                                                        <i class="fas fa-map text-info" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='MOVILID')
-                                                                                                                        <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='REPRESENT')
-                                                                                                                        <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='ENTRANCES')
-                                                                                                                        <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='FOOD')
-                                                                                                                        <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='TRAINS')
-                                                                                                                        <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='FLIGHTS')
-                                                                                                                        <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    @if($grupe=='OTHERS')
-                                                                                                                        <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                                                                                                                    @endif
-                                                                                                                    Editar Costo</h4>
-                                                                                                            </div>
-                                                                                                            <div class="modal-body clearfix">
-                                                                                                                <div class="col-md-12">
-                                
-                                                                                                                    <div class="form-group col-md-3">
-                                                                                                                        <label for="txt_name">Costo actual</label>
-                                                                                                                        <input type="number" class="form-control" id="book_price_edit_{{$servicios->id}}" name="txt_costo_edit" value="{{$servicios->precio_proveedor}}">
-                                                                                                                    </div>
-                                                                                                                    <div class="form-group col-md-9">
-                                                                                                                        <label for="txt_name">Justificacion</label>
-                                                                                                                        <input type="text" class="form-control" id="txt_justificacion_{{$servicios->id}}" name="txt_justificacion" value="{{$servicios->justificacion_precio_proveedor}}">
-                                                                                                                    </div>
-                                
-                                                                                                                </div>
-                                                                                                                <div class="col-md-12">
-                                                                                                                    <b id="rpt_book_proveedor_costo_{{$servicios->id}}" class="text-success"></b>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="modal-footer">
-                                                                                                                {{csrf_field()}}
-                                                                                                                <input type="hidden" name="id" value="{{$servicios->id}}">
-                                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                                <button type="button" class="btn btn-primary" onclick="Guardar_proveedor_costo({{$servicios->id}})">Guardar cambios</button>
-                                                                                                            </div>
-                                                                                                        </form>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        @endif
-                                                                                    </td>
-                                                                                    <td style="width:150px;" class="boton">
-                                                                                        <b class="small" id="book_proveedor_{{$servicios->id}}">
-                                                                                            @if($servicios->itinerario_proveedor)
-                                                                                                {{$servicios->itinerario_proveedor->nombre_comercial}}
-                                                                                            @endif
-                                                                                        </b>
-                                                                                        @php
-                                                                                            $grupe='ninguno';
-                                                                                            $arreglito='GROUP_SIC'
-                                                                                        @endphp
-                                                                                            
-                                                                                        @if(!$servicios->itinerario_proveedor)
-                                                                                            @php
-                                                                                                $grupe='ninguno';
-                                                                                                $grupe=$servicios->grupo;
-                                                                                            @endphp
-                                                                                            @php
-                                                                                                $arregloo[]='GROUP';
-                                                                                                $arregloo[]='SIC';
-                                                                                                $arregloo[]=$servicios->tipoServicio;
-                                                                                                $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
-                                                                                            @endphp
-                                                                                                                                                        
-                                                                                        @endif
-                                                                                    </td>
-                                                                                </tr>      
-                                                                            @else
-                                                                                <tr id="servicio_{{$servicios->id}}" class="@if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
-                                                                                <td class="text-center" style="width:20px;">
-                                                                                    @php
-                                                                                        $grupe='ninguno';
-                                                                                        $destino='ninguno';
-                                                                                        $tipoServicio='ninguno';
-                                                                                        $clase='ninguno';
-                                                                                    @endphp
-                                                                                    {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
-                                                                                        @if($servicios->grupo)
-                                                                                            @php
-                                                                                                $grupe=$servicios->grupo;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                        @if($servicios->localizacion)
-                                                                                            @php
-                                                                                                $destino=$servicios->localizacion;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                        @if($servicios->tipoServicio)
-                                                                                            @php
-                                                                                                $tipoServicio=$servicios->tipoServicio;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                        @if($servicios->clase)
-                                                                                            @php
-                                                                                                $clase=$servicios->clase;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                    {{-- @endforeach --}}
-                                                                                    @if($grupe=='TOURS')
-                                                                                        <i class="fas fa-map text-info" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='MOVILID')
-                                                                                        @if($clase=='BOLETO')
-                                                                                            <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                        @else
-                                                                                            <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                        @endif
-                                                                                    @endif
-                                                                                    @if($grupe=='REPRESENT')
-                                                                                        <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='ENTRANCES')
-                                                                                        <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='FOOD')
-                                                                                        <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='TRAINS')
-                                                                                        <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='FLIGHTS')
-                                                                                        <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                    @if($grupe=='OTHERS')
-                                                                                        <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td class="d-none">{{$grupe}}</td>
-                                                                                <td style="width:210px;" class="lefts">
-                                                                                    <span class="small">
-                                                                                        <b>{{$servicios->nombre}}</b>
-                                                                                        (<span class="small text-primary">{{$tipoServicio}}</span>)
-                                                                                        @if($grupe=='FLIGHTS')
-                                                                                            <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
-                                                                                                <i class="fa fa-plus-circle fa-2x"></i>
-                                                                                            </a>
-                                                                                            <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                                <div class="modal-dialog" role="document">
-                                                                                                    <div class="modal-content">
-                                                                                                        <form action="{{route('guardar_datos_flights_path')}}" method="post">
-                                                                                                            <div class="modal-header">
-                                                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                                                <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
-                                                                                                            </div>
-                                                                                                            <div class="modal-body clearfix">
-                                                                                                                <div class="col-md-12">
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <div class="form-group">
-                                                                                                                            <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
-                                                                                                                            <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div class="col-md-12">
-                                                                                                                        <div class="form-group">
-                                                                                                                            <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
-                                                                                                                            <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="col-md-12">
-                                                                                                                    <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="modal-footer">
-                                                                                                                {{csrf_field()}}
-                                                                                                                <input type="hidden" name="id" value="{{$servicios->id}}">
-                                                                                                                <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
-                                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                                <button type="submit" class="btn btn-primary">Guardar Datos</button>
-                                                                                                            </div>
-                                                                                                        </form>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        @endif
-                                                                                        @if($grupe=='FLIGHTS')
-                                                                                            <br>
-                                                                                            <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
-                                                                                        @endif
-                                                                                        @if($grupe=='TRAINS')
-                                                                                            <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
-                                                                                        @endif
-                                                                                    </span>
-                                                                                    <span class="small text-warning">({{$destino}})</span></td>
+                                                                        @php
+                                                                            $mate.=" x ".$person;
+                                                                        @endphp
+                                                                        @if($servicios->precio_grupo==1)
+                                                                            @php
+                                                                                $mate_SALE.=$servicios->precio;
+                                                                                $sumatotal_v+=$servicios->precio;
+                                                                                $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_boleta+=$servicios->precio;
+                                                                                $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
+                                                                            @endphp
+                                                                        @else
+                                                                            @php
+                                                                                $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
+                                                                                $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
+                                                                                $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_boleta+=$servicios->precio*$cotizacion->nropersonas;
+                                                                                $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
+                                                                            @endphp
+                                                                        @endif
+                                                                        <div class="col-2 pr-0">
+                                                                            @if($servicios->precio_grupo==1)
+                                                                                {!! $mate !!}
+                                                                            @elseif($servicios->precio_grupo==0)
+                                                                                {!! $mate !!}
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-2 pr-0 bg-info">{{$mate_SALE}}</div>
+                                                                        <div class="col-3 pr-0">
+                                                                            <b class="small" id="book_proveedor_{{$servicios->id}}">
+                                                                                @if($servicios->itinerario_proveedor)
+                                                                                    {{$servicios->itinerario_proveedor->nombre_comercial}}
+                                                                                @endif
+                                                                            </b>
+                                                                            @php
+                                                                                $grupe='ninguno';
+                                                                                $arreglito='GROUP_SIC'
+                                                                            @endphp
+                                                                                
+                                                                            @if(!$servicios->itinerario_proveedor)
                                                                                 @php
-                                                                                    $mate='$';
-                                                                                    $mate_SALE='$';
+                                                                                    $grupe='ninguno';
+                                                                                    $grupe=$servicios->grupo;
                                                                                 @endphp
-                                                                                @if($servicios->precio_grupo==1)
+                                                                                @php
+                                                                                    $arregloo[]='GROUP';
+                                                                                    $arregloo[]='SIC';
+                                                                                    $arregloo[]=$servicios->tipoServicio;
+                                                                                    $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
+                                                                                @endphp
+                                                                                                                                            
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                            <button class="btn btn-dark btn-sm" onclick="cambiar_a('f','{{$itinerario->id}}','{{$servicios->id}}')"><i class="fas fa-arrow-circle-right"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                            @php
+                                                                $titulo_hotel_='';
+                                                                $titulo_hotel='';
+                                                            @endphp
+                                                            @foreach($itinerario->hotel as $hotel)
+                                                                <div id="hotel_{{$hotel->id}}" class="row border-0-5 mb-0-5">
+                                                                    <div class="col-1 pr-0">
+                                                                        <b>{{$hotel->estrellas}} <i class="fa fa-star text-warning" aria-hidden="true"></i></b>
+                                                                        @php
+                                                                            $titulo_hotel_='<p><b>Categoria:'.$hotel->estrellas.' <i class="fa fa-star text-warning" aria-hidden="true"></i></b></p>';
+                                                                        @endphp
+                                                                    </div>
+                                                                    <div class="col-3 pr-0">
+                                                                            @php
+                                                                            $total=0;
+                                                                            $total_book=0;
+                                                                            $cadena_total='';
+                                                                            $cadena_total_book='';
+                                                                        $cadena_total_coti='';
+                                                                        @endphp
+                                                                        @if($hotel->personas_s>0)
+                                                                            @php
+                                                                                $total+=$hotel->personas_s*$hotel->precio_s;
+                                                                                $total_book+=$hotel->personas_s*$hotel->precio_s_r;
+                                                                                $cadena_total.="<span>$".$hotel->precio_s." x ".$hotel->personas_s."</span><br>";
+                                                                                $cadena_total_coti.="<span>$".$hotel->personas_s*$hotel->precio_s."</span><br>";
+                                                                                if($hotel->precio_s_r){
+                                                                                    $cadena_total_book.="<span>$".$hotel->personas_s*$hotel->precio_s_r."</span><br>";
+                                                                                }
+                                                                                $sumatotal_v+=$hotel->personas_s*$hotel->precio_s;
+                                                                                $sumatotal_v_boleta+=$hotel->personas_s*$hotel->precio_s;
+                                                                            @endphp
+                                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_s}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
+                                                                            <br>
+                                                                            @php
+                                                                                $titulo_hotel.='<tr><td>'.$hotel->personas_s.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_s.' x '.$hotel->personas_s.'</span></td><td><span>$'.$hotel->personas_s*$hotel->precio_s.'</span></td></tr>';
+                                                                            @endphp
+                                                                        @endif
+                                                                        @if($hotel->personas_d>0)
+                                                                            @php
+                                                                                $total+=$hotel->personas_d*$hotel->precio_d;
+                                                                                $total_book+=$hotel->personas_d*$hotel->precio_d_r;
+                                                                                $cadena_total.="<span>$".$hotel->precio_d." x ".$hotel->personas_d." </span><br>";
+                                                                                $cadena_total_coti.="<span>$".($hotel->personas_d*$hotel->precio_d)."</span><br>";
+                                                                                if($hotel->precio_d_r){
+                                                                                $cadena_total_book.="<span>$".($hotel->personas_d*$hotel->precio_d_r)."</span><br>";
+                                                                                }
+                                                                                $sumatotal_v+=$hotel->personas_d*$hotel->precio_d;
+                                                                                $sumatotal_v_boleta+=$hotel->personas_d*$hotel->precio_d;
+                                                                            @endphp
+                                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_d}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
+                                                                            <br>
+                                                                            @php
+                                                                                $titulo_hotel.='<tr><td>'.$hotel->personas_d.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i><i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_d.' x '.$hotel->personas_d.'</span></td><td><span>$'.$hotel->personas_d*$hotel->precio_d.'</span></td></tr>';
+                                                                            @endphp
+                                                                        @endif
+                                                                        @if($hotel->personas_m>0)
+                                                                            @php
+                                                                                $total+=$hotel->personas_m*$hotel->precio_m;
+                                                                                $total_book+=$hotel->personas_m*$hotel->precio_m_r;
+                                                                                $cadena_total.="<span>$".$hotel->precio_m." x ".($hotel->personas_m)."</span><br>";
+                                                                                $cadena_total_coti.="<span>$".$hotel->personas_m." x ".($hotel->precio_m)." </span><br>";
+                                                                                if($hotel->precio_m_r){
+                                                                                    $cadena_total_book.="<span>$".$hotel->personas_m." x ".($hotel->precio_m_r)." </span><br>";
+                                                                                }
+                                                                                $sumatotal_v+=$hotel->personas_m*$hotel->precio_m;
+                                                                                $sumatotal_v_boleta+=$hotel->personas_m*$hotel->precio_m;
+                                                                            @endphp
+                                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_m}}</b> <span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
+                                                                            <br>
+                                                                            @php
+                                                                                $titulo_hotel.='<tr><td>'.$hotel->personas_m.'</td><td><span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_m.' x '.$hotel->personas_m.'</span></td><td><span>$'.$hotel->personas_m*$hotel->precio_m.'</span></td></tr>';
+                                                                            @endphp
+                                                                        @endif
+                                                                        @if($hotel->personas_t>0)
+                                                                            @php
+                                                                                $total+=$hotel->personas_t*$hotel->precio_t;
+                                                                                $total_book+=$hotel->personas_t*$hotel->precio_t_r;
+                                                                                $cadena_total.="<span>$".$hotel->precio_t." x ".($hotel->personas_t)."</span><br>";
+                                                                                $cadena_total_coti.="<span>$".$hotel->personas_t." x ".($hotel->precio_t)."</span><br>";
+                                                                                if($hotel->precio_t_r){
+                                                                                    $cadena_total_book.="<span>$".$hotel->personas_t." x ".($hotel->precio_t_r)."</span><br>";
+                                                                                }
+                                                                                $sumatotal_v+=$hotel->personas_t*$hotel->precio_t;
+                                                                                $sumatotal_v_boleta+=$hotel->personas_t*$hotel->precio_t;
+                                                                            @endphp
+                                                                            <span class="margin-bottom-5"><b>{{$hotel->personas_t}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
+                                                                            @php
+                                                                                $titulo_hotel.='<tr><td>'.$hotel->personas_t.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_t.' x '.$hotel->personas_t.'</span></td><td><span>$'.$hotel->personas_t*$hotel->precio_t.'</span></td></tr>';
+                                                                            @endphp
+                                                                        @endif                    
+                                                                        <span class="small text-success">({{$hotel->localizacion}})</span>
+                                                                    </div>
+                                                                    <div class="col-2 pr-0">
+                                                                        {!! $cadena_total !!}
+                                                                        <p class="d-none"><i class="fa fa-users" aria-hidden="true"></i> {{$total}}
+                                                                            <a id="hpropover_{{$hotel->id}}" data-toggle="popover" title="Detalle" data-content="{{$cadena_total}}"> <i class="fa fa-calculator text-primary" aria-hidden="true"></i></a>
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-2 pr-0 bg-info">
+                                                                        {!! $cadena_total_coti !!}
+                                                                    </div>
+                                                                    @php
+                                                                        $sumatotal_v_r+=$total_book;
+                                                                        $sumatotal_v_r_boleta+=$total_book;
+                                                                    @endphp
+                                                                    <div class="col-3 pr-0">
+                                                                        <b class="small" id="book_proveedor_hotel_{{$hotel->id}}">
+                                                                            @if($hotel->proveedor)
+                                                                                {{$hotel->proveedor->nombre_comercial}}
+                                                                            @endif
+                                                                        </b>
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <button class="btn btn-dark btn-sm"><i class="fas fa-arrow-circle-right"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach            
+                                                        </div>
+                                                        <div id="f_{{$itinerario->id}}" class="col-6">
+                                                            @foreach($itinerario->itinerario_servicios->sortBy('pos')/*->whereIn('grupo',$paraFactura)*/ as $servicios)
+                                                                @if($servicios->boleta_factura=='0')
+                                                                    @if (($servicios->grupo=='REPRESENT'&&$servicios->tipoServicio=='TRANSFER')||($servicios->grupo=='MOVILID'&&$servicios->clase=='DEFAULT')||$servicios->grupo=='TOURS'||$servicios->grupo=='FOOD'||$servicios->grupo=='TRAINS'||$servicios->grupo=='FLIGHTS'||$servicios->grupo=='OTHERS')
+                                                                    <div id="f_{{$itinerario->id}}_{{$servicios->id}}"class="row border-0-5 mb-0-5 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
+                                                                        <div class="col-1 pr-0">
+                                                                            @php
+                                                                                $grupe='ninguno';
+                                                                                $destino='ninguno';
+                                                                                $tipoServicio='ninguno';
+                                                                                $clase='ninguno';
+                                                                            @endphp
+                                                                            {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
+                                                                                @if($servicios->grupo)
                                                                                     @php
-                                                                                        $mate.=round($servicios->precio/$cotizacion->nropersonas,2);
-                                                                                    @endphp
-                                                                                @else
-                                                                                    @php
-                                                                                        $mate.=$servicios->precio;
+                                                                                        $grupe=$servicios->grupo;
                                                                                     @endphp
                                                                                 @endif
-                                                                                @php
-                                                                                    $person='<b class="text-primary">'.$cotizacion->nropersonas.'<i class="fa fa-male"></i></b>';
-                                                                                    $mate.=" x ".$person;
-                                                                                @endphp
-                                                                                @if($servicios->precio_grupo==1)
+                                                                                @if($servicios->localizacion)
                                                                                     @php
-                                                                                        $mate_SALE.=$servicios->precio;
-                                                                                        $sumatotal_v+=$servicios->precio;
-                                                                                        $sumatotal_v_r+=$servicios->precio_proveedor;
-
-                                                                                        $sumatotal_v_factura+=$servicios->precio;
-                                                                                        $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                        $destino=$servicios->localizacion;
                                                                                     @endphp
+                                                                                @endif
+                                                                                @if($servicios->tipoServicio)
+                                                                                    @php
+                                                                                        $tipoServicio=$servicios->tipoServicio;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->clase)
+                                                                                    @php
+                                                                                        $clase=$servicios->clase;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            {{-- @endforeach --}}
+                                                                            @if($grupe=='TOURS')
+                                                                                <i class="fas fa-map text-info" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='MOVILID')
+                                                                                @if($clase=='BOLETO')
+                                                                                    <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                                                                 @else
-                                                                                    @php
-                                                                                        $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
-                                                                                        $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
-                                                                                        $sumatotal_v_r+=$servicios->precio_proveedor;
-
-                                                                                        $sumatotal_v_factura+=$servicios->precio*$cotizacion->nropersonas;;
-                                                                                        $sumatotal_v_r_factura+=$servicios->precio_proveedor;    
-                                                                                    @endphp
-                                                                                @endif                        
-                                                                                <td style="width:100px;" class="rights">
-                                                                                    @if($servicios->precio_grupo==1)
-                                                                                        {!! $mate !!}
-                                                                                    @elseif($servicios->precio_grupo==0)
-                                                                                        {!! $mate !!}
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td style="width:50px;" class="rights bg-success text-right">
-                                                                                    {{$mate_SALE}}
-                                                                                </td>
-                                                                                <td style="width:50px;" class="rights bg-warning text-right d-none" id="book_precio_asig_{{$servicios->id}}">
-                                                                                    @if($servicios->precio_proveedor)
-                                                                                        <span id="costo_servicio_{{$servicios->id}}">${{$servicios->precio_proveedor}}</span>
-                                                                                        <a href="#!" id="boton_prove_costo_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_costo_{{$servicios->id}}" class="d-none">
-                                                                                            <i class="fa fa-edit"></i>
-                                                                                        </a>
-                                                                                        <div class="modal fade" id="myModal_costo_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                                            <div class="modal-dialog" role="document">
-                                                                                                <div class="modal-content">
-                                                                                                    <form id="asignar_proveedor_costo_path_{{$servicios->id}}" action="{{route('asignar_proveedor_costo_path')}}" method="post">
-                                                                                                        <div class="modal-header">
-                                                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                                                            <h4 class="modal-title" id="myModalLabel">
-                                                                                                                @if($grupe=='TOURS')
-                                                                                                                    <i class="fas fa-map text-info" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='MOVILID')
-                                                                                                                    <i class="fa fa-bus text-warning" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='REPRESENT')
-                                                                                                                    <i class="fa fa-users text-success" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='ENTRANCES')
-                                                                                                                    <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='FOOD')
-                                                                                                                    <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='TRAINS')
-                                                                                                                    <i class="fa fa-train text-info" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='FLIGHTS')
-                                                                                                                    <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                @if($grupe=='OTHERS')
-                                                                                                                    <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                                                                                                                @endif
-                                                                                                                Editar Costo</h4>
-                                                                                                        </div>
-                                                                                                        <div class="modal-body clearfix">
+                                                                                    <i class="fa fa-bus text-warning" aria-hidden="true"></i>
+                                                                                @endif
+                                                                            @endif
+                                                                            @if($grupe=='REPRESENT')
+                                                                                <i class="fa fa-users text-success" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='ENTRANCES')
+                                                                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='FOOD')
+                                                                                <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='TRAINS')
+                                                                                <i class="fa fa-train text-info" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='FLIGHTS')
+                                                                                <i class="fa fa-plane text-primary" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='OTHERS')
+                                                                                <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-3 pr-0">
+                                                                            <span class="small">
+                                                                                <b>{{$servicios->nombre}}</b>
+                                                                                (<span class="small text-primary">{{$tipoServicio}}</span>)
+                                                                                @if($grupe=='FLIGHTS')
+                                                                                    <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
+                                                                                        <i class="fa fa-plus-circle fa-2x"></i>
+                                                                                    </a>
+                                                                                    <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                                                        <div class="modal-dialog" role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <form action="{{route('guardar_datos_flights_path')}}" method="post">
+                                                                                                    <div class="modal-header">
+                                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                                        <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
+                                                                                                    </div>
+                                                                                                    <div class="modal-body clearfix">
+                                                                                                        <div class="col-md-12">
                                                                                                             <div class="col-md-12">
-                            
-                                                                                                                <div class="form-group col-md-3">
-                                                                                                                    <label for="txt_name">Costo actual</label>
-                                                                                                                    <input type="number" class="form-control" id="book_price_edit_{{$servicios->id}}" name="txt_costo_edit" value="{{$servicios->precio_proveedor}}">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
+                                                                                                                    <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
                                                                                                                 </div>
-                                                                                                                <div class="form-group col-md-9">
-                                                                                                                    <label for="txt_name">Justificacion</label>
-                                                                                                                    <input type="text" class="form-control" id="txt_justificacion_{{$servicios->id}}" name="txt_justificacion" value="{{$servicios->justificacion_precio_proveedor}}">
-                                                                                                                </div>
-                            
                                                                                                             </div>
                                                                                                             <div class="col-md-12">
-                                                                                                                <b id="rpt_book_proveedor_costo_{{$servicios->id}}" class="text-success"></b>
+                                                                                                                <div class="form-group">
+                                                                                                                    <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
+                                                                                                                    <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
+                                                                                                                </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        <div class="modal-footer">
-                                                                                                            {{csrf_field()}}
-                                                                                                            <input type="hidden" name="id" value="{{$servicios->id}}">
-                                                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                                                                            <button type="button" class="btn btn-primary" onclick="Guardar_proveedor_costo({{$servicios->id}})">Guardar cambios</button>
+                                                                                                        <div class="col-md-12">
+                                                                                                            <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
                                                                                                         </div>
-                                                                                                    </form>
-                                                                                                </div>
+                                                                                                    </div>
+                                                                                                    <div class="modal-footer">
+                                                                                                        {{csrf_field()}}
+                                                                                                        <input type="hidden" name="id" value="{{$servicios->id}}">
+                                                                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                                        <button type="submit" class="btn btn-primary">Guardar Datos</button>
+                                                                                                    </div>
+                                                                                                </form>
                                                                                             </div>
                                                                                         </div>
-                                                                                    @endif
-                                                                                </td>
-                                                                                <td style="width:150px;" class="boton">
-                                                                                    <b class="small" id="book_proveedor_{{$servicios->id}}">
-                                                                                        @if($servicios->itinerario_proveedor)
-                                                                                            {{$servicios->itinerario_proveedor->nombre_comercial}}
-                                                                                        @endif
-                                                                                    </b>
-                                                                                    @php
-                                                                                        $grupe='ninguno';
-                                                                                        $arreglito='GROUP_SIC'
-                                                                                    @endphp
-                                                                                        
-                                                                                    @if(!$servicios->itinerario_proveedor)
-                                                                                        @php
-                                                                                            $grupe='ninguno';
-                                                                                            $grupe=$servicios->grupo;
-                                                                                        @endphp
-                                                                                        @php
-                                                                                            $arregloo[]='GROUP';
-                                                                                            $arregloo[]='SIC';
-                                                                                            $arregloo[]=$servicios->tipoServicio;
-                                                                                            $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
-                                                                                        @endphp
-                                                                                                                                                    
-                                                                                    @endif
-                                                                                </td>
-                                                                            </tr>
+                                                                                    </div>
+                                                                                @endif
+                                                                                @if($grupe=='FLIGHTS')
+                                                                                    <br>
+                                                                                    <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
+                                                                                @endif
+                                                                                @if($grupe=='TRAINS')
+                                                                                    <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
+                                                                                @endif
+                                                                            </span>
+                                                                            
+                                                                            <span class="small text-success">({{$destino}})</span>
+                                                                        </div>
+                                                                            @php
+                                                                                $mate='$';
+                                                                                $mate_SALE='$';
+                                                                            @endphp
+                                                                            @if($servicios->precio_grupo==1)
+                                                                                @php
+                                                                                    $mate.=round($servicios->precio/$cotizacion->nropersonas,2);
+                                                                                @endphp
+                                                                            @else
+                                                                                @php
+                                                                                    $mate.=$servicios->precio;
+                                                                                @endphp
                                                                             @endif
-                                                                        @endforeach
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
+                                                                            @php
+                                                                                $person='<b class="text-primary">'.$cotizacion->nropersonas.'<i class="fa fa-male"></i></b>';
+                                                                            @endphp
 
-                                                        @endforeach
-                                                    @endif
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                            <table class="table table-bordered table-striped table-sm table-hover">
-                                                <thead>
-                                                    <th>CATEGORIA</th>
-                                                    <th>NUMERO</th>
-                                                    <th>MONTO A CALCULAR</th>
-                                                    <th>MONTO VENDIDO</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr class="bg-primary text-white">
-                                                        <td class="text-11">
-                                                            <b>TOTAL PARA BOLETA</b>
-                                                        </td>
-                                                        <td class="text-11">
-                                                            <div class="form-control">
-                                                                <input type="text" name="nro_c_boleta" placeholder="B-0001" form="form_ingresar_factura">
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-11 text-right">
-                                                            <div class="form-control">
-                                                                <input type="number" name="total_c_boleta" id="total_c_boleta" value="{{$sumatotal_v_boleta}}" disabled form="form_ingresar_factura">
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-11 text-right">
-                                                            <b><sup>$</sup>{{$sumatotal_v_boleta}}</b>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="bg-warning text-dark">
-                                                        <td colspan="2" class="text-11">
-                                                            <b>PROFIT</b>
-                                                        </td>
-                                                        <td class="text-11 text-right">
-                                                            <div class="form-control">
-                                                            <input type="tetx" name="total_c_profit" id="total_c_profit" value="{{$profit}}" onkeyup="calcular_venta_contabilidad('profit')" form="form_ingresar_factura">
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-11 text-right">
-                                                            <b><sup>$</sup>{{$profit}}</b>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="bg-info text-white">
-                                                        <td class="text-11">
-                                                            <b>TOTAL PARA FACTURA</b>
-                                                        </td>
-                                                        <td class="text-11">
-                                                            <div class="form-control">
-                                                                <input type="text" name="nro_c_factura" placeholder="F-0001" form="form_ingresar_factura">
-                                                            </div>
-                                                        </td>
-                                                        <td  class="text-11 text-right">
-                                                            <div class="form-control">
-                                                                <input type="number" name="total_c_factura" id="total_c_factura" value="{{$sumatotal_v_factura}}" disabled form="form_ingresar_factura">
-                                                            </div>
-                                                        </td>
-                                                        <td class="text-11 text-right">
-                                                            <b><sup>$</sup>{{$sumatotal_v_factura}}</b>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="bg-success text-white">
-                                                        <td colspan="2" class="text-11">
-                                                            <b>TOTAL VENDIDO</b>
-                                                        </td>
-                                                        <td class="text-11 text-right">
-                                                            <div class="form-control">
-                                                                <input type="number" name="total_c_vendido" id="total_c_vendido" value="{{$sumatotal_v_boleta+$profit+$sumatotal_v_factura}}" disabled form="form_ingresar_factura">
-                                                            </div>
-                                                        </td>
-                                                        <td colspan="2" class="text-11 text-right">
-                                                            <b><sup>$</sup>{{$sumatotal_v_boleta+$profit+$sumatotal_v_factura}}</b>
-                                                        </td>
-                                                    </tr>                                                    
-                                                </tbody>
-                                            </table>
-                                            <form id="form_ingresar_factura" action="{{route('ingresar_factura_path')}}" method="post">
-                                                <div class="row">
-                                                    <div class="col-lg-12 text-center">
-                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
-                                                        <input type="hidden" name="paquete_id" value="{{$paquete_id}}">
-                                                        
-                                                        <input type="hidden" name="anio" value="{{$anio}}">
-                                                        <input type="hidden" name="mes" value="{{$mes}}">
-                                                        <input type="hidden" name="pagina" value="{{$pagina}}">
-                                                        <input type="hidden" name="filtro" value="{{$filtro}}">
-                                                        
-                                                        {{csrf_field()}}
-                                                        <button type="submit" class="btn btn-lg btn-success">Guardar cambios
-                                                            <i class="far fa-thumbs-up" aria-hidden="true"></i>
-                                                        </button>
+                                                                            @php
+                                                                                $mate.=" x ".$person;
+                                                                            @endphp
+                                                                            @if($servicios->precio_grupo==1)
+                                                                                @php
+                                                                                    $mate_SALE.=$servicios->precio;
+                                                                                    $sumatotal_v+=$servicios->precio;
+                                                                                    $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_factura+=$servicios->precio;
+                                                                                    $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                @endphp
+                                                                            @else
+                                                                                @php
+                                                                                    $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
+                                                                                    $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
+                                                                                    $sumatotal_v_r+=$servicios->precio_proveedor;
+
+                                                                                    $sumatotal_v_factura+=$servicios->precio*$cotizacion->nropersonas;;
+                                                                                    $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                @endphp
+                                                                            @endif 
+                                                                        <div class="col-2 pr-0">
+                                                                            @if($servicios->precio_grupo==1)
+                                                                                {!! $mate !!}
+                                                                            @elseif($servicios->precio_grupo==0)
+                                                                                {!! $mate !!}
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-2 pr-0 bg-info">
+                                                                            {{$mate_SALE}}
+                                                                        </div>
+                                                                        <div class="col-3 pr-0">
+                                                                            <b class="small" id="book_proveedor_{{$servicios->id}}">
+                                                                                @if($servicios->itinerario_proveedor)
+                                                                                    {{$servicios->itinerario_proveedor->nombre_comercial}}
+                                                                                @endif
+                                                                            </b>
+                                                                            @php
+                                                                                $grupe='ninguno';
+                                                                                $arreglito='GROUP_SIC'
+                                                                            @endphp
+                                                                                
+                                                                            @if(!$servicios->itinerario_proveedor)
+                                                                                @php
+                                                                                    $grupe='ninguno';
+                                                                                    $grupe=$servicios->grupo;
+                                                                                @endphp
+                                                                                @php
+                                                                                    $arregloo[]='GROUP';
+                                                                                    $arregloo[]='SIC';
+                                                                                    $arregloo[]=$servicios->tipoServicio;
+                                                                                    $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
+                                                                                @endphp
+                                                                                                                                            
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                            <button class="btn btn-dark btn-sm" onclick="cambiar_a('b','{{$itinerario->id}}','{{$servicios->id}}')"><i class="fas fa-arrow-circle-left"></i></button>
+                                                                        </div>
+                                                                    </div>    
+                                                                    @endif
+                                                                @elseif($servicios->boleta_factura=='2')
+                                                                    <div id="f_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
+                                                                        <div class="col-1 pr-0">
+                                                                            @php
+                                                                                $grupe='ninguno';
+                                                                                $destino='ninguno';
+                                                                                $tipoServicio='ninguno';
+                                                                                $clase='ninguno';
+                                                                            @endphp
+                                                                            {{-- @foreach($m_servicios->where('id',$servicios->m_servicios_id) as $m_ser) --}}
+                                                                                @if($servicios->grupo)
+                                                                                    @php
+                                                                                        $grupe=$servicios->grupo;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->localizacion)
+                                                                                    @php
+                                                                                        $destino=$servicios->localizacion;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->tipoServicio)
+                                                                                    @php
+                                                                                        $tipoServicio=$servicios->tipoServicio;
+                                                                                    @endphp
+                                                                                @endif
+                                                                                @if($servicios->clase)
+                                                                                    @php
+                                                                                        $clase=$servicios->clase;
+                                                                                    @endphp
+                                                                                @endif
+                                                                            {{-- @endforeach --}}
+                                                                            @if($grupe=='TOURS')
+                                                                                <i class="fas fa-map text-info" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='MOVILID')
+                                                                                @if($clase=='BOLETO')
+                                                                                    <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                                                                                @else
+                                                                                    <i class="fa fa-bus text-warning" aria-hidden="true"></i>
+                                                                                @endif
+                                                                            @endif
+                                                                            @if($grupe=='REPRESENT')
+                                                                                <i class="fa fa-users text-success" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='ENTRANCES')
+                                                                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='FOOD')
+                                                                                <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='TRAINS')
+                                                                                <i class="fa fa-train text-info" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='FLIGHTS')
+                                                                                <i class="fa fa-plane text-primary" aria-hidden="true"></i>
+                                                                            @endif
+                                                                            @if($grupe=='OTHERS')
+                                                                                <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-3 pr-0">
+                                                                            <span class="small">
+                                                                                <b>{{$servicios->nombre}}</b>
+                                                                                (<span class="small text-primary">{{$tipoServicio}}</span>)
+                                                                                @if($grupe=='FLIGHTS')
+                                                                                    <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_d_f_{{$servicios->id}}">
+                                                                                        <i class="fa fa-plus-circle fa-2x"></i>
+                                                                                    </a>
+                                                                                    <div class="modal fade" id="myModal_d_f_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                                                        <div class="modal-dialog" role="document">
+                                                                                            <div class="modal-content">
+                                                                                                <form action="{{route('guardar_datos_flights_path')}}" method="post">
+                                                                                                    <div class="modal-header">
+                                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                                        <h4 class="modal-title" id="myModalLabel">Agregar datos</h4>
+                                                                                                    </div>
+                                                                                                    <div class="modal-body clearfix">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label for="txt_aereolinea" class="font-weight-bold text-secondary">Aerolinea</label>
+                                                                                                                    <input type="text" class="form-control" id="txt_aereolinea" name="txt_aereolinea" value="{{$servicios->aerolinea}}">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label for="txt_nro_vuelo" class="font-weight-bold text-secondary">Nro. de vuelo</label>
+                                                                                                                    <input type="text" class="form-control" id="txt_nro_vuelo" name="txt_nro_vuelo" value="{{$servicios->nro_vuelo}}">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="col-md-12">
+                                                                                                            <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="modal-footer">
+                                                                                                        {{csrf_field()}}
+                                                                                                        <input type="hidden" name="id" value="{{$servicios->id}}">
+                                                                                                        <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                                        <button type="submit" class="btn btn-primary">Guardar Datos</button>
+                                                                                                    </div>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @endif
+                                                                                @if($grupe=='FLIGHTS')
+                                                                                    <br>
+                                                                                    <b class="text-green-goto">{{$servicios->aerolinea}}/{{$servicios->nro_vuelo}}</b>
+                                                                                @endif
+                                                                                @if($grupe=='TRAINS')
+                                                                                    <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
+                                                                                @endif
+                                                                            </span>
+                                                                            
+                                                                            <span class="small text-success">({{$destino}})</span>
+                                                                        </div>
+                                                                            @php
+                                                                                $mate='$';
+                                                                                $mate_SALE='$';
+                                                                            @endphp
+                                                                            @if($servicios->precio_grupo==1)
+                                                                                @php
+                                                                                    $mate.=round($servicios->precio/$cotizacion->nropersonas,2);
+                                                                                @endphp
+                                                                            @else
+                                                                                @php
+                                                                                    $mate.=$servicios->precio;
+                                                                                @endphp
+                                                                            @endif
+                                                                            @php
+                                                                                $person='<b class="text-primary">'.$cotizacion->nropersonas.'<i class="fa fa-male"></i></b>';
+                                                                            @endphp
+
+                                                                            @php
+                                                                                $mate.=" x ".$person;
+                                                                            @endphp
+                                                                            @if($servicios->precio_grupo==1)
+                                                                                @php
+                                                                                    $mate_SALE.=$servicios->precio;
+                                                                                    $sumatotal_v+=$servicios->precio;
+                                                                                    $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_factura+=$servicios->precio;
+                                                                                    $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                @endphp
+                                                                            @else
+                                                                                @php
+                                                                                    $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
+                                                                                    $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
+                                                                                    $sumatotal_v_r+=$servicios->precio_proveedor;
+
+                                                                                    $sumatotal_v_factura+=$servicios->precio*$cotizacion->nropersonas;;
+                                                                                    $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                @endphp
+                                                                            @endif 
+                                                                        <div class="col-2 pr-0">
+                                                                            @if($servicios->precio_grupo==1)
+                                                                                {!! $mate !!}
+                                                                            @elseif($servicios->precio_grupo==0)
+                                                                                {!! $mate !!}
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-2 pr-0 bg-info">
+                                                                            {{$mate_SALE}}
+                                                                        </div>
+                                                                        <div class="col-3 pr-0">
+                                                                            <b class="small" id="book_proveedor_{{$servicios->id}}">
+                                                                                @if($servicios->itinerario_proveedor)
+                                                                                    {{$servicios->itinerario_proveedor->nombre_comercial}}
+                                                                                @endif
+                                                                            </b>
+                                                                            @php
+                                                                                $grupe='ninguno';
+                                                                                $arreglito='GROUP_SIC'
+                                                                            @endphp
+                                                                                
+                                                                            @if(!$servicios->itinerario_proveedor)
+                                                                                @php
+                                                                                    $grupe='ninguno';
+                                                                                    $grupe=$servicios->grupo;
+                                                                                @endphp
+                                                                                @php
+                                                                                    $arregloo[]='GROUP';
+                                                                                    $arregloo[]='SIC';
+                                                                                    $arregloo[]=$servicios->tipoServicio;
+                                                                                    $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
+                                                                                @endphp
+                                                                                                                                            
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                            <button class="btn btn-dark btn-sm" onclick="cambiar_a('b','{{$itinerario->id}}','{{$servicios->id}}')"><i class="fas fa-arrow-circle-left"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        </div>
                                                     </div>
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                        
+                                        <table class="table table-bordered table-striped table-sm table-hover">
+                                            <thead>
+                                                <th>CATEGORIA</th>
+                                                <th>NUMERO</th>
+                                                <th>MONTO A CALCULAR</th>
+                                                <th>MONTO VENDIDO</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="bg-dark text-white">
+                                                    <td colspan="2"  class="text-11">
+                                                        <b>SUBTOTAL PARA BOLETA</b>
+                                                    </td>
+                                                    <td class="text-11 text-right">
+                                                        <div class="form-control">
+                                                            <input type="number" name="total_c_boleta" id="total_c_boleta" value="@if($facturado_estado==1){{$sub_monto_boleta_}}@else{{$sumatotal_v_boleta}}@endif" readonly form="form_ingresar_factura"  required>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-11 text-right">
+                                                        <b><sup>$</sup><span id="total_c_boleta_html">{{$sumatotal_v_boleta}}</span></b>
+                                                    </td>
+                                                </tr>
+                                                <tr class="bg-warning text-dark">
+                                                    <td colspan="2" class="text-11">
+                                                        <b>PROFIT POR PERSONA</b>
+                                                    </td>
+                                                    <td class="text-11 text-right">
+                                                        <div class="form-control">
+                                                        <input type="tetx" name="total_c_profit" id="total_c_profit" value="@if($facturado_estado==1){{$monto_c_profit_}}@else{{$profit}}@endif" onkeyup="calcular_venta_contabilidad('profit','{{$cotizacion->nropersonas}}')" form="form_ingresar_factura" required>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-11 text-right">
+                                                        <b><sup>$</sup><span id="total_c_profit_html">{{$profit}}</span></b>
+                                                    </td>
+                                                </tr>
+                                                <tr class="bg-primary text-white">
+                                                    <td class="text-11">
+                                                        <b>TOTAL PARA BOLETA</b>
+                                                    </td>
+                                                    <td class="text-11">
+                                                        <div class="form-control">
+                                                            <input type="text" name="nro_c_boleta" placeholder="B-0001" form="form_ingresar_factura" value="@if($facturado_estado==1){{$nro_c_boleta_}}@endif" required>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-11 text-right">
+                                                        <div class="form-control">
+                                                            <input type="number" name="total_c_boleta_" id="total_c_boleta_" value="@if($facturado_estado==1){{$monto_c_boleta_}}@else{{$sumatotal_v_boleta+$profit}}@endif" readonly form="form_ingresar_factura"  required>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-11 text-right">
+                                                        <b><sup>$</sup><span id="total_c_boleta_html">{{$sumatotal_v_boleta+$profit}}</span></b>
+                                                    </td>
+                                                </tr>
+                                                <tr class="bg-info text-white">
+                                                    <td class="text-11">
+                                                        <b>TOTAL PARA FACTURA</b>
+                                                    </td>
+                                                    <td class="text-11">
+                                                        <div class="form-control">
+                                                            <input type="text" name="nro_c_factura" placeholder="F-0001" form="form_ingresar_factura" value="@if($facturado_estado==1){{$nro_c_factura_}}@endif" required>
+                                                        </div>
+                                                    </td>
+                                                    <td  class="text-11 text-right">
+                                                        <div class="form-control">
+                                                            <input type="number" name="total_c_factura" id="total_c_factura" value="@if($facturado_estado==1){{$monto_c_factura_}}@else{{$sumatotal_v_factura}}@endif" readonly form="form_ingresar_factura" required>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-11 text-right">
+                                                        <b><sup>$</sup><span id="total_c_factura_html">{{$sumatotal_v_factura}}</span></b>
+                                                    </td>
+                                                </tr>
+                                                <tr class="bg-success text-white">
+                                                    <td colspan="2" class="text-11">
+                                                        <b>TOTAL VENDIDO</b>
+                                                    </td>
+                                                    <td class="text-11 text-right">
+                                                        <div class="form-control">
+                                                            <input type="text" name="total_c_vendido" id="total_c_vendido" value="@if($facturado_estado==1){{$monto_c_boleta_+$monto_c_factura_}}@else{{$sumatotal_v_boleta+$profit+$sumatotal_v_factura}}@endif" onkeyup="calcular_venta_contabilidad('venta','{{$cotizacion->nropersonas}}')" form="form_ingresar_factura" required>
+                                                        </div>
+                                                    </td>
+                                                    <td colspan="2" class="text-11 text-right">
+                                                        <b><sup>$</sup><span id="total_c_vendido_html">{{$sumatotal_v_boleta+$profit+$sumatotal_v_factura}}</span></b>
+                                                    </td>
+                                                </tr>                                                    
+                                            </tbody>
+                                        </table>
+                                        <form id="form_ingresar_factura" action="{{route('ingresar_factura_path')}}" method="post">
+                                            <div class="row">
+                                                <div class="col-lg-12 text-center">
+                                                    <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                                    <input type="hidden" name="paquete_id" value="{{$paquete_id}}">
+                                                    <input type="hidden" name="anio" value="{{$anio}}">
+                                                    <input type="hidden" name="mes" value="{{$mes}}">
+                                                    <input type="hidden" name="pagina" value="{{$pagina}}">
+                                                    <input type="hidden" name="filtro" value="{{$filtro}}">                                                        
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-lg btn-success">Guardar cambios
+                                                        <i class="far fa-thumbs-up" aria-hidden="true"></i>
+                                                    </button>
                                                 </div>
-                                            </form>
-                                        </div>
-                                    </div>    
-                        </div>    
-                        <div class="col-6">
-                        
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    @if (session('msj'))
+                                                        <div class="alert alert-danger">
+                                                            {!! session('msj') !!}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>    
                         </div>    
                     </div> 
                     

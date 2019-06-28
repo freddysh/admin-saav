@@ -86,13 +86,13 @@
                 </div>
             </div>
         </div>
-        <div id="ventas_profit" class="col-12">
-            <table class="table table-striped table-bordered  table-condensed text-12">
+        <div id="ventas_profit" class="col-11">
+            <table class="table table-striped table-bordered  table-condensed">
                 <thead>
                     <tr>
                         <th>CLOSE DATE</th>
                         <th>ARRIVAL DATE</th>
-                        <th>CODE</th>
+                        {{-- <th>CODE</th> --}}
                         <th>PAX</th>
                         <th>#</th>
                         {{-- <th>PROGRAM</th> --}}
@@ -103,6 +103,8 @@
                         <th colspan="2">FACTURA</th>
                         <th colspan="2">BOLETA</th>
                         <th>OPERATIONS</th>
+                        <th>FACTURADO</th>
+                        <th>VER</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -139,7 +141,9 @@
                             @if($paquete_cotizaciones->facturado_estado=='1')
                                 @php
                                     $facturado_estado=$paquete_cotizaciones->facturado_estado;
-                                    $facturado_usuario=$usuario->where('id',$paquete_cotizaciones->facturado_usuario)->first()->name;
+                                    if ($paquete_cotizaciones->facturado_usuario>0) {
+                                        $facturado_usuario=$usuarios->where('id',$paquete_cotizaciones->facturado_usuario)->first()->name;
+                                    }
                                     $facturado_fecha=MisFunciones::fecha_peru_hora($paquete_cotizaciones->facturado_fecha);
                                 @endphp
                             @endif
@@ -149,6 +153,7 @@
                                 $c_monto_factura=$paquete_cotizaciones->c_monto_factura;
                                 $c_nro_factura=$paquete_cotizaciones->c_nro_factura;
                                 $c_nro_boleta=$paquete_cotizaciones->c_nro_boleta;
+                                $c_monto_venta=$paquete_cotizaciones->c_monto_venta;
                             @endphp
                             @if($paquete_cotizaciones->duracion==1)
                                 @php
@@ -201,21 +206,20 @@
                                 @endif
                             @endif
                         @endforeach   
-                        <tr id="content-list-{{$cotizacion_->id}}">
+                        <tr id="content-list-{{$cotizacion_->id}}" class="text-11">
                             <td>{{$cotizacion_->fecha_venta}} </td>
                             <td>{{$cotizacion_->fecha}} </td>
-                            <td>{{$cotizacion_->codigo}} </td>
-                            <td>{{strtoupper($cotizacion_->nombre_pax)}} </td>
+                            <td>{{$cotizacion_->codigo}} | {{strtoupper($cotizacion_->nombre_pax)}} </td>
                             <td>{{$cotizacion_->nropersonas}}<i class="fas fa-user text-primary"></i></td>
                             {{-- <td>PROGRAM</td> --}}
                             <td>{{$cotizacion_->duracion}} </td>
                             <td><span class="text-primary">By</span> {{$cotizacion_->users->name}} </td>
                             <td class="d-none"><b><sup>$</sup>{{number_format($profit,2)}}</b></td>
-                            <td><b><sup>$</sup>{{number_format($c_monto_boleta+$c_monto_profit+$c_monto_factura,2)}}</b></td>
+                            <td><b><sup>$</sup>{{number_format($c_monto_venta,2)}}</b></td>
                             <td>{{$c_nro_factura}}</td>
                             <td><b><sup>$</sup>{{$c_monto_factura}}</b></td>
                             <td>{{$c_nro_boleta}}</td>
-                            <td><b><sup>$</sup>{{number_format($c_monto_boleta+$c_monto_profit,2)}}</b></td>
+                            <td><b><sup>$</sup>{{number_format($c_monto_boleta,2)}}</b></td>
                             <td>
                                 <span class="badge @if($cotizacion_->estado==2) badge-success @else badge-dark @endif">@if($cotizacion_->estado==2) Confirmado @else Sin confirmar @endif</span>
                                 
@@ -223,13 +227,13 @@
                                 
                             </td>
                             <td>
-                                <span class="text-primary"><b>By {{$facturado_usuario}}</b></span> 
-                                <span class="text-primary"><i class="fas fa-calendar"></i> <b>{{$facturado_fecha}}</b> </span>
+                                <span class="text-primary">By {{$facturado_usuario}}</span>, 
+                                <span class="text-primary"><i class="fas fa-calendar"></i> {{$facturado_fecha}}</span>
                             </td>
                             <td>
-                            <a class="text-18" href="{{route('cotizacion_id_show_facturado_path',$cotizacion_->id)}}"><i class="fas fa-eye"></i></a>
+                            <a class="text-18" href="{{route('cotizacion_id_show_facturado_path',[$cotizacion_->id,$anio,$mes,$page,$tipo_filtro])}}"><i class="fas fa-eye"></i></a>
                             <input type="hidden" id="hanulado_{{$cotizacion_->id}}" value="{{$cotizacion_->anulado}}">
-                            <a class="text-18" id="anulado_{{$cotizacion_->id}}" href="#!">
+                            <a class="text-18 d-none" id="anulado_{{$cotizacion_->id}}" href="#!">
                                 @if($cotizacion_->anulado==1)
                                     <i class="fas fa-check-circle text-success"></i>
                                 @elseif($cotizacion_->anulado==0)

@@ -698,6 +698,15 @@
   transition: opacity 1.3s;
 }
 
+.mb-0-5 {
+  margin-bottom: 0.05rem;
+}
+
+.border-0-5 {
+  border: 1px solid #949494;
+  border-radius: 4px;
+}
+
 .nav-pills .nav-link.active {
   background: #f9a825 !important;
 }

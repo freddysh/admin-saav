@@ -3286,10 +3286,11 @@ class ContabilidadController extends Controller
         //     return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs]);
         // }
         // else{
-            return view('admin.contabilidad.contabilidad-facturacion',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs,'profit_tope'=>$profit_tope,'profit_alcanzado'=>$profit_alcanzado,'profit_anio_pasado'=>$profit_anio_pasado,'tipo_filtro'=>$tipo_filtro]);
+            $usuarios=User::get();
+            return view('admin.contabilidad.contabilidad-facturacion',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs,'profit_tope'=>$profit_tope,'profit_alcanzado'=>$profit_alcanzado,'profit_anio_pasado'=>$profit_anio_pasado,'tipo_filtro'=>$tipo_filtro,'usuarios'=>$usuarios]);
         // }
     }
-    public function show_cotizacion_id($id)
+    public function show_cotizacion_id($id,$anio,$mes,$pagina,$filtro)
 	{
 		set_time_limit(0);
 		$clientes1=Cliente::get();
@@ -3309,29 +3310,52 @@ class ContabilidadController extends Controller
 		$usuario=User::get();
         $webs=Web::get();
         $paraBoleta=M_Category::where('tipo','BOLETA')->pluck('nombre')->toArray();
+        array_push($paraBoleta, "MOVILID");
         // dd($paraBoleta);
-        $paraFactura=M_Category::where('tipo','FACTURA')->pluck('nombre')->toArray();;
+        $paraFactura=M_Category::where('tipo','FACTURA')->pluck('nombre')->toArray();
+        array_push($paraFactura, "REPRESENT");
 		// dd($paraFactura);
-        return view('admin.contabilidad.contabilidad-facturacion-details',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id,'paraBoleta'=>$paraBoleta,'paraFactura'=>$paraFactura]);
+        return view('admin.contabilidad.contabilidad-facturacion-details',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id,'paraBoleta'=>$paraBoleta,'paraFactura'=>$paraFactura,'anio'=>$anio,'mes'=>$mes,'pagina'=>$pagina,'filtro'=>$filtro]);
     }
     public function ingresar_factura(Request $request){
-        // try {
+        try {
+            // dd($request->all());
             $nro_c_boleta=$request->input('nro_c_boleta');
             $total_c_boleta=$request->input('total_c_boleta');
+            $total_c_boleta_=$request->input('total_c_boleta_');
             $total_c_profit=$request->input('total_c_profit');
             $nro_c_factura=$request->input('nro_c_factura');
             $total_c_factura=$request->input('total_c_factura');
             $total_c_vendido=$request->input('total_c_vendido');
             
+            if(!is_numeric($total_c_boleta_)){
+                return redirect()->back()->with(['msj'=>'<b>Opps!</b>El monto para boleta debe ser un numero.']);
+            }
+            if(!is_numeric($total_c_profit)){
+                return redirect()->back()->with(['msj'=>'<b>Opps!</b>El monto para el profit debe ser un numero.']);
+            }
+            if(!is_numeric($total_c_factura)){
+                return redirect()->back()->with(['msj'=>'<b>Opps!</b>El monto para factura debe ser un numero.']);
+            }
+            if(!is_numeric($total_c_vendido)){
+                return redirect()->back()->with(['msj'=>'<b>Opps!</b>El monto para la venta debe ser un numero.']);
+            }
+
+
             $paquete_id=$request->input('paquete_id');
+            $data=Carbon::now()->subHour(5);
+
             $paquete=PaqueteCotizaciones::find($paquete_id);
-            $paquete->c_nro_factura='';
-            $paquete->c_monto_factura='';
-            $paquete->c_nro_boleta='';
-            $paquete->c_monto_boleta='';
-            $paquete->c_monto_profit='';
-            $paquete->c_monto_venta='';
+            $paquete->c_nro_factura=$nro_c_factura;
+            $paquete->c_monto_factura=$total_c_factura;
+            $paquete->c_nro_boleta=$nro_c_boleta;
+            $paquete->c_sub_monto_boleta=$total_c_boleta;
+            $paquete->c_monto_boleta=$total_c_boleta_;
+            $paquete->c_monto_profit=$total_c_profit;
+            $paquete->c_monto_venta=$total_c_vendido;
             $paquete->facturado_estado=1;
+            $paquete->facturado_usuario=auth()->guard('admin')->user()->id;
+            $paquete->facturado_fecha= $data->toDateTimeString();
             $paquete->save();
             
             $anio=$request->input('anio');
@@ -3339,7 +3363,10 @@ class ContabilidadController extends Controller
             $pagina=$request->input('pagina');
             $filtro=$request->input('filtro');
 
-            return view('contabilidad.facturacion.path',compact('anio','mes','pagina','filtro'));
-        // }
+            return redirect()->route('contabilidad.facturacion.path',compact('anio','mes','pagina','filtro'));
+        }
+        catch(Exception $e){           
+            return redirect()->back()->with(['msj'=>'<b>Opps!</b>Ocurrio un error vuelva a intentarlo('.$e.')']);
+        }
     }
 }
