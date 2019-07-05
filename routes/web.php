@@ -1481,7 +1481,6 @@ Route::get('admin/contabilidad/facturacion/show/{id}/{anio}/{mes}/{pagina}/{filt
     'as' => 'cotizacion_id_show_facturado_path',
 ]);
 
-
 //RESERVAS
 Route::get('admin/contabilidad/estado-de-pagos/files', [
     'uses' => 'ContabilidadController@estado_de_pagos',
@@ -1496,5 +1495,3 @@ Route::post('admin/contabilidad/ingresar-factura', [
     'uses' => 'ContabilidadController@ingresar_factura',
     'as' => 'ingresar_factura_path',
 ]);
-
-

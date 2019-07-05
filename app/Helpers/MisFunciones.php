@@ -61,10 +61,11 @@ class MisFunciones{
 
         $requerimiento=Requerimiento::all()->sortByDesc("id")->first();
         $pre='';
-        $codigo=$requerimiento->codigo;
         // // return $codigo;
         $codigo_int=1;
         if(count($requerimiento)>0){
+            
+        $codigo=$requerimiento->codigo;
             if(strlen(trim($codigo))>0){
                 $codigo_int=intval($codigo);
                 $codigo_int++;

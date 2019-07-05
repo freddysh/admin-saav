@@ -6897,7 +6897,7 @@ function buscar_pagos_pendientes(opcion,nombre,codigo,ini,fin,servicio){
     });
 }
 
-function traer_datos(clave,grupo,lista_items,nro_personas,estado_contabilidad){
+function traer_datos(clave,grupo,clase,lista_items,nro_personas,estado_contabilidad){
     
     $('#datos_'+clave).html('');
     $('#datos_'+clave).addClass('text-center');
@@ -6913,9 +6913,9 @@ function traer_datos(clave,grupo,lista_items,nro_personas,estado_contabilidad){
         type: 'post',
         data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&estado_contabilidad='+estado_contabilidad+'&operacion=ver',
         success: function (data) {
-            $('#datos_'+clave).removeClass('text-center');
-            $('#datos_'+clave).html('');
-            $('#datos_'+clave).html(data);            
+            $('#'+grupo+'_'+clase+'_datos_'+clave).removeClass('text-center');
+            $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
+            $('#'+grupo+'_'+clase+'_datos_'+clave).html(data);            
         },
         error: function () {
             

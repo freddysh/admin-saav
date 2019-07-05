@@ -39,6 +39,8 @@ class BookController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
+		
+		set_time_limit(0);
 		$paquete_cotizacion = PaqueteCotizaciones::where('estado', 2)->get();
 		$cot_cliente = CotizacionesCliente::with('cliente')->where('estado', 1)->get();
 		$cliente = Cliente::get();

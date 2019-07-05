@@ -44,6 +44,7 @@ class ContabilidadController extends Controller
     //
     public function index()
     {
+        set_time_limit(0);
         $cotizacion = Cotizacion::where('confirmado_r', 'ok')->get();
         session()->put('menu', 'contabilidad');
         $webs = Web::get();
@@ -2049,8 +2050,8 @@ class ContabilidadController extends Controller
     }
     public function pagos_pendientes_general_filtro_datos(Request $request)
     {
+		set_time_limit(0);
         $opcion=$request->input('opcion');
-        
         // dd($opcion);
         $nombre=$request->input('nombre');
         $codigo=$request->input('codigo');
@@ -2068,49 +2069,221 @@ class ContabilidadController extends Controller
         }
 
         if($opcion=='POR CODIGO'){
-            $cotizaciones=Cotizacion::where('codigo',$codigo)->where('estado','2')
-            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
-                        $query->where('proveedor_id','!=','')
-                        ->where('requerimientos_id','0');
-            })->get();
+
+            $cotizaciones=Cotizacion::
+            where(function($query)use($codigo){
+                $query->where('codigo',$codigo)->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0');
+                });
+            })
+            ->Orwhere(function($query)use($codigo){
+                $query->where('codigo',$codigo)->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.itinerario_servicios', function ($query){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0');
+                });
+            })
+            ->get();
+            // dd($cotizaciones);
+            // $cotizaciones=Cotizacion::where('codigo',$codigo)->where('estado','2')
+            // ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
+            //             $query->where('proveedor_id','!=','')
+            //             ->where('requerimientos_id','0');
+            // })->get();
         }
         elseif($opcion=='POR NOMBRE'){
-            $cotizaciones=Cotizacion::where('nombre_pax',$nombre)->where('estado','2')
-            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
-                        $query->where('proveedor_id','!=','')
-                        ->where('requerimientos_id','0');
-            })->get();
+            // $cotizaciones=Cotizacion::where('nombre_pax',$nombre)->where('estado','2')
+            // ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
+            //             $query->where('proveedor_id','!=','')
+            //             ->where('requerimientos_id','0');
+            // })->get();
+            $cotizaciones=Cotizacion::
+            where(function($query)use($nombre){
+                $query->where('nombre_pax',$nombre)->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0');
+                });
+            })
+            ->Orwhere(function($query)use($nombre){
+                $query->where('nombre_pax',$nombre)->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.itinerario_servicios', function ($query){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0');
+                });
+            })
+            ->get();
         }
         elseif($opcion=='TODOS LOS URGENTES'||$opcion=='TODOS LOS PENDIENTES'){
-            $cotizaciones=Cotizacion::where('estado','2')
-            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin,$prioridad){
-                        $query->where('proveedor_id','!=','')
-                        ->where('requerimientos_id','0')
-                        ->where('prioridad',$prioridad);
-            })->get();            
+            $cotizaciones=Cotizacion::
+            where(function($query)use($prioridad){
+                $query->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query)use($prioridad){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0')
+                    ->where('prioridad',$prioridad);
+                });
+            })
+            ->Orwhere(function($query)use($prioridad){
+                $query->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.itinerario_servicios', function ($query)use($prioridad){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0')
+                    ->where('prioridad',$prioridad);
+                });
+            })
+            ->get();
+            // $cotizaciones=Cotizacion::where('estado','2')
+            // ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin,$prioridad){
+            //             $query->where('proveedor_id','!=','')
+            //             ->where('requerimientos_id','0')
+            //             ->where('prioridad',$prioridad);
+            // })->get();            
         }
         elseif($opcion=='ENTRE DOS FECHAS'){
-            $cotizaciones=Cotizacion::where('estado','2')
-            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
-                        $query->where('proveedor_id','!=','')
-                        ->whereBetween('fecha_venc', array($ini, $fin))
-                        ->where('requerimientos_id','0');
-            })->get();
+            $cotizaciones=Cotizacion::
+            where(function($query)use($ini, $fin){
+                $query->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query)use($ini, $fin){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0')        
+                    ->whereBetween('fecha_venc', array($ini, $fin));
+                });
+            })
+            ->Orwhere(function($query)use($ini, $fin){
+                $query->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.itinerario_servicios', function ($query)use($ini, $fin){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0')
+                    ->whereBetween('fecha_venc', array($ini, $fin));
+                });
+            })
+            ->get();
+            // $cotizaciones=Cotizacion::where('estado','2')
+            // ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
+            //             $query->where('proveedor_id','!=','')
+            //             ->whereBetween('fecha_venc', array($ini, $fin))
+            //             ->where('requerimientos_id','0');
+            // })->get();
         }
         elseif($opcion=='ENTRE DOS FECHAS URGENTES'){
-            $cotizaciones=Cotizacion::where('estado','2')
-            ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
-                        $query->where('proveedor_id','!=','')
-                        ->whereBetween('fecha_venc', array($ini, $fin))
-                        ->where('requerimientos_id','0')
-                        ->where('prioridad','URGENTE');
-            })->get();
+            $cotizaciones=Cotizacion::
+            where(function($query)use($ini, $fin){
+                $query->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query)use($ini, $fin){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0')        
+                    ->whereBetween('fecha_venc', array($ini, $fin))
+                    ->where('prioridad','URGENTE');
+                });
+            })
+            ->Orwhere(function($query)use($ini, $fin){
+                $query->where('estado','2')->whereHas('paquete_cotizaciones.itinerario_cotizaciones.itinerario_servicios', function ($query)use($ini, $fin){
+                    $query->where('proveedor_id','!=','')
+                    ->where('requerimientos_id','0')
+                    ->whereBetween('fecha_venc', array($ini, $fin))
+                    ->where('prioridad','URGENTE');
+                });
+            })
+            ->get();
+            // $cotizaciones=Cotizacion::where('estado','2')
+            // ->whereHas('paquete_cotizaciones.itinerario_cotizaciones.hotel', function ($query) use($ini, $fin){
+            //             $query->where('proveedor_id','!=','')
+            //             ->whereBetween('fecha_venc', array($ini, $fin))
+            //             ->where('requerimientos_id','0')
+            //             ->where('prioridad','URGENTE');
+            // })->get();
         }
-
+// dd($cotizaciones);
         $array_pagos_pendientes = array();
+        $array_pagos_pendientes_tours = array();
+        // dd($cotizaciones);
         foreach ($cotizaciones as $cotizacion){
             foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
                 foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){
+                    foreach($itinerario_cotizaciones->itinerario_servicios->where('proveedor_id','!=','')->where('requerimientos_id','0') as $itinerario_servicio){
+                        $key_servicio=$cotizacion->id.'_'.$itinerario_servicio->proveedor_id;
+                        $monto_r=0;
+                        $monto_v=0;
+                        $monto_c=0;
+                        $text_itinerario_servicio='';
+                        $grupe='';
+                        $icon='';
+                        $clase='ninguno';
+                        // dd('hola:'.$itinerario_servicio->id);
+                        if($itinerario_servicio->clase)
+                            $clase=$itinerario_servicio->clase;
+                        
+                        if($itinerario_servicio->grupo)
+                            $grupe=$itinerario_servicio->grupo;
+                        
+                        if($grupe=='TOURS')
+                            $icon='<i class="fas fa-map text-info" aria-hidden="true"></i>';
+                        
+                        if($grupe=='MOVILID'){
+                            if($clase=='BOLETO')
+                                $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                            else
+                                $icon='<i class="fa fa-bus text-warning" aria-hidden="true"></i>';
+                        }
+                                
+                        if($grupe=='REPRESENT')
+                            $icon='<i class="fa fa-users text-success" aria-hidden="true"></i>';
+                        
+                        if($grupe=='ENTRANCES')
+                            $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                        
+                        if($grupe=='FOOD')
+                            $icon='<i class="fas fa-utensils text-danger" aria-hidden="true"></i>';
+                        
+                        if($grupe=='TRAINS')
+                            $icon='<i class="fa fa-train text-info" aria-hidden="true"></i>';
+                        
+                        if($grupe=='FLIGHTS')
+                            $icon='<i class="fa fa-plane text-primary" aria-hidden="true"></i>';
+                        
+                        if($grupe=='OTHERS')
+                            $icon='<i class="fa fa-question fa-text-success" aria-hidden="true"></i>';
+                        
+                            
+                        
+                        $text_itinerario_servicio.=$icon.'<b class="text-primary">'.$itinerario_servicio->nombre.'</b>';
+                        if($itinerario_servicio->precio_grupo=='0'){
+                            $monto_r+=$cotizacion->nropersonas*$itinerario_servicio->precio_proveedor;
+                            $monto_v+=$cotizacion->nropersonas*$itinerario_servicio->precio;
+                            $monto_c+=$cotizacion->nropersonas*$itinerario_servicio->precio_c;
+                        }
+                        elseif($itinerario_servicio->precio_grupo=='1'){
+                            $monto_r+=$itinerario_servicio->precio_proveedor;
+                            $monto_v+=$itinerario_servicio->precio;
+                            $monto_c+=$itinerario_servicio->precio_c;
+                        }
+                        if(array_key_exists($key_servicio,$array_pagos_pendientes_tours)){
+                            // dd($array_pagos_pendientes_tours);
+                            $array_pagos_pendientes_tours[$key_servicio]['monto_r']+= $monto_r;
+                            $array_pagos_pendientes_tours[$key_servicio]['monto_v']+= $monto_v;
+                            $array_pagos_pendientes_tours[$key_servicio]['monto_c']+= $monto_c;
+                            $array_pagos_pendientes_tours[$key_servicio]['items'].= ','.$itinerario_servicio->id;
+                        }else{
+                            // $proveedor='';
+                            // if($itinerario_servicio->proveedor_id>0){
+                                $proveedor_=Proveedor::where('id',$itinerario_servicio->proveedor_id)->first();
+                                if(count((array)$proveedor_)>0)
+                                    $proveedor=$proveedor_->nombre_comercial;
+                            // }
+                            // $fecha_venc='';
+                            // if($itinerario_servicio->fecha_venc)
+                            //     $fecha_venc=$itinerario_servicio->fecha_venc;
+                                    
+                            $array_pagos_pendientes_tours[$key_servicio]=array('proveedor'=>$proveedor,
+                                                            'items'=>$itinerario_servicio->id,
+                                                            'codigo'=>$cotizacion->codigo,                                
+                                                            'pax'=>$cotizacion->nombre_pax,
+                                                            'nro'=>$cotizacion->nropersonas,
+                                                            'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                            'fecha_pago'=>$itinerario_servicio->fecha_venc,
+                                                            'titulo'=> $text_itinerario_servicio,
+                                                            'monto_r'=>$monto_r,
+                                                            'monto_v'=>$monto_v,
+                                                            'monto_c'=>$monto_c,
+                                                            'saldo'=>'',
+                                                            'grupo'=>$grupe,
+                                                            'clase'=>$clase);
+                        }
+                    }
                     foreach ($itinerario_cotizaciones->hotel->where('proveedor_id','!=','')/*->whereBetween('fecha_venc', array($ini, $fin))*/->where('requerimientos_id','0') as $hotel){
                         $key=$cotizacion->id.'_'.$hotel->proveedor_id;
                         $monto_r=0;
@@ -2169,24 +2342,34 @@ class ContabilidadController extends Controller
                                                             'monto_r'=>$monto_r,
                                                             'monto_v'=>$monto_v,
                                                             'monto_c'=>$monto_c,
-                        'saldo'=>'');
+                                                            'saldo'=>'',
+                                                            'grupo'=>'HOTELS',
+                                                            'clase'=>'ninguno');
                         }                        
                     }
                 }
             }   
         }
         $sort1=array();
-        $sort_codigo=array();
-        
+        $sort_codigo=array();  
         foreach ($array_pagos_pendientes as $key => $part) {
             $sort1[$key] = strtotime($part['fecha_pago']);
             $sort_codigo[$key] = $part['codigo'];
         }
         array_multisort($sort1, SORT_ASC,$sort_codigo, SORT_ASC, $array_pagos_pendientes);
-        
         // dd($array_pagos_pendientes);
+        //-- 
+        $sort1_tours=array();
+        $sort_codigo_tours=array();  
+        foreach ($array_pagos_pendientes_tours as $key => $part) {
+            $sort1_tours[$key] = strtotime($part['fecha_pago']);
+            $sort_codigo_tours[$key] = $part['codigo'];
+        }
+        array_multisort($sort1_tours, SORT_ASC,$sort_codigo_tours, SORT_ASC, $array_pagos_pendientes_tours);
         
-        return view('admin.contabilidad.lista-fecha-hotel-filtro-general',compact(['proveedor','array_pagos_pendientes', 'pagos', 'cotizacion', 'ini', 'fin','proveedores']));
+        // dd($array_pagos_pendientes_tours);
+        
+        return view('admin.contabilidad.lista-fecha-hotel-filtro-general',compact(['proveedor','array_pagos_pendientes','array_pagos_pendientes_tours', 'pagos', 'cotizacion', 'ini', 'fin','proveedores']));
     }
     public function traer_datos(Request $request){
 
@@ -2199,16 +2382,22 @@ class ContabilidadController extends Controller
         $view=$request->input('view');
         $clave=$request->input('clave');
         $grupo=$request->input('grupo');
+        $clase=$request->input('clase');
         $nro_personas=$request->input('nro_personas');
         $lista_items=explode(',',$request->input('lista_items'));
-        // $consulta=null;
-        // if($grupo=='HOTELS'){
+        $consulta=null;
+        $itinerario_cotizacioness=null;
+        if($grupo=='HOTELS'){
             $consulta=ItinerarioCotizaciones::whereIn('id',$lista_items)->get();
-        // }
-        // else
-        //     $consulta=ItinerarioCotizaciones::whereIn('id',$lista_items)->get();
-        //return dd($consulta);
-        return view('admin.contabilidad.lista-items',compact(['consulta','grupo','clave','nro_personas','view','operacion','estado_contabilidad']));
+        }
+        else{
+            $consulta=ItinerarioServicios::whereIn('id',$lista_items)->get();
+
+            $itinerario_cotizacioness=ItinerarioCotizaciones::get();
+            // return dd($consulta);
+        }
+
+        return view('admin.contabilidad.lista-items',compact(['consulta','grupo','clase','clave','nro_personas','view','operacion','estado_contabilidad','itinerario_cotizacioness']));
     }
     public function hotel_store(Request $request){    
         $clave=$request->input('clave');    

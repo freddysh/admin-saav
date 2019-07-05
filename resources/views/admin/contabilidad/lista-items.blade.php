@@ -1,17 +1,27 @@
-@if ($grupo=='HOTELS')
+{{-- @if ($grupo=='HOTELS') --}}
 <div class="row">
     <div class="col-6">      
         <b class="text-primary">Notas por contabilidad:</b><br>
         @php
             $notas_contabilidad='';
         @endphp
-        @foreach ($consulta as $itinerario_cotizaciones)
-            @foreach ($itinerario_cotizaciones->hotel as $item)
+        
+        @if($grupo=='HOTELS')
+            @foreach ($consulta as $itinerario_cotizaciones)
+                @foreach ($itinerario_cotizaciones->hotel as $item)
+                    @php
+                        $notas_contabilidad=$item->notas_contabilidad;
+                    @endphp        
+                @endforeach                
+            @endforeach
+        @else
+            @foreach ($consulta as $item)
                 @php
                     $notas_contabilidad=$item->notas_contabilidad;
                 @endphp        
             @endforeach
-        @endforeach
+        @endif
+            
         <p>
             {!! $notas_contabilidad !!}
         </p>  
@@ -21,13 +31,21 @@
         @php
             $notas_contabilidad_aprovador='';
         @endphp
-        @foreach ($consulta as $itinerario_cotizaciones)
-            @foreach ($itinerario_cotizaciones->hotel as $item)   
-            @php
-                $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
-            @endphp
+        @if($grupo=='HOTELS')
+            @foreach ($consulta as $itinerario_cotizaciones)
+                @foreach ($itinerario_cotizaciones->hotel as $item)   
+                    @php
+                        $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
+                    @endphp
+                @endforeach
             @endforeach
-        @endforeach
+        @else
+            @foreach ($consulta as $item)   
+                @php
+                    $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
+                @endphp
+            @endforeach
+        @endif
         <p>{{$notas_contabilidad_aprovador}}</p>
 </div>
 </div>
@@ -50,135 +68,230 @@
             $total_v=0;
             $total_c=0;
         @endphp
-        @foreach ($consulta as $itinerario_cotizaciones)
-            @php
-                $notas_contabilidad_aprovador='';
-            @endphp
-            @foreach ($itinerario_cotizaciones->hotel as $item)   
-            @php
-                $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
-            @endphp
-            @if ($pos==0)
+
+        
+            @if($grupo=='HOTELS')
+
+                @foreach ($consulta as $itinerario_cotizaciones)
                 @php
-                    $fecha_pago=$item->fecha_venc;
-                    $pos++;
-                @endphp    
-            @endif
-            
-                <tr>
-                    <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</td>
-                    <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($fecha_pago)}}</td>
-                    <td>
-                        @if ($item->personas_s>0)
-                            <p class="mt-2">{{$item->personas_s}} <i class="fas fa-bed text-primary"></i></p>    
-                        @endif
-                        @if ($item->personas_d>0)
-                            <p class="mt-2">{{$item->personas_d}} <i class="fas fa-bed text-primary"></i><i class="fas fa-bed text-primary"></i></p>    
-                        @endif
-                        @if ($item->personas_m>0)
-                            <p class="mt-2">{{$item->personas_m}} <i class="fas fa-transgender text-primary"></i></p>    
-                        @endif
-                        @if ($item->personas_t>0)
-                            <p class="mt-2">{{$item->personas_t}} <i class="fas fa-bed text-primary"></i><i class="fas fa-bed text-primary"></i><i class="fas fa-bed text-primary"></i></p>    
-                        @endif
-                    </td>
-                    <td class="text-right">
-                        @if ($item->personas_s>0)
-                            @php
-                                $total_v+=$item->personas_s*$item->precio_s;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->personas_s*$item->precio_s}}" readonly>
-                                                      
-                        @endif
-                        @if ($item->personas_d>0)
-                            @php
-                                $total_v+=$item->personas_d*$item->precio_d_r;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_d[]" value="{{$item->personas_d*$item->precio_d}}" readonly>
-                           
-                        @endif
-                        @if ($item->personas_m>0)
-                            @php
-                                $total_v+=$item->personas_m*$item->precio_m_r;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_m[]" value="{{$item->personas_m*$item->precio_m}}" readonly>
-                             
-                        @endif
-                        @if ($item->personas_t>0)
-                            @php
-                                $total_v+=$item->personas_t*$item->precio_t_r;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_t[]" value="{{$item->personas_t*$item->precio_t}}" readonly>
+                    $notas_contabilidad_aprovador='';
+                @endphp
+                @foreach ($itinerario_cotizaciones->hotel as $item)   
+                    @php
+                        $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
+                    @endphp
+                    @if ($pos==0)
+                        @php
+                            $fecha_pago=$item->fecha_venc;
+                            $pos++;
+                        @endphp    
+                    @endif            
+                    <tr>
+                        <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($itinerario_cotizaciones->fecha)}}</td>
+                        <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($fecha_pago)}}</td>
+                        <td>
+                            @if ($item->personas_s>0)
+                                <p class="mt-2">{{$item->personas_s}} <i class="fas fa-bed text-primary"></i></p>    
+                            @endif
+                            @if ($item->personas_d>0)
+                                <p class="mt-2">{{$item->personas_d}} <i class="fas fa-bed text-primary"></i><i class="fas fa-bed text-primary"></i></p>    
+                            @endif
+                            @if ($item->personas_m>0)
+                                <p class="mt-2">{{$item->personas_m}} <i class="fas fa-transgender text-primary"></i></p>    
+                            @endif
+                            @if ($item->personas_t>0)
+                                <p class="mt-2">{{$item->personas_t}} <i class="fas fa-bed text-primary"></i><i class="fas fa-bed text-primary"></i><i class="fas fa-bed text-primary"></i></p>    
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($item->personas_s>0)
+                                @php
+                                    $total_v+=$item->personas_s*$item->precio_s;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->personas_s*$item->precio_s}}" readonly>
+                                                        
+                            @endif
+                            @if ($item->personas_d>0)
+                                @php
+                                    $total_v+=$item->personas_d*$item->precio_d_r;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_d[]" value="{{$item->personas_d*$item->precio_d}}" readonly>
                             
+                            @endif
+                            @if ($item->personas_m>0)
+                                @php
+                                    $total_v+=$item->personas_m*$item->precio_m_r;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_m[]" value="{{$item->personas_m*$item->precio_m}}" readonly>
+                                
+                            @endif
+                            @if ($item->personas_t>0)
+                                @php
+                                    $total_v+=$item->personas_t*$item->precio_t_r;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_t[]" value="{{$item->personas_t*$item->precio_t}}" readonly>
+                                
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($item->personas_s>0)
+                                @php
+                                    $total_r+=$item->personas_s*$item->precio_s_r;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->personas_s*$item->precio_s_r}}" readonly>
+                                                        
+                            @endif
+                            @if ($item->personas_d>0)
+                                @php
+                                    $total_r+=$item->personas_d*$item->precio_d_r;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_d_r[]" value="{{$item->personas_d*$item->precio_d_r}}" readonly>
+                                
+                            @endif
+                            @if ($item->personas_m>0)
+                                @php
+                                    $total_r+=$item->personas_m*$item->precio_m_r;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_m_r[]" value="{{$item->personas_m*$item->precio_m_r}}" readonly>
+                                
+                            @endif
+                            @if ($item->personas_t>0)
+                                @php
+                                    $total_r+=$item->personas_t*$item->precio_t_r;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_t_r[]" value="{{$item->personas_t*$item->precio_t_r}}" readonly>
+                                
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($item->personas_s>0)
+                                @php
+                                    $total_c+=$item->personas_s*$item->precio_s_c;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_s*$item->precio_s_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')"  @if($operacion=='aprobar') readonly @endif>
+                                <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
+                                <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                            
+                            @endif
+                            @if ($item->personas_d>0)
+                                @php
+                                    $total_c+=$item->personas_d*$item->precio_d_c;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_d_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_d*$item->precio_d_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')" @if($operacion=='aprobar') readonly @endif>
+                                <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
+                                <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
+                            @endif
+                            @if ($item->personas_m>0)
+                                @php
+                                    $total_c+=$item->personas_m*$item->precio_m_c;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_m_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_m*$item->precio_m_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')" @if($operacion=='aprobar') readonly @endif>
+                                <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
+                                <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
+                            @endif
+                            @if ($item->personas_t>0)
+                                @php
+                                    $total_c+=$item->personas_t*$item->precio_t_c;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_t_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_t*$item->precio_t_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')" @if($operacion=='aprobar') readonly @endif>
+                                <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
+                                <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                @endforeach  
+            @else
+                @foreach ($consulta as $item)   
+                    @php
+                        $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
+                    @endphp
+                    @if ($pos==0)
+                        @php
+                            $fecha_pago=$item->fecha_venc;
+                            $pos++;
+                        @endphp    
+                    @endif            
+                    <tr>
+                        <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru( $itinerario_cotizacioness->where('id',$item->itinerario_cotizaciones_id)->first()->fecha)}}</td>
+                        <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($fecha_pago)}}</td>
+                        <td>
+                        @if($grupo=='TOURS')
+                            <i class="fas fa-map text-info" aria-hidden="true"></i>
                         @endif
-                    </td>
-                    <td class="text-right">
-                        @if ($item->personas_s>0)
-                            @php
-                                $total_r+=$item->personas_s*$item->precio_s_r;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->personas_s*$item->precio_s_r}}" readonly>
-                                                     
+                        @if($grupo=='MOVILID')
+                            @if($clase=='BOLETO')
+                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                            @else
+                                <i class="fa fa-bus text-warning" aria-hidden="true"></i>
+                            @endif
                         @endif
-                        @if ($item->personas_d>0)
-                            @php
-                                $total_r+=$item->personas_d*$item->precio_d_r;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_d_r[]" value="{{$item->personas_d*$item->precio_d_r}}" readonly>
+                                
+                        @if($grupo=='REPRESENT')
+                            <i class="fa fa-users text-success" aria-hidden="true"></i>
+                        @endif
+                        @if($grupo=='ENTRANCES')
+                           <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                        @endif
+                        @if($grupo=='FOOD')
+                            <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
+                        @endif
+                        @if($grupo=='TRAINS')
+                            <i class="fa fa-train text-info" aria-hidden="true"></i>
+                        @endif
+                        @if($grupo=='FLIGHTS')
+                            <i class="fa fa-plane text-primary" aria-hidden="true"></i>
+                        @endif
+                        @if($grupo=='OTHERS')
+                            <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
+                        @endif                       
+                        </td>
+                        <td class="text-right">
+                            @if ($item->precio_grupo==1)
+                                @php
+                                    $total_v+=$item->precio;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->precio}}" readonly>
+                            @elseif ($item->precio_grupo==0)
+                                @php
+                                    $total_v+=$nro_personas*$item->precio;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->precio}}" readonly>                            
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($item->precio_grupo==1)
+                                @php                               
+                                    $total_r+=$item->precio_proveedor;  
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->precio_proveedor}}" readonly>                        
+                            @elseif ($item->precio_grupo==0)
+                                @php                               
+                                    $total_r+=$nro_personas*$item->precio_proveedor;  
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$nro_personas*$item->precio_proveedor}}" readonly>
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            @if ($item->precio_grupo==1)
+                                @php
+                                    $total_c+=$item->precio_c;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->precio_s}}" onchange="sumar_hotel_subtotales('{{$clave}}')"  @if($operacion=='aprobar') readonly @endif>
+                                <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
+                                <input type="hidden" name="personas_s[]" value="{{$nro_personas}}">                           
+                            @elseif ($item->precio_grupo==0)
+                                @php
+                                    $total_c+=$nro_personas*$item->precio_c;    
+                                @endphp
+                                <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$nro_personas*$item->precio_s}}" onchange="sumar_hotel_subtotales('{{$clave}}')"  @if($operacion=='aprobar') readonly @endif>
+                                <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
+                                <input type="hidden" name="personas_s[]" value="{{$nro_personas}}">                           
                             
-                        @endif
-                        @if ($item->personas_m>0)
-                            @php
-                                $total_r+=$item->personas_m*$item->precio_m_r;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_m_r[]" value="{{$item->personas_m*$item->precio_m_r}}" readonly>
-                             
-                        @endif
-                        @if ($item->personas_t>0)
-                            @php
-                                $total_r+=$item->personas_t*$item->precio_t_r;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_t_r[]" value="{{$item->personas_t*$item->precio_t_r}}" readonly>
-                            
-                        @endif
-                    </td>
-                    <td class="text-right">
-                        @if ($item->personas_s>0)
-                            @php
-                                $total_c+=$item->personas_s*$item->precio_s_c;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_s*$item->precio_s_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')"  @if($operacion=='aprobar') readonly @endif>
-                            <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
-                            <input type="hidden" name="personas_s[]" value="{{$item->personas_s}}">                            
-                        @endif
-                        @if ($item->personas_d>0)
-                            @php
-                                $total_c+=$item->personas_d*$item->precio_d_c;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_d_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_d*$item->precio_d_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')" @if($operacion=='aprobar') readonly @endif>
-                            <input type="hidden" name="hotel_id_d[]" value="{{$item->id}}">  
-                            <input type="hidden" name="personas_d[]" value="{{$item->personas_d}}">
-                        @endif
-                        @if ($item->personas_m>0)
-                            @php
-                                $total_c+=$item->personas_m*$item->precio_m_c;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_m_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_m*$item->precio_m_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')" @if($operacion=='aprobar') readonly @endif>
-                            <input type="hidden" name="hotel_id_m[]" value="{{$item->id}}">
-                            <input type="hidden" name="personas_m[]" value="{{$item->personas_m}}">  
-                        @endif
-                        @if ($item->personas_t>0)
-                            @php
-                                $total_c+=$item->personas_t*$item->precio_t_c;    
-                            @endphp
-                            <input class="form-control" style="width:100px" type="number" name="precio_t_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->personas_t*$item->precio_t_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')" @if($operacion=='aprobar') readonly @endif>
-                            <input type="hidden" name="hotel_id_t[]" value="{{$item->id}}">  
-                            <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-        @endforeach        
+                            @endif
+                        </td>
+                    </tr>    
+                @endforeach
+            @endif      
             <tr>
                 <td colspan="3">TOTAL</td>
                 <td>
@@ -247,12 +360,13 @@
         {{ csrf_field() }}
         <input type="hidden"  name="nro_personas" value="{{$nro_personas}}">
         <input type="hidden"  name="clave" value="{{$clave}}">
-        <input type="hidden"  name="operacion" value="{{$operacion}}">
+
+
         <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store_notas('{{$clave}}')">Guardar Observaciones</button>
     </div>
     <div class="col-12" id="rpt_{{$clave}}">
     </div>
 </div>
 
-@endif
+{{-- @endif --}}
 
