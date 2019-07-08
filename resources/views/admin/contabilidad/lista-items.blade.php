@@ -345,7 +345,7 @@
         {{ csrf_field() }}
         <input type="hidden"  name="nro_personas" value="{{$nro_personas}}">
         <input type="hidden"  name="clave" value="{{$clave}}">
-        <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store('{{$clave}}')">Guardar</button>
+        <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store('{{$grupo}}','{{$clave}}')">Guardar</button>
     </div>
     <div class="col-12 @if($operacion=='aprobar') nada @else d-none @endif">
         <label class="sr-only1" for="notas">Observaciones</label>

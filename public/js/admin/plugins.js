@@ -6899,9 +6899,9 @@ function buscar_pagos_pendientes(opcion,nombre,codigo,ini,fin,servicio){
 
 function traer_datos(clave,grupo,clase,lista_items,nro_personas,estado_contabilidad){
     
-    $('#datos_'+clave).html('');
-    $('#datos_'+clave).addClass('text-center');
-    $('#datos_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+    $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
+    $('#'+grupo+'_'+clase+'_datos_'+clave).addClass('text-center');
+    $('#'+grupo+'_'+clase+'_datos_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6911,7 +6911,7 @@ function traer_datos(clave,grupo,clase,lista_items,nro_personas,estado_contabili
     $.ajax({
         url: '/admin/contabilidad/operaciones/traer-datos',
         type: 'post',
-        data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&estado_contabilidad='+estado_contabilidad+'&operacion=ver',
+        data: 'clave='+clave+'&grupo='+grupo+'&clase='+clase+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&estado_contabilidad='+estado_contabilidad+'&operacion=ver',
         success: function (data) {
             $('#'+grupo+'_'+clase+'_datos_'+clave).removeClass('text-center');
             $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
@@ -6923,7 +6923,7 @@ function traer_datos(clave,grupo,clase,lista_items,nro_personas,estado_contabili
     });
 }
 
-function contabilidad_hotel_store(clave){
+function contabilidad_hotel_store(grupo,clave){
     console.log('clave:'+clave);
     $.ajaxSetup({
         headers: {
@@ -6942,25 +6942,25 @@ function contabilidad_hotel_store(clave){
         beforeSend:
         function() {
             
-            $('#rpt_'+clave).html('');
-            $('#rpt_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            $('#rpt_'+grupo+'_'+clave).html('');
+            $('#rpt_'+grupo+'_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
         success: function (data) {
-            $('#monto_c_'+clave).html($('#precio_total_'+clave).val());
-            $('#rpt_'+clave).html('');
-            $('#rpt_'+clave).html(data.mensaje);
+            $('#monto_'+grupo+'_c_'+clave).html($('#precio_total_'+clave).val());
+            $('#rpt_'+grupo+'_'+clave).html('');
+            $('#rpt_'+grupo+'_'+clave).html(data.mensaje);
             console.log('total obtenido:'+data.total);
             if(data.total>0){
                 
             console.log('total>0:'+data.total);
-                $("#chb_"+clave).prop('disabled', false);  
-                $("#warning_"+clave).addClass('d-none');
-                $("#warning_"+clave).html('costo ingresado');
+                $("#chb_"+grupo+"_"+clave).prop('disabled', false);  
+                $("#warning_"+grupo+"_"+clave).addClass('d-none');
+                $("#warning_"+grupo+"_"+clave).html('costo ingresado');
                 
             }
             else{
                 console.log('total<=0:'+data.total);
-                $("#chb_"+clave).prop('disabled', true);
+                $("#chb_"+grupo+"_"+clave).prop('disabled', true);
         
             }
         },
@@ -7442,9 +7442,10 @@ function sr_programar_pagos_h(clave){
 }
 function traer_datos_detalle(clave,grupo,lista_items,nro_personas,operacion,estado_contabilidad){
     
-    $('#datos_'+clave).html('');
-    $('#datos_'+clave).addClass('text-center');
-    $('#datos_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+    // $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
+    $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
+    $('#'+grupo+'_'+clase+'_datos_'+clave).addClass('text-center');
+    $('#'+grupo+'_'+clase+'_datos_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -7456,8 +7457,8 @@ function traer_datos_detalle(clave,grupo,lista_items,nro_personas,operacion,esta
         type: 'post',
         data: 'clave='+clave+'&grupo='+grupo+'&lista_items='+lista_items+'&nro_personas='+nro_personas+'&view=no-edit'+'&operacion='+operacion+'&estado_contabilidad='+estado_contabilidad,
         success: function (data) {
-            $('#datos_'+clave).html('');
-            $('#datos_'+clave).html(data);
+            $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
+            $('#'+grupo+'_'+clase+'_datos_'+clave).html(data);
                 
             // if(data.estado=='1'){                
             //     toastr.success('Datos modificados correctamente.','MENSAJE DEL SISTEMA');
