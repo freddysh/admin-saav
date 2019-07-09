@@ -147,8 +147,8 @@
 
             })
         }
-        var total=0;
         function sumar(valor) {
+            var total=parseFloat($('#s_total').html());
             console.log('valor sumar:'+valor);
             var num=parseFloat(valor);
             total +=  num;
@@ -157,6 +157,7 @@
             // document.getElementById('s_total').innerHTML   = total;
         }
         function restar(valor) {
+            var total=parseFloat($('#s_total').html());
             console.log('valor restar:'+valor);
             var num=parseFloat(valor);
             total -=  num;

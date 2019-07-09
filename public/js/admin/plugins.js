@@ -6932,9 +6932,9 @@ function contabilidad_hotel_store(grupo,clave){
     });
 
     $.ajax({
-        url: $('#form_'+clave).attr('action'),
+        url: $('#form_'+grupo+'_'+clave).attr('action'),
         type: 'post',
-        data: $('#form_'+clave).serialize(),
+        data: $('#form_'+grupo+'_'+clave).serialize(),
         // dataType:'json',
         // contentType:false,
         // cache:false,
@@ -7672,7 +7672,7 @@ function enviar_consulta(form){
         })
     // });
 }
-function borrar_item_pago(key,items){
+function borrar_item_pago(key,grupo,items){
 var txt_ini=$('#txt_ini').val();
 var txt_fin=$('#txt_fin').val();
 // dd($request->all());
@@ -7693,7 +7693,7 @@ var chb_h_pagos=$('#chb_h_pagos').val();
         var monto_c=parseFloat($('#monto_c_'+key).html());
         $('#s_total').html(total-monto_c);
         $('#monto_solicitado').val(total-monto_c);
-        $("#fila_"+key).remove();
+        $("#fila_"+grupo+"_"+key).remove();
     })
 }
 function borrar_items_pago(key,codigo){

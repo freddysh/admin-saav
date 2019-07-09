@@ -2237,14 +2237,12 @@ class ContabilidadController extends Controller
                         
                         if($grupe=='OTHERS')
                             $icon='<i class="fa fa-question fa-text-success" aria-hidden="true"></i>';
-                        
-                            
-                        
+                                                
                         $text_itinerario_servicio.=$icon.'<b class="text-primary">'.$itinerario_servicio->nombre.'</b>';
                         if($itinerario_servicio->precio_grupo=='0'){
-                            $monto_r+=$cotizacion->nropersonas*$itinerario_servicio->precio_proveedor;
+                            $monto_r+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_proveedor;
                             $monto_v+=$cotizacion->nropersonas*$itinerario_servicio->precio;
-                            $monto_c+=$cotizacion->nropersonas*$itinerario_servicio->precio_c;
+                            $monto_c+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_c;
                         }
                         elseif($itinerario_servicio->precio_grupo=='1'){
                             $monto_r+=$itinerario_servicio->precio_proveedor;
@@ -2281,7 +2279,9 @@ class ContabilidadController extends Controller
                                                             'monto_c'=>$monto_c,
                                                             'saldo'=>'',
                                                             'grupo'=>$grupe,
-                                                            'clase'=>$clase);
+                                                            'clase'=>$clase,
+                            'notas_contabilidad'=> $itinerario_servicio->notas_contabilidad,
+                            'estado_contabilidad'=>'1'/* $itinerario_servicio->estado_contabilidad*/);
                         }
                     }
                     foreach ($itinerario_cotizaciones->hotel->where('proveedor_id','!=','')/*->whereBetween('fecha_venc', array($ini, $fin))*/->where('requerimientos_id','0') as $hotel){
@@ -2344,7 +2344,9 @@ class ContabilidadController extends Controller
                                                             'monto_c'=>$monto_c,
                                                             'saldo'=>'',
                                                             'grupo'=>'HOTELS',
-                                                            'clase'=>'ninguno');
+                                                            'clase'=>'ninguno',
+                            'notas_contabilidad'=> $hotel->notas_contabilidad,
+                            'estado_contabilidad'=>'1'/* $hotel->estado_contabilidad*/);
                         }                        
                     }
                 }
@@ -2391,15 +2393,20 @@ class ContabilidadController extends Controller
             $consulta=ItinerarioCotizaciones::whereIn('id',$lista_items)->get();
         }
         else{
-            $consulta=ItinerarioServicios::whereIn('id',$lista_items)->get();
+            $consulta=ItinerarioCotizaciones::whereHas('itinerario_servicios',function($query) use($lista_items){
+                $query->whereIn('id',$lista_items);
+            } )->get();
+            // ItinerarioServicios::whereIn('id',$lista_items)->sortBy('')->get();
 
             $itinerario_cotizacioness=ItinerarioCotizaciones::get();
             // return dd($consulta);
         }
 
-        return view('admin.contabilidad.lista-items',compact(['consulta','grupo','clase','clave','nro_personas','view','operacion','estado_contabilidad','itinerario_cotizacioness']));
+        return view('admin.contabilidad.lista-items',compact(['consulta','grupo','clase','clave','nro_personas','view','operacion','estado_contabilidad','itinerario_cotizacioness','lista_items']));
     }
     public function hotel_store(Request $request){    
+        
+        $grupo=$request->input('grupo');    
         $clave=$request->input('clave');    
         $hotel_id_s=$request->input('hotel_id_s');
         $hotel_id_d=$request->input('hotel_id_d');
@@ -2414,6 +2421,8 @@ class ContabilidadController extends Controller
         $precio_m=$request->input('precio_m_c_'.$clave);
         $precio_t=$request->input('precio_t_c_'.$clave);
         $total=$request->input('precio_total_'.$clave);
+
+        if($grupo=='HOTELS'){
         // dd($total);
         // if(isset($hotel_id_s)){   
             if(!empty($hotel_id_s)){
@@ -2456,6 +2465,20 @@ class ContabilidadController extends Controller
                 }
             }
         // }
+        }
+        else{
+            $servicios_id=$request->input('hotel_id_s');
+            $precio_c=$request->input('precio_s_c_'.$clave);
+            if(!empty($servicios_id)){
+                foreach ($servicios_id as $key => $value) {
+                    # code...
+                    $servicios=ItinerarioServicios::find($value);
+                    $servicios->precio_c=$precio_c[$key];
+                    $servicios->fecha_venc=$request->input('fecha_venc');
+                    $servicios->save(); 
+                }
+            }
+        }
        return response()->json(['mensaje'=>'<div class="alert alert-success text-left"><strong>Good!!!</strong> Datos guardados correctamente</div>','total'=>$total]);
     }
     
@@ -2582,41 +2605,31 @@ class ContabilidadController extends Controller
 	{
         $txt_ini=$request->input('txt_ini');
         $txt_fin=$request->input('txt_fin');
-        // dd($request->all());
         $arreglo_h=$request->input('arreglo_h');
         $modo_busqueda=$request->input('tipo_filtro');
-
-        
         $chb_h_pagos=$request->input('chb_h_pagos');
+        $chb_s_pagos=$request->input('chb_h_pagos_s');
+        // convertimos a array pero es para un caso especial
         $arreglo=array();
         if(!is_array($chb_h_pagos)){
-            
-        // dd($chb_h_pagos);
             $chb_h_pagos1=$chb_h_pagos;
             $chb_h_pagos1=explode(',',$chb_h_pagos1);
             $key=$request->input('key');
             foreach($chb_h_pagos1 as $chb_h_pago){
                 if($chb_h_pago!=$key){
                     array_push($arreglo,$chb_h_pago);
-                    // $arreglo[]=$chb_h_pago;
-                    // $arreglo[]=array($chb_h_pago);
                 }
             }
             $chb_h_pagos=$arreglo;
-            // dd($arreglo);
-            
-        // dd($arreglo);
         }
-
+        $array_pagos_pendientes = [];
         if(isset($chb_h_pagos)){
-            $lista_cotizaciones=[];
-            
+            $lista_cotizaciones=[];            
             $lista_cotizaciones_proveedor=[];
             foreach($chb_h_pagos as $chb_h_pago){
                 $valor=explode('_',$chb_h_pago);
                 $cotizacion_id=$valor[0];
-                $proveedor_id=$valor[1];
-                
+                $proveedor_id=$valor[1];                
                 if(!array_key_exists($cotizacion_id,$lista_cotizaciones)){
                     $lista_cotizaciones[]=$cotizacion_id;
                 }
@@ -2626,16 +2639,12 @@ class ContabilidadController extends Controller
                     $lista_cotizaciones_proveedor[$cotizacion_id]=array('proveedores'=>$proveedor_id);
                 }
             }
-            // dd($lista_cotizaciones_proveedor['405']['proveedores']);
             $cotizaciones=Cotizacion::whereIn('id',$lista_cotizaciones)->get();
             $array_pagos_pendientes = [];
             $key='';
             foreach ($cotizaciones as $cotizacion){
                 foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
-                    foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){     
-
-                        // dd($itinerario_cotizaciones->hotel->where('proveedor_id','153'));
-// dd($lista_cotizaciones_proveedor[$cotizacion->id]['proveedores']);
+                    foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){    
                         foreach ($itinerario_cotizaciones->hotel->whereIn('proveedor_id',explode(',',$lista_cotizaciones_proveedor[$cotizacion->id]['proveedores']))/*->where('primera_confirmada','1')*/ as $hotel){
                             $key=$cotizacion->id.'_'.$hotel->proveedor_id;
                             $monto_r=0;
@@ -2667,24 +2676,18 @@ class ContabilidadController extends Controller
                                 $text_hotel.='| <b class="text-primary">'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
                             }
                             if(array_key_exists($key,$array_pagos_pendientes)){
-                                // dd($array_pagos_pendientes);
                                 $array_pagos_pendientes[$key]['monto_r']+= $monto_r;
                                 $array_pagos_pendientes[$key]['monto_v']+= $monto_v;
                                 $array_pagos_pendientes[$key]['monto_c']+= $monto_c;
                                 $array_pagos_pendientes[$key]['items'].= ','.$hotel->id;
                                 $array_pagos_pendientes[$key]['items_itinerario'].= ','.$itinerario_cotizaciones->id;
                                 $array_pagos_pendientes[$key]['notas_cotabilidad']= $hotel->notas_contabilidad;
+                                $array_pagos_pendientes[$key]['estado_contabilidad']= $hotel->estado_contabilidad;
                             }else{
-                                // $proveedor='';
-                                // if($hotel->proveedor_id>0){
-                                    $proveedor_=Proveedor::where('id',$hotel->proveedor_id)->first();
-                                    if(count((array)$proveedor_)>0)
-                                        $proveedor=$proveedor_->nombre_comercial;
-                                // }
-                                // $fecha_venc='';
-                                // if($hotel->fecha_venc)
-                                //     $fecha_venc=$hotel->fecha_venc;
-                                        
+                                $proveedor_=Proveedor::where('id',$hotel->proveedor_id)->first();
+                                if(count((array)$proveedor_)>0)
+                                    $proveedor=$proveedor_->nombre_comercial;
+                                       
                                 $array_pagos_pendientes[$key]=array('proveedor'=>$proveedor,
                                                                 'items'=>$hotel->id,
                                                                 'items_itinerario'=>$itinerario_cotizaciones->id,
@@ -2694,18 +2697,19 @@ class ContabilidadController extends Controller
                                                                 'fecha_servicio'=>$itinerario_cotizaciones->fecha,
                                                                 'fecha_pago'=>$hotel->fecha_venc,
                                                                 'titulo'=> $text_hotel,
+                                                                'estado_contabilidad'=> $hotel->estado_contabilidad,
                                                                 'notas_cotabilidad'=> $hotel->notas_contabilidad,
                                                                 'monto_r'=>$monto_r,
                                                                 'monto_v'=>$monto_v,
                                                                 'monto_c'=>$monto_c,
-                            'saldo'=>'');
+                                                                'saldo'=>'',
+                                                                'grupo'=>'HOTELS',
+                                                                'clase'=>'ninguno');
                             }                        
                         }
                     }
                 }   
-            }
-
-            
+            }            
             $sort1=array();
             $sort_codigo=array();
             
@@ -2714,17 +2718,136 @@ class ContabilidadController extends Controller
                 $sort_codigo[$key] = $part['codigo'];
             }
             array_multisort($sort1, SORT_ASC,$sort_codigo, SORT_ASC, $array_pagos_pendientes);
-            // dd($array_pagos_pendientes);
-        // dd($chb_h_pagos);
-        // dd($arreglo_h);
-        // dd($array_pagos_pendientes);
+        }
+        
+        $array_pagos_pendientes_servicios = [];
+        if(isset($chb_s_pagos)){
+            $lista_cotizaciones=[];            
+            $lista_cotizaciones_proveedor=[];
+            foreach($chb_s_pagos as $chb_h_pago){
+                $valor=explode('_',$chb_h_pago);
+                $cotizacion_id=$valor[0];
+                $proveedor_id=$valor[1];                
+                if(!array_key_exists($cotizacion_id,$lista_cotizaciones)){
+                    $lista_cotizaciones[]=$cotizacion_id;
+                }
+                if(array_key_exists($cotizacion_id,$lista_cotizaciones_proveedor)){
+                    $lista_cotizaciones_proveedor[$cotizacion_id]['proveedores'].= ','.$proveedor_id;                    
+                }else{         
+                    $lista_cotizaciones_proveedor[$cotizacion_id]=array('proveedores'=>$proveedor_id);
+                }
+            }
+            $cotizaciones=Cotizacion::whereIn('id',$lista_cotizaciones)->get();
+            $array_pagos_pendientes_servicios = [];
+            $key='';
+            foreach ($cotizaciones as $cotizacion){
+                foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
+                    foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){    
+                        foreach ($itinerario_cotizaciones->itinerario_servicios->whereIn('proveedor_id',explode(',',$lista_cotizaciones_proveedor[$cotizacion->id]['proveedores']))/*->where('primera_confirmada','1')*/ as $itinerario_servicio){
+                            $key=$cotizacion->id.'_'.$itinerario_servicio->proveedor_id;
+                            $monto_r=0;
+                            $monto_v=0;
+                            $monto_c=0;
+                            $text_itinerario_servicio='';
+                            $grupe='';
+                            $icon='';
+                            $clase='ninguno';
+                            if($itinerario_servicio->clase)
+                            $clase=$itinerario_servicio->clase;
+                        
+                            if($itinerario_servicio->grupo)
+                                $grupe=$itinerario_servicio->grupo;
+                        
+                            if($grupe=='TOURS')
+                                $icon='<i class="fas fa-map text-info" aria-hidden="true"></i>';
+                            
+                            if($grupe=='MOVILID'){
+                                if($clase=='BOLETO')
+                                    $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                else
+                                    $icon='<i class="fa fa-bus text-warning" aria-hidden="true"></i>';
+                            }
+                                    
+                            if($grupe=='REPRESENT')
+                                $icon='<i class="fa fa-users text-success" aria-hidden="true"></i>';
+                            
+                            if($grupe=='ENTRANCES')
+                                $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                            
+                            if($grupe=='FOOD')
+                                $icon='<i class="fas fa-utensils text-danger" aria-hidden="true"></i>';
+                            
+                            if($grupe=='TRAINS')
+                                $icon='<i class="fa fa-train text-info" aria-hidden="true"></i>';
+                            
+                            if($grupe=='FLIGHTS')
+                                $icon='<i class="fa fa-plane text-primary" aria-hidden="true"></i>';
+                            
+                            if($grupe=='OTHERS')
+                                $icon='<i class="fa fa-question fa-text-success" aria-hidden="true"></i>';
+                                                    
+                            $text_itinerario_servicio.=$icon.'<b class="text-primary">'.$itinerario_servicio->nombre.'</b>';
+                            if($itinerario_servicio->precio_grupo=='0'){
+                                $monto_r+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_proveedor;
+                                $monto_v+=$cotizacion->nropersonas*$itinerario_servicio->precio;
+                                $monto_c+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_c;
+                            }
+                            elseif($itinerario_servicio->precio_grupo=='1'){
+                                $monto_r+=$itinerario_servicio->precio_proveedor;
+                                $monto_v+=$itinerario_servicio->precio;
+                                $monto_c+=$itinerario_servicio->precio_c;
+                            }
+
+                            if(array_key_exists($key,$array_pagos_pendientes_servicios)){
+                                $array_pagos_pendientes_servicios[$key]['monto_r']+= $monto_r;
+                                $array_pagos_pendientes_servicios[$key]['monto_v']+= $monto_v;
+                                $array_pagos_pendientes_servicios[$key]['monto_c']+= $monto_c;
+                                $array_pagos_pendientes_servicios[$key]['items'].= ','.$itinerario_servicio->id;
+                                $array_pagos_pendientes_servicios[$key]['items_itinerario'].= ','.$itinerario_cotizaciones->id;
+                                $array_pagos_pendientes_servicios[$key]['notas_cotabilidad']= $itinerario_servicio->notas_contabilidad;
+                            }else{
+                                $proveedor_=Proveedor::where('id',$itinerario_servicio->proveedor_id)->first();
+                                if(count((array)$proveedor_)>0)
+                                    $proveedor=$proveedor_->nombre_comercial;
+                                       
+                                $array_pagos_pendientes_servicios[$key]=array('proveedor'=>$proveedor,
+                                                                'items'=>$itinerario_servicio->id,
+                                                                'items_itinerario'=>$itinerario_cotizaciones->id,
+                                                                'codigo'=>$cotizacion->codigo,                                
+                                                                'pax'=>$cotizacion->nombre_pax,
+                                                                'nro'=>$cotizacion->nropersonas,
+                                                                'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                'fecha_pago'=>$itinerario_servicio->fecha_venc,
+                                                                'titulo'=> $text_hotel,
+                                                                'notas_cotabilidad'=> $itinerario_servicio->notas_contabilidad,
+                                                                'monto_r'=>$monto_r,
+                                                                'monto_v'=>$monto_v,
+                                                                'monto_c'=>$monto_c,
+                                                                'saldo'=>'',
+                                                                'grupo'=>$grupe,
+                                                                'clase'=>$clase);
+                            }                        
+                        }
+                    }
+                }   
+            }            
+            $sort1_servicios=array();
+            $sort_codigo_servicios=array();
+            
+            foreach ($array_pagos_pendientes_servicios as $key => $part) {
+                $sort1_servicios[$key] = strtotime($part['fecha_pago']);
+                $sort_codigo_servicios[$key] = $part['codigo'];
+            }
+            array_multisort($sort1_servicios, SORT_ASC,$sort_codigo_servicios, SORT_ASC, $array_pagos_pendientes_servicios);
+        }
         $ini='';
         $fin='';
-        $grupo='HOTELS';
+        // $grupo='HOTELS';
         $webs = Web::get();
+        // dd($array_pagos_pendientes_servicios);
         // return view('admin.contabilidad.requerimiento-preparado',compact(['array_pagos_pendientes']));
-        return view('admin.contabilidad.requerimiento-preparado',compact(['proveedor','array_pagos_pendientes', 'pagos', 'cotizacion', 'txt_ini', 'txt_fin','proveedores','webs','grupo','modo_busqueda']));
-        }
+        return view('admin.contabilidad.requerimiento-preparado',compact(['proveedor','array_pagos_pendientes','array_pagos_pendientes_servicios', 'pagos', 'cotizacion', 'txt_ini', 'txt_fin','proveedores','webs','grupo','modo_busqueda']));
+        
     }
     public function hotel_store_notas(Request $request){
         try{       

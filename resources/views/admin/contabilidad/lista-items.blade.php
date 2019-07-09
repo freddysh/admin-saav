@@ -54,7 +54,7 @@
         <tr>
             <th>FECHA USO</th>
             <th>FECHA PAGO</th>
-            <th>HOTEL</th>
+            <th>CATEGORIA</th>
             <th>MONTO VENTA</th>
             <th>MONTO RESERVA</th>
             <th>MONTO CONTA</th>
@@ -201,106 +201,112 @@
                 @endforeach
                 @endforeach  
             @else
-                @foreach ($consulta as $item)   
-                    @php
-                        $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
-                    @endphp
-                    @if ($pos==0)
+                @foreach ($consulta as $item_)
+                    @foreach ($item_->itinerario_servicios->whereIn('id',$lista_items) as $item)   
                         @php
-                            $fecha_pago=$item->fecha_venc;
-                            $pos++;
-                        @endphp    
-                    @endif            
-                    <tr>
-                        <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru( $itinerario_cotizacioness->where('id',$item->itinerario_cotizaciones_id)->first()->fecha)}}</td>
-                        <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($fecha_pago)}}</td>
-                        <td>
-                        @if($grupo=='TOURS')
-                            <i class="fas fa-map text-info" aria-hidden="true"></i>
-                        @endif
-                        @if($grupo=='MOVILID')
-                            @if($clase=='BOLETO')
-                                <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                            @else
-                                <i class="fa fa-bus text-warning" aria-hidden="true"></i>
+                            $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
+                        @endphp
+                        @if ($pos==0)
+                            @php
+                                $fecha_pago=$item->fecha_venc;
+                                $pos++;
+                            @endphp    
+                        @endif            
+                        <tr>
+                            <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($item_->fecha)}}</td>
+                            <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($fecha_pago)}}</td>
+                            <td>
+                            @if($grupo=='TOURS')
+                                <i class="fas fa-map text-info" aria-hidden="true"></i>
                             @endif
-                        @endif
-                                
-                        @if($grupo=='REPRESENT')
-                            <i class="fa fa-users text-success" aria-hidden="true"></i>
-                        @endif
-                        @if($grupo=='ENTRANCES')
-                           <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
-                        @endif
-                        @if($grupo=='FOOD')
-                            <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
-                        @endif
-                        @if($grupo=='TRAINS')
-                            <i class="fa fa-train text-info" aria-hidden="true"></i>
-                        @endif
-                        @if($grupo=='FLIGHTS')
-                            <i class="fa fa-plane text-primary" aria-hidden="true"></i>
-                        @endif
-                        @if($grupo=='OTHERS')
-                            <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                        @endif                       
-                        </td>
-                        <td class="text-right">
-                            @if ($item->precio_grupo==1)
-                                @php
-                                    $total_v+=$item->precio;    
-                                @endphp
-                                <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->precio}}" readonly>
-                            @elseif ($item->precio_grupo==0)
-                                @php
-                                    $total_v+=$nro_personas*$item->precio;    
-                                @endphp
-                                <input class="form-control" style="width:100px" type="number" name="precio_s[]" value="{{$item->precio}}" readonly>                            
+                            @if($grupo=='MOVILID')
+                                @if($clase=='BOLETO')
+                                    <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
+                                @else
+                                    <i class="fa fa-bus text-warning" aria-hidden="true"></i>
+                                @endif
                             @endif
-                        </td>
-                        <td class="text-right">
-                            @if ($item->precio_grupo==1)
-                                @php                               
-                                    $total_r+=$item->precio_proveedor;  
-                                @endphp
-                                <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->precio_proveedor}}" readonly>                        
-                            @elseif ($item->precio_grupo==0)
-                                @php                               
-                                    $total_r+=$nro_personas*$item->precio_proveedor;  
-                                @endphp
-                                <input class="form-control" style="width:100px" type="number" name="precio_s_r[]" value="{{$nro_personas*$item->precio_proveedor}}" readonly>
+                                    
+                            @if($grupo=='REPRESENT')
+                                <i class="fa fa-users text-success" aria-hidden="true"></i>
                             @endif
-                        </td>
-                        <td class="text-right">
-                            @if ($item->precio_grupo==1)
-                                @php
-                                    $total_c+=$item->precio_c;    
-                                @endphp
-                                <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->precio_s}}" onchange="sumar_hotel_subtotales('{{$clave}}')"  @if($operacion=='aprobar') readonly @endif>
-                                <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
-                                <input type="hidden" name="personas_s[]" value="{{$nro_personas}}">                           
-                            @elseif ($item->precio_grupo==0)
-                                @php
-                                    $total_c+=$nro_personas*$item->precio_c;    
-                                @endphp
-                                <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$nro_personas*$item->precio_s}}" onchange="sumar_hotel_subtotales('{{$clave}}')"  @if($operacion=='aprobar') readonly @endif>
-                                <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
-                                <input type="hidden" name="personas_s[]" value="{{$nro_personas}}">                           
-                            
+                            @if($grupo=='ENTRANCES')
+                            <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                             @endif
-                        </td>
-                    </tr>    
+                            @if($grupo=='FOOD')
+                                <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
+                            @endif
+                            @if($grupo=='TRAINS')
+                                <i class="fa fa-train text-info" aria-hidden="true"></i>
+                            @endif
+                            @if($grupo=='FLIGHTS')
+                                <i class="fa fa-plane text-primary" aria-hidden="true"></i>
+                            @endif
+                            @if($grupo=='OTHERS')
+                                <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
+                            @endif                       
+                            </td>
+                            <td class="text-right">
+                                @if ($item->precio_grupo==1)
+                                    @php
+                                        $total_v+=$item->precio;    
+                                    @endphp
+                                    <input class="form-control d-none" style="width:100px" type="number" name="precio_s[]" value="{{$item->precio}}" readonly>
+                                    <span><b class="text-success"><sup>$</sup></b><b>{{number_format($item->precio,2)}}</b></span>
+                                @elseif ($item->precio_grupo==0)
+                                    @php
+                                        $total_v+=$nro_personas*$item->precio;    
+                                    @endphp
+                                    <input class="form-control d-none" style="width:100px" type="number" name="precio_s[]" value="{{$nro_personas*$item->precio}}" readonly>
+                                    <span><b class="text-success"><sup>$</sup></b><b>{{number_format($nro_personas*$item->precio,2)}}</b></span>
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if ($item->precio_grupo==1)
+                                    @php                               
+                                        $total_r+=$item->precio_proveedor;  
+                                    @endphp
+                                    <input class="form-control d-none" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->precio_proveedor}}" readonly>                    <span><b class="text-success"><sup>$</sup></b><b>{{number_format($item->precio_proveedor,2)}}</b></span>
+                                @elseif ($item->precio_grupo==0)
+                                    @php                               
+                                        $total_r+=$item->precio_proveedor;  
+                                    @endphp
+                                    <input class="form-control d-none" style="width:100px" type="number" name="precio_s_r[]" value="{{$item->precio_proveedor}}" readonly>
+                                    <span><b class="text-success"><sup>$</sup></b><b>{{number_format($item->precio_proveedor,2)}}</b></span>
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                {{-- @if ($item->precio_grupo==1) --}}
+                                    @php
+                                        $total_c+=$item->precio_c;    
+                                    @endphp
+                                    <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->precio_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')"  @if($operacion=='aprobar') readonly @endif>
+                                    <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
+                                    <input type="hidden" name="personas_s[]" value="{{$nro_personas}}">                           
+                                {{-- @elseif ($item->precio_grupo==0)
+                                    @php
+                                        $total_c+=$item->precio_c;    
+                                    @endphp
+                                    <input class="form-control" style="width:100px" type="number" name="precio_s_c_{{$clave}}[]" step="0.01" min="1" value="{{$item->precio_c}}" onchange="sumar_hotel_subtotales('{{$clave}}')"  @if($operacion=='aprobar') readonly @endif>
+                                    <input type="hidden" name="hotel_id_s[]" value="{{$item->id}}">
+                                    <input type="hidden" name="personas_s[]" value="{{$nro_personas}}">
+                                @endif --}}
+                            </td>
+                        </tr>    
+                    @endforeach
                 @endforeach
             @endif      
             <tr>
                 <td colspan="3">TOTAL</td>
                 <td>
                     <b id="total" class="text-15">
-                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_v}}" readonly></b>
+                    <input class="form-control d-none" style="width:100px" type="number" name="precio" value="{{$total_v}}" readonly></b>
+                    <span><b class="text-success"><sup>$</sup></b><b>{{number_format($total_v,2)}}</b></span>
                 </td>
                 <td>
                     <b id="total" class="text-15">
-                    <input class="form-control" style="width:100px" type="number" name="precio" value="{{$total_r}}" readonly></b>
+                    <input class="form-control d-none" style="width:100px" type="number" name="precio" value="{{$total_r}}" readonly></b>
+                    <span><b class="text-success"><sup>$</sup></b><b>{{number_format($total_r,2)}}</b></span>
                 </td>
                 <td>
                     <b id="total" class="text-15">
@@ -345,6 +351,7 @@
         {{ csrf_field() }}
         <input type="hidden"  name="nro_personas" value="{{$nro_personas}}">
         <input type="hidden"  name="clave" value="{{$clave}}">
+        <input type="hidden"  name="grupo" value="{{$grupo}}">
         <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store('{{$grupo}}','{{$clave}}')">Guardar</button>
     </div>
     <div class="col-12 @if($operacion=='aprobar') nada @else d-none @endif">
@@ -364,7 +371,7 @@
 
         <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store_notas('{{$clave}}')">Guardar Observaciones</button>
     </div>
-    <div class="col-12" id="rpt_{{$clave}}">
+    <div class="col-12" id="rpt_{{$grupo}}_{{$clave}}">
     </div>
 </div>
 

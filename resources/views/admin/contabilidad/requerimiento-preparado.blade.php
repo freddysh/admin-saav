@@ -52,20 +52,21 @@
                                     <th class="text-grey-goto text-center">Total Venta</th>
                                     <th class="text-grey-goto text-center">Total Reserva</th>
                                     <th class="text-grey-goto text-center">Total Conta</th>
-                                    <th class="text-grey-goto text-center">Saldo</th>
-                                    <th class="text-grey-goto text-center">Operaciones</th>
+                                    <th class="text-grey-goto text-center d-none">Saldo</th>
+                                    <th class="text-grey-goto text-center">Ope.</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    <tr><td class="bg-dark text-white" colspan="10">HOTELES</td></tr>
                                     @php
                                         $total=0;
                                         $arreglo='';
                                     @endphp
                                     @foreach($array_pagos_pendientes as $key => $array_pagos_pendiente)
-                                    @php
-                                        $total+=$array_pagos_pendiente['monto_c'];
-                                    @endphp
-                                        <tr id="fila_{{$key}}">
+                                        @php
+                                            $total+=$array_pagos_pendiente['monto_c'];
+                                        @endphp
+                                        <tr id="fila_{{$array_pagos_pendiente['grupo']}}_{{$key}}">
                                             <td class="text-grey-goto text-left">
                                                 <div class="form-check">
                                                 <input class="form-check-input d-none" type="hidden" form="enviar_requerimiento" value="{{$array_pagos_pendiente['items']}}" name="chb_h_pagos[]" id="chb_{{$key}}" onclick="if(this.checked) sumar($('#monto_c_{{$key}}').html()); else restar($('#monto_c_{{$key}}').html());" @if($array_pagos_pendiente['monto_r']>0 && $array_pagos_pendiente['monto_c']<=0) disabled @endif>
@@ -82,22 +83,22 @@
                                             <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_pago'])}}</td>
                                             <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_v']}}</b></td>
                                             <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_r']}}</b></td>
-                                            <td class="text-grey-goto text-right"><b><sup>$</sup> <span id="monto_c_{{$key}}">{{$array_pagos_pendiente['monto_c']}}</span></b></td>
-                                            <td class="text-grey-goto text-right">{{$array_pagos_pendiente['saldo']}}</td>
+                                            <td class="text-grey-goto text-right"><b><sup>$</sup> <span id="monto_{{$array_pagos_pendiente['grupo']}}_c_{{$key}}">{{$array_pagos_pendiente['monto_c']}}</span></b></td>
+                                            <td class="text-grey-goto text-right d-none">{{$array_pagos_pendiente['saldo']}}</td>
                                             <td class="text-grey-goto text-right">
                                                 <!-- Button trigger modal -->
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos('{{$key}}','HOTELS','{{$array_pagos_pendiente['items_itinerario']}}','{{$array_pagos_pendiente['nro']}}')">
+                                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_{{$key}}" onclick="traer_datos('{{$key}}','{{$array_pagos_pendiente['grupo']}}','{{$array_pagos_pendiente['clase']}}','{{$array_pagos_pendiente['items_itinerario']}}','{{$array_pagos_pendiente['nro']}}','{{$array_pagos_pendiente['estado_contabilidad']}}')">
                                                                 <i class="fas fa-edit"></i>
                                                     </button> 
                                                     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_notas_{{$key}}" ><i class="fas fa-book"></i></button>
 
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="borrar_item_pago('{{$key}}','{{str_replace(',','_',$array_pagos_pendiente['items_itinerario'])}}')"><i class="fas fa-trash-alt"></i></button>
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="borrar_item_pago('{{$key}}','{{$array_pagos_pendiente['grupo']}}','{{str_replace(',','_',$array_pagos_pendiente['items_itinerario'])}}')"><i class="fas fa-trash-alt"></i></button>
                                                 </div>
                                                     <!-- Modal -->
                                                 <div class="modal fade" id="modal_{{$key}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">  
-                                                        <form id="form_{{$key}}" action="{{route('contabilidad.hotel.store')}}" method="POST" >   
+                                                        <form id="form_{{$array_pagos_pendiente['grupo']}}_{{$key}}" action="{{route('contabilidad.hotel.store')}}" method="POST" >   
                                                             <div class="modal-content  modal-lg">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="exampleModalCenterTitle">Editar Costos</h5>
@@ -107,7 +108,7 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <div class="row">
-                                                                        <div id="datos_{{$key}}" class="col">
+                                                                        <div id="{{$array_pagos_pendiente['grupo']}}_{{$array_pagos_pendiente['clase']}}_datos_{{$key}}" class="col">
 
                                                                         </div>
                                                                     </div>
@@ -159,6 +160,8 @@
                                             $arreglo.=str_replace(',','_',$array_pagos_pendiente['items_itinerario']) .',';
                                         @endphp
                                     @endforeach
+
+
                                     @php
                                         $arreglo=substr($arreglo,0,strlen($arreglo)-1);
                                         // $arreglo.=$array_pagos_pendiente['items_itinerario'].','.;
