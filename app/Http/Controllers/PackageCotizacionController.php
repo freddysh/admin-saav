@@ -47,6 +47,9 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use App\PaquetePagoCliente;
+use App\FormaPago;
+use App\TipoFormaPago;
+
 
 class PackageCotizacionController extends Controller
 {
@@ -430,7 +433,9 @@ class PackageCotizacionController extends Controller
         $cotizacion=Cotizacion::where('id',$cotizacion_id)->get();
         $cotizacion_archivos=CotizacionArchivos::where('cotizaciones_id',$cotizacion_id)->get();
         $webs=Web::get();
-        return view('admin.quotes-current-details',['cotizacion'=>$cotizacion,'cotizacion_archivos'=>$cotizacion_archivos,'webs'=>$webs,'cotizacion_id'=>$cotizacion_id]);
+        $forma_pagos=FormaPago::get();
+        $tipo_forma_pagos=TipoFormaPago::get();
+        return view('admin.quotes-current-details',['cotizacion'=>$cotizacion,'cotizacion_archivos'=>$cotizacion_archivos,'webs'=>$webs,'cotizacion_id'=>$cotizacion_id,'forma_pagos'=>$forma_pagos,'tipo_forma_pagos'=>$tipo_forma_pagos]);
     }
 
     public function show_paxs()
@@ -2952,6 +2957,7 @@ class PackageCotizacionController extends Controller
     public function ingresar_idatos(Request $request){
         $cotizacion_id=$request->input('cotizacion_id');
         $cliente_id = $request->input('clientes_id');
+        $tipo_doc = $request->input('tipo_doc');
         $nombres = $request->input('nombres');
         $apellidos = $request->input('apellidos');
         $gender = $request->input('gender');
@@ -2961,6 +2967,7 @@ class PackageCotizacionController extends Controller
         if(count($cliente_id)>0){
             foreach($cliente_id as $key => $id){
                 $cliente_temp=Cliente::find($id);
+                $cliente_temp->tipo_doc=$tipo_doc[$key];
                 $cliente_temp->nombres=$nombres[$key];
                 $cliente_temp->apellidos=$apellidos[$key];
                 $cliente_temp->sexo=$gender[$key];
@@ -4308,9 +4315,12 @@ class PackageCotizacionController extends Controller
 
     public function agregar_pago(Request $request){
         //-- Lisita de pagos exstentes
-        $fecha_pago_=$request->input('fecha_pago_');
+        $fecha_pago_=$request->input('fecha_pago_');        
+        $forma_pago_=$request->input('forma_pago_');
+        $tipo_forma_pago_=$request->input('tipo_forma_pago_');
         $nota_pago_=$request->input('nota_pago_');
-        $monto_pago_=$request->input('monto_pago_');
+        $monto_pago_=$request->input('monto_pago_');        
+        $numero_operacion=$request->input('numero_operacion_');
         $estado_pago_=$request->input('estado_pago_');
         $pago_id_=$request->input('pago_id_');
         $cotizacion_id=$request->input('cotizacion_id');
@@ -4324,8 +4334,12 @@ class PackageCotizacionController extends Controller
                     $arreglo_pos=array_keys($pago_id_,$value->id);
                     $temp=PaquetePagoCliente::find($value->id);
                     $temp->fecha=$fecha_pago_[$arreglo_pos[0]];
+                    $temp->forma_pago_id=$forma_pago_[$arreglo_pos[0]];
+                    $temp->tipo_forma_pago_id=$tipo_forma_pago_[$arreglo_pos[0]];
+                    $temp->fecha=$fecha_pago_[$arreglo_pos[0]];
                     $temp->nota=$nota_pago_[$arreglo_pos[0]];
                     $temp->monto=$monto_pago_[$arreglo_pos[0]];
+                    $temp->numero_operacion=$numero_operacion[$arreglo_pos[0]];
                     $temp->estado=$estado_pago_[$arreglo_pos[0]];
                     $temp->save();
                     // dd($temp);
@@ -4339,17 +4353,23 @@ class PackageCotizacionController extends Controller
         // dd($request->all());
         
         $fecha_pago=$request->input('fecha_pago');
+        $forma_pago=$request->input('forma_pago');
+        $tipo_forma_pago=$request->input('tipo_forma_pago');
         $nota_pago=$request->input('nota_pago');
         $monto_pago=$request->input('monto_pago');
+        $numero_operacion=$request->input('numero_operacion');
         $estado_pago=$request->input('estado_pago');
 
         if(isset($estado_pago)){
             // agregamos los nuevos pagos
             foreach($estado_pago as $key => $value1){
                 $paquete_pago_cliente=new PaquetePagoCliente();
+                $paquete_pago_cliente->forma_pago_id=$forma_pago[$key];
+                $paquete_pago_cliente->tipo_forma_pago_id=$tipo_forma_pago[$key];
                 $paquete_pago_cliente->fecha=$fecha_pago[$key];
                 $paquete_pago_cliente->nota=$nota_pago[$key];
                 $paquete_pago_cliente->monto=$monto_pago[$key];
+                $paquete_pago_cliente->numero_operacion=$numero_operacion[$key];
                 $paquete_pago_cliente->estado=$estado_pago[$key];
                 $paquete_pago_cliente->paquete_cotizaciones_id=$paquete_id;
                 $paquete_pago_cliente->save();

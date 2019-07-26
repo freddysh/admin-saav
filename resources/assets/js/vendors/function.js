@@ -6352,13 +6352,20 @@ function agregar_plan_pago(paquete_id){
     nropagos++;
     $('#nro_pagos_'+paquete_id).val(nropagos);
     var nro_hijos=$('#lista_pagos_'+paquete_id).children().length;
-    
+    var opctions=$('#opctions').html();
+    var tipo_opctions=$('#tipo_opctions').html();
     var cadena=''+
             '<tr id="pago_'+paquete_id+'_'+nropagos+'">'+
+            '<td style="width:50px" class="cuota_nro d-none">Cuota 0'+nropagos+'</td>'+
             '<td style="width:180px;"><input type="date" class="form-control" name="fecha_pago[]" id="fecha_pago_'+paquete_id+'_'+nropagos+'" style="width:180px"  required></td>'+
-            '<td><input type="text" class="form-control" name="nota_pago[]" id="nota_pago_'+paquete_id+'_'+nropagos+'" required></td>'+
+            '<td style="width:180px;"><select class="form-control" name="forma_pago[]" id="forma_pago_'+paquete_id+'_'+nropagos+'" required>'
+            +opctions+'</select></td>'+
+            '<td style="width:200px;"><select class="form-control" name="tipo_forma_pago[]" id="tipo_forma_pago_'+paquete_id+'_'+nropagos+'" required>'
+            +tipo_opctions+'</select></td>'+
+            '<td style="width:200px;"><input type="text" class="form-control" name="nota_pago[]" id="nota_pago_'+paquete_id+'_'+nropagos+'" required></td>'+
             '<td style="width:100px"><input type="text" class="form-control" name="monto_pago[]" id="monto_pago_'+paquete_id+'_'+nropagos+'" style="width:100px" onkeyup="sumar_pagos_monto(\''+paquete_id+'\')" required></td>'+
-            '<td>'+
+            '<td style="width:150px;"><input type="text" class="form-control" name="numero_operacion[]" id="numero_operacion_'+paquete_id+'_'+nropagos+'" required></td>'+
+            '<td style="width:120px">'+
             '<input type="hidden" name="estado_pago[]" id="confirmar_pagos_'+paquete_id+'_'+nropagos+'" value="0"> '+
             '<button type="button"  class="btn btn-unset" id="btn_confirmar_'+paquete_id+'_'+nropagos+'" onclick="cambiar_estado_plan_pagos(\''+paquete_id+'\',\''+nropagos+'\')">'+
             '       <i class="fas fa-unlock"></i>   '+
@@ -6373,6 +6380,16 @@ function agregar_plan_pago(paquete_id){
 
 function borrar_plan_pago(paquete_id,nropagos){
     $('#pago_'+paquete_id+'_'+nropagos).remove();    
+    var nropagos=$('#nro_pagos_'+paquete_id).val();
+    nropagos--;
+    $('#nro_pagos_'+paquete_id).val(nropagos);
+
+// cuota_nro
+    var i=1;
+    $(".cuota_nro").each(function(){
+        var divcito = $(this).html('Cuota 0'+i);        
+        i++;
+    });
     sumar_pagos_monto(paquete_id);
 } 
 //-- Revisar esta funcion porque ya se tiene otra con el mismo nombre, al parecer tiene que ver con los palnes de pagos de las cotizaciones
@@ -6619,7 +6636,7 @@ function sumar_hotel_subtotales(clave){
     $('#precio_total_'+clave).val(suma);
     
 }
-function contabilidad_guardar_notas_requerimiento(clave,servicio){
+function contabilidad_guardar_notas_requerimiento(clave,grupo,servicio){
     tinymce.triggerSave();
     $.ajaxSetup({
         headers: {
@@ -6627,16 +6644,16 @@ function contabilidad_guardar_notas_requerimiento(clave,servicio){
         }
     });
     $.ajax({
-        url: $('#form_notas_'+clave).attr('action'),
+        url: $('#form_notas_'+grupo+'_'+clave).attr('action'),
         type: 'post',
-        data: $('#form_notas_'+clave).serialize(),
+        data: $('#form_notas_'+grupo+'_'+clave).serialize(),
         beforeSend: function() {
-            $('#rpt_notas_'+clave).html('');
-            $('#rpt_notas_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            $('#rpt_notas_'+grupo+'_'+clave).html('');
+            $('#rpt_notas_'+grupo+'_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
         success: function (data) {
-            $('#rpt_notas_'+clave).html('');
-            $('#rpt_notas_'+clave).html(data.mensaje);
+            $('#rpt_notas_'+grupo+'_'+clave).html('');
+            $('#rpt_notas_'+grupo+'_'+clave).html(data.mensaje);
         },
         error: function () {
             
@@ -6699,7 +6716,7 @@ function estado_contabilidad(id,proveedor,hoteles) {
 function sr_programar_pagos_h(clave){
     
 }
-function traer_datos_detalle(clave,grupo,lista_items,nro_personas,operacion,estado_contabilidad){
+function traer_datos_detalle(clave,grupo,clase,lista_items,nro_personas,operacion,estado_contabilidad){
     
     // $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
     $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
@@ -7078,6 +7095,58 @@ function cambiar_a(para,itinerario_id,servicio_id){
         
         $("#b_"+itinerario_id+"_"+servicio_id).remove();
         $("#f_"+itinerario_id).append(div_creado_copiado);
-    }
+    }    
+}
+
+function marcar_checked(clase){
     
+    // if($("input[name="+clase+"]").is(':checked')){//-- si se marco el check
+    //     // console.log('Esta marcado');
+    //     $('.'+clase).each(function (index) {
+    //         if(!$(this).attr('checked')){
+    //             $(this).prop('checked', true);
+    //             var valor=$(this).val();
+    //             var precio_c=$('#monto_'+clase+'_c_'+valor).html();
+    //             console.log('precio_c:'+precio_c);
+    //         }
+    //     });
+    // }
+    // else{//-- si se desmarco el check
+    //     // console.log('No esta marcado');
+    //     $('.'+clase).each(function (index) {
+    //         if($(this).attr('checked')){
+    //             $(this).prop('checked', false);
+    //             var valor=$(this).val();
+    //             var precio_c=$('#monto_'+clase+'_c_'+valor).html();
+    //             console.log('precio_c:'+precio_c);
+    //         }
+    //     });
+    // }
+}
+
+
+function buscar_pagos_pendinetes(form,valor){
+    // $('#'+form).submit(function() {
+
+        // Enviamos el formulario usando AJAX
+        $("#opcion").val(valor);
+        $.ajax({
+            type: 'POST',
+            url: $("#"+form).attr('action'),
+            data: $("#"+form).serialize(),
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend:
+                function() {
+                    $('#rpt_pr').html('');
+                    $('#rpt_pr').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+                },
+            success: function (data) {
+                $('#rpt_pr').html('');
+                $('#rpt_pr').html(data);
+                // $("#btn_enviar").prop('disabled', true);
+            },
+            error: function () {            
+            }
+        })
+    // });
 }

@@ -358,8 +358,8 @@
                                     <th class="text-center">PASAPORTE</th>
                                     <th class="text-center">GENERO</th>
                                     <th class="text-center">HOTEL</th>
-                                    <th class="text-center">EDAD</th>
-                                    <th class="text-center">RESTRICCIONES</th>
+                                    <th class="text-center">FECHA DE NAC.(DD/MM/AAAA) | EDAD</th>
+                                    <th class="text-center d-none">RESTRICCIONES</th>
                                     <th class="text-center">IDIOMA</th>
                                 </tr>
                                 </thead>
@@ -395,8 +395,12 @@
                                                     @endif
                                                 @endforeach
                                             </td>
-                                            <td>{{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años</td>
-                                            <td><span class="text-11">{{strtoupper($cliente->restricciones)}}</span> </td>
+                                            <td>
+                                                {{MisFunciones::fecha_peru($cliente->fechanacimiento)}}
+                                                |
+                                                {{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años
+                                            </td>
+                                            <td class="d-none"><span class="text-11">{{strtoupper($cliente->restricciones)}}</span> </td>
                                             <td>{{strtoupper($cotizacion->idioma_pasajeros)}}</td>
                                         </tr>
                                     @endforeach

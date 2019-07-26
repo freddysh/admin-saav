@@ -619,7 +619,7 @@ Route::post('/admin/quotes/hotel/delete', [
     'uses' => 'PackageCotizacionController@delete_hotel_quotes_paso1',
     'as' => 'quotes_hotel_delete_path',
 ]);
-Route::get('/admin/pqt/escojer/', [
+Route::post('/admin/pqt/escojer', [
     'uses' => 'PackageCotizacionController@escojer_pqt',
     'as' => 'escojer_pqt_plan',
 ]);
@@ -1494,4 +1494,12 @@ Route::get('admin/contabilidad/lista-total/{id}', [
 Route::post('admin/contabilidad/ingresar-factura', [
     'uses' => 'ContabilidadController@ingresar_factura',
     'as' => 'ingresar_factura_path',
+]);
+Route::get('admin/contabilidad/estado-de-pagos/files/{id}', [
+    'uses' => 'ContabilidadController@show_estado_pagos',
+    'as' => 'contabilidad_show_estado_pagos_path',
+]);
+Route::post('admin/contabilidad/ingresos/buscar-pagos-recientes', [
+    'uses' => 'ContabilidadController@pagos_recientes_filtro',
+    'as' => 'pagos.recientes.filtro',
 ]);

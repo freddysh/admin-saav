@@ -2293,6 +2293,18 @@ a.ui-button:active,
   border-radius: 4px;
 }
 
+.hotels {
+  color: #ccc;
+}
+
+.modal-lg-x {
+  max-width: 1250px !important;
+}
+
+.cuota_nro {
+  color: #000000;
+}
+
 /*!
  * Bootstrap v4.1.1 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors

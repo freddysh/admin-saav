@@ -59,6 +59,16 @@
         </ol>
     </nav>
     <hr>
+    <div id="opctions" class="d-none">
+        @foreach ($forma_pagos->sortby('nombre') as $item)
+            <option value="{{$item->id}}">{{$item->nombre}} ({{$item->tiempo_proceso}} dias)</option>    
+        @endforeach
+    </div>
+    <div id="tipo_opctions" class="d-none">
+        @foreach ($tipo_forma_pagos->sortby('nombre') as $item)
+            <option value="{{$item->id}}">{{$item->nombre}} @if($item->observacion) ({{$item->observacion}})@endif</option>  
+        @endforeach
+    </div>
     <div class="row">
         <div class="col">
             @foreach($cotizacion as $cotizacion1)
@@ -432,7 +442,7 @@
                             <i class="fas fa-file-alt"></i>Plan de pagos
                         </a>
                         <div class="modal fade" id="myModal_plan_pagos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                            <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-dialog modal-lg-x" role="document">
                                 <div class="modal-content">
                                 <form id="guardar_paquete_pagos_{{$paquete->id}}" action="{{route('guardar.paquete.pagos')}}" method="post">
                                         <div class="modal-header bg-primary text-white">
@@ -445,19 +455,23 @@
                                                     <b><i class="text-success"> {{$cotizacion_->codigo}}</i> | {{$cotizacion_->nombre_pax}}X{{$cotizacion_->nropersonas}}</b> ({{$fecha}}) | <b class="text-primary">TOTAL:<sup>$</sup>{{$precio_venta_total+$utilidad_hoteles_}}</b>
                                                 </div>
                                                 <div class="col-12">
-                                                    <p><b>PLAN DE PAGOS</b></p>
                                                     <table class="table table-stripe table-hover">
                                                         <thead>
                                                             <tr>
+                                                                <th class="d-none">CUOTA</th>
                                                                 <th>FECHA</th>
+                                                                <th>MEDIO DE PAGO</th>
+                                                                <th>TIPO DE MEDIO DE PAGO</th>
                                                                 <th>NOTA</th>
                                                                 <th>MONTO</th>
+                                                                <th>NUMERO DE OPERACION</th>
                                                                 <th>OPCIONES</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="lista_pagos_{{$paquete->id}}">
                                                             @php
                                                                 $total_pago=0;
+                                                                $i=0;
                                                             @endphp
                                                             @if($paquete->pagos_cliente->count()==0)
                                                                 @php
@@ -465,16 +479,35 @@
                                                                     $total_pago=$precio_venta_total+$utilidad_hoteles_;
                                                                 @endphp
                                                                 <tr id="pago_{{$paquete->id}}_{{$i}}">
+                                                                    <td style="width:100px" class="cuota_nro d-none">Cuota 01</td>
                                                                     <td style="width:180px;">
                                                                         <input type="date" class="form-control" name="fecha_pago[]" id="fecha_pago_{{$paquete->id}}_{{$i}}" style="width:180px;" required>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="width:180px">
+                                                                        <select class="form-control" name="forma_pago[]" id="forma_pago_{{$paquete->id}}_{{$i}}" required>
+                                                                            @foreach ($forma_pagos->sortby('nombre') as $item)
+                                                                                <option value="{{$item->id}}">{{$item->nombre}} ({{$item->tiempo_proceso}} dias)</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        {{-- <input type="text" class="form-control" name="nota_pago[]" id="nota_pago_{{$paquete->id}}_{{$i}}"  > --}}
+                                                                    </td>
+                                                                    <td style="width:200px">
+                                                                        <select class="form-control" name="tipo_forma_pago[]" id="tipo_forma_pago_{{$paquete->id}}_{{$i}}" required>
+                                                                            @foreach ($tipo_forma_pagos->sortby('nombre') as $item)
+                                                                                <option value="{{$item->id}}">{{$item->nombre}} @if($item->observacion) ({{$item->observacion}})@endif</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </td>
+                                                                    <td style="width:200px">
                                                                         <input type="text" class="form-control" name="nota_pago[]" id="nota_pago_{{$paquete->id}}_{{$i}}"  required>
                                                                     </td>
                                                                     <td style="width:100px">
                                                                         <input type="text" class="form-control" name="monto_pago[]" id="monto_pago_{{$paquete->id}}_{{$i}}" style="width:100px" value="{{$precio_venta_total+$utilidad_hoteles_}}" onkeyup="sumar_pagos_monto('{{$paquete->id}}')"  required>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="width:150px">
+                                                                        <input type="text" class="form-control" name="numero_operacion[]" id="numero_operacion_{{$paquete->id}}_{{$i}}" style="width:150px">
+                                                                    </td>
+                                                                    <td style="width:120px">
                                                                         <input type="hidden" name="estado_pago[]" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">             
                                                                         <button type="button" class="btn btn-unset" id="btn_confirmar_{{$paquete->id}}_{{$i}}" onclick="cambiar_estado_plan_pagos('{{$paquete->id}}','{{$i}}')">
                                                                             <i class="fas fa-unlock"></i>   
@@ -497,16 +530,34 @@
                                                                         $k++;
                                                                     @endphp
                                                                     <tr id="pago_{{$paquete->id}}_{{$pagos_cliente->id}}">
+                                                                        <td style="width:100px" class="cuota_nro d-none">Cuota 01</td>
                                                                         <td style="width:180px;">
-                                                                        <input type="date" class="form-control" name="fecha_pago_[]" id="fecha_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->fecha}}" style="width:180px;" required>
+                                                                            <input type="date" class="form-control" name="fecha_pago_[]" id="fecha_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->fecha}}" style="width:180px;" required>
                                                                         </td>
-                                                                        <td>
-                                                                        <input type="text" class="form-control" name="nota_pago_[]" id="nota_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->nota}}" required>
+                                                                        <td style="width:180px">
+                                                                            <select class="form-control" name="forma_pago_[]" id="forma_pago_{{$paquete->id}}_{{$i}}" required>
+                                                                                @foreach ($forma_pagos->sortby('nombre') as $item)
+                                                                                    <option value="{{$item->id}}" @if($pagos_cliente->forma_pago_id==$item->id) selected @endif>{{$item->nombre}} ({{$item->tiempo_proceso}} dias)</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </td>
+                                                                        <td style="width:200px">
+                                                                            <select class="form-control" name="tipo_forma_pago_[]" id="tipo_forma_pago_{{$paquete->id}}_{{$i}}" required>
+                                                                                @foreach ($tipo_forma_pagos->sortby('nombre') as $item)
+                                                                                    <option value="{{$item->id}}" @if($pagos_cliente->tipo_forma_pago_id==$item->id) selected @endif>{{$item->nombre}} @if($item->observacion) ({{$item->observacion}})@endif</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </td>
+                                                                        <td style="width:200px">
+                                                                            <input type="text" class="form-control" name="nota_pago_[]" id="nota_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->nota}}" required>
                                                                         </td>
                                                                         <td style="width:100px">
                                                                             <input type="text" class="form-control" name="monto_pago_[]" id="monto_pago_{{$paquete->id}}_{{$pagos_cliente->id}}" style="width:100px" value="{{$pagos_cliente->monto}}" onkeyup="sumar_pagos_monto('{{$paquete->id}}')"  required>
                                                                         </td>
-                                                                        <td>
+                                                                        <td style="width:150px">
+                                                                            <input type="text" class="form-control" name="numero_operacion_[]" id="numero_operacion_{{$paquete->id}}_{{$i}}" value="{{$pagos_cliente->numero_operacion}}" style="width:150px">
+                                                                        </td>
+                                                                        <td style="width:120px">
                                                                             <input type="hidden" name="pago_id_[]" value="{{$pagos_cliente->id}}">
                                                                             <input type="hidden" name="estado_pago_[]" id="confirmar_pagos_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->estado}}">
                                                                                     
@@ -530,7 +581,7 @@
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <td>
+                                                                <td colspan="3">
                                                                     <b>SUMATORIA</b>   
                                                                 </td>
                                                                 <td>
@@ -553,7 +604,7 @@
                                             {{csrf_field()}}
                                             <input type="hidden" name="cotizacion_id" value="{{$cotizacion_->id}}">
                                             <input type="hidden" name="paquete_id" value="{{$paquete->id}}">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                         <button type="submit" class="btn btn-primary" onclick="preparar_envio_pagos('guardar_paquete_pagos_{{$paquete->id}}','{{$paquete->id}}')">Guardar</button>
                                         </div>
                                     </form>
@@ -649,7 +700,7 @@
                                         <div class="modal-footer">
                                             {{csrf_field()}}
                                             <input type="hidden" name="id" value="{{$cotizacion_->id}}">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                             <button type="submit" class="btn btn-primary">Subir archivo</button>
                                         </div>
                                     </form>
@@ -750,7 +801,7 @@
                             <i class="fas fa-list-alt" aria-hidden="true"></i>Ingresar datos
                         </a>
                         <div class="modal fade" id="Modal_datos_{{$paquete->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-dialog modal-lg-x" role="document">
                                 <form id="ingresar_idatos_{{$paquete->id}}" action="{{route('package_cotizacion_ingresar_datos_path')}}" method="post">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -760,51 +811,104 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="row"> 
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:10"></th>
+                                                        <th style="width:260px">NOMBRES</th>
+                                                        <th style="width:260px">APELLIDOS</th>
+                                                        <th style="width:200px">GENERO</th>
+                                                        <th style="width:180px">FECHA NAC.</th>
+                                                        <th style="width:200px">PASAPORTE/DNI</th>
+                                                        <th style="width:200px">NACIONALIDAD</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                @php
+                                                    $pos=0;
+                                                @endphp
                                                 @foreach($cotizacion_->cotizaciones_cliente as $cliente_coti)
-                                                    <div class="col-6 mb-2">
-                                                        <div class="card p-2">
+                                                    @php
+                                                        $pos++;
+                                                    @endphp
+                                                    <tr>
+                                                        <td>
+                                                            <i class="fas fa-user @if($pos==1) text-success @else text-dark @endif"></i>
+                                                        </td>
+                                                        <td>
                                                             <input type="hidden" name="clientes_id[]" value="{{$cliente_coti->cliente->id}}">
-                                                            <div class="input-group mb-2">
-                                                                    <div class="input-group-prepend">
-                                                                        <div class="input-group-text">Nombres</div>
-                                                                    </div>
-                                                                <input type="text" class="form-control" id="nombres" name="nombres[]" value="{{$cliente_coti->cliente->nombres}}" required>
-                                                            </div>
-                                                            <div class="input-group mb-2">
+                                                            <input type="text" class="form-control" id="nombres" name="nombres[]" value="{{$cliente_coti->cliente->nombres}}" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" id="apellidos" name="apellidos[]" value="{{$cliente_coti->cliente->apellidos}}" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" id="gender" name="gender[]" value="{{$cliente_coti->cliente->sexo}}" required>
+                                                        </td>
+                                                        <td>
+                                                            <input type="date" class="form-control" id="fecha_nac" name="fecha_nac[]" value="{{$cliente_coti->cliente->fechanacimiento}}" required>
+                                                        </td>
+                                                        <td style="width:400px">
+                                                            <div class="input-group mb-3">
                                                                 <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Apellidos</div>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="apellidos" name="apellidos[]" value="{{$cliente_coti->cliente->apellidos}}" required>
-                                                            </div>
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Gender</div>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="gender" name="gender[]" value="{{$cliente_coti->cliente->sexo}}" required>
-                                                            </div>
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Fecha de nacimiento</div>
-                                                                </div>
-                                                                <input type="date" class="form-control" id="fecha_nac" name="fecha_nac[]" value="{{$cliente_coti->cliente->fechanacimiento}}" required>
-                                                            </div>
-                                                            <div class="input-group mb-2">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Pasaporte</div>
+                                                                    <select class="form-control" name="tipo_doc[]">
+                                                                        <option value="PASAPORTE" @if($cliente_coti->cliente->tipo_doc=='PASAPORTE') selected @endif>PASAPORTE</option>
+                                                                        <option value="DNI" @if($cliente_coti->cliente->tipo_doc=='DNI') selected @endif>DNI</option>
+                                                                    </select>
                                                                 </div>
                                                                 <input type="text" class="form-control" id="pasaporte" name="pasaporte[]" value="{{$cliente_coti->cliente->pasaporte}}" required>
                                                             </div>
-                                                            <div class="input-group mb-2">
+                                                        </td>   
+                                                        <td>
+                                                            <input type="text" class="form-control" id="nacionalidad" name="nacionalidad[]" value="{{$cliente_coti->cliente->nacionalidad}}" required>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                @endforeach
+                                                <tbody>
+                                            </table>
+                                            <div class="col-6 mb-2 d-none">
+                                                    <div class="card p-2">
+                                                        
+                                                        <div class="input-group mb-2">
                                                                 <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Nacionalidad</div>
+                                                                    <div class="input-group-text">Nombres</div>
                                                                 </div>
-                                                                <input type="text" class="form-control" id="nacionalidad" name="nacionalidad[]" value="{{$cliente_coti->cliente->nacionalidad}}" required>
+                                                            
+                                                        </div>
+                                                        <div class="input-group mb-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Apellidos</div>
                                                             </div>
+                                                            
+                                                        </div>
+                                                        <div class="input-group mb-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Gender</div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="input-group mb-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Fecha de nacimiento</div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="input-group mb-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Pasaporte</div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div class="input-group mb-2">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Nacionalidad</div>
+                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
-                                                @endforeach
-                                            </div>
+                                                </div>
+                                            
                                             <div class="row">
                                                 <div class="col-12">
                                                     <b id="response_idatos_{{$paquete->id}}" class="text-22"></b>
@@ -1140,7 +1244,7 @@
                 }
             });
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: "{{route('escojer_pqt_plan')}}",
                 data: 'id='+id+'&valor='+valor,
                 // Mostramos un mensaje con la respuesta de PHP

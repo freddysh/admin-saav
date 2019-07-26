@@ -13,4 +13,12 @@ class PaquetePagoCliente extends Model
     {
         return $this->belongsTo(PaqueteCotizaciones::class, 'paquete_cotizaciones_id');
     }
+    public function forma_pagos()
+    {
+        return $this->belongsTo(FormaPago::class, 'forma_pago_id');
+    }
+    public function tipo_forma_pagos()
+    {
+        return $this->belongsTo(TipoFormaPago::class, 'tipo_forma_pago_id');
+    }
 }

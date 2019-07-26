@@ -244,8 +244,8 @@
                                                     <th class="text-center">PASAPORTE</th>
                                                     <th class="text-center">GENERO</th>
                                                     <th class="text-center">HOTEL</th>
-                                                    <th class="text-center">EDAD</th>
-                                                    <th class="text-center">RESTRICCIONES</th>
+                                                    <th class="text-center">FECHA DE NAC. | EDAD</th>
+                                                    <th class="text-center d-none">RESTRICCIONES</th>
                                                     <th class="text-center">IDIOMA</th>
                                                 </tr>
                                                 </thead>
@@ -281,8 +281,11 @@
                                                                     @endif
                                                                 @endforeach
                                                             </td>
-                                                            <td>{{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años</td>
-                                                            <td><span class="text-11">{{strtoupper($cliente->restricciones)}}</span> </td>
+                                                            <td>
+                                                                {{MisFunciones::fecha_peru($cliente->fechanacimiento)}}
+                                                                |
+                                                                {{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años</td>
+                                                            <td class="d-none"><span class="text-11">{{strtoupper($cliente->restricciones)}}</span> </td>
                                                             <td>{{strtoupper($cotizacion->idioma_pasajeros)}}</td>
                                                         </tr>
                                                     @endforeach
@@ -298,10 +301,14 @@
                                             @php
                                                 $sumatotal_v=0;
                                                 $sumatotal_v_r=0;
+                                                $sumatotal_v_c=0;
                                                 $sumatotal_v_boleta=0;
                                                 $sumatotal_v_r_boleta=0;
+                                                $sumatotal_v_c_boleta=0;
                                                 $sumatotal_v_factura=0;
                                                 $sumatotal_v_r_factura=0;
+                                                $sumatotal_v_c_factura=0;
+
                                                 $profit=0;
                                                 $nro_c_boleta_='';
                                                 $sub_monto_boleta_=0;
@@ -328,7 +335,7 @@
                                                 @endif
                                                 @if($paquete->duracion==1)
                                                     @php
-                                                        $profit=$paquete->utilidad*$cotizacion->nropersonas;    
+                                                        $profit=$paquete->utilidad*$cotizacion->nropersonas;
                                                     @endphp   
                                                 @else
                                                     @php
@@ -407,7 +414,7 @@
                                                             @foreach($itinerario->itinerario_servicios->sortBy('pos')/*->whereIn('grupo',$paraBoleta)*/ as $servicios)
                                                                 @if($servicios->boleta_factura=='0')
                                                                     @if (($servicios->grupo=='REPRESENT'&&($servicios->tipoServicio=='GUIDE'||$servicios->tipoServicio=='ASSISTANCE'))||($servicios->grupo=='ENTRANCES')||($servicios->grupo=='MOVILID'&&$servicios->clase=='BOLETO'))
-                                                                    <div id="b_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
+                                                                    <div id="b_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 text-12 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
                                                                         <div id="icon_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">
                                                                                 @php
                                                                                 $grupe='ninguno';
@@ -525,7 +532,9 @@
                                                                         </div>
                                                                         @php
                                                                             $mate='$';
-                                                                            $mate_SALE='$';
+                                                                            $mate_SALE='';
+                                                                            $mate_SALE_reservado='';
+                                                                            $mate_SALE_contabilidad='';
                                                                         @endphp
                                                                         @if($servicios->precio_grupo==1)
                                                                             @php
@@ -546,18 +555,27 @@
                                                                         @if($servicios->precio_grupo==1)
                                                                             @php
                                                                                 $mate_SALE.=$servicios->precio;
+                                                                                $mate_SALE_reservado.=$servicios->precio_proveedor;
+                                                                                $mate_SALE_contabilidad.=$servicios->precio_c;
                                                                                 $sumatotal_v+=$servicios->precio;
                                                                                 $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_c+=$servicios->precio_c;
+                                                                                
                                                                                 $sumatotal_v_boleta+=$servicios->precio;
                                                                                 $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_c_boleta+=$servicios->precio_c;
                                                                             @endphp
                                                                         @else
                                                                             @php
                                                                                 $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
+                                                                                $mate_SALE_reservado.=$servicios->precio_proveedor;
+                                                                                $mate_SALE_contabilidad.=$servicios->precio_c;
                                                                                 $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
                                                                                 $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_c+=$servicios->precio_c;
                                                                                 $sumatotal_v_boleta+=$servicios->precio*$cotizacion->nropersonas;
                                                                                 $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_c_boleta+=$servicios->precio_c;
                                                                             @endphp
                                                                         @endif
                                                                         <div id="calculado_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
@@ -567,13 +585,15 @@
                                                                                 {!! $mate !!}
                                                                             @endif
                                                                         </div>
-                                                                        <div id="subtotal_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0 bg-info">{{$mate_SALE}}</div>
-                                                                        <div id="proveedor_{{$itinerario->id}}_{{$servicios->id}}" class="col-3 pr-0">
-                                                                            <b class="small" id="book_proveedor_{{$servicios->id}}">
+                                                                        <div id="subtotal_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">{{$mate_SALE}}</div>
+                                                                        <div id="subtotal_reservado_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">{{$mate_SALE_reservado}}</div>
+                                                                        <div id="subtotal_c_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">{{$mate_SALE_contabilidad}}</div>
+                                                                        <div id="proveedor_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
+                                                                            <span class="text-dark" id="book_proveedor_{{$servicios->id}}">
                                                                                 @if($servicios->itinerario_proveedor)
                                                                                     {{$servicios->itinerario_proveedor->nombre_comercial}}
                                                                                 @endif
-                                                                            </b>
+                                                                            </span>
                                                                             @php
                                                                                 $grupe='ninguno';
                                                                                 $arreglito='GROUP_SIC'
@@ -589,8 +609,7 @@
                                                                                     $arregloo[]='SIC';
                                                                                     $arregloo[]=$servicios->tipoServicio;
                                                                                     $arreglito='GROUP_SIC_'.$servicios->tipoServicio;
-                                                                                @endphp
-                                                                                                                                            
+                                                                                @endphp                                          
                                                                             @endif
                                                                         </div>
                                                                         <div class="col-1">
@@ -599,8 +618,8 @@
                                                                     </div>
                                                                     @endif
                                                                 @elseif($servicios->boleta_factura=='1')
-                                                                    <div id="b_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
-                                                                        <div class="col-1 pr-0">
+                                                                    <div id="b_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 text-12 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
+                                                                        <div id="icon_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">
                                                                                 @php
                                                                                 $grupe='ninguno';
                                                                                 $destino='ninguno';
@@ -658,7 +677,7 @@
                                                                                 <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
                                                                             @endif
                                                                         </div>
-                                                                        <div class="col-3 pr-0">
+                                                                        <div id="concepto_{{$itinerario->id}}_{{$servicios->id}}" class="col-3 pr-0">
                                                                             <span class="small">
                                                                                 <b>{{$servicios->nombre}}</b>
                                                                                 (<span class="small text-primary">{{$tipoServicio}}</span>)
@@ -717,7 +736,9 @@
                                                                         </div>
                                                                         @php
                                                                             $mate='$';
-                                                                            $mate_SALE='$';
+                                                                            $mate_SALE='';
+                                                                            $mate_SALE_reservado='';
+                                                                            $mate_SALE_contabilidad='';
                                                                         @endphp
                                                                         @if($servicios->precio_grupo==1)
                                                                             @php
@@ -738,29 +759,41 @@
                                                                         @if($servicios->precio_grupo==1)
                                                                             @php
                                                                                 $mate_SALE.=$servicios->precio;
+                                                                                $mate_SALE_reservado.=$servicios->precio_proveedor;
+                                                                                $mate_SALE_contabilidad.=$servicios->precio_c;
                                                                                 $sumatotal_v+=$servicios->precio;
                                                                                 $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_c+=$servicios->precio_c;
                                                                                 $sumatotal_v_boleta+=$servicios->precio;
                                                                                 $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_c_boleta+=$servicios->precio_c;
                                                                             @endphp
                                                                         @else
                                                                             @php
                                                                                 $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
+                                                                                $mate_SALE_reservado.=$servicios->precio_proveedor;
+                                                                                $mate_SALE_contabilidad.=$servicios->precio_c;
                                                                                 $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
                                                                                 $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_c+=$servicios->precio_c;
                                                                                 $sumatotal_v_boleta+=$servicios->precio*$cotizacion->nropersonas;
                                                                                 $sumatotal_v_r_boleta+=$servicios->precio_proveedor;
+                                                                                $sumatotal_v_c_boleta+=$servicios->precio_c;
                                                                             @endphp
                                                                         @endif
-                                                                        <div class="col-2 pr-0">
+                                                                        <div id="calculado_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
                                                                             @if($servicios->precio_grupo==1)
                                                                                 {!! $mate !!}
                                                                             @elseif($servicios->precio_grupo==0)
                                                                                 {!! $mate !!}
                                                                             @endif
                                                                         </div>
-                                                                        <div class="col-2 pr-0 bg-info">{{$mate_SALE}}</div>
-                                                                        <div class="col-3 pr-0">
+                                                                        <div id="subtotal_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">{{$mate_SALE}}</div>
+                                                                        <div id="subtotal_reservado_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">
+                                                                            {{$mate_SALE_reservado}}
+                                                                        </div>
+                                                                        <div id="subtotal_c_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">{{$mate_SALE_contabilidad}}</div>
+                                                                        <div id="proveedor_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
                                                                             <b class="small" id="book_proveedor_{{$servicios->id}}">
                                                                                 @if($servicios->itinerario_proveedor)
                                                                                     {{$servicios->itinerario_proveedor->nombre_comercial}}
@@ -796,7 +829,7 @@
                                                                 $titulo_hotel='';
                                                             @endphp
                                                             @foreach($itinerario->hotel as $hotel)
-                                                                <div id="hotel_{{$hotel->id}}" class="row border-0-5 mb-0-5">
+                                                                <div id="hotel_{{$hotel->id}}" class="row border-0-5 mb-0-5 text-12">
                                                                     <div class="col-1 pr-0">
                                                                         <b>{{$hotel->estrellas}} <i class="fa fa-star text-warning" aria-hidden="true"></i></b>
                                                                         @php
@@ -807,18 +840,22 @@
                                                                             @php
                                                                             $total=0;
                                                                             $total_book=0;
+                                                                            $total_contabilidad=0;
                                                                             $cadena_total='';
+                                                                            $cadena_total_venta='';
                                                                             $cadena_total_book='';
-                                                                        $cadena_total_coti='';
+                                                                        $cadena_total_contabilidad='';
                                                                         @endphp
                                                                         @if($hotel->personas_s>0)
                                                                             @php
                                                                                 $total+=$hotel->personas_s*$hotel->precio_s;
                                                                                 $total_book+=$hotel->personas_s*$hotel->precio_s_r;
+                                                                                $total_contabilidad+=$hotel->personas_s*$hotel->precio_s_c;
                                                                                 $cadena_total.="<span>$".$hotel->precio_s." x ".$hotel->personas_s."</span><br>";
-                                                                                $cadena_total_coti.="<span>$".$hotel->personas_s*$hotel->precio_s."</span><br>";
+                                                                                $cadena_total_venta.="<span>".$hotel->personas_s*$hotel->precio_s."</span><br>";
+                                                                                $cadena_total_contabilidad.="<span>".$hotel->personas_s*$hotel->precio_s_c."</span><br>";
                                                                                 if($hotel->precio_s_r){
-                                                                                    $cadena_total_book.="<span>$".$hotel->personas_s*$hotel->precio_s_r."</span><br>";
+                                                                                    $cadena_total_book.="<span>".$hotel->personas_s*$hotel->precio_s_r."</span><br>";
                                                                                 }
                                                                                 $sumatotal_v+=$hotel->personas_s*$hotel->precio_s;
                                                                                 $sumatotal_v_boleta+=$hotel->personas_s*$hotel->precio_s;
@@ -833,10 +870,12 @@
                                                                             @php
                                                                                 $total+=$hotel->personas_d*$hotel->precio_d;
                                                                                 $total_book+=$hotel->personas_d*$hotel->precio_d_r;
+                                                                                $total_contabilidad+=$hotel->personas_d*$hotel->precio_d_c;
                                                                                 $cadena_total.="<span>$".$hotel->precio_d." x ".$hotel->personas_d." </span><br>";
-                                                                                $cadena_total_coti.="<span>$".($hotel->personas_d*$hotel->precio_d)."</span><br>";
+                                                                                $cadena_total_venta.="<span>".$hotel->personas_d*$hotel->precio_d."</span><br>";
+                                                                                $cadena_total_contabilidad.="<span>".($hotel->personas_d*$hotel->precio_d_c)."</span><br>";
                                                                                 if($hotel->precio_d_r){
-                                                                                $cadena_total_book.="<span>$".($hotel->personas_d*$hotel->precio_d_r)."</span><br>";
+                                                                                $cadena_total_book.="<span>".($hotel->personas_d*$hotel->precio_d_r)."</span><br>";
                                                                                 }
                                                                                 $sumatotal_v+=$hotel->personas_d*$hotel->precio_d;
                                                                                 $sumatotal_v_boleta+=$hotel->personas_d*$hotel->precio_d;
@@ -851,10 +890,12 @@
                                                                             @php
                                                                                 $total+=$hotel->personas_m*$hotel->precio_m;
                                                                                 $total_book+=$hotel->personas_m*$hotel->precio_m_r;
+                                                                                $total_contabilidad+=$hotel->personas_m*$hotel->precio_m_c;
                                                                                 $cadena_total.="<span>$".$hotel->precio_m." x ".($hotel->personas_m)."</span><br>";
-                                                                                $cadena_total_coti.="<span>$".$hotel->personas_m." x ".($hotel->precio_m)." </span><br>";
+                                                                                $cadena_total_venta.="<span>".$hotel->personas_m*$hotel->precio_m."</span><br>";
+                                                                                $cadena_total_contabilidad.="<span>".($hotel->personas_m*$hotel->precio_m_c)." </span><br>";
                                                                                 if($hotel->precio_m_r){
-                                                                                    $cadena_total_book.="<span>$".$hotel->personas_m." x ".($hotel->precio_m_r)." </span><br>";
+                                                                                    $cadena_total_book.="<span>".($hotel->personas_m*$hotel->precio_m_r)." </span><br>";
                                                                                 }
                                                                                 $sumatotal_v+=$hotel->personas_m*$hotel->precio_m;
                                                                                 $sumatotal_v_boleta+=$hotel->personas_m*$hotel->precio_m;
@@ -869,10 +910,12 @@
                                                                             @php
                                                                                 $total+=$hotel->personas_t*$hotel->precio_t;
                                                                                 $total_book+=$hotel->personas_t*$hotel->precio_t_r;
+                                                                                $total_contabilidad+=$hotel->personas_t*$hotel->precio_t_c;
                                                                                 $cadena_total.="<span>$".$hotel->precio_t." x ".($hotel->personas_t)."</span><br>";
-                                                                                $cadena_total_coti.="<span>$".$hotel->personas_t." x ".($hotel->precio_t)."</span><br>";
+                                                                                $cadena_total_venta.="<span>".$hotel->personas_t*$hotel->precio_t."</span><br>";
+                                                                                $cadena_total_contabilidad.="<span>".($hotel->personas_t*$hotel->precio_t_c)."</span><br>";
                                                                                 if($hotel->precio_t_r){
-                                                                                    $cadena_total_book.="<span>$".$hotel->personas_t." x ".($hotel->precio_t_r)."</span><br>";
+                                                                                    $cadena_total_book.="<span>".($hotel->personas_t*$hotel->precio_t_r)."</span><br>";
                                                                                 }
                                                                                 $sumatotal_v+=$hotel->personas_t*$hotel->precio_t;
                                                                                 $sumatotal_v_boleta+=$hotel->personas_t*$hotel->precio_t;
@@ -890,19 +933,27 @@
                                                                             <a id="hpropover_{{$hotel->id}}" data-toggle="popover" title="Detalle" data-content="{{$cadena_total}}"> <i class="fa fa-calculator text-primary" aria-hidden="true"></i></a>
                                                                         </p>
                                                                     </div>
-                                                                    <div class="col-2 pr-0 bg-info">
-                                                                        {!! $cadena_total_coti !!}
+                                                                    <div class="col-1 pr-0">
+                                                                        {!! $cadena_total_venta !!}
+                                                                    </div>
+                                                                    <div class="col-1 pr-0">
+                                                                        {!! $cadena_total_book !!}
+                                                                    </div>
+                                                                    <div class="col-1 pr-0">
+                                                                        {!! $cadena_total_contabilidad !!}
                                                                     </div>
                                                                     @php
                                                                         $sumatotal_v_r+=$total_book;
                                                                         $sumatotal_v_r_boleta+=$total_book;
+                                                                        $sumatotal_v_c+=$total_contabilidad;
+                                                                        $sumatotal_v_c_boleta+=$total_contabilidad;
                                                                     @endphp
-                                                                    <div class="col-3 pr-0">
-                                                                        <b class="small" id="book_proveedor_hotel_{{$hotel->id}}">
+                                                                    <div class="col-2 pr-0 text-dark">
+                                                                        <span class="text-dark" id="book_proveedor_hotel_{{$hotel->id}}">
                                                                             @if($hotel->proveedor)
                                                                                 {{$hotel->proveedor->nombre_comercial}}
                                                                             @endif
-                                                                        </b>
+                                                                        </span>
                                                                     </div>
                                                                     <div class="col-1">
                                                                         <button class="btn btn-dark btn-sm"><i class="fas fa-arrow-circle-right"></i></button>
@@ -914,7 +965,7 @@
                                                             @foreach($itinerario->itinerario_servicios->sortBy('pos')/*->whereIn('grupo',$paraFactura)*/ as $servicios)
                                                                 @if($servicios->boleta_factura=='0')
                                                                     @if (($servicios->grupo=='REPRESENT'&&$servicios->tipoServicio=='TRANSFER')||($servicios->grupo=='MOVILID'&&$servicios->clase=='DEFAULT')||$servicios->grupo=='TOURS'||$servicios->grupo=='FOOD'||$servicios->grupo=='TRAINS'||$servicios->grupo=='FLIGHTS'||$servicios->grupo=='OTHERS')
-                                                                    <div id="f_{{$itinerario->id}}_{{$servicios->id}}"class="row border-0-5 mb-0-5 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
+                                                                    <div id="f_{{$itinerario->id}}_{{$servicios->id}}"class="row border-0-5 mb-0-5 text-12 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
                                                                         <div class="col-1 pr-0">
                                                                             @php
                                                                                 $grupe='ninguno';
@@ -973,7 +1024,7 @@
                                                                                 <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
                                                                             @endif
                                                                         </div>
-                                                                        <div class="col-3 pr-0">
+                                                                        <div id="concepto_{{$itinerario->id}}_{{$servicios->id}}" class="col-3 pr-0">
                                                                             <span class="small">
                                                                                 <b>{{$servicios->nombre}}</b>
                                                                                 (<span class="small text-primary">{{$tipoServicio}}</span>)
@@ -1033,7 +1084,9 @@
                                                                         </div>
                                                                             @php
                                                                                 $mate='$';
-                                                                                $mate_SALE='$';
+                                                                                $mate_SALE='';
+                                                                                $mate_SALE_reservado='';
+                                                                                $mate_SALE_contabilidad='';
                                                                             @endphp
                                                                             @if($servicios->precio_grupo==1)
                                                                                 @php
@@ -1054,37 +1107,48 @@
                                                                             @if($servicios->precio_grupo==1)
                                                                                 @php
                                                                                     $mate_SALE.=$servicios->precio;
+                                                                                    $mate_SALE_reservado.=$servicios->precio_proveedor;
+                                                                                    $mate_SALE_contabilidad.=$servicios->precio_c;
                                                                                     $sumatotal_v+=$servicios->precio;
                                                                                     $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_c+=$servicios->precio_c;
                                                                                     $sumatotal_v_factura+=$servicios->precio;
                                                                                     $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_c_factura+=$servicios->precio_c;
                                                                                 @endphp
                                                                             @else
                                                                                 @php
                                                                                     $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
+                                                                                    $mate_SALE_reservado.=$servicios->precio_proveedor;
+                                                                                    $mate_SALE_contabilidad.=$servicios->precio_c;
                                                                                     $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
                                                                                     $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_c+=$servicios->precio_c;
 
                                                                                     $sumatotal_v_factura+=$servicios->precio*$cotizacion->nropersonas;;
                                                                                     $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_c_factura+=$servicios->precio_c;
                                                                                 @endphp
                                                                             @endif 
-                                                                        <div class="col-2 pr-0">
+                                                                        <div id="calculado_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
                                                                             @if($servicios->precio_grupo==1)
                                                                                 {!! $mate !!}
                                                                             @elseif($servicios->precio_grupo==0)
                                                                                 {!! $mate !!}
                                                                             @endif
                                                                         </div>
-                                                                        <div class="col-2 pr-0 bg-info">
-                                                                            {{$mate_SALE}}
+                                                                        <div id="subtotal_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">{{$mate_SALE}}
                                                                         </div>
-                                                                        <div class="col-3 pr-0">
-                                                                            <b class="small" id="book_proveedor_{{$servicios->id}}">
+                                                                        <div id="subtotal_reservado_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">
+                                                                            {{$mate_SALE_reservado}}
+                                                                        </div>
+                                                                        <div id="subtotal_c_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">{{$mate_SALE_contabilidad}}</div>
+                                                                        <div id="proveedor_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
+                                                                            <span class="text-dark" id="book_proveedor_{{$servicios->id}}">
                                                                                 @if($servicios->itinerario_proveedor)
                                                                                     {{$servicios->itinerario_proveedor->nombre_comercial}}
                                                                                 @endif
-                                                                            </b>
+                                                                            </span>
                                                                             @php
                                                                                 $grupe='ninguno';
                                                                                 $arreglito='GROUP_SIC'
@@ -1110,7 +1174,7 @@
                                                                     </div>    
                                                                     @endif
                                                                 @elseif($servicios->boleta_factura=='2')
-                                                                    <div id="f_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 @if($servicios->anulado==1) {{'alert alert-danger'}} @endif">
+                                                                    <div id="f_{{$itinerario->id}}_{{$servicios->id}}" class="row border-0-5 mb-0-5 text-12">
                                                                         <div class="col-1 pr-0">
                                                                             @php
                                                                                 $grupe='ninguno';
@@ -1229,7 +1293,9 @@
                                                                         </div>
                                                                             @php
                                                                                 $mate='$';
-                                                                                $mate_SALE='$';
+                                                                                $mate_SALE='';
+                                                                                $mate_SALE_reservado='';
+                                                                                $mate_SALE_contabilidad='';
                                                                             @endphp
                                                                             @if($servicios->precio_grupo==1)
                                                                                 @php
@@ -1250,32 +1316,44 @@
                                                                             @if($servicios->precio_grupo==1)
                                                                                 @php
                                                                                     $mate_SALE.=$servicios->precio;
+                                                                                    $mate_SALE_reservado.=$servicios->precio_proveedor;
+                                                                                    $mate_SALE_contabilidad.=$servicios->precio_c;
                                                                                     $sumatotal_v+=$servicios->precio;
                                                                                     $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_c+=$servicios->precio_c;
                                                                                     $sumatotal_v_factura+=$servicios->precio;
                                                                                     $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_c_factura+=$servicios->precio_c;
                                                                                 @endphp
                                                                             @else
                                                                                 @php
                                                                                     $mate_SALE.=$servicios->precio*$cotizacion->nropersonas;
+                                                                                    $mate_SALE_reservado.=$servicios->precio_proveedor;
+                                                                                    $mate_SALE_contabilidad.=$servicios->precio_c;
                                                                                     $sumatotal_v+=$servicios->precio*$cotizacion->nropersonas;
                                                                                     $sumatotal_v_r+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_c+=$servicios->precio_c;
 
                                                                                     $sumatotal_v_factura+=$servicios->precio*$cotizacion->nropersonas;;
                                                                                     $sumatotal_v_r_factura+=$servicios->precio_proveedor;
+                                                                                    $sumatotal_v_c_factura+=$servicios->precio_c;
                                                                                 @endphp
                                                                             @endif 
-                                                                        <div class="col-2 pr-0">
+                                                                        <div id="calculado_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
                                                                             @if($servicios->precio_grupo==1)
                                                                                 {!! $mate !!}
                                                                             @elseif($servicios->precio_grupo==0)
                                                                                 {!! $mate !!}
                                                                             @endif
                                                                         </div>
-                                                                        <div class="col-2 pr-0 bg-info">
+                                                                        <div id="subtotal_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">
                                                                             {{$mate_SALE}}
                                                                         </div>
-                                                                        <div class="col-3 pr-0">
+                                                                        <div id="subtotal_reservado_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">
+                                                                            {{$mate_SALE_reservado}}
+                                                                        </div>
+                                                                        <div id="subtotal_c_{{$itinerario->id}}_{{$servicios->id}}" class="col-1 pr-0">{{$mate_SALE_contabilidad}}</div>
+                                                                        <div id="proveedor_{{$itinerario->id}}_{{$servicios->id}}" class="col-2 pr-0">
                                                                             <b class="small" id="book_proveedor_{{$servicios->id}}">
                                                                                 @if($servicios->itinerario_proveedor)
                                                                                     {{$servicios->itinerario_proveedor->nombre_comercial}}
@@ -1326,7 +1404,7 @@
                                                     </td>
                                                     <td class="text-11 text-right">
                                                         <div class="form-control">
-                                                            <input type="number" name="total_c_boleta" id="total_c_boleta" value="@if($facturado_estado==1){{$sub_monto_boleta_}}@else{{$sumatotal_v_boleta}}@endif" readonly form="form_ingresar_factura"  required>
+                                                            <input type="number" name="total_c_boleta" id="total_c_boleta" value="@if($facturado_estado==1){{$sub_monto_boleta_}}@else{{$sumatotal_v_c_boleta}}@endif" readonly form="form_ingresar_factura"  required>
                                                         </div>
                                                     </td>
                                                     <td class="text-11 text-right">
@@ -1357,7 +1435,7 @@
                                                     </td>
                                                     <td class="text-11 text-right">
                                                         <div class="form-control">
-                                                            <input type="number" name="total_c_boleta_" id="total_c_boleta_" value="@if($facturado_estado==1){{$monto_c_boleta_}}@else{{$sumatotal_v_boleta+$profit}}@endif" readonly form="form_ingresar_factura"  required>
+                                                            <input type="number" name="total_c_boleta_" id="total_c_boleta_" value="@if($facturado_estado==1){{$monto_c_boleta_}}@else{{$sumatotal_v_c_boleta+$profit}}@endif" readonly form="form_ingresar_factura"  required>
                                                         </div>
                                                     </td>
                                                     <td class="text-11 text-right">
@@ -1375,7 +1453,7 @@
                                                     </td>
                                                     <td  class="text-11 text-right">
                                                         <div class="form-control">
-                                                            <input type="number" name="total_c_factura" id="total_c_factura" value="@if($facturado_estado==1){{$monto_c_factura_}}@else{{$sumatotal_v_factura}}@endif" readonly form="form_ingresar_factura" required>
+                                                            <input type="number" name="total_c_factura" id="total_c_factura" value="@if($facturado_estado==1){{$monto_c_factura_}}@else{{$sumatotal_v_c_factura}}@endif" readonly form="form_ingresar_factura" required>
                                                         </div>
                                                     </td>
                                                     <td class="text-11 text-right">

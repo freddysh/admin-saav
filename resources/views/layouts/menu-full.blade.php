@@ -123,7 +123,19 @@
               (url()->current()==route('contabilidad.ingresos')||url()->current()==route('contabilidad.revisar_requerimiento_contabilidad_buscar'))||
               (url()->current()==route('contabilidad_lista_total_path'))
               ) show @endif" id="contabilidad">
-
+              <li data-toggle="collapse" class="active1">
+                <a class="@if(url()->current()==route('contabilidad_lista_total_path')) active @endif" href="{{route('contabilidad_lista_total_path')}}">FILES RESERVADOS</a>
+              </li>
+              <li data-toggle="collapse" class="active1">
+                  <a class="@if(url()->current()==route('contabilidad.pagos_en_genral.filtrar')) active @endif" href="{{route('contabilidad.pagos_en_genral.filtrar')}}">REQUERIMIENTOS</a>
+                </li>
+              <li data-toggle="collapse" class="active1">
+                <a class="@if(url()->current()==route('contabilidad.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_contabilidad_buscar')) active @endif" href="{{route('contabilidad.revisar_requerimiento')}}">LISTA REQUERIMIENTOS</a>
+              </li>              
+              <br>
+              <li data-toggle="collapse" class="active1">
+                  <a class="@if(url()->current()==route('contabilidad.ingresos')) active @endif" href="{{route('contabilidad.ingresos')}}">INGRESOS</a>
+                </li>
               <li data-toggle="collapse" data-target="#facturacion" class="collapsed">
                   <a href="#!" class="bg-grey-goto text-white"><i class="fas fa-cubes"></i> FACTURACION </a>
               </li>
@@ -136,27 +148,15 @@
               </ul>
               
               
-              <br>
-              <li data-toggle="collapse" class="active1">
+              
+              {{-- <li data-toggle="collapse" class="active1">
                 <a class="@if(url()->current()==route('contabilidad_index_path')||url()->current()==route('contabilidad_show_path',[$id])) active @endif" href="{{route('contabilidad_index_path')}}">VIEW RESERVATIONS</a>
               </li>
               <li data-toggle="collapse" class="active1">
                 <a class="@if(url()->current()==route('pagos_pendientes_rango_fecha_path','HOTELS')) active @endif" href="{{route('pagos_pendientes_rango_fecha_path','HOTELS')}}">PENDING PAYMENTS</a>
               </li>
+               --}}
               
-              <li data-toggle="collapse" class="active1">
-                <a class="@if(url()->current()==route('contabilidad_lista_total_path')) active @endif" href="{{route('contabilidad_lista_total_path')}}">TODOS ESTADO ACTUAL DE PAGOS</a>
-              </li>
-              <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('contabilidad.pagos_en_genral.filtrar')) active @endif" href="{{route('contabilidad.pagos_en_genral.filtrar')}}">TODOS LOS PAGOS PENDIENTES</a>
-                </li>
-              <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('contabilidad.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_contabilidad_buscar')) active @endif" href="{{route('contabilidad.revisar_requerimiento')}}">REVISAR REQUERIMIENTOS</a>
-                </li>              
-                  
-              <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('contabilidad.ingresos')) active @endif" href="{{route('contabilidad.ingresos')}}">INGRESOS</a>
-                </li>
             </ul>
 
             <li data-toggle="collapse" data-target="#operaciones" class="collapsed">

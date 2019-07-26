@@ -54,10 +54,11 @@
         <tr>
             <th>FECHA USO</th>
             <th>FECHA PAGO</th>
-            <th>CATEGORIA</th>
+            <th>SERVICIO</th>
             <th>MONTO VENTA</th>
             <th>MONTO RESERVA</th>
             <th>MONTO CONTA</th>
+            <th>ESTADOS</th>
         </tr>
     </thead>
     <tbody>
@@ -67,11 +68,8 @@
             $total_r=0;
             $total_v=0;
             $total_c=0;
-        @endphp
-
-        
+        @endphp        
             @if($grupo=='HOTELS')
-
                 @foreach ($consulta as $itinerario_cotizaciones)
                 @php
                     $notas_contabilidad_aprovador='';
@@ -197,6 +195,13 @@
                                 <input type="hidden" name="personas_t[]" value="{{$item->personas_t}}">
                             @endif
                         </td>
+                        <td>
+                            @if($item->precio_confirmado_contabilidad=='1')
+                                <b class="badge badge-success">Confirmado</b>
+                            @elseif($item->precio_confirmado_contabilidad=='0')
+                                <b class="badge badge-warning">Sin confirmar</b>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
                 @endforeach  
@@ -215,11 +220,11 @@
                         <tr>
                             <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($item_->fecha)}}</td>
                             <td><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($fecha_pago)}}</td>
-                            <td>
-                            @if($grupo=='TOURS')
+                            <td class="text-left">
+                            @if($item->grupo=='TOURS')
                                 <i class="fas fa-map text-info" aria-hidden="true"></i>
                             @endif
-                            @if($grupo=='MOVILID')
+                            @if($item->grupo=='MOVILID')
                                 @if($clase=='BOLETO')
                                     <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                                 @else
@@ -227,24 +232,25 @@
                                 @endif
                             @endif
                                     
-                            @if($grupo=='REPRESENT')
+                            @if($item->grupo=='REPRESENT')
                                 <i class="fa fa-users text-success" aria-hidden="true"></i>
                             @endif
-                            @if($grupo=='ENTRANCES')
+                            @if($item->grupo=='ENTRANCES')
                             <i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>
                             @endif
-                            @if($grupo=='FOOD')
+                            @if($item->grupo=='FOOD')
                                 <i class="fas fa-utensils text-danger" aria-hidden="true"></i>
                             @endif
-                            @if($grupo=='TRAINS')
+                            @if($item->grupo=='TRAINS')
                                 <i class="fa fa-train text-info" aria-hidden="true"></i>
                             @endif
-                            @if($grupo=='FLIGHTS')
+                            @if($item->grupo=='FLIGHTS')
                                 <i class="fa fa-plane text-primary" aria-hidden="true"></i>
                             @endif
-                            @if($grupo=='OTHERS')
+                            @if($item->grupo=='OTHERS')
                                 <i class="fa fa-question fa-text-success" aria-hidden="true"></i>
-                            @endif                       
+                            @endif    
+                            {{$item->nombre}}</td>                    
                             </td>
                             <td class="text-right">
                                 @if ($item->precio_grupo==1)
@@ -292,6 +298,13 @@
                                     <input type="hidden" name="personas_s[]" value="{{$nro_personas}}">
                                 @endif --}}
                             </td>
+                            <td>
+                            @if($item->precio_confirmado_contabilidad=='1')
+                                <b class="badge badge-success">Confirmado</b>
+                            @elseif($item->precio_confirmado_contabilidad=='0')
+                                <b class="badge badge-warning">Sin confirmar</b>
+                            @endif
+                        </td>
                         </tr>    
                     @endforeach
                 @endforeach

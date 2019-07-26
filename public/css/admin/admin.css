@@ -707,6 +707,18 @@
   border-radius: 4px;
 }
 
+.hotels {
+  color: #ccc;
+}
+
+.modal-lg-x {
+  max-width: 1250px !important;
+}
+
+.cuota_nro {
+  color: #000000;
+}
+
 .nav-pills .nav-link.active {
   background: #f9a825 !important;
 }

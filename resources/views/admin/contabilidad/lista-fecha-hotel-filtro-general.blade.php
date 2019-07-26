@@ -31,12 +31,20 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="bg-g-dark text-white"><td colspan="11"><b>HOTELES</b></td></tr>
+                                                    <tr class="bg-g-dark text-white">
+                                                    <td colspan="11">
+                                                    <b> HOTELES</b>
+                                                        <div class="form-check d-none">
+                                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="HOTELS" onclick="marcar_checked('HOTELS')">
+                                                            <label class="form-check-label" for="exampleCheck1"><b> HOTELES</b></label>
+                                                        </div>
+                                                    </td>
+                                                    </tr>
                                                     @foreach($array_pagos_pendientes as $key => $array_pagos_pendiente)
                                                         <tr>
                                                             <td class="text-grey-goto text-left">
                                                                 <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" form="preparar_requerimiento" value="{{$key}}" name="chb_h_pagos[]" id="chb_{{$key}}" onclick="if(this.checked) sumar($('#monto_{{$array_pagos_pendiente['grupo']}}_c_{{$key}}').html()); else restar($('#monto_{{$array_pagos_pendiente['grupo']}}_c_{{$key}}').html());" @if($array_pagos_pendiente['monto_r']>0 && $array_pagos_pendiente['monto_c']<=0) disabled @endif>
+                                                                <input class="form-check-input HOTELS" type="checkbox" form="preparar_requerimiento" value="{{$key}}" name="chb_h_pagos[]" id="chb_{{$key}}" onclick="if(this.checked) sumar($('#monto_{{$array_pagos_pendiente['grupo']}}_c_{{$key}}').html()); else restar($('#monto_{{$array_pagos_pendiente['grupo']}}_c_{{$key}}').html());" @if($array_pagos_pendiente['monto_r']>0 && $array_pagos_pendiente['monto_c']<=0) disabled @endif>
                                                                     <label class="form-check-label" for="chb_{{$key}}">
                                                                         <b class="text-success">{{$array_pagos_pendiente['codigo']}}</b> | <b>{{$array_pagos_pendiente['pax']}}</b><br>
                                                                     @if($array_pagos_pendiente['monto_r']>0 && $array_pagos_pendiente['monto_c']<=0) <span id="warning_{{$key}}" class="text-10 text-danger">Ingresar montos a pagar</span> @endif

@@ -9,16 +9,26 @@
         return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
     }
 @endphp
-    
-    <table class="table table-bordered table-striped table-responsive table-hover text-12">
+    <p><b class="text-dark"><i class="fas fa-filter"></i></b>
+        <b class="text-primary">{{$filtro}}</b> | 
+        <b class="text-primary">{{$opcion}}</b> @if($filtro=='ENTRE FECHAS') | 
+        <b class="text-primary">{{$f1}}</b> | 
+        <b class="text-primary">{{$f2}}</b>@endif
+    </p>
+    <table class="table table-bordered table-striped table-responsive table-hover text-11">
         <thead>
             <tr>
                 <th>PAX. <span class="text-success">({{{strtoupper($pagina)}}})</span></th>
+                <th>WEB</th>
                 <th>TOTAL</th>
                 <th>PAGADO</th>
                 <th>SALDO</th>
-                <th style="width:230px;">PROX. PAGO</th>
-                <th>OPER.</th>
+                <th class=" d-none">PROX. PAGO</th>
+                <th class=" d-none">PROCESADO</th>
+                <th class=" d-none">MONTO</th>
+                {{-- <th>ESTADO</th> --}}
+                <th colspan="2">DETALLE</th>
+                <th>VENDEDOR</th>
             </tr>    
         </thead>
         <tbody>
@@ -232,6 +242,7 @@
                 @php
                     $total_pagado=0;
                     $proximo_pago='No hay pagos programados';
+                    $proximo_pago_procesado='No hay pagos programados';
                     $proximo_monto='';
                     $recogido=0;
                 @endphp
@@ -245,7 +256,8 @@
                         @if($recogido==0)
                             @if($pagos_cliente->estado==0)
                                 @php
-                                    $proximo_pago=$pagos_cliente->fecha;
+                                    $proximo_pago=MisFunciones::fecha_peru($pagos_cliente->fecha);
+                                    $proximo_pago_procesado=MisFunciones::fecha_peru($pagos_cliente->fecha_habilitada);
                                     $proximo_monto=$pagos_cliente->monto;
                                     $recogido++;
                                 @endphp
@@ -305,22 +317,78 @@
                     $dias_restantes=$hoy->diffInDays($ultimo_dia,false);
                 @endphp
             
-                @if($precio_venta_total-$total_pagado!=0)
+                {{-- @if($precio_venta_total-$total_pagado!=0) --}}
                     <tr>
                         <td class="text-11"><b class="text-success">{{$cotizacion_cat_->codigo}}</b> | {{strtoupper($cotizacion_cat_->nombre_pax)}} x {{$cotizacion_cat_->nropersonas}} {{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</td>
+                        <td class="text-right">{{$cotizacion_cat_->web}}</td>
                         <td class="text-right">{{number_format($precio_venta_total,0)}}</td>
                         <td class="text-right">{{number_format($total_pagado,0)}}</td>
                         <td class="text-right">{{number_format($precio_venta_total-$total_pagado,0)}}</td>
-                        <td>{{$proximo_pago}} | {{$proximo_monto}}</td>
+                        <td>
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>MEDIO PAGO</th>
+                                        <th>FECHA</th>
+                                        <th>PROCESADO</th>
+                                        <th class="d-none">NOTA</th>
+                                        <th>MONTO</th>
+                                        <th>ESTADO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @php
+                                    $total_pago=0;
+                                    $k1=0;
+                                @endphp
+                                {{-- @if(true) --}}
+                                @foreach($pqts->pagos_cliente->where('estado','0') as $pagos_cliente)
+                                    @php
+                                        $total_pago+=$pagos_cliente->monto;
+                                        $k1++;
+                                    @endphp
+                                    <tr>
+                                        <td style="width:180px;">{{$pagos_cliente->forma_pagos->nombre}}</td>
+                                        <td style="width:180px;">{{MisFunciones::fecha_peru($pagos_cliente->fecha)}}</td>
+                                        <td style="width:180px;">{{MisFunciones::fecha_peru($pagos_cliente->fecha_habilitada)}}</td>
+                                        <td class="d-none">{{$pagos_cliente->nota}}</td>
+                                        <td style="width:100px">{{$pagos_cliente->monto}}</td>
+                                        <td>
+                                            @if($pagos_cliente->estado=='0')
+                                                <span class="badge badge-secondary">Pendiente</span> 
+                                            @else
+                                            <span class="badge badge-success">Pagado</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                {{-- @endif --}} 
+                                </tbody>
+                                <tfoot class="d-none">
+                                    <tr>
+                                        <td>
+                                            <b>SUMATORIA</b>   
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td><b>{{$total_pago}}</b></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table> 
+                        </td>
+                        <td class=" d-none">{{$proximo_pago}}</td>
+                        <td class=" d-none">{{$proximo_pago_procesado}}</td>
+                        <td class=" d-none">{{$proximo_monto}}</td>
                         <td>
                             <a class="text-primary small" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_plan_pagos_{{$pqts->id}}">Detalle
                             </a>
                             <div class="modal fade" id="myModal_plan_pagos_{{$pqts->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-dialog modal-md" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header bg-primary text-white">
                                             <h4 class="modal-title" id="myModalLabel">Detalle de pagos</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="text-white" aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body clearfix">
                                             <div class="row">
@@ -388,8 +456,11 @@
                                 </div>
                             </div>
                         </td>
+                        <td>
+                            {{$cotizacion_cat_->users->name}}
+                        </td>
                     </tr>    
-                @endif
+                {{-- @endif --}}
             @endforeach
         @endforeach    
         </tbody>
