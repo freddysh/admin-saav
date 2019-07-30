@@ -36,7 +36,7 @@
             $total_pagados=0;
             $total_procesados=0;
             $total_pendiente=0;
-            $total_pagado=0;
+            $total_pagado_=0;
         @endphp
         @foreach($cotizaciones as $cotizacion_cat_)
             @php
@@ -243,7 +243,7 @@
                 $itinerario='';
                 $sumatoria=0;
             @endphp
-            @foreach($cotizacion_cat_->paquete_cotizaciones/*->where('estado','2')*/ as $pqts)
+            @foreach($cotizacion_cat_->paquete_cotizaciones->where('estado','2') as $pqts)
 
                 @php
                     $total_pagado=0;
@@ -347,8 +347,50 @@
                                     $total_pago=0;
                                     $k1=0;
                                 @endphp
-                                @if($opcion='PAGADOS')
+                                @if($opcion=='PAGADOS')
+                                    @php
+                                        $total_pago=0;
+                                    @endphp
                                     @foreach($pqts->pagos_cliente->whereBetween('fecha',[$f1,$f2]) as $pagos_cliente)
+                                        @php
+                                            $total_pago+=$pagos_cliente->monto;
+                                            $k1++;
+                                        @endphp
+                                        <tr>
+                                            <td style="width:150px;" class="text-left">
+                                                @if(!empty($pagos_cliente->forma_pagos->nombre))
+                                                    {{$pagos_cliente->forma_pagos->nombre}}
+                                                @else
+                                                    Sin valor
+                                                @endif
+                                            </td>
+                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha)}}</td>
+                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha_habilitada)}}</td>
+                                            <td class="d-none" class="text-left">{{$pagos_cliente->nota}}</td>
+                                            <td style="width:80px" class="text-right">{{$pagos_cliente->monto}}</td>
+                                            <td style="width:80px" class="text-right">
+                                                @if($pagos_cliente->estado=='0')
+                                                    <span class="badge badge-secondary">Pendiente</span> 
+                                                    @php
+                                                        $total_pendiente+=$pagos_cliente->monto;
+                                                    @endphp
+                                                @else
+                                                    <span class="badge badge-success">Pagado</span>
+                                                    @php
+                                                        $total_pagado_+=$pagos_cliente->monto;
+                                                    @endphp
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    @php
+                                        $total_pagados+=$total_pago;
+                                    @endphp
+                                @else
+                                    @php
+                                        $total_pago=0;
+                                    @endphp
+                                    @foreach($pqts->pagos_cliente->whereBetween('fecha_habilitada',[$f1,$f2]) as $pagos_cliente)
                                         @php
                                             $total_pago+=$pagos_cliente->monto;
                                             $k1++;
@@ -366,34 +408,10 @@
                                                         $total_pendiente+=$pagos_cliente->monto;
                                                     @endphp
                                                 @else
-                                                    <span class="badge badge-success">Pagado</span>
-                                                    @php
-                                                        $total_pagado+=$pagos_cliente->monto;
-                                                    @endphp
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    @php
-                                        $total_pagados+=$total_pago;
-                                    @endphp
-                                @else
-                                    @foreach($pqts->pagos_cliente->whereBetween('fecha_habilitada',[$f1,$f2]) as $pagos_cliente)
-                                        @php
-                                            $total_pago+=$pagos_cliente->monto;
-                                            $k1++;
-                                        @endphp
-                                        <tr>
-                                            <td style="width:150px;" class="text-left">{{$pagos_cliente->forma_pagos->nombre}}</td>
-                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha)}}</td>
-                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha_habilitada)}}</td>
-                                            <td class="d-none" class="text-left">{{$pagos_cliente->nota}}</td>
-                                            <td style="width:80px" class="text-right">{{$pagos_cliente->monto}}</td>
-                                            <td style="width:80px" class="text-right">
-                                                @if($pagos_cliente->estado=='0')
-                                                    <span class="badge badge-secondary">Pendiente</span> 
-                                                @else
                                                 <span class="badge badge-success">Pagado</span>
+                                                @php
+                                                        $total_pagado_+=$pagos_cliente->monto;
+                                                    @endphp
                                                 @endif
                                             </td>
                                         </tr>
@@ -503,7 +521,7 @@
         <tfoot>
             <tr class="text-15">
                 <th><b class="badge badge-success">Pagado</b></th>
-                <th class="text-right"><b>{{$total_pagado}}</b></th>
+                <th class="text-right"><b>{{$total_pagado_}}</b></th>
             </tr>
             <tr class="text-15">
                 <th><b class="badge badge-secondary">Pendiente</b></th>
