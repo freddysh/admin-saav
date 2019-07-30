@@ -7125,10 +7125,27 @@ function marcar_checked(clase){
 }
 
 
-function buscar_pagos_pendinetes(form,valor){
+function buscar_pagos_pendinetes(form,valor,valor_estatico){
     // $('#'+form).submit(function() {
 
         // Enviamos el formulario usando AJAX
+        
+        if(valor_estatico=='0'){
+            // $("#boton").val(0);
+            $("#btn_pagados").removeClass('btn-outline-primary');
+            $("#btn_pagados").addClass('btn-primary');
+            $("#btn_procesados").removeClass('btn-primary');
+            $("#btn_procesados").addClass('btn-outline-primary');
+        }
+        else if(valor_estatico=='1'){
+            // $("#boton").val(1);
+            $("#btn_pagados").removeClass('btn-primary');
+            $("#btn_pagados").addClass('btn-outline-primary');
+            $("#btn_procesados").removeClass('btn-outline-primary');
+            $("#btn_procesados").addClass('btn-primary');
+        }
+
+
         $("#opcion").val(valor);
         $.ajax({
             type: 'POST',

@@ -15,7 +15,7 @@
         <b class="text-primary">{{$f1}}</b> | 
         <b class="text-primary">{{$f2}}</b>@endif
     </p>
-    <table class="table table-bordered table-striped table-responsive table-hover text-11">
+    <table class="table table-bordered table-striped table-responsive table-hover text-11 table-sm">
         <thead>
             <tr>
                 <th>PAX. <span class="text-success">({{{strtoupper($pagina)}}})</span></th>
@@ -27,11 +27,17 @@
                 <th class=" d-none">PROCESADO</th>
                 <th class=" d-none">MONTO</th>
                 {{-- <th>ESTADO</th> --}}
-                <th colspan="2">DETALLE</th>
+                <th colspan="1" class="text-center">DETALLE</th>
                 <th>VENDEDOR</th>
             </tr>    
         </thead>
         <tbody>
+        @php
+            $total_pagados=0;
+            $total_procesados=0;
+            $total_pendiente=0;
+            $total_pagado=0;
+        @endphp
         @foreach($cotizaciones as $cotizacion_cat_)
             @php
                 $s=0;
@@ -320,20 +326,20 @@
                 {{-- @if($precio_venta_total-$total_pagado!=0) --}}
                     <tr>
                         <td class="text-11"><b class="text-success">{{$cotizacion_cat_->codigo}}</b> | {{strtoupper($cotizacion_cat_->nombre_pax)}} x {{$cotizacion_cat_->nropersonas}} {{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</td>
-                        <td class="text-right">{{$cotizacion_cat_->web}}</td>
+                        <td class="text-left">{{$cotizacion_cat_->web}}</td>
                         <td class="text-right">{{number_format($precio_venta_total,0)}}</td>
                         <td class="text-right">{{number_format($total_pagado,0)}}</td>
                         <td class="text-right">{{number_format($precio_venta_total-$total_pagado,0)}}</td>
                         <td>
-                            <table class="table table-sm">
+                            <table class="table table-sm m-0">
                                 <thead>
                                     <tr>
-                                        <th>MEDIO PAGO</th>
-                                        <th>FECHA</th>
-                                        <th>PROCESADO</th>
-                                        <th class="d-none">NOTA</th>
-                                        <th>MONTO</th>
-                                        <th>ESTADO</th>
+                                        <th style="width:150px;" class="text-left">MEDIO PAGO</th>
+                                        <th style="width:100px;" class="text-center">FECHA</th>
+                                        <th style="width:100px;" class="text-center">PROCESADO</th>
+                                        <th class="d-none" class="text-left">NOTA</th>
+                                        <th style="width:80px;" class="text-right">MONTO</th>
+                                        <th style="width:80px;" class="text-right">ESTADO</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -341,28 +347,61 @@
                                     $total_pago=0;
                                     $k1=0;
                                 @endphp
-                                {{-- @if(true) --}}
-                                @foreach($pqts->pagos_cliente->where('estado','0') as $pagos_cliente)
+                                @if($opcion='PAGADOS')
+                                    @foreach($pqts->pagos_cliente->whereBetween('fecha',[$f1,$f2]) as $pagos_cliente)
+                                        @php
+                                            $total_pago+=$pagos_cliente->monto;
+                                            $k1++;
+                                        @endphp
+                                        <tr>
+                                            <td style="width:150px;" class="text-left">{{$pagos_cliente->forma_pagos->nombre}}</td>
+                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha)}}</td>
+                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha_habilitada)}}</td>
+                                            <td class="d-none" class="text-left">{{$pagos_cliente->nota}}</td>
+                                            <td style="width:80px" class="text-right">{{$pagos_cliente->monto}}</td>
+                                            <td style="width:80px" class="text-right">
+                                                @if($pagos_cliente->estado=='0')
+                                                    <span class="badge badge-secondary">Pendiente</span> 
+                                                    @php
+                                                        $total_pendiente+=$pagos_cliente->monto;
+                                                    @endphp
+                                                @else
+                                                    <span class="badge badge-success">Pagado</span>
+                                                    @php
+                                                        $total_pagado+=$pagos_cliente->monto;
+                                                    @endphp
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     @php
-                                        $total_pago+=$pagos_cliente->monto;
-                                        $k1++;
+                                        $total_pagados+=$total_pago;
                                     @endphp
-                                    <tr>
-                                        <td style="width:180px;">{{$pagos_cliente->forma_pagos->nombre}}</td>
-                                        <td style="width:180px;">{{MisFunciones::fecha_peru($pagos_cliente->fecha)}}</td>
-                                        <td style="width:180px;">{{MisFunciones::fecha_peru($pagos_cliente->fecha_habilitada)}}</td>
-                                        <td class="d-none">{{$pagos_cliente->nota}}</td>
-                                        <td style="width:100px">{{$pagos_cliente->monto}}</td>
-                                        <td>
-                                            @if($pagos_cliente->estado=='0')
-                                                <span class="badge badge-secondary">Pendiente</span> 
-                                            @else
-                                            <span class="badge badge-success">Pagado</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                {{-- @endif --}} 
+                                @else
+                                    @foreach($pqts->pagos_cliente->whereBetween('fecha_habilitada',[$f1,$f2]) as $pagos_cliente)
+                                        @php
+                                            $total_pago+=$pagos_cliente->monto;
+                                            $k1++;
+                                        @endphp
+                                        <tr>
+                                            <td style="width:150px;" class="text-left">{{$pagos_cliente->forma_pagos->nombre}}</td>
+                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha)}}</td>
+                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha_habilitada)}}</td>
+                                            <td class="d-none" class="text-left">{{$pagos_cliente->nota}}</td>
+                                            <td style="width:80px" class="text-right">{{$pagos_cliente->monto}}</td>
+                                            <td style="width:80px" class="text-right">
+                                                @if($pagos_cliente->estado=='0')
+                                                    <span class="badge badge-secondary">Pendiente</span> 
+                                                @else
+                                                <span class="badge badge-success">Pagado</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    @php
+                                        $total_procesados+=$total_pago;
+                                    @endphp
+                                @endif 
                                 </tbody>
                                 <tfoot class="d-none">
                                     <tr>
@@ -380,15 +419,15 @@
                         <td class=" d-none">{{$proximo_pago}}</td>
                         <td class=" d-none">{{$proximo_pago_procesado}}</td>
                         <td class=" d-none">{{$proximo_monto}}</td>
-                        <td>
-                            <a class="text-primary small" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_plan_pagos_{{$pqts->id}}">Detalle
+                        <td class="d-none">
+                            <a class="btn btn-primary btn-sm" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_plan_pagos_{{$pqts->id}}">Plan de pagos
                             </a>
                             <div class="modal fade" id="myModal_plan_pagos_{{$pqts->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog modal-md" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header bg-primary text-white">
                                             <h4 class="modal-title" id="myModalLabel">Detalle de pagos</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="text-white" aria-hidden="true">&times;</span></button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <div class="modal-body clearfix">
                                             <div class="row">
@@ -417,10 +456,10 @@
                                                                 $k++;
                                                             @endphp
                                                             <tr id="pago_{{$pqts->id}}_{{$pagos_cliente->id}}">
-                                                                <td style="width:180px;">{{$pagos_cliente->fecha}}</td>
-                                                                <td>{{$pagos_cliente->nota}}</td>
-                                                                <td style="width:100px">{{$pagos_cliente->monto}}</td>
-                                                                <td>
+                                                                <td style="width:60px;">{{MisFunciones::fecha_peru($pagos_cliente->fecha)}}</td>
+                                                                <td style="width:100px">{{$pagos_cliente->nota}}</td>
+                                                                <td style="width:60px" class="text-right">{{$pagos_cliente->monto}}</td>
+                                                                <td style="width:40px">
                                                                     @if($pagos_cliente->estado=='0')
                                                                         <span class="badge badge-secondary">Pendiente</span> 
                                                                     @else
@@ -434,12 +473,10 @@
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
-                                                                <td>
+                                                                <td colspan="2">
                                                                     <b>SUMATORIA</b>   
                                                                 </td>
-                                                                <td>
-                                                                </td>
-                                                                <td><b>{{$total_pago}}</b></td>
+                                                                <td class="text-right"><b>{{number_format($total_pago,2)}}</b></td>
                                                                 <td></td>
                                                             </tr>
                                                         </tfoot>
@@ -448,7 +485,7 @@
                                                 </div>
                                             </div> 
                                         </div>
-                                        <div class="modal-footer">
+                                        <div class="modal-footer d-none">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                             <button type="button" class="btn btn-primary d-none">Guardar</button>
                                         </div>
@@ -457,11 +494,32 @@
                             </div>
                         </td>
                         <td>
-                            {{$cotizacion_cat_->users->name}}
+                            <b><span> <i class="fas fa-user"></i> </span> {{$cotizacion_cat_->users->name}}</b>
                         </td>
                     </tr>    
                 {{-- @endif --}}
             @endforeach
         @endforeach    
+        <tfoot>
+            <tr class="text-15">
+                <th><b class="badge badge-success">Pagado</b></th>
+                <th class="text-right"><b>{{$total_pagado}}</b></th>
+            </tr>
+            <tr class="text-15">
+                <th><b class="badge badge-secondary">Pendiente</b></th>
+                <th class="text-right"><b>{{$total_pendiente}}</b></th>
+            </tr>
+            @if($opcion=='PAGADOS')
+                <tr class="text-15">
+                    <th><b>TOTAL PAGADOS</b></th>
+                    <th class="text-right"><b>{{$total_pagados}}</b></th>
+                </tr>
+            @elseif($opcion=='PROCESADOS')
+                <tr class="text-15">
+                    <th><b>TOTAL PROCESADO</b></th>
+                    <th class="text-right"><b>{{$total_procesados}}</b></th>
+                </tr>
+            @endif
+        </tfoot>
         </tbody>
     </table>  

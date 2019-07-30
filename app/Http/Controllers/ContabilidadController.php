@@ -2615,51 +2615,55 @@ class ContabilidadController extends Controller
         }
         if($filtro=='ULTIMOS 30 DIAS'){
             $f1=$today->subDays(30)->toDateString();
-            $f2=$today->now()->toDateString();
+            $f2=$today->endOfMonth()->toDateString();
         }
         if($filtro=='ESTE MES'){
             $mes=$today->month;
+            $f1=$today->startOfMonth()->toDateString();
+            $f2=$today->now()->toDateString();
+        
         }
+
+        // dd('primer dia:'.$f1.'_ ultimo dia:'.$f2);
         // if($filtro=='ENTRE FECHAS'){
         //     $f1=$f1;
         //     $f2=$f2;
         // }
         
         $cotizaciones=null;
-        if($filtro=='ESTE MES'){
-            $cotizaciones=Cotizacion::where('anulado','>','0')
-            ->whereHas('paquete_cotizaciones',function($q) use ($mes,$opcion) {
-                $q->whereHas('pagos_cliente',function($q1) use ($mes,$opcion){
-                    if($opcion=='PAGADOS'){
-                        $q1->where('estado','1')
-                        ->whereMonth('fecha',$mes);
-                    }
-                    elseif($opcion=='PROCESADOS'){
-                        $q1->where('estado','1')
-                        ->whereMonth('fecha_habilitada',$mes);
-                    }
-                });
-            })->get();
-        }
-        else{
+        // if($filtro=='ESTE MES'){
+        //     $cotizaciones=Cotizacion::where('anulado','>','0')
+        //     ->whereHas('paquete_cotizaciones',function($q) use ($mes,$opcion) {
+        //         $q->whereHas('pagos_cliente',function($q1) use ($mes,$opcion){
+        //             if($opcion=='PAGADOS'){
+        //                 $q1/*->where('estado','1')*/
+        //                 ->whereMonth('fecha',$mes);
+        //             }
+        //             elseif($opcion=='PROCESADOS'){
+        //                 $q1/*->where('estado','1')*/
+        //                 ->whereMonth('fecha_habilitada',$mes);
+        //             }
+        //         });
+        //     })->get();
+        // }
+        // else{
             $cotizaciones=Cotizacion::where('anulado','>','0')
             ->whereHas('paquete_cotizaciones',function($q) use ($f1,$f2,$opcion){
                 $q->whereHas('pagos_cliente',function($q1) use ($f1,$f2,$opcion){
                     if($opcion=='PAGADOS'){
-                        $q1->where('estado','1')
+                        $q1/*->where('estado','1')*/
                         ->whereBetween('fecha',[$f1,$f2]);
                     }
                     elseif($opcion=='PROCESADOS'){
-                        $q1->where('estado','1')
+                        $q1/*->where('estado','1')*/
                     ->whereBetween('fecha_habilitada',[$f1,$f2]);
                     }
                     
                 });
             })->get();
-        }
+        // }
         // dd('filtro:'.$filtro.',mes:'.$mes.',f1:'.$f1.',f2:'.$f2);
         // dd($cotizaciones);
-
         $pagina='';
         return view('admin.contabilidad.list-pagos-recientes',compact('cotizaciones','pagina','filtro','opcion','f1','f2'));
     }

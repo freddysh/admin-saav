@@ -4332,11 +4332,16 @@ class PackageCotizacionController extends Controller
             foreach($pagos as $key => $value){
                 if(in_array($value->id,$pago_id_)){
                     $arreglo_pos=array_keys($pago_id_,$value->id);
+                    $forma_pago=FormaPago::find($forma_pago_[$arreglo_pos[0]]);
+                    $tiempo_proceso=$forma_pago->tiempo_proceso;
+                    $fecha_habilitada= Carbon::createFromFormat('Y-m-d',$fecha_pago_[$arreglo_pos[0]]);
+                    $fecha_habilitada->addDays($tiempo_proceso);
+                    
                     $temp=PaquetePagoCliente::find($value->id);
                     $temp->fecha=$fecha_pago_[$arreglo_pos[0]];
                     $temp->forma_pago_id=$forma_pago_[$arreglo_pos[0]];
                     $temp->tipo_forma_pago_id=$tipo_forma_pago_[$arreglo_pos[0]];
-                    $temp->fecha=$fecha_pago_[$arreglo_pos[0]];
+                    $temp->fecha_habilitada=$fecha_habilitada->toDateString();
                     $temp->nota=$nota_pago_[$arreglo_pos[0]];
                     $temp->monto=$monto_pago_[$arreglo_pos[0]];
                     $temp->numero_operacion=$numero_operacion[$arreglo_pos[0]];

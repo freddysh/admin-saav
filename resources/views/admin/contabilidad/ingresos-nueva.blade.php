@@ -26,8 +26,8 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-pagos-recientes" role="tabpanel" aria-labelledby="nav-pagos-recientes-tab">
                     <form id="frm_buscar_pagos_pendinetes" action="{{route('pagos.recientes.filtro')}}" method="POST">
-                        <div class="row mt-3">
-                            <div class="col-3">
+                        <div class="row mt-3 text-10">
+                            <div class="col-3 pr-0">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Filtro</div>
@@ -40,25 +40,26 @@
                                     </select>
                                 </div>
                             </div>
-                            <div id="fechas_pr" class="col-5 d-none mx-0">
+                            <div id="fechas_pr" class="col-5 d-none mx-0 pr-0">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-calendar text-primary"></i></div>
                                     </div>
-                                <input class="form-control" type="date" name="pr_f1" id="pr_f1" value="{{$pr_f1}}">
-
+                                    <input class="form-control" type="date" name="pr_f1" id="pr_f1" value="{{$pr_f1}}">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-calendar text-primary"></i></div>
                                     </div>
                                     <input class="form-control" type="date" name="pr_f2" id="pr_f2" value="{{$pr_f2}}">
                                 </div>
                             </div>
-                            <div clss="col-2">
+                            <div class="col-4 pr-0">
                                 <div class="btn-group" role="group" aria-label="Basic example">
+                                    
                                     {{-- <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PAGADOS',$pr_f1,$pr_f2])}}" class="btn btn-primary ">PAGADOS</a>
                                     <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PROCESADOS',$pr_f1,$pr_f2])}}" class="btn  btn-outline-primary ">PROCESADOS</a> --}}
-                                    <button type="button" class="btn @if($opcion=='PAGADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PAGADOS')"><i class="fas fa-search"></i> PAGADOS</button>
-                                    <button type="button" class="btn  @if($opcion=='PROCESADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PROCESADOS')"><i class="fas fa-search"></i> PROCESADOS</button>
+                                    <button type="button" id="btn_pagados" class="btn @if($opcion=='PAGADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PAGADOS','0')"><i class="fas fa-search"></i> FECHA PAGO</button>
+                                    <button type="button" id="btn_procesados" class="btn  @if($opcion=='PROCESADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PROCESADOS','1')"><i class="fas fa-search"></i> PROCESADOS</button>
+                                    <button type="button" id="btn_procesados" class="btn  @if($opcion=='CERRADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','CERRADOS','2')"><i class="fas fa-search"></i> CERRADOS</button>
                                 </div>
                             </div>
                             <div class="col-2 d-none">
