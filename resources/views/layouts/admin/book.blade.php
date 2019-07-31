@@ -17,7 +17,7 @@
     <script src="{{asset("https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.js")}}"></script>
     @yield('archivos-js')
     <script src="{{asset("js/admin/plugins.js")}}"></script>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     {{--<link rel="stylesheet" href="{{mix("css/bootstrap-clockpicker.css")}}">--}}
 </head>
 <body>
