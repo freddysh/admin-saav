@@ -8,7 +8,7 @@ class FormaPago extends Model
 {
     //
     protected $table='forma_pago';
-    
+     
     // public function pagos_cliente()
     // {
     //     return $this->belongsTo(PaqueteCotizaciones::class, 'paquete_cotizaciones_id');
