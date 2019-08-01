@@ -59,7 +59,7 @@
                                     <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PROCESADOS',$pr_f1,$pr_f2])}}" class="btn  btn-outline-primary ">PROCESADOS</a> --}}
                                     <button type="button" id="btn_pagados" class="btn @if($opcion=='PAGADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PAGADOS','0')"><i class="fas fa-search"></i> FECHA PAGO</button>
                                     <button type="button" id="btn_procesados" class="btn  @if($opcion=='PROCESADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PROCESADOS','1')"><i class="fas fa-search"></i> PROCESADOS</button>
-                                    <button type="button" id="btn_procesados" class="btn  @if($opcion=='CERRADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','CERRADOS','2')"><i class="fas fa-search"></i> CERRADOS</button>
+                                    <button type="button" id="btn_cerrados" class="btn  @if($opcion=='CERRADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','CERRADOS','2')"><i class="fas fa-search"></i> CERRADOS</button>
                                 </div>
                             </div>
                             <div class="col-2 d-none">

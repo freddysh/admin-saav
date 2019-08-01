@@ -6419,7 +6419,7 @@ function cambiar_estado_plan_pagos(paquete_id,pos){
 function preparar_envio_pagos(id,paquete_id){
     $('#'+id).submit(function() {
         console.log('total:'+$('#total_'+paquete_id).val()+',total_pago'+$('#total_pago_'+paquete_id).val());
-        if(parseFloat($('#total_'+paquete_id).val())<parseFloat($('#total_pago_'+paquete_id).val())){
+        /*if(parseFloat($('#total_'+paquete_id).val())<parseFloat($('#total_pago_'+paquete_id).val())){
             swal(
                 'MESANJE DEL SISTEMA',
                 'La sumatoria es menor al total.',
@@ -6434,7 +6434,7 @@ function preparar_envio_pagos(id,paquete_id){
                 'warning'
             )
             return false;
-        }
+        }*/
         // Enviamos el formulario usando AJAX
         // $.ajax({
         //     type: 'POST',
@@ -7136,6 +7136,8 @@ function buscar_pagos_pendinetes(form,valor,valor_estatico){
             $("#btn_pagados").addClass('btn-primary');
             $("#btn_procesados").removeClass('btn-primary');
             $("#btn_procesados").addClass('btn-outline-primary');
+            $("#btn_cerrados").removeClass('btn-primary');
+            $("#btn_cerrados").addClass('btn-outline-primary');
         }
         else if(valor_estatico=='1'){
             // $("#boton").val(1);
@@ -7143,8 +7145,18 @@ function buscar_pagos_pendinetes(form,valor,valor_estatico){
             $("#btn_pagados").addClass('btn-outline-primary');
             $("#btn_procesados").removeClass('btn-outline-primary');
             $("#btn_procesados").addClass('btn-primary');
+            $("#btn_cerrados").removeClass('btn-primary');
+            $("#btn_cerrados").addClass('btn-outline-primary');
         }
-
+        else if(valor_estatico=='2'){
+            // $("#boton").val(1);
+            $("#btn_pagados").removeClass('btn-primary');
+            $("#btn_pagados").addClass('btn-outline-primary');
+            $("#btn_procesados").removeClass('btn-primary');
+            $("#btn_procesados").addClass('btn-outlbuscar_pagos_pendinetesine-primary');
+            $("#btn_cerrados").removeClass('btn-outline-primary');
+            $("#btn_cerrados").addClass('btn-primary');
+        }
 
         $("#opcion").val(valor);
         $.ajax({

@@ -35,6 +35,8 @@
         @php
             $total_pagados=0;
             $total_procesados=0;
+            $total_cerrados=0;
+
             $total_pendiente=0;
             $total_pagado_=0;
         @endphp
@@ -386,7 +388,7 @@
                                     @php
                                         $total_pagados+=$total_pago;
                                     @endphp
-                                @else
+                                @elseif($opcion=='PROCESADOS')
                                     @php
                                         $total_pago=0;
                                     @endphp
@@ -419,7 +421,46 @@
                                     @php
                                         $total_procesados+=$total_pago;
                                     @endphp
-                                @endif 
+                                @elseif($opcion=='CERRADOS')
+                                    @php
+                                        $total_pago=0;
+                                    @endphp
+                                    @foreach($pqts->pagos_cliente->whereBetween('fecha',[$f1,$f2])->where('estado','1') as $pagos_cliente)
+                                        @php
+                                            $total_pago+=$pagos_cliente->monto;
+                                            $k1++;
+                                        @endphp
+                                        <tr>
+                                            <td style="width:150px;" class="text-left">
+                                                @if(!empty($pagos_cliente->forma_pagos->nombre))
+                                                    {{$pagos_cliente->forma_pagos->nombre}}
+                                                @else
+                                                    Sin valor
+                                                @endif
+                                            </td>
+                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha)}}</td>
+                                            <td style="width:100px;" class="text-center">{{MisFunciones::fecha_peru($pagos_cliente->fecha_habilitada)}}</td>
+                                            <td class="d-none" class="text-left">{{$pagos_cliente->nota}}</td>
+                                            <td style="width:80px" class="text-right">{{$pagos_cliente->monto}}</td>
+                                            <td style="width:80px" class="text-right">
+                                                @if($pagos_cliente->estado=='0')
+                                                    <span class="badge badge-secondary">Pendiente</span>
+                                                    @php
+                                                        $total_pendiente+=$pagos_cliente->monto;
+                                                    @endphp
+                                                @else
+                                                    <span class="badge badge-success">Pagado</span>
+                                                    @php
+                                                        $total_pagado_+=$pagos_cliente->monto;
+                                                    @endphp
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    @php
+                                        $total_cerrados+=$total_pago;
+                                    @endphp
+                                @endif
                                 </tbody>
                                 <tfoot class="d-none">
                                     <tr>
@@ -536,6 +577,11 @@
                 <tr class="text-15">
                     <th><b>TOTAL PROCESADO</b></th>
                     <th class="text-right"><b>{{$total_procesados}}</b></th>
+                </tr>
+            @elseif($opcion=='CERRADOS')
+                <tr class="text-15">
+                    <th><b>TOTAL CERRADOS</b></th>
+                    <th class="text-right"><b>{{$total_cerrados}}</b></th>
                 </tr>
             @endif
         </tfoot>
