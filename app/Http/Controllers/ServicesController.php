@@ -344,7 +344,6 @@ class ServicesController extends Controller
         $txt_max_personas = $request->input('txt_max_personas_' . $id);
         $txt_clase = $request->input('txt_clase_' . $id);
 
-
         if ($txt_grupo=='MOVILID') {
             $rutaAB = $request->input('txt_ruta_salida_' . $id);
             $rutaAB = explode('-', $rutaAB);

@@ -4480,7 +4480,6 @@ function llamar_servicios(destino,grupo){
     $.post('/admin/ventas/call/servicios/grupo', 'destino='+destino+'&grupo='+grupo, function(data) {
         $("#list_servicios_grupo").html(data);
     }).fail(function (data) {
-
     });
 }
 var total_serv=0;
@@ -4700,11 +4699,11 @@ function mostrar_class(proveedor_id,array_pro,grupo,id,idservicio) {
     if (proveedor_id!='0'){
 
         $.each(array_prove_train, function (key, value){
-            $("#proveedor_" + value).addClass('d-none');
-            $("#proveedor_" + value).fadeOut("slow");
+            $("#proveedor_" + value+'_'+idservicio).addClass('d-none');
+            $("#proveedor_" + value+'_'+idservicio).fadeOut("slow");
         });
-        $("#proveedor_" + proveedor[0]).removeClass('d-none');
-        $("#proveedor_" + proveedor[0]).fadeIn("slow");
+        $("#proveedor_" + proveedor[0]+'_'+idservicio).removeClass('d-none');
+        $("#proveedor_" + proveedor[0]+'_'+idservicio).fadeIn("slow");
         // $("#fila_"+proveedor_id).removeClass('d-none');
 
         $.ajaxSetup({

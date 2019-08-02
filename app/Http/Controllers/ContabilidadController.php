@@ -2658,7 +2658,11 @@ class ContabilidadController extends Controller
                         $q1/*->where('estado','1')*/
                     ->whereBetween('fecha_habilitada',[$f1,$f2]);
                     }
-                    
+                    elseif($opcion=='CERRADOS'){
+                        $q1->where('estado','1')
+                    ->whereBetween('fecha',[$f1,$f2]);
+                    // ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                    }
                 });
             })->get();
         // }

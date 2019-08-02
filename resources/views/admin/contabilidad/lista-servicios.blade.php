@@ -189,7 +189,7 @@
                                                                 @php
                                                                     $vision++;
                                                                 @endphp
-                                                                <div id="proveedor_{{$provider->id}}" class="col-6
+                                                                <div id="proveedor_{{$provider->id}}_{{$servicio->id}}" class="col-6
                                                                     @if($proveedor_id1!=$provider->id)
                                                                     {{' d-none'}}
                                                                     @endif
@@ -1104,7 +1104,7 @@
                                                                 @php
                                                                     $vision++;
                                                                 @endphp
-                                                                <div id="proveedor_{{$provider->id}}" class="col-6
+                                                                <div id="proveedor_{{$provider->id}}_{{$servicio->id}}" class="col-6
                                                                 @if($proveedor_id1!=$provider->id)
                                                                 {{' d-none'}}
                                                                 @endif
@@ -2020,14 +2020,14 @@
                                                                 @php
                                                                     $vision++;
                                                                 @endphp
-                                                                <div id="proveedor_{{$provider->id}}" class="col-6
+                                                                <div id="proveedor_{{$provider->id}}_{{$servicio->id}}" class="col-6
                                                                 @if($proveedor_id1!=$provider->id)
                                                                 {{' d-none'}}
                                                                 @endif
                                                                         ">
                                                                     <div class="form-group">
                                                                         <label for="txt_codigo" >Class</label>
-                                                                        <select class="form-control" id="txt_class_{{$servicio->id}}" name = "txt_class_{{$servicio->id}}_{{$provider->id}}">
+                                                                        <select class="form-control" id="txt_clase_{{$servicio->id}}" name = "txt_clase_{{$servicio->id}}_{{$provider->id}}">
                                                                             @foreach ($provider->clases->where('estado', '1') as $provider_clases)
                                                                                 <option value="{{$provider_clases->clase}}"
                                                                                 @if($servicio->tipoServicio==$provider_clases->clase)

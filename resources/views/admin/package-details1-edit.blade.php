@@ -320,7 +320,7 @@
                                 <b class="text-g-dark">DAY {{$itinerario->dias}}</b>
                             </div>
                             <div class="col-5">
-                                <div class="row bg-g-dark rounded text-white">
+                                <div class="row bg-dark rounded text-white">
                                     <div class="col-6">
                                         <b id="iti_fecha_b_{{$itinerario->id}}" class="badge badge-g-yellow">{{fecha_peru($itinerario->fecha)}}</b>
                                         <b id="iti_titulo_b_{{$itinerario->id}}">{{ ucwords(strtolower($itinerario->titulo))}}</b>
@@ -726,7 +726,7 @@
             <div class="col-6">
                 <div class="row">
                     <div class="col-12">
-                        <div class="row bg-g-dark text-white rounded py-2">
+                        <div class="row bg-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>COST</b></div>
                         <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s,2)}}</span></b> 
                             <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_add_serv">
@@ -776,7 +776,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="row bg-g-dark text-white rounded py-2">
+                        <div class="row bg-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>PROFIT</b></div>
                             <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($utilidad_s,2)}}</span></b><input type="hidden" name="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_add_serv">
                                 <input type="hidden" name="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_add_hotel">
@@ -805,7 +805,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="row bg-g-dark text-white rounded py-2">
+                        <div class="row bg-dark text-white rounded py-2">
                             <div class="col-lg-8"><b>SALE</b></div>
                             <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s+$utilidad_s,2)}}</span></b>
                                 <input type="hidden" name="pv_s_serv" value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_add_serv">

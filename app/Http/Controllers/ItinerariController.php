@@ -10,6 +10,7 @@ use App\M_Itinerario;
 use App\M_ItinerarioDestino;
 use Illuminate\Http\Request;
 use App\M_ItinerarioServicio;
+use App\Proveedor;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -300,8 +301,10 @@ class ItinerariController extends Controller
         $destino=explode('_',$request->input('destino'));
         $grupo=$request->input('grupo');
         $servicios=M_Servicio::where('grupo',$grupo)->where('localizacion',$destino[1])->where('estado','1')->get();
+        $trenes=Proveedor::where('grupo','TRAINS')->get();
+        // dd($trenes);
 //        return dd($servicios);
-        return view('admin.daybyday.itinerario-call-servicios',['servicios'=>$servicios,'grupo'=>$grupo,'destino_id'=>$destino[0],'destino'=>$destino[1]]);
+        return view('admin.daybyday.itinerario-call-servicios',['servicios'=>$servicios,'grupo'=>$grupo,'destino_id'=>$destino[0],'destino'=>$destino[1],'trenes'=>$trenes]);
     }
     public function call_servicios_grupo_edit($id){
         $destinations=M_Destino::get();

@@ -54,7 +54,15 @@
                 <a class="nav-link show  small rounded-0" href="#box_lunch" data-toggle="tab">BOX LUNCH</a>
             </li>
         @elseif($grupo=='TRAINS')
-            <li class="nav-item active">
+
+        @foreach ($trenes->sortby('nombre_comercial') as $tren)
+            @foreach ($tren->clases->sortby('clase')->where('estado','1') as $clase)
+                <li>
+                    <a class="nav-link show  small rounded-0" href="#clase_{{$clase->id}}" data-toggle="tab">{{strtoupper($clase->clase)}}</a>
+                </li>
+            @endforeach    
+        @endforeach
+            {{--  <li class="nav-item active">
                 <a class="nav-link show active  small rounded-0" href="#expedition" data-toggle="tab">EXPEDITION</a>
             </li>
             <li>
@@ -71,7 +79,7 @@
             </li>
             <li>
                 <a class="nav-link show  small rounded-0" href="#presidential" data-toggle="tab">PRESIDENTIAL</a>
-            </li>
+            </li>  --}}
         @elseif($grupo=='FLIGHTS')
             <li class="nav-item active">
                 <a class="nav-link show active  small rounded-0" href="#national" data-toggle="tab">NATIONAL</a>
@@ -585,7 +593,46 @@
                 @endforeach
             </div>
         @elseif($grupo=='TRAINS')
-            <div id="expedition" class="tab-pane fade show active">
+            @foreach ($trenes->sortby('nombre_comercial') as $tren)
+                @foreach ($tren->clases->sortby('clase') as $clase)
+                    {{--  <li>
+                        <a class="nav-link show  small rounded-0" href="#{{$clase->id}}" data-toggle="tab">{{strtoupper($clase->clase)}}</a>
+                    </li>  --}}
+                    <div id="clase_{{$clase->id}}" class="tab-pane fade">
+                        @foreach($servicios->where('tipoServicio',$clase->clase)->where('estado','1') as $servicio)
+                            <div class="row">
+                                <div id="service_{{$servicio->id}}" class="col small">
+                                    <div class="checkbox11">
+                                        <label class="text-primary">
+                                            @php
+                                                $precio_p_p=0;
+                                            @endphp
+                                            @if($servicio->precio_grupo==1)
+                                                @php
+                                                    $precio_p_p=round($servicio->precio_venta/2,2);
+                                                @endphp
+                                            @else 
+                                                @php
+                                                    $precio_p_p=round($servicio->precio_venta,2);
+                                                @endphp
+                                            @endif
+                                            <input type="checkbox" class="servicios1" name="servicios[]" value="0_11_{{$servicio->id}}_AREQUIPA_{{$servicio->nombre}}_{{$grupo}}_{{$servicio->clase}}_{{$servicio->tipoServicio}}_{{$precio_p_p}}">
+                                            {{ucwords(strtolower($servicio->nombre))}} | 
+                                            <span class="text-success">{{ $servicio->salida }}-{{ $servicio->llegada }}</span>
+                                            <span class="text-g-yellow font-weight-bold">
+                                                <sup>$</sup>
+                                                {{$precio_p_p}} p.p
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endforeach    
+            @endforeach
+
+            {{--  <div id="expedition" class="tab-pane fade show active">
                 @foreach($servicios->where('tipoServicio','EXPEDITION') as $servicio)
                     <div class="row">
                         <div id="service_{{$servicio->id}}" class="col small">
@@ -771,7 +818,7 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
+            </div>  --}}
         @elseif($grupo=='FLIGHTS')
 
             <div id="national" class="tab-pane fade show active">
