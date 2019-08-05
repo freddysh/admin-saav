@@ -3302,6 +3302,7 @@ class PackageCotizacionController extends Controller
 //        return dd($ppaquetes);
         return view('admin.lista-paquetes-duracion-pagina',compact('ppaquetes','destinos','estrellas'));
     }
+
     public function agregar_nuevo_servicio(Request $request)
     {
 
@@ -3327,6 +3328,8 @@ class PackageCotizacionController extends Controller
             $temp->clase=$m_servicio->clase;
             $temp->salida=$m_servicio->salida;
             $temp->llegada=$m_servicio->llegada;
+            $temp->tipoServicio=$m_servicio->tipoServicio;
+            $temp->localizacion=$m_servicio->localizacion;
             $temp->fecha_uso=$itinerario_cotizacion->fecha;
             if($m_servicio->tipoServicio=='SIC'||$m_servicio->tipoServicio=='GROUP'){
                 $temp->s_p='SIC';

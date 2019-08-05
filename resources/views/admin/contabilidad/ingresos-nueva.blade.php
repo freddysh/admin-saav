@@ -14,75 +14,87 @@
     @endphp
 
 <div class="row">
-
-    <div class="col-12 mt-4">
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-pagos-recientes-tab" data-toggle="tab" href="#nav-pagos-recientes" role="tab" aria-controls="nav-pagos-recientes" aria-selected="true">Pagos Recientes</a>
-                    <a class="nav-item nav-link" id="nav-pagos-pendientes-tab" data-toggle="tab" href="#nav-pagos-pendientes" role="tab" aria-controls="nav-pagos-pendientes" aria-selected="false">Pagos Pendientes</a>
-                    <a class="nav-item nav-link" id="nav-pagos-tab" data-toggle="tab" href="#nav-pagos" role="tab" aria-controls="nav-pagos" aria-selected="false">Buscar Pago</a>
-                </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-pagos-recientes" role="tabpanel" aria-labelledby="nav-pagos-recientes-tab">
-                    <form id="frm_buscar_pagos_pendinetes" action="{{route('pagos.recientes.filtro')}}" method="POST">
-                        <div class="row mt-3 text-10">
-                            <div class="col-3 pr-0">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Filtro</div>
-                                    </div>
-                                    <select class="form-control" name="filtro" id="pr_filtro" onchange="filtrar_($(this).val(),'pr')">
-                                        <option value="ULTIMOS 7 DIAS" @if($pr_filtro=='ULTIMOS 7 DIAS') 'selected' @endif>ULTIMOS 7 DIAS</option>
-                                        <option value="ULTIMOS 30 DIAS @if($pr_filtro=='ULTIMOS 30 DIAS') 'selected' @endif">ULTIMOS 30 DIAS</option>
-                                        <option value="ESTE MES" @if($pr_filtro=='ESTE MES') 'selected' @endif>ESTE MES</option>
-                                        <option value="ENTRE FECHAS" @if($pr_filtro=='ENTRE FECHAS') 'selected' @endif>ENTRE FECHAS</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div id="fechas_pr" class="col-5 d-none mx-0 pr-0">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><i class="fas fa-calendar text-primary"></i></div>
-                                    </div>
-                                    <input class="form-control" type="date" name="pr_f1" id="pr_f1" value="{{$pr_f1}}">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><i class="fas fa-calendar text-primary"></i></div>
-                                    </div>
-                                    <input class="form-control" type="date" name="pr_f2" id="pr_f2" value="{{$pr_f2}}">
-                                </div>
-                            </div>
-                            <div class="col-4 pr-0">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    
-                                    {{-- <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PAGADOS',$pr_f1,$pr_f2])}}" class="btn btn-primary ">PAGADOS</a>
-                                    <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PROCESADOS',$pr_f1,$pr_f2])}}" class="btn  btn-outline-primary ">PROCESADOS</a> --}}
-                                    <button type="button" id="btn_pagados" class="btn @if($opcion=='PAGADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PAGADOS','0')"><i class="fas fa-search"></i> FECHA PAGO</button>
-                                    <button type="button" id="btn_procesados" class="btn  @if($opcion=='PROCESADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PROCESADOS','1')"><i class="fas fa-search"></i> PROCESADOS</button>
-                                    <button type="button" id="btn_cerrados" class="btn  @if($opcion=='CERRADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','CERRADOS','2')"><i class="fas fa-search"></i> CERRADOS</button>
-                                </div>
-                            </div>
-                            <div class="col-2 d-none">
-                                {{$pr_filtro}}<br>{{$pr_f1}}<br>{{$pr_f2}}<br>{{$opcion}}
-                                {{-- <a href="{{route('pagos.recientes.filtro',[$pr_filtro,$opcion,$pr_f1,$pr_f2])}}" class="btn  btn-primary ">BUSCAR</a> --}}
-                                {{-- <button class="btn btn-primary btn-outline-primary" onclick="pagos_recientes($('#pr_filtro').val(),$('#pr_f1').val(),$('#pr_f2').val(),'rpt_pr')"> <i class="fas fa-search"></i> Buscar</button> --}}
-                                @csrf
-                                <input type="hidden" name="opcion" id="opcion" value="{{$opcion}}"> 
-                                
-                                {{-- <button type="button" class="btn btn-outline-primary" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes',$('#opcion').val())">BUSCAR</button> --}}
-                                {{-- <button type="submit" class="btn btn-primary btn-outline-primary"> <i class="fas fa-search"></i> Buscar</button> --}}
-                            </div>
-                        </div>
-                    </form>
-                    <div class="row">
-                        <div id="rpt_pr" class="col">
-
-                        </div>
-                    </div> 
-                </div>
-                <div class="tab-pane fade" id="nav-pagos-pendientes" role="tabpanel" aria-labelledby="nav-pagos-pendientes-tab">...</div>
-                <div class="tab-pane fade" id="nav-pagos" role="tabpanel" aria-labelledby="nav-pagos-tab">...</div>
+    <div class="col-12 mt-4 d-none">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-pagos-recientes-tab" data-toggle="tab" href="#nav-pagos-recientes" role="tab" aria-controls="nav-pagos-recientes" aria-selected="true">Pagos Recientes</a>
+                <a class="nav-item nav-link" id="nav-pagos-pendientes-tab" data-toggle="tab" href="#nav-pagos-pendientes" role="tab" aria-controls="nav-pagos-pendientes" aria-selected="false">Pagos Pendientes</a>
+                <a class="nav-item nav-link" id="nav-pagos-tab" data-toggle="tab" href="#nav-pagos" role="tab" aria-controls="nav-pagos" aria-selected="false">Buscar Pago</a>
             </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-pagos-recientes" role="tabpanel" aria-labelledby="nav-pagos-recientes-tab">
+                
+            </div>
+            <div class="tab-pane fade" id="nav-pagos-pendientes" role="tabpanel" aria-labelledby="nav-pagos-pendientes-tab">...</div>
+            <div class="tab-pane fade" id="nav-pagos" role="tabpanel" aria-labelledby="nav-pagos-tab">...</div>
+        </div>
+    </div>
+    <div class="col-12">
+        <form id="frm_buscar_pagos_pendinetes" action="{{route('pagos.recientes.filtro')}}" method="POST">
+            <div class="row mt-3 text-10">
+                <div class="col-4 pr-0">
+                    <div class="input-group mb-2">
+                        <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text text-primary""><i class="fas fa-globe"></i></div>
+                        </div>
+                        <select class="form-control" name="web" id="pr_web">
+                            <option value="">Todas las paginas</option>
+                            @foreach ($webs->where('estado','1')->sortBy('pagina') as $item)
+                                <option value="{{$item->pagina}}">{{$item->pagina}}</option> 
+                            @endforeach
+                        </select>
+                        <div class="input-group-prepend">
+                            <div class="input-group-text text-primary""><i class="fas fa-filter"></i></div>
+                        </div>
+                        <select class="form-control" name="filtro" id="pr_filtro" onchange="filtrar_($(this).val(),'pr')">
+                            <option value="ULTIMOS 7 DIAS" @if($pr_filtro=='ULTIMOS 7 DIAS') 'selected' @endif>ULTIMOS 7 DIAS</option>
+                            <option value="ULTIMOS 30 DIAS @if($pr_filtro=='ULTIMOS 30 DIAS') 'selected' @endif">ULTIMOS 30 DIAS</option>
+                            <option value="ESTE MES" @if($pr_filtro=='ESTE MES') 'selected' @endif>ESTE MES</option>
+                            <option value="ENTRE FECHAS" @if($pr_filtro=='ENTRE FECHAS') 'selected' @endif>ENTRE FECHAS</option>
+                        </select>
+                    </div>
+                    </div>
+                </div>
+                <div id="fechas_pr" class="col-5 d-none mx-0 pr-0">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fas fa-calendar text-primary"></i></div>
+                        </div>
+                        <input class="form-control" type="date" name="pr_f1" id="pr_f1" value="{{$pr_f1}}">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fas fa-calendar text-primary"></i></div>
+                        </div>
+                        <input class="form-control" type="date" name="pr_f2" id="pr_f2" value="{{$pr_f2}}">
+                    </div>
+                </div>
+                <div class="col-3 pr-0">
+                    <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+                        
+                        {{-- <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PAGADOS',$pr_f1,$pr_f2])}}" class="btn btn-primary ">PAGADOS</a>
+                        <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PROCESADOS',$pr_f1,$pr_f2])}}" class="btn  btn-outline-primary ">PROCESADOS</a> --}}
+                        <button type="button" id="btn_pagados" class="btn btn-sm @if($opcion=='PAGADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PAGADOS','0')"><i class="fas fa-search"></i> FECHA PAGO</button>
+                        <button type="button" id="btn_procesados" class="btn btn-sm  @if($opcion=='PROCESADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','PROCESADOS','1')"><i class="fas fa-search"></i> PROCESADOS</button>
+                        <button type="button" id="btn_cerrados" class="btn btn-sm  @if($opcion=='CERRADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes','CERRADOS','2')"><i class="fas fa-search"></i> CERRADOS</button>
+                    </div>
+                </div>
+                <div class="col-2 d-none">
+                    {{$pr_filtro}}<br>{{$pr_f1}}<br>{{$pr_f2}}<br>{{$opcion}}
+                    {{-- <a href="{{route('pagos.recientes.filtro',[$pr_filtro,$opcion,$pr_f1,$pr_f2])}}" class="btn  btn-primary ">BUSCAR</a> --}}
+                    {{-- <button class="btn btn-primary btn-outline-primary" onclick="pagos_recientes($('#pr_filtro').val(),$('#pr_f1').val(),$('#pr_f2').val(),'rpt_pr')"> <i class="fas fa-search"></i> Buscar</button> --}}
+                    @csrf
+                    <input type="hidden" name="opcion" id="opcion" value="{{$opcion}}"> 
+                    
+                    {{-- <button type="button" class="btn btn-outline-primary" onclick="buscar_pagos_pendinetes('frm_buscar_pagos_pendinetes',$('#opcion').val())">BUSCAR</button> --}}
+                    {{-- <button type="submit" class="btn btn-primary btn-outline-primary"> <i class="fas fa-search"></i> Buscar</button> --}}
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div id="rpt_pr" class="col">
+            </div>
+        </div> 
     </div>
 </div> 
 

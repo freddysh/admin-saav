@@ -9,16 +9,19 @@
         return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
     }
 @endphp
-    <p><b class="text-dark"><i class="fas fa-filter"></i></b>
-        <b class="text-primary">{{$filtro}}</b> | 
+    <p>
+        <b class="text-primary"><i class="fas fa-globe"></i></b>
+        <b class="text-dark">{{strtoupper($web)}}</b> | 
+        <b class="text-primary"><i class="fas fa-filter"></i></b>
+        <b class="text-dark">{{$filtro}}</b> | 
         <b class="text-primary">{{$opcion}}</b> @if($filtro=='ENTRE FECHAS') | 
         <b class="text-primary">{{$f1}}</b> | 
         <b class="text-primary">{{$f2}}</b>@endif
     </p>
-    <table class="table table-bordered table-striped table-responsive table-hover text-11 table-sm">
+    <table id="example_tabla" class="table table-bordered table-striped table-responsive table-hover text-11 table-sm">
         <thead>
             <tr>
-                <th>PAX. <span class="text-success">({{{strtoupper($pagina)}}})</span></th>
+                <th>FILE</th>
                 <th>WEB</th>
                 <th>TOTAL</th>
                 <th>PAGADO</th>
@@ -33,6 +36,7 @@
         </thead>
         <tbody>
         @php
+            $nro_cotizaciones=0;
             $total_pagados=0;
             $total_procesados=0;
             $total_cerrados=0;
@@ -355,6 +359,7 @@
                                     @endphp
                                     @foreach($pqts->pagos_cliente->whereBetween('fecha',[$f1,$f2]) as $pagos_cliente)
                                         @php
+                                            $nro_cotizaciones++;
                                             $total_pago+=$pagos_cliente->monto;
                                             $k1++;
                                         @endphp
@@ -394,6 +399,7 @@
                                     @endphp
                                     @foreach($pqts->pagos_cliente->whereBetween('fecha_habilitada',[$f1,$f2]) as $pagos_cliente)
                                         @php
+                                            $nro_cotizaciones++;
                                             $total_pago+=$pagos_cliente->monto;
                                             $k1++;
                                         @endphp
@@ -427,6 +433,7 @@
                                     @endphp
                                     @foreach($pqts->pagos_cliente->whereBetween('fecha',[$f1,$f2])->where('estado','1') as $pagos_cliente)
                                         @php
+                                            $nro_cotizaciones++;
                                             $total_pago+=$pagos_cliente->monto;
                                             $k1++;
                                         @endphp
@@ -587,3 +594,20 @@
         </tfoot>
         </tbody>
     </table>  
+
+
+<script>
+    $(document).ready( function () {
+
+        var table = $('#example_tabla').DataTable( {
+            "ordering": false,
+            paging: false,
+            dom: 'Bfrtip',
+            buttons: [ 'copyHtml5', 'excelHtml5'],
+
+        } );
+
+        // table.buttons().container()
+        //     .appendTo( '#example_tabla_wrapper .col-md-6:eq(0)' );
+    } );
+</script>
