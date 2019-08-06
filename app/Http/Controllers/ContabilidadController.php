@@ -2037,15 +2037,15 @@ class ContabilidadController extends Controller
         $ini='';
         $fin='';
         $grupo='HOTELS';
-        // $cotizaciones=Cotizacion::where('liquidacion',1)->get();
-        // $servicios=M_Servicio::where('grupo','ENTRANCES')->get();
-        // $servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
-        // $liquidaciones=Liquidacion::get();
-        // $users=User::get();
-        // $consulta=ConsultaPagoHotel::get();
-        // $consulta_serv=ConsultaPago::get();
+        $cotizaciones=Cotizacion::where('liquidacion',1)->get();
+        $servicios=M_Servicio::where('grupo','ENTRANCES')->get();
+        $servicios_movi=M_Servicio::where('grupo','MOVILID')->where('clase','BOLETO')->get();
+        $liquidaciones=Liquidacion::get();
+        $users=User::get();
+        $consulta=ConsultaPagoHotel::get();
+        $consulta_serv=ConsultaPago::get();
         $webs = Web::get();
-        return view('admin.contabilidad.pagos-pendientes-general',compact(['cotizacion','ini','fin','cotizaciones','servicios','servicios_movi','liquidaciones','users','consulta','consulta_serv','grupo','webs']));
+        return view('admin.contabilidad.pagos-pendientes-general',compact(['ini','fin','cotizaciones','servicios','servicios_movi','liquidaciones','users','consulta','consulta_serv','grupo','webs']));
 //        return view('admin.contabilidad.liquidaciones',['cotizaciones'=>$cotizaciones,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'liquidaciones'=>$liquidaciones,'users'=>$users]);
     }
     public function pagos_pendientes_general_filtro_datos(Request $request)

@@ -67,7 +67,7 @@
                     <div class="row mt-1">
                         <div class="col-1"><b>PROFIT GOAL</b></div>
                         <div class="col-9">
-                            <div class="progress"  style="height: 30px;">
+                            <div class="progress1"  style="height: 30px;">
                                 <div class="progress-bar @if($profit_alcanzado<$profit_tope) bg-info @else bg-success @endif progress-bar-striped" role="progressbar" style="width: {{($profit_alcanzado/$profit_tope)*100}}%;" aria-valuenow="{{($profit_alcanzado/$profit_tope)*100}}" aria-valuemin="0" aria-valuemax="{{$profit_tope}}"><b class="text-black-50"><sup>$</sup>{{$profit_alcanzado}}</b></div>
                             </div>
                         </div>
