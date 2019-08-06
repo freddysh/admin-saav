@@ -2374,7 +2374,7 @@ class ContabilidadController extends Controller
         
         
         
-        return view('admin.contabilidad.lista-fecha-hotel-filtro-general',compact(['proveedor','array_pagos_pendientes','array_pagos_pendientes_tours', 'pagos', 'cotizacion', 'ini', 'fin','proveedores']));
+        return view('admin.contabilidad.lista-fecha-hotel-filtro-general',compact(['proveedor','array_pagos_pendientes','array_pagos_pendientes_tours', 'cotizacion', 'ini', 'fin','proveedores']));
     }
     public function traer_datos(Request $request){
 

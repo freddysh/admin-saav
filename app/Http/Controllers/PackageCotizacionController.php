@@ -3063,8 +3063,12 @@ class PackageCotizacionController extends Controller
                         $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
                     
                 }
-            }            
-            $profit_suma+=$profit;
+            }
+            if($cotizacion_->estado==2){
+                if($cotizacion_->anulado==1){
+                    $profit_suma+=$profit;
+                }
+            }
         }
         $profit_alcanzado = $profit_suma;
         
