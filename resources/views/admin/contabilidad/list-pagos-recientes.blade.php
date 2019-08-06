@@ -594,8 +594,6 @@
         </tfoot>
         </tbody>
     </table>  
-
-
 <script>
     $(document).ready( function () {
 

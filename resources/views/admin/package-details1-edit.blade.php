@@ -32,7 +32,7 @@
     <hr>
     {{--<form action="{{route('package_cotizacion_save_path')}}" method="post" id="package_new_path_id">--}}
     <div class="row align-items-center">
-        <div class="col-6">
+        <div class="col-7">
             <h3>{{$cliente->nombres}} {{$cliente->apellidos}}</h3>
             @php
                 $s=0;
@@ -93,14 +93,14 @@
         </div>
         <div class="col-3">
             <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="#!" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="mostrarservicios()">
-                    <i class="fa fa-cubes fa-2x"></i><br> Agregar servicio
+                <a href="#!" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="mostrarservicios()">
+                    <i class="fa fa-cubes"></i><br> Agregar servicio
                 </a>
-                <a href="#!" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal_h" onclick="mostrarservicios()">
-                    <i class="fa fa-h-square fa-2x" aria-hidden="true"></i> <br> Agregar Hotel
+                <a href="#!" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#exampleModal_h" onclick="mostrarservicios()">
+                    <i class="fa fa-h-square" aria-hidden="true"></i> <br> Agregar Hotel
                 </a>
-                <a href="#!" class="btn btn-success" data-toggle="modal" data-target="#exampleModal_d" onclick="mostrarservicios()">
-                    <i class="fas fa-map-pin fa-2x"></i> <br> Agregar dia
+                <a href="#!" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModal_d" onclick="mostrarservicios()">
+                    <i class="fas fa-map-pin"></i> <br> Agregar dia
                 </a>
               </div>
         </div>
@@ -319,9 +319,9 @@
                             <div class="col-1">
                                 <b class="text-g-dark">DAY {{$itinerario->dias}}</b>
                             </div>
-                            <div class="col-5">
+                            <div class="col-10">
                                 <div class="row bg-dark rounded text-white">
-                                    <div class="col-6">
+                                    <div class="col-7">
                                         <b id="iti_fecha_b_{{$itinerario->id}}" class="badge badge-g-yellow">{{fecha_peru($itinerario->fecha)}}</b>
                                         <b id="iti_titulo_b_{{$itinerario->id}}">{{ ucwords(strtolower($itinerario->titulo))}}</b>
                                         <!-- Button trigger modal -->
@@ -412,7 +412,7 @@
                                         @endif
                                         {{--@endif--}}
                                         <div class="row card_servicios_{{$itinerario->dias}} card_servicios" id="lista_servicios_{{$servicios->id}}" data-value="{{$servicios->id}}">
-                                            <div class="col-6">
+                                            <div class="col-7">
                                                 <div class="row">
                                                     <div class="col-10{{$rango}}">
                                                         @if($servicios->grupo=='TOURS')
@@ -564,7 +564,7 @@
                                             @endphp
                                         @endif
                                     <div id="caja_detalle_{{$hotel->id}}" class="row caja_detalle_hotel margin-bottom-15">
-                                        <div class="col-6">
+                                        <div class="col-7">
                                             <div class="row">
                                                 <div class="col-10 text-12">HOTEL | <span class="text-11">{{strtoupper($hotel->estrellas) }}STARS</span> | <span class="text-11">{{$hotel->localizacion}}</span>
                                                 </div>
@@ -702,11 +702,11 @@
                                 @endforeach
 
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 d-none">
                                 <textarea form="step1" name="txt_descr_{{$itinerario->id}}"  id="txt_descr_{{$itinerario->id}}" cols="70" rows="8">{!! $itinerario->descripcion !!}</textarea>
                             </div>
                         </div>
-                        <hr>
+                        {{-- <hr> --}}
                         @php
                             $itis.=$itinerario->id.'_';
                         @endphp
@@ -723,20 +723,23 @@
         @endphp
     {{--<form action="{{route('show_step2_path',[$cotizacion_id,$paquete_precio_id,'no'])}}" method="get">--}}
         <div class="row">
-            <div class="col-6">
-                <div class="row">
-                    <div class="col-12">
+        
+            <div class="col-1">
+            </div>
+            <div class="col-10">
+                {{-- <div class="row">
+                    <div class="col-12"> --}}
                         <div class="row bg-dark text-white rounded py-2">
-                            <div class="col-lg-8"><b>COST</b></div>
-                        <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s,2)}}</span></b> 
-                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_add_serv">
-                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_add_hotel">
-                            <input type="hidden" name="cost_s_serv" id="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_edit_servicio">
-                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_cambiar_servicio">
-                            <input type="hidden" name="cost_s_serv" id="cost_s_serv_e_s" value="{{round($precio_hotel_s,2)}}" >
-                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_editar_hotel">
-                            <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_cambiar_hotel">                          
-                        </div>
+                            <div class="col-7"><b>COST</b></div>
+                            <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s,2)}}</span></b> 
+                                <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_add_serv">
+                                <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_add_hotel">
+                                <input type="hidden" name="cost_s_serv" id="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_edit_servicio">
+                                <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_cambiar_servicio">
+                                <input type="hidden" name="cost_s_serv" id="cost_s_serv_e_s" value="{{round($precio_hotel_s,2)}}" >
+                                <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_editar_hotel">
+                                <input type="hidden" name="cost_s_serv" value="{{round($precio_hotel_s,2)}}" form="frm_cambiar_hotel">                          
+                            </div>
                             <div class="col text-warning @if($d==0) d-none @endif"><b>$<span id="cost_d">{{round($precio_hotel_d,2)}}</span></b> 
                                 <input type="hidden" name="cost_d_serv" value="{{round($precio_hotel_d,2)}}" form="frm_add_serv">
                                 <input type="hidden" name="cost_d_serv" value="{{round($precio_hotel_d,2)}}" form="frm_add_hotel">
@@ -774,10 +777,10 @@
                                 <input type="hidden" name="cost_sh_serv" value="{{round($precio_iti,2)}}" form="frm_cambiar_hotel">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12">
+                    {{-- </div>
+                    <div class="col-12"> --}}
                         <div class="row bg-dark text-white rounded py-2">
-                            <div class="col-lg-8"><b>PROFIT</b></div>
+                            <div class="col-7"><b>PROFIT</b></div>
                             <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($utilidad_s,2)}}</span></b><input type="hidden" name="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_add_serv">
                                 <input type="hidden" name="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_add_hotel">
                                 <input type="hidden" name="utilidad_s_serv" id="utilidad_s_serv" value="{{round($utilidad_s,2)}}" form="frm_edit_servicio">
@@ -803,10 +806,10 @@
                                 <input type="hidden" name="utilidad_sh_serv" id="utilidad_sh_serv" value="{{round($utilidad,2)}}" form="frm_edit_servicio">
                                 <input type="hidden" name="utilidad_sh_serv" value="{{round($utilidad,2)}}" form="frm_cambiar_servicio"></div>
                         </div>
-                    </div>
-                    <div class="col-12">
+                    {{-- </div>
+                    <div class="col-12"> --}}
                         <div class="row bg-dark text-white rounded py-2">
-                            <div class="col-lg-8"><b>SALE</b></div>
+                            <div class="col-7"><b>SALE</b></div>
                             <div class="col text-warning @if($s==0) d-none @endif"><b>$<span id="cost_s">{{round($precio_hotel_s+$utilidad_s,2)}}</span></b>
                                 <input type="hidden" name="pv_s_serv" value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_add_serv">
                                 <input type="hidden" name="pv_s_serv" value="{{round($precio_hotel_s+$utilidad_s,2)}}" form="frm_add_hotel">
@@ -885,11 +888,16 @@
                         <div class="row">
                             <div class="col text-right">PRICE PER PERSON</div>
                         </div>
-                    </div>
-                </div>
+                    {{-- </div> --}}
+                {{-- </div> --}}
             </div>
-            <div class="col-6">
-                <div class="col text-right">
+            
+            <div class="col-1">
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-10 px-0">
+                {{-- <div class="col text-right"> --}}
                     <form id="step1" action="{{route('show_step2_post_path')}}" method="post">
                         {{csrf_field()}}
                         <input type="hidden" name="cotizacion_id" value="{{$cotizacion_id}}">
@@ -897,9 +905,9 @@
                         <input type="hidden" name="imprimir" value="si">
                         <input type="hidden" name="origen" value="{{$msj}}">
                         <input type="hidden" name="itis" value="{{$itis}}">
-                        <button class="btn btn-success btn-lg" type="submit">SAVE</button>
+                        <button class="btn btn-success btn-lg btn-block" type="submit">SAVE</button>
                     </form>
-                </div>
+                {{-- </div> --}}
             </div>
         </div>
     <script>

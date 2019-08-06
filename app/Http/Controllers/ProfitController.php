@@ -17,7 +17,7 @@ class ProfitController extends Controller
         sort($anios);
         $profit =GoalProfit::get();
         session()->put('menu-lateral', 'Scategories');
-        $webs=Web::get();
+        $webs=Web::where('estado','1')->get();
         return view('admin.database.profit',compact('profit','webs','anio','anios'));
      }
      public function store(Request $request){

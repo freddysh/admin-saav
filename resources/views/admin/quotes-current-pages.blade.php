@@ -90,6 +90,7 @@
             <table class="table table-striped table-bordered  table-condensed text-12">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>CLOSE DATE</th>
                         <th>ARRIVAL DATE</th>
                         <th>CODE</th>
@@ -106,6 +107,7 @@
                     @php
                         $profit_suma=0;
                         $orden='fecha_venta';
+                        $pos=1;
                     @endphp
                     @if ($tipo_filtro=='arrival-date')
                         @php
@@ -174,6 +176,7 @@
                             @endif
                         @endforeach   
                         <tr id="content-list-{{$cotizacion_->id}}">
+                            <td>{{$pos}}</td>
                             <td>{{$cotizacion_->fecha_venta}} </td>
                             <td>{{$cotizacion_->fecha}} </td>
                             <td>{{$cotizacion_->codigo}} </td>
@@ -201,6 +204,7 @@
                         </tr>
                         @php
                             $profit_suma+=$profit;
+                            $pos++;
                         @endphp
                     @endforeach
                     
