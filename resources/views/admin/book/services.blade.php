@@ -47,23 +47,23 @@
                     <div class="tab-content">
                         <div id="itinerario" class="tab-pane fade show active">
                             <div class="row">
-                                <div class="col-9">
+                                <div class="col-10">
                                     <b class="text-primary">By:{{$usuario->where('id',$cotizacion->users_id)->first()->name}}</b>, 
                                     
                                     <b class="text-primary"> <i class="fas fa-calendar"></i> {{ MisFunciones::fecha_peru($cotizacion->fecha_venta)}}</b>
-                                    <b class="text-20">|</b>
+                                    <b class="text-15">|</b>
                                     @foreach($cotizacion->cotizaciones_cliente as $clientes)
                                         @if($clientes->estado==1)
                                             {{--<h1 class="panel-title pull-left" style="font-size:30px;">Hidalgo <small>hidlgo@gmail.com</small></h1>--}}
                                             <b class="text-info text-20">Cod:{{$cotizacion->codigo}}</b><b class="text-20"> | </b><b class="panel-title pull-left text-20">{{$cotizacion->nombre_pax}} x {{$cotizacion->nropersonas}} {{date_format(date_create($cotizacion->fecha), ' l jS F Y')}}</b>
-                                            <b class="text-warning padding-left-10"> (X{{$cotizacion->nropersonas}})</b>
-                                            @for($i=0;$i<$cotizacion->nropersonas;$i++)
+                                            <b class="text-warning padding-left-10 d-none">
+                                             (X{{$cotizacion->nropersonas}})</b>
+                                            {{-- @for($i=0;$i<$cotizacion->nropersonas;$i++)
                                                 <i class="fa fa-male fa-2x"></i>
-                                            @endfor
+                                            @endfor --}}
                                         @endif
                                     @endforeach
-                                    <i class="fa fa-check d-none text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Hidalgo esta activo"></i>
-                                    <b class="text-success text-20">@if($cotizacion->categorizado=='C'){{'Con factura'}}@elseif($cotizacion->categorizado=='S'){{'Sin factura'}}@else{{'No esta filtrado'}}@endif</b>
+                                    <b class="text-success text-20 d-none">@if($cotizacion->categorizado=='C'){{'Con factura'}}@elseif($cotizacion->categorizado=='S'){{'Sin factura'}}@else{{'No esta filtrado'}}@endif</b>
                                     
                                     <div class="dropdown pull-right d-none">
                                         <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -79,191 +79,10 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-3 text-right margin-top-10">
-                                    {{--<botton class="btn btn-primary" href="#!" id="pasajeros" data-toggle="modal" data-target="#myModal_pasajeros">--}}
-                                        {{--<i class="fas fa-user-plus fa-2x"></i>--}}
-                                    {{--</botton>--}}
-                                    {{--<div class="modal fade" id="myModal_pasajeros" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--}}
-                                        {{--<div class="modal-dialog modal-lg" role="document">--}}
-                                            {{--<div class="modal-content">--}}
-                                                {{--<form action="{{route('guardar_archivos_cotizacion_path')}}" method="post" enctype="multipart/form-data">--}}
-                                                    {{--<div class="modal-header">--}}
-                                                        {{--<h4 class="modal-title" id="myModalLabel">Agregar pasajero</h4>--}}
-                                                        {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                                                    {{--</div>--}}
-                                                    {{--<div class="modal-body clearfix">--}}
-                                                        {{--<div class="col-md-12 text-left">--}}
-                                                            {{--<div class="row">--}}
-                                                                {{--<div class="col-2">--}}
-                                                                    {{--<div class="form-group">--}}
-                                                                        {{--<label for="txt_name" class="font-weight-bold text-secondary">Nro Doc.</label>--}}
-                                                                        {{--<input type="text" class="form-control" id="txt_nro_doc" name="txt_nro_doc" placeholder="Ingrese el doc.">--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col">--}}
-                                                                    {{--<div class="form-group">--}}
-                                                                        {{--<label for="txt_name" class="font-weight-bold text-secondary">Name</label>--}}
-                                                                        {{--<input type="text" class="form-control" id="txt_name" name="txt_name" placeholder="Ingrese el nombre">--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col">--}}
-                                                                    {{--<div class="form-group">--}}
-                                                                        {{--<label for="txt_phone" class="font-weight-bold text-secondary">Genero</label>--}}
-                                                                        {{--<select class="form-control" id="txt_genero" name="txt_genero">--}}
-                                                                            {{--<option value="MASCULINO">MASCULINO</option>--}}
-                                                                            {{--<option value="FEMENINO">FEMENINO</option>--}}
-                                                                        {{--</select>--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col">--}}
-                                                                    {{--<div class="form-group">--}}
-                                                                        {{--<label for="txt_phone" class="font-weight-bold text-secondary">Fecha de nacimiento</label>--}}
-                                                                        {{--<input type="date" class="form-control" id="txt_fecha_nacimiento" name="txt_fecha_nacimiento">--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col">--}}
-                                                                    {{--<div class="form-group">--}}
-                                                                        {{--<label for="txt_email" class="font-weight-bold text-secondary">Email</label>--}}
-                                                                        {{--<input type="email" class="form-control" id="txt_email" name="txt_email" placeholder="Email" value="">--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="col">--}}
-                                                                    {{--<div class="form-group">--}}
-                                                                        {{--<label for="txt_country" class="font-weight-bold text-secondary">Country</label>--}}
-                                                                        {{--<input type="text" class="form-control" id="txt_country" name="txt_country" placeholder="Country" value="">--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
-
-                                                                {{--<div class="col">--}}
-                                                                    {{--<div class="form-group">--}}
-                                                                        {{--<label for="txt_phone" class="font-weight-bold text-secondary">Phone</label>--}}
-                                                                        {{--<input type="text" class="form-control" id="txt_phone" name="txt_phone" placeholder="Phone" value="">--}}
-                                                                    {{--</div>--}}
-                                                                {{--</div>--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                        {{--<div class="col-md-12">--}}
-                                                            {{--<b id="rpt_book_archivo" class="text-success"></b>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
-                                                    {{--<div class="modal-footer">--}}
-                                                        {{--{{csrf_field()}}--}}
-                                                        {{--<input type="hidden" name="id" value="{{$cotizacion->id}}">--}}
-                                                        {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>--}}
-                                                        {{--<button type="submit" class="btn btn-primary">Subir archivo</button>--}}
-                                                    {{--</div>--}}
-                                                {{--</form>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-
+                                <div class="col-2 text-right margin-top-10">
+                                   
                                     {{--  popap para subir y descargar archivos  --}}
-                                    <botton class="btn btn-primary" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_archivos">
-                                        <i class="fas fa-file-alt"></i>
-                                    </botton>
-                                    <div class="modal fade" id="myModal_archivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <form action="{{route('guardar_archivos_cotizacion_path')}}" method="post" enctype="multipart/form-data">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="myModalLabel">Agregar archivos</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <div class="modal-body clearfix">
-                                                        <div class="col-md-12 text-left">
-                                                            <div class="row">
-                                                                <div class="col-md-9 ">
-                                                                    <div class="form-group">
-                                                                        <label for="txt_archivo" class="font-weight-bold text-secondary">Agregar archivo</label>
-                                                                        <input type="file" class="form-control" id="txt_archivo" name="txt_archivo">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3 ">
-                                                                    <div class="form-group">
-                                                                        <label for="txt_archivo" class="font-weight-bold text-secondary">Formatos admitidos</label>
-                                                                    </div>
-                                                                    <i class="text-unset fas fa-image fa-2x"></i>
-                                                                    <i class="text-primary fas fa-file-word fa-2x"></i>
-                                                                    <i class="text-success fas fa-file-excel fa-2x"></i>
-                                                                    <i class="text-danger fas fa-file-pdf fa-2x"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12 caja_current">
-                                                                    <p><b>Listado de archivos subidos</b></p>
-                                                                    <ul class="list-inline gallery">
-                                                                        @foreach($cotizacion_archivos as $cotizacion_archivo)
-                                                                            <li id="arch_{{$cotizacion_archivo->id}}" class="border border-secondary rounded mb-1">
-                                                                                <div class="row ">
-                                                                                    <div class="col-2 text-center">
-                                                                                        {{--<img class="thumbnail zoom" src="https://placeimg.com/110/110/abstract/1">--}}
-                                                                                        @if($cotizacion_archivo->extension=='jpg' || $cotizacion_archivo->extension=='png')
-                                                                                            @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
-                                                                                                <img class="thumbnail zoom" width="80px" height="75px" src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}" >
-                                                                                            @endif
-                                                                                        @elseif($cotizacion_archivo->extension=='doc' || $cotizacion_archivo->extension=='docx')
-                                                                                            <i class="text-primary fas fa-file-word fa-3x"></i>
-                                                                                        @elseif($cotizacion_archivo->extension=='xls' || $cotizacion_archivo->extension=='xlsx')
-                                                                                            <i class="text-success fas fa-file-excel fa-3x"></i>
-                                                                                        @elseif($cotizacion_archivo->extension=='pdf' )
-                                                                                            <i class="text-danger fas fa-file-pdf fa-3x"></i>
-                                                                                        @elseif($cotizacion_archivo->extension=='txt' )
-                                                                                            <i class="text-info fas fa-file fa-3x"></i>
-                                                                                        @endif
-                                                                                    </div>
-                                                                                    <div class="col-10">
-                                                                                        <div class="row">
-                                                                                            <div class="col-12">
-                                                                                                <b>Nombre:</b> {{$cotizacion_archivo->nombre}}
-                                                                                            </div>
-                                                                                            <div class="col-12">
-                                                                                                <b>Subido el:</b> {{$cotizacion_archivo->fecha_subida}} {{$cotizacion_archivo->hora_subida}}
-                                                                                            </div>
-                                                                                            <div class="col-12">
-                                                                                                <div class="row">
-                                                                                                    <div class="col-1">
-                                                                                                        <a class="btn btn-primary" href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
-                                                                                                    </div>
-                                                                                                    <div class="col-1">
-                                                                                                        <a class="btn btn-danger" href="#!" onclick="eliminar_archivo('{{$cotizacion_archivo->id}}')"><i class="fas fa-trash-alt"></i></a>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                        @endforeach
-                                                                    </ul>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <b id="rpt_book_archivo" class="text-success"></b>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        {{csrf_field()}}
-                                                        <input type="hidden" name="id" value="{{$cotizacion->id}}">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                        <button type="submit" class="btn btn-primary">Subir archivo</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{--  popap para descargar los pax en tres formatos  --}}
-                                    <a href="#!" class="btn btn-primary">
-                                            <i class="fas fa-cloud-download-alt"></i>
-                                    </a>
-                                    <a href="#!" class="btn btn-success">
-                                        <i class="fas fa-cloud-download-alt"></i>
-                                    </a>
-                                    <a href="#!" class="btn btn-warning">
-                                        <i class="fas fa-cloud-download-alt"></i>
-                                    </a>
+                                    
                                     @php
                                         $nro_servicios_total=0;
                                         $nro_servicios_reservados=0;
@@ -315,9 +134,106 @@
                                             $colo_progres='progress-bar-success';
 
                                     @endphp
-                                    <botton class="btn btn-primary" >
-                                        <span id="barra_porc">{{$porc_avance}}%</span>
-                                    </botton>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success btn-sm" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_archivos">
+                                            <i class="fas fa-file-alt"></i> Archivos
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" >
+                                            <span id="barra_porc">{{$porc_avance}}%</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal fade" id="myModal_archivos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <form action="{{route('guardar_archivos_cotizacion_path')}}" method="post" enctype="multipart/form-data">
+                                                    <div class="modal-header bg-primary text-white">
+                                                        <h4 class="modal-title" id="myModalLabel">Lista de archivos</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <div class="modal-body clearfix">
+                                                        <div class="col-md-12 text-left">
+                                                            <div class="row">
+                                                                <div class="col-md-9 ">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_archivo" class="font-weight-bold text-secondary">Agregar archivo</label>
+                                                                        <input type="file" class="form-control" id="txt_archivo" name="txt_archivo">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 ">
+                                                                    <div class="form-group">
+                                                                        <label for="txt_archivo" class="font-weight-bold text-secondary">Formatos admitidos</label>
+                                                                    </div>
+                                                                    <i class="text-unset fas fa-image"></i>
+                                                                    <i class="text-primary fas fa-file-word"></i>
+                                                                    <i class="text-success fas fa-file-excel"></i>
+                                                                    <i class="text-danger fas fa-file-pdf"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 caja_current">
+                                                                    <p><b>Listado de archivos subidos</b></p>
+                                                                    <ul class="list-inline gallery">
+                                                                        @foreach($cotizacion_archivos as $cotizacion_archivo)
+                                                                            <li id="arch_{{$cotizacion_archivo->id}}" class="border border-secondary rounded mb-1">
+                                                                                <div class="row ">
+                                                                                    <div class="col-2 text-center">
+                                                                                        {{--<img class="thumbnail zoom" src="https://placeimg.com/110/110/abstract/1">--}}
+                                                                                        @if($cotizacion_archivo->extension=='jpg' || $cotizacion_archivo->extension=='png')
+                                                                                            @if (Storage::disk('cotizacion_archivos')->has($cotizacion_archivo->imagen))
+                                                                                                <img class="thumbnail zoom" width="80px" height="75px" src="{{route('cotizacion_archivos_image_path', ['filename' => $cotizacion_archivo->imagen])}}" >
+                                                                                            @endif
+                                                                                        @elseif($cotizacion_archivo->extension=='doc' || $cotizacion_archivo->extension=='docx')
+                                                                                            <i class="text-primary fas fa-file-word fa-3x"></i>
+                                                                                        @elseif($cotizacion_archivo->extension=='xls' || $cotizacion_archivo->extension=='xlsx')
+                                                                                            <i class="text-success fas fa-file-excel fa-3x"></i>
+                                                                                        @elseif($cotizacion_archivo->extension=='pdf' )
+                                                                                            <i class="text-danger fas fa-file-pdf fa-3x"></i>
+                                                                                        @elseif($cotizacion_archivo->extension=='txt' )
+                                                                                            <i class="text-info fas fa-file fa-3x"></i>
+                                                                                        @endif
+                                                                                    </div>
+                                                                                    <div class="col-10">
+                                                                                        <div class="row">
+                                                                                            <div class="col-12">
+                                                                                                <b>Nombre:</b> {{$cotizacion_archivo->nombre}}
+                                                                                            </div>
+                                                                                            <div class="col-12">
+                                                                                                <b>Subido el:</b> {{$cotizacion_archivo->fecha_subida}} {{$cotizacion_archivo->hora_subida}}
+                                                                                            </div>
+                                                                                            <div class="col-12">
+                                                                                                <div class="btn-group">
+                                                                                                    {{-- <div class="col-1"> --}}
+                                                                                                        <a class="btn btn-primary" href="{{route('cotizacion_archivos_image_download_path',[$cotizacion_archivo->imagen])}}" target="_blank"><i class="fas fa-cloud-download-alt"></i></a>
+                                                                                                    {{-- </div>
+                                                                                                    <div class="col-1"> --}}
+                                                                                                        <a class="btn btn-danger" href="#!" onclick="eliminar_archivo('{{$cotizacion_archivo->id}}')"><i class="fas fa-trash-alt"></i></a>
+                                                                                                    {{-- </div> --}}
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <b id="rpt_book_archivo" class="text-success"></b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        {{csrf_field()}}
+                                                        <input type="hidden" name="id" value="{{$cotizacion->id}}">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary">Subir archivo</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {{--<div class="col-md-12 margin-top-10 ">--}}
@@ -339,8 +255,9 @@
                                     </span>
                                 </div>
                             </div>
+
                             <div class="row">
-                                <div class="col mt-1">
+                                <div class="col-12">
                                     <div class="alert alert-success" role="alert">
                                         @if(trim($cotizacion->notas)!='')
                                             {!! $cotizacion->notas !!}
@@ -358,7 +275,7 @@
                                     <th class="text-center">PASAPORTE</th>
                                     <th class="text-center">GENERO</th>
                                     <th class="text-center">HOTEL</th>
-                                    <th class="text-center">FECHA DE NAC.(DD/MM/AAAA) | EDAD</th>
+                                    <th class="text-center">DD/MM/AAAA | EDAD</th>
                                     <th class="text-center d-none">RESTRICCIONES</th>
                                     <th class="text-center">IDIOMA</th>
                                 </tr>
@@ -367,7 +284,7 @@
                                 @foreach($cotizacion->cotizaciones_cliente as $coti_cliente)
                                     @foreach($clientes1->where('id',$coti_cliente->clientes_id) as $cliente)
                                         <tr>
-                                            <td>{{strtoupper($cliente->nombres)}} {{strtoupper($cliente->apellidos)}}</td>
+                                            <td><i class="fas fa-user @if($coti_cliente->estado==1) text-success @endif"></i> {{strtoupper($cliente->nombres)}} {{strtoupper($cliente->apellidos)}}</td>
                                             <td>{{strtoupper($cliente->nacionalidad)}}</td>
                                             <td>{{strtoupper($cliente->pasaporte)}} <span class="badge badge-g-yellow">{{MisFunciones::fecha_peru($cliente->expiracion)}}</span> </td>
                                             <td>{{strtoupper($cliente->sexo)}}</td>
@@ -379,16 +296,16 @@
                                                         @else
                                                             @foreach($paquete->paquete_precios as $pqt_precio)
                                                                 @if($pqt_precio->personas_s>0)
-                                                                    <span class="text-warning">SINGLE</span>
+                                                                    <span class="">SINGLE</span>
                                                                 @endif
                                                                 @if($pqt_precio->personas_d>0)
-                                                                    | <span class="text-warning">DOBLE</span>
+                                                                    | <span class="">DOBLE</span>
                                                                 @endif
                                                                 @if($pqt_precio->personas_m>0)
-                                                                    | <span class="text-warning">MATRIMONIAL</span>
+                                                                    | <span class="">MATRIMONIAL</span>
                                                                 @endif
                                                                 @if($pqt_precio->personas_t>0)
-                                                                    | <span class="text-warning">TRIPLE</span>
+                                                                    | <span class="">TRIPLE</span>
                                                                 @endif
                                                             @endforeach
                                                         @endif
@@ -407,13 +324,14 @@
                                 @endforeach
                                 </tbody>
                             </table>
+
                             <table class="table table-bordered table-sm table-hover">
                                 <thead>
                                 <tr class="small">
                                     <th></th>
                                     <th class="d-none">GROUP</th>
                                     <th>SERVICE</th>
-                                    <th>DESTINATION</th>
+                                    <th class="d-none">DESTINATION</th>
                                     <th>CALCULO</th>
                                     <th>SALES</th>
                                     <th>RESERVED</th>
@@ -452,15 +370,20 @@
                                                         <b class="text-18 badge badge-g-yellow">{{date("d/m/Y",strtotime($itinerario->fecha))}}</b>
                                                         <b>{{$itinerario->titulo}}</b>
                                                         </div>
-                                                        <div class="col-1">
+                                                        <div class="col-2 text-right">
                                                             <!-- Large modal -->
-                                                            <button type="button" class="btn btn-warning float-right btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg_{{$itinerario->id}}"><i class="far fa-comment-alt"></i></button>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-warning float-right btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg_{{$itinerario->id}}"><i class="far fa-comment-alt"></i></button>
+                                                                <a href="{{route('servicios_add_path',[$cotizacion->id,$itinerario->id,$itinerario->dias])}}"  class="btn btn-primary float-left btn-sm">
+                                                                        <i class="fas fa-glass-martini"></i>
+                                                                </a>
+                                                            </div>
                                                             <div class="modal fade bd-example-modal-lg_{{$itinerario->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog modal-lg">
                                                                     <form id="guardar_notas_{{$itinerario->id}}" action="{{route('reservas_guadar_notas_path')}}" method="post">
                                                                         <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title text-primary" >Notas para el dia {{$itinerario->dias}}</h5>
+                                                                            <div class="modal-header bg-primary">
+                                                                                <h5 class="modal-title text-white" >Notas para el dia {{$itinerario->dias}}</h5>
                                                                             </div>
                                                                             <div class="modal-body">
                                                                                 <form>
@@ -483,11 +406,6 @@
                                                                     </form>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-1">
-                                                            <a href="{{route('servicios_add_path',[$cotizacion->id,$itinerario->id,$itinerario->dias])}}"  class="btn btn-primary float-left btn-sm">
-                                                                    <i class="fas fa-glass-martini"></i>
-                                                            </a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -608,8 +526,9 @@
                                                             <b class="text-green-goto">[Sal: {{$servicios->salida}}-Lleg: {{$servicios->llegada}}]</b>
                                                         @endif
                                                     </span>
-                                                    </td>
-                                                    <td><span class="small text-warning">({{$destino}})</span></td>
+                                                    {{-- </td>
+                                                    <td> --}}
+                                                    <span class="small text-success">({{$destino}})</span></td>
                                                     @php
                                                         $mate='$';
                                                         $mate_SALE='$';
@@ -662,7 +581,7 @@
                                                         {{--<a id="propover_{{$servicios->id}}" data-toggle="popover" title="Detalle" data-content="{{$mate}}"> <i class="fa fa-calculator text-primary" aria-hidden="true"></i></a>--}}
                                                         {{--</p>--}}
                                                     </td>
-                                                    <td  class="rights">
+                                                    <td class="rights">
                                                         {{$mate_SALE}}
                                                     </td>
                                                     {{--<td class="text-right">@if($servicios->precio_grupo==1){{$servicios->precio*2}}@else {{$servicios->precio}}@endif x {{$cotizacion->nropersonas}} = @if($servicios->precio_grupo==1){{$servicios->precio*2*$cotizacion->nropersonas}}@else {{$servicios->precio*$cotizacion->nropersonas}}@endif $</td>--}}
@@ -1178,7 +1097,7 @@
 
                                                             @endphp
                                                             <span class="margin-bottom-5"><b>{{$hotel->personas_s}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
-                                                            <br>
+                                                            <span class="small text-success">({{$hotel->localizacion}})</span><br>
                                                             @php
                                                                 $titulo_hotel.='<tr><td>'.$hotel->personas_s.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_s.' x '.$hotel->personas_s.'</span></td><td><span>$'.$hotel->personas_s*$hotel->precio_s.'</span></td></tr>';
                                                             @endphp
@@ -1196,7 +1115,7 @@
 
                                                             @endphp
                                                             <span class="margin-bottom-5"><b>{{$hotel->personas_d}}</b> <span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
-                                                            <br>
+                                                            <span class="small text-success">({{$hotel->localizacion}})</span><br>
                                                             @php
                                                                 $titulo_hotel.='<tr><td>'.$hotel->personas_d.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i><i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_d.' x '.$hotel->personas_d.'</span></td><td><span>$'.$hotel->personas_d*$hotel->precio_d.'</span></td></tr>';
                                                             @endphp
@@ -1214,7 +1133,7 @@
 
                                                             @endphp
                                                             <span class="margin-bottom-5"><b>{{$hotel->personas_m}}</b> <span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span>(<span class="small text-primary">HOTEL</span>)
-                                                            <br>
+                                                            <span class="small text-success">({{$hotel->localizacion}})</span><br>
                                                             @php
                                                                 $titulo_hotel.='<tr><td>'.$hotel->personas_m.'</td><td><span class="stick"><i class="fa fa-venus-mars" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_m.' x '.$hotel->personas_m.'</span></td><td><span>$'.$hotel->personas_m*$hotel->precio_m.'</span></td></tr>';
                                                             @endphp
@@ -1235,10 +1154,11 @@
                                                             @php
                                                                 $titulo_hotel.='<tr><td>'.$hotel->personas_t.'</td><td><span class="stick"><i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i> <i class="fa fa-bed" aria-hidden="true"></i></span></span></td><td><span>$'.$hotel->precio_t.' x '.$hotel->personas_t.'</span></td><td><span>$'.$hotel->personas_t*$hotel->precio_t.'</span></td></tr>';
                                                             @endphp
+                                                            <span class="small text-success">({{$hotel->localizacion}})</span>
                                                         @endif
-                                                    </td>
-                                                    <td>
-                                                        <span class="small text-warning">({{$hotel->localizacion}})</span>
+                                                    {{-- </td>
+                                                    <td> --}}
+                                                        
                                                     </td>
                                                     <td class="rights">
                                                         {!! $cadena_total !!}
@@ -1256,24 +1176,24 @@
                                                     @endphp
                                                     <td id="book_precio_asig_hotel_{{$hotel->id}}"  class="rights">
                                                         @if($hotel->personas_s>0)
-                                                            @if($hotel->precio_s_r>0)
+                                                            {{-- @if($hotel->precio_s_r>0) --}}
                                                                 <p id="book_price_edit_h_s_{{$hotel->id}}">${{$hotel->precio_s_r}}</p>
-                                                            @endif
+                                                            {{-- @endif --}}
                                                         @endif
                                                         @if($hotel->personas_d>0)
-                                                            @if($hotel->precio_d_r>0)
+                                                            {{-- @if($hotel->precio_d_r>0) --}}
                                                                 <p id="book_price_edit_h_d_{{$hotel->id}}">${{$hotel->precio_d_r}}</p>
-                                                            @endif
+                                                            {{-- @endif --}}
                                                         @endif
                                                         @if($hotel->personas_m>0)
-                                                            @if($hotel->precio_m_r>0)
+                                                            {{-- @if($hotel->precio_m_r>0) --}}
                                                                 <p id="book_price_edit_h_m_{{$hotel->id}}">${{$hotel->precio_m_r}}</p>
-                                                            @endif
+                                                            {{-- @endif --}}
                                                         @endif
                                                         @if($hotel->personas_t>0)
-                                                            @if($hotel->precio_t_r>0)
+                                                            {{-- @if($hotel->precio_t_r>0) --}}
                                                                 <p id="book_price_edit_h_t_{{$hotel->id}}">${{$hotel->precio_t_r}}</p>
-                                                            @endif
+                                                            {{-- @endif --}}
                                                         @endif
 
                                                         {{--{!! $cadena_total_book !!}--}}
@@ -1361,7 +1281,7 @@
                                                                                         @php
                                                                                             $t=$hotel->personas_t;
                                                                                         @endphp
-                                                                                        @if($hotel->precio_t_r>0)
+                                                                                        {{-- @if($hotel->precio_t_r>0) --}}
                                                                                             <tr class="text-left">
                                                                                                 <td width="100px">
                                                                                                 <span class="margin-bottom-5">
@@ -1375,7 +1295,7 @@
                                                                                                     <input type="number" class="form-control" id="book_price_edit_h_t_p_{{$hotel->id}}" name="txt_costo_edit_t" value="{{$hotel->precio_t_r}}">
                                                                                                 </td>
                                                                                             </tr>
-                                                                                        @endif
+                                                                                        {{-- @endif --}}
                                                                                     @endif
                                                                                 </table>
                                                                                 <div class="col-md-12">
@@ -1582,19 +1502,21 @@
                                                     </td>
                                                     <td class="boton">
                                                         <input type="hidden" id="hotel_anulado_{{$hotel->id}}" value="@if($hotel->anulado==1){{0}}@else{{1}}@endif">
-                                                        <button type="button" class="btn btn-danger btn-sm" onclick="anular_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
-                                                            <i class="fa fa-ban"></i>
-                                                        </button>
-                                                        <button id="confim_h_{{$hotel->id}}" type="button" class="btn btn-sm" onclick="confirmar_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
-                                                            @if($hotel->primera_confirmada==0)
-                                                                <i class="fas fa-unlock"></i>
-                                                            @elseif($hotel->primera_confirmada==1)
-                                                                <i class="fas fa-lock text-success"></i>
-                                                            @endif
-                                                        </button>
-                                                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-danger btn-sm" onclick="anular_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
+                                                                <i class="fa fa-ban"></i>
+                                                            </button>
+                                                            <button id="confim_h_{{$hotel->id}}" type="button" class="btn btn-sm" onclick="confirmar_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
+                                                                @if($hotel->primera_confirmada==0)
+                                                                    <i class="fas fa-unlock"></i>
+                                                                @elseif($hotel->primera_confirmada==1)
+                                                                    <i class="fas fa-lock text-success"></i>
+                                                                @endif
+                                                            </button>
+                                                            <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach

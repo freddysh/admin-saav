@@ -69,7 +69,6 @@
                                     <script>
                                         toastr.error('{{Session::get('message')}}')
                                     </script>
-                                
                                 @break
                                 
                         @endswitch

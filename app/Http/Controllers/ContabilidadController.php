@@ -2193,101 +2193,527 @@ class ContabilidadController extends Controller
             foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
                 foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){
                     foreach($itinerario_cotizaciones->itinerario_servicios->where('proveedor_id','!=','')->where('requerimientos_id','0') as $itinerario_servicio){
-                        $key_servicio=$cotizacion->id.'_'.$itinerario_servicio->proveedor_id;
-                        $monto_r=0;
-                        $monto_v=0;
-                        $monto_c=0;
-                        $text_itinerario_servicio='';
-                        $grupe='';
-                        $icon='';
-                        $clase='ninguno';
-                        // dd('hola:'.$itinerario_servicio->id);
-                        if($itinerario_servicio->clase)
-                            $clase=$itinerario_servicio->clase;
-                        
-                        if($itinerario_servicio->grupo)
-                            $grupe=$itinerario_servicio->grupo;
-                        
-                        if($grupe=='TOURS')
-                            $icon='<i class="fas fa-map text-info" aria-hidden="true"></i>';
-                        
-                        if($grupe=='MOVILID'){
-                            if($clase=='BOLETO')
-                                $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
-                            else
-                                $icon='<i class="fa fa-bus text-warning" aria-hidden="true"></i>';
-                        }
+                        if($opcion=='TODOS LOS URGENTES'||$opcion=='TODOS LOS PENDIENTES'){
+                            if($itinerario_servicio->prioridad==$prioridad){
+                                $key_servicio=$cotizacion->id.'_'.$itinerario_servicio->proveedor_id;
+                                $monto_r=0;
+                                $monto_v=0;
+                                $monto_c=0;
+                                $text_itinerario_servicio='';
+                                $grupe='';
+                                $icon='';
+                                $clase='ninguno';
+                                // dd('hola:'.$itinerario_servicio->id);
+                                if($itinerario_servicio->clase)
+                                    $clase=$itinerario_servicio->clase;
                                 
-                        if($grupe=='REPRESENT')
-                            $icon='<i class="fa fa-users text-success" aria-hidden="true"></i>';
-                        
-                        if($grupe=='ENTRANCES')
-                            $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
-                        
-                        if($grupe=='FOOD')
-                            $icon='<i class="fas fa-utensils text-danger" aria-hidden="true"></i>';
-                        
-                        if($grupe=='TRAINS')
-                            $icon='<i class="fa fa-train text-info" aria-hidden="true"></i>';
-                        
-                        if($grupe=='FLIGHTS')
-                            $icon='<i class="fa fa-plane text-primary" aria-hidden="true"></i>';
-                        
-                        if($grupe=='OTHERS')
-                            $icon='<i class="fa fa-question fa-text-success" aria-hidden="true"></i>';
-                                                
-                        $text_itinerario_servicio.=$icon.'<b class="text-primary">'.$itinerario_servicio->nombre.'</b>';
-                        if($itinerario_servicio->precio_grupo=='0'){
-                            $monto_r+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_proveedor;
-                            $monto_v+=$cotizacion->nropersonas*$itinerario_servicio->precio;
-                            $monto_c+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_c;
+                                if($itinerario_servicio->grupo)
+                                    $grupe=$itinerario_servicio->grupo;
+                                
+                                if($grupe=='TOURS')
+                                    $icon='<i class="fas fa-map text-info" aria-hidden="true"></i>';
+                                
+                                if($grupe=='MOVILID'){
+                                    if($clase=='BOLETO')
+                                        $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                    else
+                                        $icon='<i class="fa fa-bus text-warning" aria-hidden="true"></i>';
+                                }                                
+                                if($grupe=='REPRESENT')
+                                    $icon='<i class="fa fa-users text-success" aria-hidden="true"></i>';
+                                
+                                if($grupe=='ENTRANCES')
+                                    $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                
+                                if($grupe=='FOOD')
+                                    $icon='<i class="fas fa-utensils text-danger" aria-hidden="true"></i>';
+                                
+                                if($grupe=='TRAINS')
+                                    $icon='<i class="fa fa-train text-info" aria-hidden="true"></i>';
+                                
+                                if($grupe=='FLIGHTS')
+                                    $icon='<i class="fa fa-plane text-primary" aria-hidden="true"></i>';
+                                
+                                if($grupe=='OTHERS')
+                                    $icon='<i class="fa fa-question fa-text-success" aria-hidden="true"></i>';
+                                                        
+                                $text_itinerario_servicio.=$icon.'<b class="text-primary">'.$itinerario_servicio->nombre.'</b>';
+                                if($itinerario_servicio->precio_grupo=='0'){
+                                    $monto_r+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_proveedor;
+                                    $monto_v+=$cotizacion->nropersonas*$itinerario_servicio->precio;
+                                    $monto_c+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_c;
+                                }
+                                elseif($itinerario_servicio->precio_grupo=='1'){
+                                    $monto_r+=$itinerario_servicio->precio_proveedor;
+                                    $monto_v+=$itinerario_servicio->precio;
+                                    $monto_c+=$itinerario_servicio->precio_c;
+                                }
+                                if(array_key_exists($key_servicio,$array_pagos_pendientes_tours)){
+                                    // dd($array_pagos_pendientes_tours);
+                                    $array_pagos_pendientes_tours[$key_servicio]['monto_r']+= $monto_r;
+                                    $array_pagos_pendientes_tours[$key_servicio]['monto_v']+= $monto_v;
+                                    $array_pagos_pendientes_tours[$key_servicio]['monto_c']+= $monto_c;
+                                    $array_pagos_pendientes_tours[$key_servicio]['items'].= ','.$itinerario_servicio->id;
+                                    $array_pagos_pendientes_tours[$key_servicio]['titulo'].= '<br>'.$text_itinerario_servicio;
+                                    $array_pagos_pendientes_tours[$key_servicio]['items_itinerario'].= ','.$itinerario_cotizaciones->id;
+                                    $array_pagos_pendientes_tours[$key_servicio]['notas_cotabilidad']= $itinerario_servicio->notas_contabilidad;
+                                    $array_pagos_pendientes_tours[$key_servicio]['estado_contabilidad']= $itinerario_servicio->estado_contabilidad;
+                                }else{
+                                    // $proveedor='';
+                                    // if($itinerario_servicio->proveedor_id>0){
+                                        $proveedor_=Proveedor::where('id',$itinerario_servicio->proveedor_id)->first();
+                                        if(count((array)$proveedor_)>0)
+                                            $proveedor=$proveedor_->nombre_comercial;
+                                    // }
+                                    // $fecha_venc='';
+                                    // if($itinerario_servicio->fecha_venc)
+                                    //     $fecha_venc=$itinerario_servicio->fecha_venc;
+                                            
+                                    $array_pagos_pendientes_tours[$key_servicio]=array('proveedor'=>$proveedor,
+                                                                    'items'=>$itinerario_servicio->id,
+                                                                    'codigo'=>$cotizacion->codigo,                           'items_itinerario'=>$itinerario_cotizaciones->id,     
+                                                                    'pax'=>$cotizacion->nombre_pax,
+                                                                    'nro'=>$cotizacion->nropersonas,
+                                                                    'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                    'fecha_pago'=>$itinerario_servicio->fecha_venc,
+                                                                    'titulo'=> $text_itinerario_servicio,
+                                                                    'monto_r'=>$monto_r,
+                                                                    'monto_v'=>$monto_v,
+                                                                    'monto_c'=>$monto_c,
+                                                                    'saldo'=>'',
+                                                                    'grupo'=>$grupe,
+                                                                    'clase'=>$clase,
+                                    'notas_contabilidad'=> $itinerario_servicio->notas_contabilidad,
+                                    'estado_contabilidad'=>$itinerario_servicio->estado_contabilidad);
+                                }
+                            }
                         }
-                        elseif($itinerario_servicio->precio_grupo=='1'){
-                            $monto_r+=$itinerario_servicio->precio_proveedor;
-                            $monto_v+=$itinerario_servicio->precio;
-                            $monto_c+=$itinerario_servicio->precio_c;
+                        elseif($opcion=='ENTRE DOS FECHAS'){
+                            if($itinerario_servicio->fecha_venc>=$ini&&$itinerario_servicio->fecha_venc<=$fin){
+                                $key_servicio=$cotizacion->id.'_'.$itinerario_servicio->proveedor_id;
+                                $monto_r=0;
+                                $monto_v=0;
+                                $monto_c=0;
+                                $text_itinerario_servicio='';
+                                $grupe='';
+                                $icon='';
+                                $clase='ninguno';
+                                // dd('hola:'.$itinerario_servicio->id);
+                                if($itinerario_servicio->clase)
+                                    $clase=$itinerario_servicio->clase;
+                                
+                                if($itinerario_servicio->grupo)
+                                    $grupe=$itinerario_servicio->grupo;
+                                
+                                if($grupe=='TOURS')
+                                    $icon='<i class="fas fa-map text-info" aria-hidden="true"></i>';
+                                
+                                if($grupe=='MOVILID'){
+                                    if($clase=='BOLETO')
+                                        $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                    else
+                                        $icon='<i class="fa fa-bus text-warning" aria-hidden="true"></i>';
+                                }                                
+                                if($grupe=='REPRESENT')
+                                    $icon='<i class="fa fa-users text-success" aria-hidden="true"></i>';
+                                
+                                if($grupe=='ENTRANCES')
+                                    $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                
+                                if($grupe=='FOOD')
+                                    $icon='<i class="fas fa-utensils text-danger" aria-hidden="true"></i>';
+                                
+                                if($grupe=='TRAINS')
+                                    $icon='<i class="fa fa-train text-info" aria-hidden="true"></i>';
+                                
+                                if($grupe=='FLIGHTS')
+                                    $icon='<i class="fa fa-plane text-primary" aria-hidden="true"></i>';
+                                
+                                if($grupe=='OTHERS')
+                                    $icon='<i class="fa fa-question fa-text-success" aria-hidden="true"></i>';
+                                                        
+                                $text_itinerario_servicio.=$icon.'<b class="text-primary">'.$itinerario_servicio->nombre.'</b>';
+                                if($itinerario_servicio->precio_grupo=='0'){
+                                    $monto_r+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_proveedor;
+                                    $monto_v+=$cotizacion->nropersonas*$itinerario_servicio->precio;
+                                    $monto_c+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_c;
+                                }
+                                elseif($itinerario_servicio->precio_grupo=='1'){
+                                    $monto_r+=$itinerario_servicio->precio_proveedor;
+                                    $monto_v+=$itinerario_servicio->precio;
+                                    $monto_c+=$itinerario_servicio->precio_c;
+                                }
+                                if(array_key_exists($key_servicio,$array_pagos_pendientes_tours)){
+                                    // dd($array_pagos_pendientes_tours);
+                                    $array_pagos_pendientes_tours[$key_servicio]['monto_r']+= $monto_r;
+                                    $array_pagos_pendientes_tours[$key_servicio]['monto_v']+= $monto_v;
+                                    $array_pagos_pendientes_tours[$key_servicio]['monto_c']+= $monto_c;
+                                    $array_pagos_pendientes_tours[$key_servicio]['items'].= ','.$itinerario_servicio->id;
+                                    $array_pagos_pendientes_tours[$key_servicio]['titulo'].= '<br>'.$text_itinerario_servicio;
+                                    $array_pagos_pendientes_tours[$key_servicio]['items_itinerario'].= ','.$itinerario_cotizaciones->id;
+                                    $array_pagos_pendientes_tours[$key_servicio]['notas_cotabilidad']= $itinerario_servicio->notas_contabilidad;
+                                    $array_pagos_pendientes_tours[$key_servicio]['estado_contabilidad']= $itinerario_servicio->estado_contabilidad;
+                                }else{
+                                    // $proveedor='';
+                                    // if($itinerario_servicio->proveedor_id>0){
+                                        $proveedor_=Proveedor::where('id',$itinerario_servicio->proveedor_id)->first();
+                                        if(count((array)$proveedor_)>0)
+                                            $proveedor=$proveedor_->nombre_comercial;
+                                    // }
+                                    // $fecha_venc='';
+                                    // if($itinerario_servicio->fecha_venc)
+                                    //     $fecha_venc=$itinerario_servicio->fecha_venc;
+                                            
+                                    $array_pagos_pendientes_tours[$key_servicio]=array('proveedor'=>$proveedor,
+                                                                    'items'=>$itinerario_servicio->id,
+                                                                    'codigo'=>$cotizacion->codigo,                           'items_itinerario'=>$itinerario_cotizaciones->id,     
+                                                                    'pax'=>$cotizacion->nombre_pax,
+                                                                    'nro'=>$cotizacion->nropersonas,
+                                                                    'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                    'fecha_pago'=>$itinerario_servicio->fecha_venc,
+                                                                    'titulo'=> $text_itinerario_servicio,
+                                                                    'monto_r'=>$monto_r,
+                                                                    'monto_v'=>$monto_v,
+                                                                    'monto_c'=>$monto_c,
+                                                                    'saldo'=>'',
+                                                                    'grupo'=>$grupe,
+                                                                    'clase'=>$clase,
+                                    'notas_contabilidad'=> $itinerario_servicio->notas_contabilidad,
+                                    'estado_contabilidad'=>$itinerario_servicio->estado_contabilidad);
+                                }
+                            }
                         }
-                        if(array_key_exists($key_servicio,$array_pagos_pendientes_tours)){
-                            // dd($array_pagos_pendientes_tours);
-                            $array_pagos_pendientes_tours[$key_servicio]['monto_r']+= $monto_r;
-                            $array_pagos_pendientes_tours[$key_servicio]['monto_v']+= $monto_v;
-                            $array_pagos_pendientes_tours[$key_servicio]['monto_c']+= $monto_c;
-                            $array_pagos_pendientes_tours[$key_servicio]['items'].= ','.$itinerario_servicio->id;
-                            $array_pagos_pendientes_tours[$key_servicio]['titulo'].= '<br>'.$text_itinerario_servicio;
-                            $array_pagos_pendientes_tours[$key_servicio]['items_itinerario'].= ','.$itinerario_cotizaciones->id;
-                            $array_pagos_pendientes_tours[$key_servicio]['notas_cotabilidad']= $itinerario_servicio->notas_contabilidad;
-                            $array_pagos_pendientes_tours[$key_servicio]['estado_contabilidad']= $itinerario_servicio->estado_contabilidad;
-                        }else{
-                            // $proveedor='';
-                            // if($itinerario_servicio->proveedor_id>0){
-                                $proveedor_=Proveedor::where('id',$itinerario_servicio->proveedor_id)->first();
-                                if(count((array)$proveedor_)>0)
-                                    $proveedor=$proveedor_->nombre_comercial;
-                            // }
-                            // $fecha_venc='';
-                            // if($itinerario_servicio->fecha_venc)
-                            //     $fecha_venc=$itinerario_servicio->fecha_venc;
+                        elseif($opcion=='ENTRE DOS FECHAS URGENTES'){
+                            if($itinerario_servicio->fecha_venc>=$ini&&$itinerario_servicio->fecha_venc<=$fin){
+                                if($itinerario_servicio->prioridad=='URGENTE'){
+                                    $key_servicio=$cotizacion->id.'_'.$itinerario_servicio->proveedor_id;
+                                    $monto_r=0;
+                                    $monto_v=0;
+                                    $monto_c=0;
+                                    $text_itinerario_servicio='';
+                                    $grupe='';
+                                    $icon='';
+                                    $clase='ninguno';
+                                    // dd('hola:'.$itinerario_servicio->id);
+                                    if($itinerario_servicio->clase)
+                                        $clase=$itinerario_servicio->clase;
                                     
-                            $array_pagos_pendientes_tours[$key_servicio]=array('proveedor'=>$proveedor,
-                                                            'items'=>$itinerario_servicio->id,
-                                                            'codigo'=>$cotizacion->codigo,                           'items_itinerario'=>$itinerario_cotizaciones->id,     
-                                                            'pax'=>$cotizacion->nombre_pax,
-                                                            'nro'=>$cotizacion->nropersonas,
-                                                            'fecha_servicio'=>$itinerario_cotizaciones->fecha,
-                                                            'fecha_pago'=>$itinerario_servicio->fecha_venc,
-                                                            'titulo'=> $text_itinerario_servicio,
-                                                            'monto_r'=>$monto_r,
-                                                            'monto_v'=>$monto_v,
-                                                            'monto_c'=>$monto_c,
-                                                            'saldo'=>'',
-                                                            'grupo'=>$grupe,
-                                                            'clase'=>$clase,
-                            'notas_contabilidad'=> $itinerario_servicio->notas_contabilidad,
-                            'estado_contabilidad'=>$itinerario_servicio->estado_contabilidad);
+                                    if($itinerario_servicio->grupo)
+                                        $grupe=$itinerario_servicio->grupo;
+                                    
+                                    if($grupe=='TOURS')
+                                        $icon='<i class="fas fa-map text-info" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='MOVILID'){
+                                        if($clase=='BOLETO')
+                                            $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                        else
+                                            $icon='<i class="fa fa-bus text-warning" aria-hidden="true"></i>';
+                                    }                                
+                                    if($grupe=='REPRESENT')
+                                        $icon='<i class="fa fa-users text-success" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='ENTRANCES')
+                                        $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='FOOD')
+                                        $icon='<i class="fas fa-utensils text-danger" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='TRAINS')
+                                        $icon='<i class="fa fa-train text-info" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='FLIGHTS')
+                                        $icon='<i class="fa fa-plane text-primary" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='OTHERS')
+                                        $icon='<i class="fa fa-question fa-text-success" aria-hidden="true"></i>';
+                                                            
+                                    $text_itinerario_servicio.=$icon.'<b class="text-primary">'.$itinerario_servicio->nombre.'</b>';
+                                    if($itinerario_servicio->precio_grupo=='0'){
+                                        $monto_r+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_proveedor;
+                                        $monto_v+=$cotizacion->nropersonas*$itinerario_servicio->precio;
+                                        $monto_c+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_c;
+                                    }
+                                    elseif($itinerario_servicio->precio_grupo=='1'){
+                                        $monto_r+=$itinerario_servicio->precio_proveedor;
+                                        $monto_v+=$itinerario_servicio->precio;
+                                        $monto_c+=$itinerario_servicio->precio_c;
+                                    }
+                                    if(array_key_exists($key_servicio,$array_pagos_pendientes_tours)){
+                                        // dd($array_pagos_pendientes_tours);
+                                        $array_pagos_pendientes_tours[$key_servicio]['monto_r']+= $monto_r;
+                                        $array_pagos_pendientes_tours[$key_servicio]['monto_v']+= $monto_v;
+                                        $array_pagos_pendientes_tours[$key_servicio]['monto_c']+= $monto_c;
+                                        $array_pagos_pendientes_tours[$key_servicio]['items'].= ','.$itinerario_servicio->id;
+                                        $array_pagos_pendientes_tours[$key_servicio]['titulo'].= '<br>'.$text_itinerario_servicio;
+                                        $array_pagos_pendientes_tours[$key_servicio]['items_itinerario'].= ','.$itinerario_cotizaciones->id;
+                                        $array_pagos_pendientes_tours[$key_servicio]['notas_cotabilidad']= $itinerario_servicio->notas_contabilidad;
+                                        $array_pagos_pendientes_tours[$key_servicio]['estado_contabilidad']= $itinerario_servicio->estado_contabilidad;
+                                    }else{
+                                        // $proveedor='';
+                                        // if($itinerario_servicio->proveedor_id>0){
+                                            $proveedor_=Proveedor::where('id',$itinerario_servicio->proveedor_id)->first();
+                                            if(count((array)$proveedor_)>0)
+                                                $proveedor=$proveedor_->nombre_comercial;
+                                        // }
+                                        // $fecha_venc='';
+                                        // if($itinerario_servicio->fecha_venc)
+                                        //     $fecha_venc=$itinerario_servicio->fecha_venc;
+                                                
+                                        $array_pagos_pendientes_tours[$key_servicio]=array('proveedor'=>$proveedor,
+                                                                        'items'=>$itinerario_servicio->id,
+                                                                        'codigo'=>$cotizacion->codigo,                           'items_itinerario'=>$itinerario_cotizaciones->id,     
+                                                                        'pax'=>$cotizacion->nombre_pax,
+                                                                        'nro'=>$cotizacion->nropersonas,
+                                                                        'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                        'fecha_pago'=>$itinerario_servicio->fecha_venc,
+                                                                        'titulo'=> $text_itinerario_servicio,
+                                                                        'monto_r'=>$monto_r,
+                                                                        'monto_v'=>$monto_v,
+                                                                        'monto_c'=>$monto_c,
+                                                                        'saldo'=>'',
+                                                                        'grupo'=>$grupe,
+                                                                        'clase'=>$clase,
+                                        'notas_contabilidad'=> $itinerario_servicio->notas_contabilidad,
+                                        'estado_contabilidad'=>$itinerario_servicio->estado_contabilidad);
+                                    }
+                                }
+                            }
                         }
+                        elseif($opcion=='POR CODIGO'||$opcion=='POR NOMBRE'){
+                            $key_servicio=$cotizacion->id.'_'.$itinerario_servicio->proveedor_id;
+                                    $monto_r=0;
+                                    $monto_v=0;
+                                    $monto_c=0;
+                                    $text_itinerario_servicio='';
+                                    $grupe='';
+                                    $icon='';
+                                    $clase='ninguno';
+                                    // dd('hola:'.$itinerario_servicio->id);
+                                    if($itinerario_servicio->clase)
+                                        $clase=$itinerario_servicio->clase;
+                                    
+                                    if($itinerario_servicio->grupo)
+                                        $grupe=$itinerario_servicio->grupo;
+                                    
+                                    if($grupe=='TOURS')
+                                        $icon='<i class="fas fa-map text-info" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='MOVILID'){
+                                        if($clase=='BOLETO')
+                                            $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                        else
+                                            $icon='<i class="fa fa-bus text-warning" aria-hidden="true"></i>';
+                                    }                                
+                                    if($grupe=='REPRESENT')
+                                        $icon='<i class="fa fa-users text-success" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='ENTRANCES')
+                                        $icon='<i class="fas fa-ticket-alt text-warning" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='FOOD')
+                                        $icon='<i class="fas fa-utensils text-danger" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='TRAINS')
+                                        $icon='<i class="fa fa-train text-info" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='FLIGHTS')
+                                        $icon='<i class="fa fa-plane text-primary" aria-hidden="true"></i>';
+                                    
+                                    if($grupe=='OTHERS')
+                                        $icon='<i class="fa fa-question fa-text-success" aria-hidden="true"></i>';
+                                                            
+                                    $text_itinerario_servicio.=$icon.'<b class="text-primary">'.$itinerario_servicio->nombre.'</b>';
+                                    if($itinerario_servicio->precio_grupo=='0'){
+                                        $monto_r+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_proveedor;
+                                        $monto_v+=$cotizacion->nropersonas*$itinerario_servicio->precio;
+                                        $monto_c+=/*$cotizacion->nropersonas**/$itinerario_servicio->precio_c;
+                                    }
+                                    elseif($itinerario_servicio->precio_grupo=='1'){
+                                        $monto_r+=$itinerario_servicio->precio_proveedor;
+                                        $monto_v+=$itinerario_servicio->precio;
+                                        $monto_c+=$itinerario_servicio->precio_c;
+                                    }
+                                    if(array_key_exists($key_servicio,$array_pagos_pendientes_tours)){
+                                        // dd($array_pagos_pendientes_tours);
+                                        $array_pagos_pendientes_tours[$key_servicio]['monto_r']+= $monto_r;
+                                        $array_pagos_pendientes_tours[$key_servicio]['monto_v']+= $monto_v;
+                                        $array_pagos_pendientes_tours[$key_servicio]['monto_c']+= $monto_c;
+                                        $array_pagos_pendientes_tours[$key_servicio]['items'].= ','.$itinerario_servicio->id;
+                                        $array_pagos_pendientes_tours[$key_servicio]['titulo'].= '<br>'.$text_itinerario_servicio;
+                                        $array_pagos_pendientes_tours[$key_servicio]['items_itinerario'].= ','.$itinerario_cotizaciones->id;
+                                        $array_pagos_pendientes_tours[$key_servicio]['notas_cotabilidad']= $itinerario_servicio->notas_contabilidad;
+                                        $array_pagos_pendientes_tours[$key_servicio]['estado_contabilidad']= $itinerario_servicio->estado_contabilidad;
+                                    }else{
+                                        // $proveedor='';
+                                        // if($itinerario_servicio->proveedor_id>0){
+                                            $proveedor_=Proveedor::where('id',$itinerario_servicio->proveedor_id)->first();
+                                            if(count((array)$proveedor_)>0)
+                                                $proveedor=$proveedor_->nombre_comercial;
+                                        // }
+                                        // $fecha_venc='';
+                                        // if($itinerario_servicio->fecha_venc)
+                                        //     $fecha_venc=$itinerario_servicio->fecha_venc;
+                                                
+                                        $array_pagos_pendientes_tours[$key_servicio]=array('proveedor'=>$proveedor,
+                                                                        'items'=>$itinerario_servicio->id,
+                                                                        'codigo'=>$cotizacion->codigo,                           'items_itinerario'=>$itinerario_cotizaciones->id,     
+                                                                        'pax'=>$cotizacion->nombre_pax,
+                                                                        'nro'=>$cotizacion->nropersonas,
+                                                                        'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                        'fecha_pago'=>$itinerario_servicio->fecha_venc,
+                                                                        'titulo'=> $text_itinerario_servicio,
+                                                                        'monto_r'=>$monto_r,
+                                                                        'monto_v'=>$monto_v,
+                                                                        'monto_c'=>$monto_c,
+                                                                        'saldo'=>'',
+                                                                        'grupo'=>$grupe,
+                                                                        'clase'=>$clase,
+                                        'notas_contabilidad'=> $itinerario_servicio->notas_contabilidad,
+                                        'estado_contabilidad'=>$itinerario_servicio->estado_contabilidad);
+                                    }
+                        }
+                        
                     }
                     foreach ($itinerario_cotizaciones->hotel->where('proveedor_id','!=','')/*->whereBetween('fecha_venc', array($ini, $fin))*/->where('requerimientos_id','0') as $hotel){
-                        $key=$cotizacion->id.'_'.$hotel->proveedor_id;
+                        if($opcion=='TODOS LOS URGENTES'||$opcion=='TODOS LOS PENDIENTES'){
+                            if($hotel->prioridad==$prioridad){
+                                $key=$cotizacion->id.'_'.$hotel->proveedor_id;
+                                $monto_r=0;
+                                $monto_v=0;
+                                $monto_c=0;
+                                $text_hotel='';
+                                if($hotel->personas_s>0){
+                                    $monto_r+=$hotel->personas_s*$hotel->precio_s_r;
+                                    $monto_v+=$hotel->personas_s*$hotel->precio_s;
+                                    $monto_c+=$hotel->personas_s*$hotel->precio_s_c;
+                                    $text_hotel.='| <b class="text-primary">'.$hotel->personas_s.'<i class="fas fa-bed"></i></b>';
+                                }
+                                if($hotel->personas_d>0){
+                                    $monto_r+=$hotel->personas_d*$hotel->precio_d_r;
+                                    $monto_v+=$hotel->personas_d*$hotel->precio_d;
+                                    $monto_c+=$hotel->personas_d*$hotel->precio_d_c;
+                                    $text_hotel.='| <b class="text-primary">'.$hotel->personas_d.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
+                                }
+                                if($hotel->personas_m>0){
+                                    $monto_r+=$hotel->personas_m*$hotel->precio_m_r;
+                                    $monto_v+=$hotel->personas_m*$hotel->precio_m;
+                                    $monto_c+=$hotel->personas_m*$hotel->precio_m_c;
+                                    $text_hotel.='| <b class="text-primary">'.$hotel->personas_m.'<i class="fas fa-transgender"></i></b>';
+                                }
+                                if($hotel->personas_t>0){
+                                    $monto_r+=$hotel->personas_t*$hotel->precio_t_r;
+                                    $monto_v+=$hotel->personas_t*$hotel->precio_t;
+                                    $monto_c+=$hotel->personas_t*$hotel->precio_t_c;
+                                    $text_hotel.='| <b class="text-primary">'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
+                                }
+                                if(array_key_exists($key,$array_pagos_pendientes)){
+                                    // dd($array_pagos_pendientes);
+                                    $array_pagos_pendientes[$key]['monto_r']+= $monto_r;
+                                    $array_pagos_pendientes[$key]['monto_v']+= $monto_v;
+                                    $array_pagos_pendientes[$key]['monto_c']+= $monto_c;
+                                    $array_pagos_pendientes[$key]['items'].= ','.$itinerario_cotizaciones->id;
+                                }else{
+                                    // $proveedor='';
+                                    // if($hotel->proveedor_id>0){
+                                        $proveedor_=Proveedor::where('id',$hotel->proveedor_id)->first();
+                                        if(count((array)$proveedor_)>0)
+                                            $proveedor=$proveedor_->nombre_comercial;
+                                    // }
+                                    // $fecha_venc='';
+                                    // if($hotel->fecha_venc)
+                                    //     $fecha_venc=$hotel->fecha_venc;
+                                            
+                                    $array_pagos_pendientes[$key]=array('proveedor'=>$proveedor,
+                                                                    'items'=>$itinerario_cotizaciones->id,
+                                                                    'codigo'=>$cotizacion->codigo,                                
+                                                                    'pax'=>$cotizacion->nombre_pax,
+                                                                    'nro'=>$cotizacion->nropersonas,
+                                                                    'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                    'fecha_pago'=>$hotel->fecha_venc,
+                                                                    'titulo'=> $text_hotel,
+                                                                    'monto_r'=>$monto_r,
+                                                                    'monto_v'=>$monto_v,
+                                                                    'monto_c'=>$monto_c,
+                                                                    'saldo'=>'',
+                                                                    'grupo'=>'HOTELS',
+                                                                    'clase'=>'ninguno',
+                                    'notas_contabilidad'=> $hotel->notas_contabilidad,
+                                    'estado_contabilidad'=>'1'/* $hotel->estado_contabilidad*/);
+                                } 
+                            }
+                        }
+                        elseif($opcion=='ENTRE DOS FECHAS'){
+                            if($hotel->fecha_venc>=$ini&&$hotel->fecha_venc<=$fin){
+                                $key=$cotizacion->id.'_'.$hotel->proveedor_id;
+                                $monto_r=0;
+                                $monto_v=0;
+                                $monto_c=0;
+                                $text_hotel='';
+                                if($hotel->personas_s>0){
+                                    $monto_r+=$hotel->personas_s*$hotel->precio_s_r;
+                                    $monto_v+=$hotel->personas_s*$hotel->precio_s;
+                                    $monto_c+=$hotel->personas_s*$hotel->precio_s_c;
+                                    $text_hotel.='| <b class="text-primary">'.$hotel->personas_s.'<i class="fas fa-bed"></i></b>';
+                                }
+                                if($hotel->personas_d>0){
+                                    $monto_r+=$hotel->personas_d*$hotel->precio_d_r;
+                                    $monto_v+=$hotel->personas_d*$hotel->precio_d;
+                                    $monto_c+=$hotel->personas_d*$hotel->precio_d_c;
+                                    $text_hotel.='| <b class="text-primary">'.$hotel->personas_d.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
+                                }
+                                if($hotel->personas_m>0){
+                                    $monto_r+=$hotel->personas_m*$hotel->precio_m_r;
+                                    $monto_v+=$hotel->personas_m*$hotel->precio_m;
+                                    $monto_c+=$hotel->personas_m*$hotel->precio_m_c;
+                                    $text_hotel.='| <b class="text-primary">'.$hotel->personas_m.'<i class="fas fa-transgender"></i></b>';
+                                }
+                                if($hotel->personas_t>0){
+                                    $monto_r+=$hotel->personas_t*$hotel->precio_t_r;
+                                    $monto_v+=$hotel->personas_t*$hotel->precio_t;
+                                    $monto_c+=$hotel->personas_t*$hotel->precio_t_c;
+                                    $text_hotel.='| <b class="text-primary">'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
+                                }
+                                if(array_key_exists($key,$array_pagos_pendientes)){
+                                    // dd($array_pagos_pendientes);
+                                    $array_pagos_pendientes[$key]['monto_r']+= $monto_r;
+                                    $array_pagos_pendientes[$key]['monto_v']+= $monto_v;
+                                    $array_pagos_pendientes[$key]['monto_c']+= $monto_c;
+                                    $array_pagos_pendientes[$key]['items'].= ','.$itinerario_cotizaciones->id;
+                                }else{
+                                    // $proveedor='';
+                                    // if($hotel->proveedor_id>0){
+                                        $proveedor_=Proveedor::where('id',$hotel->proveedor_id)->first();
+                                        if(count((array)$proveedor_)>0)
+                                            $proveedor=$proveedor_->nombre_comercial;
+                                    // }
+                                    // $fecha_venc='';
+                                    // if($hotel->fecha_venc)
+                                    //     $fecha_venc=$hotel->fecha_venc;
+                                            
+                                    $array_pagos_pendientes[$key]=array('proveedor'=>$proveedor,
+                                                                    'items'=>$itinerario_cotizaciones->id,
+                                                                    'codigo'=>$cotizacion->codigo,                                
+                                                                    'pax'=>$cotizacion->nombre_pax,
+                                                                    'nro'=>$cotizacion->nropersonas,
+                                                                    'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                    'fecha_pago'=>$hotel->fecha_venc,
+                                                                    'titulo'=> $text_hotel,
+                                                                    'monto_r'=>$monto_r,
+                                                                    'monto_v'=>$monto_v,
+                                                                    'monto_c'=>$monto_c,
+                                                                    'saldo'=>'',
+                                                                    'grupo'=>'HOTELS',
+                                                                    'clase'=>'ninguno',
+                                    'notas_contabilidad'=> $hotel->notas_contabilidad,
+                                    'estado_contabilidad'=>'1'/* $hotel->estado_contabilidad*/);
+                                } 
+                            }
+                        }
+                        elseif($opcion=='ENTRE DOS FECHAS URGENTES'){
+                            if($hotel->fecha_venc>=$ini&&$hotel->fecha_venc<=$fin){
+                                if($hotel->prioridad=='URGENTE'){
+                                    $key=$cotizacion->id.'_'.$hotel->proveedor_id;
                         $monto_r=0;
                         $monto_v=0;
                         $monto_c=0;
@@ -2323,16 +2749,10 @@ class ContabilidadController extends Controller
                             $array_pagos_pendientes[$key]['monto_c']+= $monto_c;
                             $array_pagos_pendientes[$key]['items'].= ','.$itinerario_cotizaciones->id;
                         }else{
-                            // $proveedor='';
-                            // if($hotel->proveedor_id>0){
-                                $proveedor_=Proveedor::where('id',$hotel->proveedor_id)->first();
-                                if(count((array)$proveedor_)>0)
-                                    $proveedor=$proveedor_->nombre_comercial;
-                            // }
-                            // $fecha_venc='';
-                            // if($hotel->fecha_venc)
-                            //     $fecha_venc=$hotel->fecha_venc;
-                                    
+                            $proveedor_=Proveedor::where('id',$hotel->proveedor_id)->first();
+                            if(count((array)$proveedor_)>0)
+                                $proveedor=$proveedor_->nombre_comercial;
+                                                                
                             $array_pagos_pendientes[$key]=array('proveedor'=>$proveedor,
                                                             'items'=>$itinerario_cotizaciones->id,
                                                             'codigo'=>$cotizacion->codigo,                                
@@ -2349,7 +2769,76 @@ class ContabilidadController extends Controller
                                                             'clase'=>'ninguno',
                             'notas_contabilidad'=> $hotel->notas_contabilidad,
                             'estado_contabilidad'=>'1'/* $hotel->estado_contabilidad*/);
-                        }                        
+                        }
+                                }
+                            }
+                        }
+                        elseif($opcion=='POR CODIGO'||$opcion=='POR NOMBRE'){
+                            $key=$cotizacion->id.'_'.$hotel->proveedor_id;
+                            $monto_r=0;
+                            $monto_v=0;
+                            $monto_c=0;
+                            $text_hotel='';
+                            if($hotel->personas_s>0){
+                                $monto_r+=$hotel->personas_s*$hotel->precio_s_r;
+                                $monto_v+=$hotel->personas_s*$hotel->precio_s;
+                                $monto_c+=$hotel->personas_s*$hotel->precio_s_c;
+                                $text_hotel.='| <b class="text-primary">'.$hotel->personas_s.'<i class="fas fa-bed"></i></b>';
+                            }
+                            if($hotel->personas_d>0){
+                                $monto_r+=$hotel->personas_d*$hotel->precio_d_r;
+                                $monto_v+=$hotel->personas_d*$hotel->precio_d;
+                                $monto_c+=$hotel->personas_d*$hotel->precio_d_c;
+                                $text_hotel.='| <b class="text-primary">'.$hotel->personas_d.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
+                            }
+                            if($hotel->personas_m>0){
+                                $monto_r+=$hotel->personas_m*$hotel->precio_m_r;
+                                $monto_v+=$hotel->personas_m*$hotel->precio_m;
+                                $monto_c+=$hotel->personas_m*$hotel->precio_m_c;
+                                $text_hotel.='| <b class="text-primary">'.$hotel->personas_m.'<i class="fas fa-transgender"></i></b>';
+                            }
+                            if($hotel->personas_t>0){
+                                $monto_r+=$hotel->personas_t*$hotel->precio_t_r;
+                                $monto_v+=$hotel->personas_t*$hotel->precio_t;
+                                $monto_c+=$hotel->personas_t*$hotel->precio_t_c;
+                                $text_hotel.='| <b class="text-primary">'.$hotel->personas_t.'<i class="fas fa-bed"></i><i class="fas fa-bed"></i><i class="fas fa-bed"></i></b>';
+                            }
+                            if(array_key_exists($key,$array_pagos_pendientes)){
+                                // dd($array_pagos_pendientes);
+                                $array_pagos_pendientes[$key]['monto_r']+= $monto_r;
+                                $array_pagos_pendientes[$key]['monto_v']+= $monto_v;
+                                $array_pagos_pendientes[$key]['monto_c']+= $monto_c;
+                                $array_pagos_pendientes[$key]['items'].= ','.$itinerario_cotizaciones->id;
+                            }else{
+                                // $proveedor='';
+                                // if($hotel->proveedor_id>0){
+                                    $proveedor_=Proveedor::where('id',$hotel->proveedor_id)->first();
+                                    if(count((array)$proveedor_)>0)
+                                        $proveedor=$proveedor_->nombre_comercial;
+                                // }
+                                // $fecha_venc='';
+                                // if($hotel->fecha_venc)
+                                //     $fecha_venc=$hotel->fecha_venc;
+                                        
+                                $array_pagos_pendientes[$key]=array('proveedor'=>$proveedor,
+                                                                'items'=>$itinerario_cotizaciones->id,
+                                                                'codigo'=>$cotizacion->codigo,                                
+                                                                'pax'=>$cotizacion->nombre_pax,
+                                                                'nro'=>$cotizacion->nropersonas,
+                                                                'fecha_servicio'=>$itinerario_cotizaciones->fecha,
+                                                                'fecha_pago'=>$hotel->fecha_venc,
+                                                                'titulo'=> $text_hotel,
+                                                                'monto_r'=>$monto_r,
+                                                                'monto_v'=>$monto_v,
+                                                                'monto_c'=>$monto_c,
+                                                                'saldo'=>'',
+                                                                'grupo'=>'HOTELS',
+                                                                'clase'=>'ninguno',
+                                'notas_contabilidad'=> $hotel->notas_contabilidad,
+                                'estado_contabilidad'=>'1'/* $hotel->estado_contabilidad*/);
+                            } 
+                        }
+                        
                     }
                 }
             }   
@@ -2699,6 +3188,7 @@ class ContabilidadController extends Controller
         $modo_busqueda=$request->input('tipo_filtro');
         $chb_h_pagos=$request->input('chb_h_pagos');
         $chb_s_pagos=$request->input('chb_h_pagos_s');
+        
         // convertimos a array pero es para un caso especial
         $arreglo=array();
         if(isset($chb_h_pagos)){
@@ -2714,8 +3204,9 @@ class ContabilidadController extends Controller
                 $chb_h_pagos=$arreglo;
             }
         }
+        // dd($chb_h_pagos);
         $array_pagos_pendientes = [];
-        if(isset($chb_s_pagos)){
+        // if(isset($chb_s_pagos)){
             if(isset($chb_h_pagos)){
                 $lista_cotizaciones=[];            
                 $lista_cotizaciones_proveedor=[];
@@ -2812,7 +3303,7 @@ class ContabilidadController extends Controller
                 }
                 array_multisort($sort1, SORT_ASC,$sort_codigo, SORT_ASC, $array_pagos_pendientes);
             }
-        }
+        // }
         
         $array_pagos_pendientes_servicios = [];
         if(isset($chb_s_pagos)){
@@ -3155,9 +3646,9 @@ class ContabilidadController extends Controller
         else{
             $requerimientos_nuevo=Requerimiento::where('estado','2')->get();
             $requerimientos_aprovado=Requerimiento::whereIn('estado',['3','4'])->get();
-            $requerimientos_pagado=[];
+            $requerimientos_pagado=Requerimiento::where('estado','5')->get();
         }
-        // dd($requerimientos);
+        dd($requerimientos_pagado);
         $webs = Web::get();
         $usuarios=User::get();
         return view('admin.contabilidad.revisar-requerimiento',compact('requerimientos_nuevo','requerimientos_aprovado','requerimientos_pagado','webs','usuarios'));
@@ -3165,7 +3656,7 @@ class ContabilidadController extends Controller
     public function revisar_requerimiento_revisor(){
         $requerimientos_nuevo=Requerimiento::where('estado','2')->get();
         $requerimientos_aprovado=Requerimiento::whereIn('estado',['3','4'])->get();
-        $requerimientos_pagado=[];
+        $requerimientos_pagado=Requerimiento::where('estado','5')->get();
         // dd($requerimientos);
         $webs = Web::get();
         $usuarios=User::get();

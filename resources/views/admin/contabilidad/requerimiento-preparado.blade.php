@@ -67,9 +67,9 @@
                                             $total+=$array_pagos_pendiente['monto_c'];
                                         @endphp
                                         <tr id="fila_{{$array_pagos_pendiente['grupo']}}_{{$key}}">
-                                            <td class="text-grey-goto text-left">
+                                            <td class="text-grey-goto text-left d-none">
                                                 <div class="form-check">
-                                                <input type="text" form="enviar_requerimiento" value="{{$array_pagos_pendiente['items']}}" name="chb_h_pagos[]" id="chb_{{$key}}">
+                                                <input type="hidden" form="enviar_requerimiento" value="{{$array_pagos_pendiente['items']}}" name="chb_h_pagos[]" id="chb_{{$key}}">
                                                 </div>
                                             </td>
                                             <td class="text-grey-goto text-center">{{$array_pagos_pendiente['nro']}}<b><i class="fas fa-user text-primary"></i></b></td>
@@ -175,9 +175,9 @@
                                                 $total_servicio+=$array_pagos_pendiente['monto_c'];
                                             @endphp
                                             <tr id="fila_{{$array_pagos_pendiente['grupo']}}_{{$key}}">
-                                                <td class="text-grey-goto text-left">
+                                                <td class="text-grey-goto text-left d-none">
                                                     <div class="form-check">
-                                                    <input type="text" form="enviar_requerimiento" value="{{$array_pagos_pendiente['items']}}" name="chb_h_pagos_servicio[]" >
+                                                    <input type="hidden" form="enviar_requerimiento" value="{{$array_pagos_pendiente['items']}}" name="chb_h_pagos_servicio[]" >
                                                     </div>
                                                 </td>
                                                 <td class="text-grey-goto text-center">{{$array_pagos_pendiente['nro']}}<b><i class="fas fa-user text-primary"></i></b></td>
