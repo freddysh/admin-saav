@@ -798,8 +798,8 @@
                                                             <td class="text-grey-goto text-center">{{$array_pagos_pendiente['nro']}}<b><i class="fas fa-user text-primary"></i></b></td>
                                                             <td class="text-grey-goto text-left">{!!$array_pagos_pendiente['titulo']!!}</td>
                                                             <td class="text-grey-goto text-left">{{$array_pagos_pendiente['proveedor']}}</td>
-                                                            <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_servicio'])}}</td>
-                                                            <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_pago'])}}</td>
+                                                            <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($array_pagos_pendiente['fecha_servicio'])}}</td>
+                                                            <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($array_pagos_pendiente['fecha_pago'])}}</td>
                                                             <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_v']}}</b></td>
                                                             <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_r']}}</b></td>
                                                             <td class="text-grey-goto text-right"><b><sup>$</sup> <span id="monto_{{$array_pagos_pendiente['grupo']}}_c_{{$key}}">{{$array_pagos_pendiente['monto_c']}}</span></b></td>
@@ -883,8 +883,8 @@
                                                                 <td class="text-grey-goto text-center">{{$array_pagos_pendiente['nro']}}<b><i class="fas fa-user text-primary"></i></b></td>
                                                                 <td class="text-grey-goto text-left">{!!$array_pagos_pendiente['titulo']!!}</td>
                                                                 <td class="text-grey-goto text-left">{{$array_pagos_pendiente['proveedor']}}</td>
-                                                                <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_servicio'])}}</td>
-                                                                <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{fecha_peru($array_pagos_pendiente['fecha_pago'])}}</td>
+                                                                <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($array_pagos_pendiente['fecha_servicio'])}}</td>
+                                                                <td class="text-grey-goto text-center"><i class="fas fa-calendar"></i> {{MisFunciones::fecha_peru($array_pagos_pendiente['fecha_pago'])}}</td>
                                                                 <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_v']}}</b></td>
                                                                 <td class="text-grey-goto text-right"><b><sup>$</sup> {{$array_pagos_pendiente['monto_r']}}</b></td>
                                                                 <td class="text-grey-goto text-right"><b><sup>$</sup> <span id="monto_{{$array_pagos_pendiente['grupo']}}_c_{{$key}}">{{$array_pagos_pendiente['monto_c']}}</span></b></td>

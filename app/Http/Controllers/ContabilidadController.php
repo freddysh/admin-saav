@@ -2371,10 +2371,7 @@ class ContabilidadController extends Controller
             $sort_codigo_tours[$key] = $part['codigo'];
         }
         array_multisort($sort1_tours, SORT_ASC,$sort_codigo_tours, SORT_ASC, $array_pagos_pendientes_tours);
-        
-        
-        
-        return view('admin.contabilidad.lista-fecha-hotel-filtro-general',compact(['proveedor','array_pagos_pendientes','array_pagos_pendientes_tours', 'cotizacion', 'ini', 'fin','proveedores']));
+        return view('admin.contabilidad.lista-fecha-hotel-filtro-general',compact(['proveedor','array_pagos_pendientes','array_pagos_pendientes_tours', 'cotizacion', 'ini', 'fin']));
     }
     public function traer_datos(Request $request){
 
