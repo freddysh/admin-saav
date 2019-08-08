@@ -3151,10 +3151,16 @@ class ContabilidadController extends Controller
                             ->whereBetween('fecha',[$f1,$f2]);
                         // ->whereBetween('fecha_habilitada',[$f1,$f2]);
                         }
+                        elseif($opcion=='PENDIENTES'){
+                            $q1->where('estado','0')
+                            ->whereBetween('fecha',[$f1,$f2]);
+                        // ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                        }
                     });
                 })->get();
             }
             else{
+                $web='TODAS LAS PAGINAS';
                 $cotizaciones=Cotizacion::where('anulado','>','0')
                 ->whereHas('paquete_cotizaciones',function($q) use ($f1,$f2,$opcion){
                     $q->whereHas('pagos_cliente',function($q1) use ($f1,$f2,$opcion){
@@ -3168,6 +3174,11 @@ class ContabilidadController extends Controller
                         }
                         elseif($opcion=='CERRADOS'){
                             $q1->where('estado','1')
+                            ->whereBetween('fecha',[$f1,$f2]);
+                        // ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                        }
+                        elseif($opcion=='PENDIENTES'){
+                            $q1->where('estado','0')
                             ->whereBetween('fecha',[$f1,$f2]);
                         // ->whereBetween('fecha_habilitada',[$f1,$f2]);
                         }

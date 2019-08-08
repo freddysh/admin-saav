@@ -7137,6 +7137,8 @@ function buscar_pagos_pendinetes(form,valor,valor_estatico){
             $("#btn_procesados").addClass('btn-outline-primary');
             $("#btn_cerrados").removeClass('btn-primary');
             $("#btn_cerrados").addClass('btn-outline-primary');
+            $("#btn_pendientes").removeClass('btn-primary');
+            $("#btn_pendientes").addClass('btn-outline-primary');
         }
         else if(valor_estatico=='1'){
             // $("#boton").val(1);
@@ -7146,17 +7148,31 @@ function buscar_pagos_pendinetes(form,valor,valor_estatico){
             $("#btn_procesados").addClass('btn-primary');
             $("#btn_cerrados").removeClass('btn-primary');
             $("#btn_cerrados").addClass('btn-outline-primary');
+            $("#btn_pendientes").removeClass('btn-primary');
+            $("#btn_pendientes").addClass('btn-outline-primary');
         }
         else if(valor_estatico=='2'){
             // $("#boton").val(1);
             $("#btn_pagados").removeClass('btn-primary');
             $("#btn_pagados").addClass('btn-outline-primary');
             $("#btn_procesados").removeClass('btn-primary');
-            $("#btn_procesados").addClass('btn-outlbuscar_pagos_pendinetesine-primary');
+            $("#btn_procesados").addClass('btn-outline-primary');
             $("#btn_cerrados").removeClass('btn-outline-primary');
             $("#btn_cerrados").addClass('btn-primary');
+            $("#btn_pendientes").removeClass('btn-primary');
+            $("#btn_pendientes").addClass('btn-outline-primary');
         }
-
+        else if(valor_estatico=='3'){
+            // $("#boton").val(1);
+            $("#btn_pagados").removeClass('btn-primary');
+            $("#btn_pagados").addClass('btn-outline-primary');
+            $("#btn_procesados").removeClass('btn-primary');
+            $("#btn_procesados").addClass('btn-outline-primary');
+            $("#btn_cerrados").removeClass('btn-primary');
+            $("#btn_cerrados").addClass('btn-outline-primary');
+            $("#btn_pendientes").removeClass('btn-outline-primary');
+            $("#btn_pendientes").addClass('btn-primary');
+        }
         $("#opcion").val(valor);
         $.ajax({
             type: 'POST',
