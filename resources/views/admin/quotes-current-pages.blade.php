@@ -11,54 +11,62 @@
     <div class="row mt-2">
         <div class="col-12 text-12">
             <div class="row">
-                <div class="col-3 text-right px-0">
-                    <b class="text-14 text-green-goto">{{$page}}</b><br>
-                    <b class="text-14 text-green-goto">{{$anio}}</b><br>
+                <div class="col-3">
+                    <b class="text-20 text-green-goto">{{strtoupper($page)}}</b> <b class="text-20 text-green-goto">{{$anio}}</b>
+                </div>
+                <div class="col-8 px-0">
                     <div class="btn-group" role="group" aria-label="Basic example">
+                        @php
+                            $mes_[1]='JAN';
+                            $mes_[2]='FEB';
+                            $mes_[3]='MARCH';
+                            $mes_[4]='APRIL';
+                            $mes_[5]='MAY';
+                            $mes_[6]='JUNE';
+                            $mes_[7]='JULY';
+                            $mes_[8]='AUG';
+                            $mes_[9]='SEPT';
+                            $mes_[10]='OCT';
+                            $mes_[11]='NOV';
+                            $mes_[12]='DIC';
+                            $mess='01';
+                            $messs=$mes;
+                        @endphp
+                        @if($mes<=9)
+                            @php
+                                $messs=substr($mes,1,strlen($mes));
+                            @endphp
+                        @endif
+                        @for($i=1;$i<=12;$i++)
+                            @if($i<=9)
+                                @php
+                                    $mess='0'.$i;
+                                @endphp
+                            @else
+                                @php
+                                    $mess=$i;
+                                @endphp
+                            @endif
+                            <a href="{{route('current_sales_type_page_path',[$anio,$mess,$page,$tipo_filtro])}}" class="btn btn-outline-secondary @if($mes==$mess) active @endif">{{$mes_[$i]}}</a>
+                        @endfor
+                    </div>
+                </div>
+                <div class="col-1">
+                    @if ($page=='expedia.com')
+                        <a href="{{route('quotes_new1_expedia_path')}}" class="btn btn-primary"><i class="fas fa-plus"></i> NEW</a>
+                    @else
+                        <a href="{{route('quotes_new1_pagina_path',$page)}}" class="btn btn-primary"><i class="fas fa-plus"></i> NEW</a>    
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="btn-group btn-block" role="group" aria-label="Basic example">
                         <a href="{{route('current_sales_type_page_path',[$anio,$mes,$page,'close-date'])}}" class="btn @if($tipo_filtro=='close-date') btn-primary @else btn-outline-primary @endif">CLOSE DATE</a>
                         <a href="{{route('current_sales_type_page_path',[$anio,$mes,$page,'arrival-date'])}}" class="btn @if($tipo_filtro=='arrival-date') btn-primary @else btn-outline-primary @endif">ARRIVAL DATE</a>
                     </div>
                 </div>
-                <div class="col-8 pr-0">
-                    <div class="row">
-                        <div class="col">
-                            <div class="btn-group btn-group-md" role="group" aria-label="Basic example">
-                                @php
-                                    $mes_[1]='JAN';
-                                    $mes_[2]='FEB';
-                                    $mes_[3]='MARCH';
-                                    $mes_[4]='APRIL';
-                                    $mes_[5]='MAY';
-                                    $mes_[6]='JUNE';
-                                    $mes_[7]='JULY';
-                                    $mes_[8]='AUG';
-                                    $mes_[9]='SEPT';
-                                    $mes_[10]='OCT';
-                                    $mes_[11]='NOV';
-                                    $mes_[12]='DIC';
-                                    $mess='01';
-                                    $messs=$mes;
-                                @endphp
-                                @if($mes<=9)
-                                    @php
-                                        $messs=substr($mes,1,strlen($mes));
-                                    @endphp
-                                @endif
-                                @for($i=1;$i<=12;$i++)
-                                    @if($i<=9)
-                                        @php
-                                            $mess='0'.$i;
-                                        @endphp
-                                    @else
-                                        @php
-                                            $mess=$i;
-                                        @endphp
-                                    @endif
-                                    <a href="{{route('current_sales_type_page_path',[$anio,$mess,$page,$tipo_filtro])}}" class="btn btn-outline-secondary @if($mes==$mess) active @endif">{{$mes_[$i]}}</a>
-                                @endfor
-                            </div>
-                        </div>  
-                    </div>
+                <div class="col-8">
                     @if ($profit_tope==0)
                         @php
                             $profit_tope=1;    
@@ -72,33 +80,22 @@
                             $ancho_monto=100;    
                         @endphp
                     @endif
-                    <div class="row mt-1 border">
+                    <div class="row border">
                         <div class="col-1 bg-secondary"><b>PROFIT GOAL</b></div>
                         <div class="col-10 px-0">
                             <div class="progress1"  style="height: 40px;">
                                 <div class="progress-bar @if($profit_alcanzado<$profit_tope) bg-info @else bg-success @endif progress-bar-striped" role="progressbar" style="width: {{$ancho_monto}}%;height: 40px;" aria-valuenow="{{($profit_alcanzado/$profit_tope)*100}}" aria-valuemin="0" aria-valuemax="{{$profit_tope}}"><b class="text-black-50"><sup>$</sup>{{$profit_alcanzado}} ({{number_format(($profit_alcanzado/$profit_tope)*100,2)}}%)</b></div>
                             </div>
                         </div>
-                        <div class="col-1 bg-secondary">
-                            <b><sup>$</sup>{{$profit_tope}}</b>
+                        <div class="col-1 bg-secondary px-0 text-center pt-2">
+                            <b class="text-dark mt-4"><sup>$</sup>{{$profit_tope}}</b>
                         </div>
                     </div>
                 </div>
-                <div class="col-1 text-11">
-                    <div class="row">
-                        <div class="col-12">
-                        @if ($page=='expedia.com')
-                            <a href="{{route('quotes_new1_expedia_path')}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>
-                        @else
-                            <a href="{{route('quotes_new1_pagina_path',$page)}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>    
-                        @endif
-                        </div>
-                        <div class="col-12 pt-1 px-4 text-right">
-                            <b class="text-dark">
-                            {{ $mes_[$messs]}} {{date("Y")-1}} <br> <sup>$</sup>{{number_format($profit_anio_pasado,2)}}
-                            </b>
-                        </div>
-                    </div>                    
+                <div class="col-1">
+                    <b class="text-dark">
+                        {{ $mes_[$messs]}} {{date("Y")-1}} <br> <sup>$</sup>{{number_format($profit_anio_pasado,2)}}
+                    </b>
                 </div>
             </div>
         </div>
