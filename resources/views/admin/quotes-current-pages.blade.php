@@ -14,7 +14,7 @@
                 <div class="col-3 text-right px-0">
                     <b class="text-14 text-green-goto">{{$page}}</b><br>
                     <b class="text-14 text-green-goto">{{$anio}}</b><br>
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                    <div class="btn-group" role="group" aria-label="Basic example">
                         <a href="{{route('current_sales_type_page_path',[$anio,$mes,$page,'close-date'])}}" class="btn @if($tipo_filtro=='close-date') btn-primary @else btn-outline-primary @endif">CLOSE DATE</a>
                         <a href="{{route('current_sales_type_page_path',[$anio,$mes,$page,'arrival-date'])}}" class="btn @if($tipo_filtro=='arrival-date') btn-primary @else btn-outline-primary @endif">ARRIVAL DATE</a>
                     </div>
@@ -64,25 +64,41 @@
                             $profit_tope=1;    
                         @endphp
                     @endif
-                    <div class="row mt-1">
-                        <div class="col-1"><b>PROFIT GOAL</b></div>
-                        <div class="col-9">
-                            <div class="progress1"  style="height: 30px;">
-                                <div class="progress-bar @if($profit_alcanzado<$profit_tope) bg-info @else bg-success @endif progress-bar-striped" role="progressbar" style="width: {{($profit_alcanzado/$profit_tope)*100}}%;" aria-valuenow="{{($profit_alcanzado/$profit_tope)*100}}" aria-valuemin="0" aria-valuemax="{{$profit_tope}}"><b class="text-black-50"><sup>$</sup>{{$profit_alcanzado}}</b></div>
+                    @php
+                        $ancho_monto=($profit_alcanzado/$profit_tope)*100;
+                    @endphp
+                    @if ($ancho_monto>100)
+                        @php
+                            $ancho_monto=100;    
+                        @endphp
+                    @endif
+                    <div class="row mt-1 border">
+                        <div class="col-1 bg-secondary"><b>PROFIT GOAL</b></div>
+                        <div class="col-10 px-0">
+                            <div class="progress1"  style="height: 40px;">
+                                <div class="progress-bar @if($profit_alcanzado<$profit_tope) bg-info @else bg-success @endif progress-bar-striped" role="progressbar" style="width: {{$ancho_monto}}%;height: 40px;" aria-valuenow="{{($profit_alcanzado/$profit_tope)*100}}" aria-valuemin="0" aria-valuemax="{{$profit_tope}}"><b class="text-black-50"><sup>$</sup>{{$profit_alcanzado}} ({{number_format(($profit_alcanzado/$profit_tope)*100,2)}}%)</b></div>
                             </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-1 bg-secondary">
                             <b><sup>$</sup>{{$profit_tope}}</b>
                         </div>
                     </div>
                 </div>
-                <div class="col-1 text-11 px-0">
-                    @if ($page=='expedia.com')
-                        <a href="{{route('quotes_new1_expedia_path')}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>
-                    @else
-                        <a href="{{route('quotes_new1_pagina_path',$page)}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>    
-                    @endif
-                    <b class="text-danger text-11">(PREVIOUS YEAR {{ $mes_[$messs]}} {{date("Y")-1}} : <sup>$</sup>{{$profit_anio_pasado}})</b>
+                <div class="col-1 text-11">
+                    <div class="row">
+                        <div class="col-12">
+                        @if ($page=='expedia.com')
+                            <a href="{{route('quotes_new1_expedia_path')}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>
+                        @else
+                            <a href="{{route('quotes_new1_pagina_path',$page)}}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> NEW</a>    
+                        @endif
+                        </div>
+                        <div class="col-12 pt-1 px-4 text-right">
+                            <b class="text-dark">
+                            {{ $mes_[$messs]}} {{date("Y")-1}} <br> <sup>$</sup>{{number_format($profit_anio_pasado,2)}}
+                            </b>
+                        </div>
+                    </div>                    
                 </div>
             </div>
         </div>
@@ -100,6 +116,7 @@
                         <th>#DAYS</th>
                         <th>MEMBER</th>
                         <th>PROFIT</th>
+                        <th>ESTATE</th>
                         <th>OPERATIONS</th>
                     </tr>
                 </thead>

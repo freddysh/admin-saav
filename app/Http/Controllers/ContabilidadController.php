@@ -3107,9 +3107,10 @@ class ContabilidadController extends Controller
         if($filtro=='ESTE MES'){
             $mes=$today->month;
             $f1=$today->startOfMonth()->toDateString();
-            $f2=$today->now()->toDateString();
+            $f2=$today->endOfMonth()->toDateString();
         
         }
+        // dd("$f1:$f2");
 
         // dd('primer dia:'.$f1.'_ ultimo dia:'.$f2);
         // if($filtro=='ENTRE FECHAS'){

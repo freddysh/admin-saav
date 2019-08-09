@@ -371,7 +371,7 @@
                                                 <tr>
                                                     <td style="width:150px;" class="text-left">
                                                         @if(!empty($pagos_cliente->forma_pagos->nombre))
-                                                            {{$pagos_cliente->forma_pagos->nombre}}
+                                                            {{$pagos_cliente->forma_pagos->nombre}} <span class="text-success">(+{{$pagos_cliente->forma_pagos->tiempo_proceso}} dias)<span>
                                                         @else
                                                             Sin valor
                                                         @endif
