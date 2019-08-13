@@ -3907,7 +3907,7 @@ class ContabilidadController extends Controller
         $requerimiento=Requerimiento::find($requerimiento_id);
         $usuarios=User::get();
         // return view('admin.contabilidad.requerimiento-preparado',compact(['array_pagos_pendientes']));
-        return view('admin.contabilidad.requerimiento-operaciones',compact(['proveedor','array_pagos_pendientes', 'pagos', 'cotizacion', 'txt_ini', 'txt_fin','proveedores','webs','grupo','modo_busqueda','requerimiento','usuarios','operacion']));
+        return view('admin.contabilidad.requerimiento-operaciones',compact(['proveedor','array_pagos_pendientes', 'cotizacion', 'txt_ini', 'txt_fin','proveedores','webs','grupo','modo_busqueda','requerimiento','usuarios','operacion']));
 
 // dd($cotizaciones);
     

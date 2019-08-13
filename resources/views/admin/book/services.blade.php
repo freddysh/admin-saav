@@ -255,7 +255,6 @@
                                     </span>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-12">
                                     <div class="alert alert-success" role="alert">
@@ -727,7 +726,8 @@
                                                                                         <div class="col-lg-12 bg-green-goto">
                                                                                             <b class="small text-white">{{$servicios->nombre}}</b> |
                                                                                             <span class="small badge badge-g-yellow">{{$servicios->tipoServicio}}</span> |
-                                                                                            <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span>
+                                                                                            <span class="small badge badge-g-yellow">{{$servicios->localizacion}}</span> |
+                                                                                            <span class="small badge badge-g-yellow">{{date("d/m/Y",strtotime($itinerario->fecha))}}</span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div id="lista_proveedores_srevicios_{{$servicios->id}}" class="row mt-1">
