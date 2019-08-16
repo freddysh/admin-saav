@@ -1,33 +1,36 @@
 {{-- @if ($grupo=='HOTELS') --}}
-<div class="row">
-    <div class="col-6">      
-        <b class="text-primary">Notas por contabilidad:</b><br>
+<div class="row mb-0-5">
+    <div class="col-6  text-left">
         @php
             $notas_contabilidad='';
         @endphp
-        
         @if($grupo=='HOTELS')
             @foreach ($consulta as $itinerario_cotizaciones)
-                @foreach ($itinerario_cotizaciones->hotel as $item)
+                @foreach ($itinerario_cotizaciones->hotel as $item)   
                     @php
                         $notas_contabilidad=$item->notas_contabilidad;
-                    @endphp        
-                @endforeach                
+                    @endphp
+                @endforeach
             @endforeach
         @else
-            @foreach ($consulta as $item)
-                @php
-                    $notas_contabilidad=$item->notas_contabilidad;
-                @endphp        
+            @foreach ($consulta as $item_)   
+                @foreach ($item_->itinerario_servicios->whereIn('id',$lista_items) as $item)   
+                    @php
+                        $notas_contabilidad=$item->notas_contabilidad;
+                    @endphp
+                @endforeach
             @endforeach
         @endif
-            
-        <p>
-            {!! $notas_contabilidad !!}
-        </p>  
+        <div class="card">
+            <div class="card-header">
+                <i class="far fa-sticky-note"></i> Contabilidad
+            </div>
+            <div class="card-body">
+                <p class="card-text">{!! $notas_contabilidad !!}</p>
+            </div>
+        </div>
     </div>
-    <div class="col-6">
-        <b class="text-primary">Observaciones por el aprovador</b>
+    <div class="col-6 text-left pl-0">
         @php
             $notas_contabilidad_aprovador='';
         @endphp
@@ -40,17 +43,26 @@
                 @endforeach
             @endforeach
         @else
-            @foreach ($consulta as $item)   
-                @php
-                    $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
-                @endphp
+            @foreach ($consulta as $item_)   
+                @foreach ($item_->itinerario_servicios->whereIn('id',$lista_items) as $item)   
+                    @php
+                        $notas_contabilidad_aprovador=$item->notas_contabilidad_aprovador;
+                    @endphp
+                @endforeach
             @endforeach
         @endif
-        <p>{{$notas_contabilidad_aprovador}}</p>
-</div>
+        <div class="card">
+            <div class="card-header">
+                <i class="far fa-sticky-note"></i> Admintracion
+            </div>
+            <div class="card-body">
+                <p class="card-text">{!! $notas_contabilidad_aprovador !!}</p>
+            </div>
+        </div>
+    </div>
 </div>
 <table class="table table-striped table-sm table-hover">
-    <thead>
+    <thead class="bg-dark text-white">
         <tr>
             <th>FECHA USO</th>
             <th>FECHA PAGO</th>
@@ -325,6 +337,7 @@
                     <b id="total" class="text-15">
                     <input class="form-control" style="width:100px" type="number" name="precio_total_{{$clave}}" id="precio_total_{{$clave}}" name="precio" value="{{$total_c}}" readonly></b>
                 </td>
+                <td></td>
             </tr>
     </tbody>
 </table>
@@ -365,24 +378,24 @@
         <input type="hidden"  name="nro_personas" value="{{$nro_personas}}">
         <input type="hidden"  name="clave" value="{{$clave}}">
         <input type="hidden"  name="grupo" value="{{$grupo}}">
+        <input type="hidden"  name="operacion" value="{{$operacion}}">
         <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store('{{$grupo}}','{{$clave}}')">Guardar</button>
     </div>
     <div class="col-12 @if($operacion=='aprobar') nada @else d-none @endif">
-        <label class="sr-only1" for="notas">Observaciones</label>
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text"><i class="fas fa-sticky-note"></i></div>
             </div>
-        <textarea class="form-control" name="notas" id="notas" cols="30" rows="10">{{$notas_contabilidad_aprovador}}</textarea>
+        <textarea class="form-control" name="notas" id="notas" cols="30" rows="10" placeholder="Puede ingresar un nota para contabilidad">{{$notas_contabilidad_aprovador}}</textarea>
         </div>
     </div>
     <div class="col-12 mt-2 text-right @if($operacion=='aprobar') nada @else d-none @endif">
         {{ csrf_field() }}
         <input type="hidden"  name="nro_personas" value="{{$nro_personas}}">
         <input type="hidden"  name="clave" value="{{$clave}}">
-
-
-        <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store_notas('{{$clave}}')">Guardar Observaciones</button>
+        <input type="hidden"  name="operacion" value="{{$operacion}}">
+        <input type="hidden"  name="grupo" value="{{$grupo}}">
+        <button class="btn btn-primary" type="button" onclick="contabilidad_hotel_store_notas('{{$grupo}}_{{$clave}}')">Guardar Observaciones</button>
     </div>
     <div class="col-12" id="rpt_{{$grupo}}_{{$clave}}">
     </div>

@@ -1416,10 +1416,10 @@ Route::post('/admin/revisor/revisar/requerimientos/buscar', [
 //     'uses' => 'ContabilidadController@operaciones_requerimiento_revisor',
 //     'as' => 'revisor.operaciones_requerimiento',
 // ]);
-Route::post('admin/contabilidad/operaciones/requerimientos/estado-contabiliadad/cambiar/contabilidad', [
-    'uses' => 'ContabilidadController@operaciones_requerimiento_estado_contabiliadad_revisor',
-    'as' => 'revisor.operaciones_requerimiento_estado_contabiliadad',
-]);
+// Route::post('admin/contabilidad/operaciones/requerimientos/estado-contabiliadad/cambiar/contabilidad', [
+//     'uses' => 'ContabilidadController@operaciones_requerimiento_estado_contabiliadad_revisor',
+//     'as' => 'revisor.operaciones_requerimiento_estado_contabiliadad',
+// ]);
 // Route::post('/admin/contabilidad/hotel/store/notas/revisor', [
 //     'uses' => 'ContabilidadController@hotel_store_notas_revisor_revisor',
 //     'as' => 'revisor.hotel.store.revisor',

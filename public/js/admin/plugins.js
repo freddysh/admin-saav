@@ -6940,7 +6940,6 @@ function contabilidad_hotel_store(grupo,clave){
         // processData: false,
         beforeSend:
         function() {
-            
             $('#rpt_'+grupo+'_'+clave).html('');
             $('#rpt_'+grupo+'_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
@@ -7400,13 +7399,11 @@ function contabilidad_guardar_notas_requerimiento(clave,grupo,servicio){
         }
     });
 }
-function estado_contabilidad(id,proveedor,hoteles) {
+function estado_contabilidad(id,proveedor,hoteles,grupo) {
     
     var solicitado=$('#s_total').html();
     var aprovado=parseFloat($('#s_total_aprovado').html());
     var suma_resta=parseFloat($('#monto_c_'+id).html());
-    
-
     var anular=$('#hestado_contabilidad_'+id).val();
     var valor=4;
     var msj='Aprobar';
@@ -7431,7 +7428,7 @@ function estado_contabilidad(id,proveedor,hoteles) {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
             }
         });
-        $.post('../estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles, function(data) {
+        $.post('../estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles+'&grupo='+grupo, function(data) {
             if(data==1){
                 if(anular==3){
                     $('#estado_view_'+id).html('<b class="badge badge-danger">Observado</b>'); 
@@ -7545,43 +7542,81 @@ function contabilidad_hotel_store_notas(clave){
     });
 }
 function requerimiento_revisado(){
-    // console.log('clave:'+clave);
-    $.ajaxSetup({
+    var operacion=$('#operacion').val();
+    if(operacion=='aprobar'){
+    
+        $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
-    });
+        });
+        $.ajax({
+            url: $('#form_').attr('action'),
+            type: 'post',
+            data: $('#form_').serialize(),
+            beforeSend:
+            function() {
+                $('#rpt_').html('');
+                $('#rpt_').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+            success: function (data) {
+                $('#rpt_').html('');
+                if(data.operacion=='pagar'){
+                    window.location.reload();
+                }
+                else{
+                    $('#rpt_').html(data.mensaje);
+                }
+            },
+            error: function () {
+                
+            }
+        });
 
-    $.ajax({
-        url: $('#form_').attr('action'),
-        type: 'post',
-        data: $('#form_').serialize(),
-        // dataType:'json',
-        // contentType:false,
-        // cache:false,
-        // processData: false,
-        beforeSend:
-        function() {
-            
-            $('#rpt_').html('');
-            $('#rpt_').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
-        },
-        success: function (data) {
-            $('#rpt_').html('');
-            if(data.operacion=='pagar'){
-                window.location.reload();
-            }
-            else{
-                $('#rpt_').html(data.mensaje);
-            }
-        },
-        error: function () {
-            
+    }
+    else{
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "Nota: esta acción quitara los pagos (Observado y Pendiente), si esta de acuerdo proceda.",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
         }
+        });
+        $.ajax({
+            url: $('#form_').attr('action'),
+            type: 'post',
+            data: $('#form_').serialize(),
+            beforeSend:
+            function() {
+                $('#rpt_').html('');
+                $('#rpt_').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+            success: function (data) {
+                $('#rpt_').html('');
+                if(data.operacion=='pagar'){
+                    window.location.reload();
+                }
+                else{
+                    $('#rpt_').html(data.mensaje);
+                }
+            },
+            error: function () {
+                
+            }
+        });
     });
+    }
+    
 }
 
-function pagar_proveedor(id,proveedor,hoteles) {
+function pagar_proveedor(id,proveedor,hoteles,grupo) {
     
     var solicitado=$('#s_total').html();
     var aprovado=parseFloat($('#s_total_aprovado').html());
@@ -7612,7 +7647,7 @@ function pagar_proveedor(id,proveedor,hoteles) {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
             }
         });
-        $.post('../../requerimientos/estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles, function(data) {
+        $.post('../../requerimientos/estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles+'&grupo='+grupo, function(data) {
             if(data==1){
                 if(anular==3){
                     $('#estado_view_'+id).html('<b class="badge badge-success">Pagado</b>'); 
@@ -7665,9 +7700,20 @@ function pagar_proveedor(id,proveedor,hoteles) {
 // }
 
 function enviar_consulta(form){
-    // $('#'+form).submit(function() {
-
-        // Enviamos el formulario usando AJAX
+    // swal({
+    //     title: 'MENSAJE DEL SISTEMA',
+    //     text: "Nota: Esta acción confirmara los costos ingresados por reservas. Si esta deacuerdo prosiga.",
+    //     type: 'warning',
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     confirmButtonText: 'Yes'
+    // }).then(function () {
+        $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+        });
         $.ajax({
             type: 'POST',
             url: $(this).attr('action'),
@@ -7685,8 +7731,9 @@ function enviar_consulta(form){
             },
             error: function () {            
             }
-        })
+        });
     // });
+
 }
 function borrar_item_pago(key,grupo,items){
 var txt_ini=$('#txt_ini').val();
@@ -7729,7 +7776,7 @@ function borrar_items_pago(key,codigo){
         });
         $.post('/admin/contabilidad/revisar/requerimientos/borrar-lista', 'key='+key, function(data) {
             if(data.estado==1){
-                $("#fila_"+key).remove();     
+                $("#fila_"+key).remove();
                 toastr.success(data.mensaje_toastr,'MENSAJE DEL SISTEMA');
             }
             // else if(data.estado==0){
@@ -7741,7 +7788,7 @@ function borrar_items_pago(key,codigo){
     })
 }
 
-function borrar_items_pago_uno(key,grupo,estado_contabilidad){
+function borrar_items_pago_uno(key,grupo,items,estado_contabilidad){
     swal({
         title: 'MENSAJE DEL SISTEMA',
         text: "¿Esta seguro de borrar el grupo de pagos con codigo?",
@@ -7756,7 +7803,7 @@ function borrar_items_pago_uno(key,grupo,estado_contabilidad){
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
             }
         });
-        $.post('/admin/contabilidad/revisar/requerimientos/borrar-lista/uno', 'key='+key+'&grupo='+grupo+'&estado_contabilidad='+estado_contabilidad, function(data) {
+        $.post('/admin/contabilidad/revisar/requerimientos/borrar-lista/uno', 'key='+key+'&grupo='+grupo+'&estado_contabilidad='+estado_contabilidad+'&items='+items, function(data) {
             if(data.estado==1){
                 $("#fila_"+key).remove();
                 toastr.success(data.mensaje_toastr,'MENSAJE DEL SISTEMA');

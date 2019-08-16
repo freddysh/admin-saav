@@ -2498,6 +2498,8 @@ class PackageCotizacionController extends Controller
         $coti->categorizado='C';
         $coti->posibilidad=100;
         $coti->fecha_venta=$hoy->toDateString();
+        $coti->confirm_user_id=auth()->guard('admin')->user()->id;
+        
         $coti->save();
         $pqt=PaqueteCotizaciones::FindOrFail($id);
         $pqt->estado=$valor;
@@ -2522,7 +2524,7 @@ class PackageCotizacionController extends Controller
         //     }
         // }
         $fecha=$hoy->toDateString();
-        $email_send = Mail::to($email, $name)->send(new ReservasEmail($fecha,$coti_datos,$coti->id, $anio[0], $array_emails, $email, $name,$anulada));
+        // $email_send = Mail::to($email, $name)->send(new ReservasEmail($fecha,$coti_datos,$coti->id, $anio[0], $array_emails, $email, $name,$anulada));
     }
 
 //        $usuario=auth()->guard('admin')->user();
