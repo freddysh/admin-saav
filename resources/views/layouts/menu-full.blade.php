@@ -134,10 +134,10 @@
               </li>              
               <br>
               <li data-toggle="collapse" class="active1">
-                  <a class="@if(url()->current()==route('contabilidad.ingresos')) active @endif" href="{{route('contabilidad.ingresos')}}">INGRESOS</a>
-                </li>
+                <a class="@if(url()->current()==route('contabilidad.ingresos')) active @endif" href="{{route('contabilidad.ingresos')}}">INGRESOS</a>
+              </li>
               <li data-toggle="collapse" data-target="#facturacion" class="collapsed">
-                  <a href="#!" class="bg-grey-goto text-white"><i class="fas fa-cubes"></i> FACTURACION </a>
+                  <a href="#!" class="bg-grey-goto text-white">FACTURACION </a>
               </li>
               <ul class="sub-menu collapse menu2" id="facturacion">
                   @foreach ($webs->sortBy('pagina')->where('estado',1) as $item)
@@ -174,10 +174,15 @@
                 <a href="#!" class="bg-green-goto text-white"><i class="fas fa-chart-pie"></i> ADMINISTRACION </a>
             </li>
             <ul class="sub-menu collapse menu2 @if(
-              (url()->current()==route('revisor.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_revisor_buscar'))) show @endif" id="administracion">
+              (url()->current()==route('revisor.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_revisor_buscar')) ||
+              (url()->current()==route('administracion.ingresos'))
+              ) show @endif" id="administracion">
               <li data-toggle="collapse" class="active1">
                   <a class="@if(url()->current()==route('revisor.revisar_requerimiento')||url()->current()==route('contabilidad.revisar_requerimiento_revisor_buscar')  ) active @endif" href="{{route('revisor.revisar_requerimiento')}}">REVISAR REQUERIMIENTOS</a>
-                </li>  
+              </li>  
+              <li data-toggle="collapse" class="active1">
+                <a class="@if(url()->current()==route('administracion.ingresos')) active @endif" href="{{route('administracion.ingresos')}}">INGRESOS</a>
+              </li>
             </ul>
 
 

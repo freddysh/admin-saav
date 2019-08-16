@@ -1503,3 +1503,11 @@ Route::post('admin/contabilidad/ingresos/buscar-pagos-recientes', [
     'uses' => 'ContabilidadController@pagos_recientes_filtro',
     'as' => 'pagos.recientes.filtro',
 ]);
+Route::get('/admin/administracion/ingresos/general', [
+    'uses' => 'ContabilidadController@administracion_ingresos',
+    'as' => 'administracion.ingresos',
+]);
+Route::post('admin/administracion/ingresos/buscar-pagos-recientes', [
+    'uses' => 'ContabilidadController@ingresos_filtro',
+    'as' => 'ingresos.filtro',
+]);

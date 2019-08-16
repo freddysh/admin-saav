@@ -7911,7 +7911,6 @@ function marcar_checked(clase){
     // }
 }
 
-
 function buscar_pagos_pendinetes(form,valor,valor_estatico){
     // $('#'+form).submit(function() {
 
@@ -7971,6 +7970,74 @@ function buscar_pagos_pendinetes(form,valor,valor_estatico){
                 function() {
                     $('#rpt_pr').html('');
                     $('#rpt_pr').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+                },
+            success: function (data) {
+                $('#rpt_pr').html('');
+                $('#rpt_pr').html(data);
+                // $("#btn_enviar").prop('disabled', true);
+            },
+            error: function () {            
+            }
+        })
+    // });
+}
+function buscar_ingresos(form,valor,valor_estatico){
+    // $('#'+form).submit(function() {
+        // Enviamos el formulario usando AJAX
+        if(valor_estatico=='0'){
+            // $("#boton").val(0);
+            $("#btn_pagados").removeClass('btn-outline-primary');
+            $("#btn_pagados").addClass('btn-primary');
+            $("#btn_procesados").removeClass('btn-primary');
+            $("#btn_procesados").addClass('btn-outline-primary');
+            $("#btn_cerrados").removeClass('btn-primary');
+            $("#btn_cerrados").addClass('btn-outline-primary');
+            $("#btn_pendientes").removeClass('btn-primary');
+            $("#btn_pendientes").addClass('btn-outline-primary');
+        }
+        else if(valor_estatico=='1'){
+            // $("#boton").val(1);
+            $("#btn_pagados").removeClass('btn-primary');
+            $("#btn_pagados").addClass('btn-outline-primary');
+            $("#btn_procesados").removeClass('btn-outline-primary');
+            $("#btn_procesados").addClass('btn-primary');
+            $("#btn_cerrados").removeClass('btn-primary');
+            $("#btn_cerrados").addClass('btn-outline-primary');
+            $("#btn_pendientes").removeClass('btn-primary');
+            $("#btn_pendientes").addClass('btn-outline-primary');
+        }
+        else if(valor_estatico=='2'){
+            // $("#boton").val(1);
+            $("#btn_pagados").removeClass('btn-primary');
+            $("#btn_pagados").addClass('btn-outline-primary');
+            $("#btn_procesados").removeClass('btn-primary');
+            $("#btn_procesados").addClass('btn-outline-primary');
+            $("#btn_cerrados").removeClass('btn-outline-primary');
+            $("#btn_cerrados").addClass('btn-primary');
+            $("#btn_pendientes").removeClass('btn-primary');
+            $("#btn_pendientes").addClass('btn-outline-primary');
+        }
+        else if(valor_estatico=='3'){
+            // $("#boton").val(1);
+            $("#btn_pagados").removeClass('btn-primary');
+            $("#btn_pagados").addClass('btn-outline-primary');
+            $("#btn_procesados").removeClass('btn-primary');
+            $("#btn_procesados").addClass('btn-outline-primary');
+            $("#btn_cerrados").removeClass('btn-primary');
+            $("#btn_cerrados").addClass('btn-outline-primary');
+            $("#btn_pendientes").removeClass('btn-outline-primary');
+            $("#btn_pendientes").addClass('btn-primary');
+        }
+        $("#opcion").val(valor);
+        $.ajax({
+            type: 'POST',
+            url: $("#"+form).attr('action'),
+            data: $("#"+form).serialize(),
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend:
+                function() {
+                    $('#rpt_pr').html('');
+                    $('#rpt_pr').html('<i class="fas fa-stroopwafel fa-spin fa-3x"></i><span class="sr-only">Loading...</span>');
                 },
             success: function (data) {
                 $('#rpt_pr').html('');

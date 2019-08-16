@@ -4996,4 +4996,107 @@ class ContabilidadController extends Controller
 		return view('admin.contabilidad.estado-de-pagos-files',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id/*,'proveedor'=>$proveedor*/,'array_pagos_pendientes'=>$array_pagos_pendientes,'array_pagos_pendientes_tours'=>$array_pagos_pendientes_tours]);
 	 
     }
+    public function administracion_ingresos(){        
+        // return view('admin.contabilidad.ingresos');
+        // $paquete_cotizacion = PaqueteCotizaciones::get();
+		// $cot_cliente = CotizacionesCliente::with('cliente')->where('estado', 1)->get();
+		// $cliente = Cliente::get();
+		// $cotizacion_cat=Cotizacion::where('estado','2')->get();
+        $webs=Web::get();
+        $pr_filtro='ULTIMOS 7 DIAS';
+        $opcion='PAGADOS'; 
+        $data=Carbon::now()->subHour(5);
+        $pr_f1=$data->toDateString();
+        $pr_f2=$data->toDateString();
+        return view('admin.administracion.ingresos-nueva', ['webs'=>$webs,'pr_filtro'=>$pr_filtro,'opcion'=>$opcion,'pr_f1'=>$pr_f1,'pr_f2'=>$pr_f2]);
+
+    }
+    public function ingresos_filtro(Request $request)
+	{
+        $web=$request->input('web');
+        $filtro=$request->input('filtro');
+        $opcion=$request->input('opcion');
+        $f1=$request->input('pr_f1');
+        $f2=$request->input('pr_f2');
+        $today=Carbon::now();
+        $mes='';
+        if($filtro=='ULTIMOS 7 DIAS'){
+            $f1=$today->subDays(7)->toDateString();
+            $f2=$today->now()->toDateString();
+        }
+        if($filtro=='ULTIMOS 30 DIAS'){
+            $f1=$today->subDays(30)->toDateString();
+            $f2=$today->endOfMonth()->toDateString();
+        }
+        if($filtro=='ESTE MES'){
+            $mes=$today->month;
+            $f1=$today->startOfMonth()->toDateString();
+            $f2=$today->endOfMonth()->toDateString();
+        
+        }
+        // dd("$f1:$f2");
+
+        // dd('primer dia:'.$f1.'_ ultimo dia:'.$f2);
+        // if($filtro=='ENTRE FECHAS'){
+        //     $f1=$f1;
+        //     $f2=$f2;
+        // }
+        
+        $cotizaciones=null;
+            if($web!=''){
+                $cotizaciones=Cotizacion::where('anulado','>','0')->where('web',$web)
+                ->whereHas('paquete_cotizaciones',function($q) use ($f1,$f2,$opcion){
+                    $q->whereHas('pagos_cliente',function($q1) use ($f1,$f2,$opcion){
+                        if($opcion=='PAGADOS'){
+                            $q1/*->where('estado','1')*/
+                            ->whereBetween('fecha',[$f1,$f2]);
+                        }
+                        elseif($opcion=='PROCESADOS'){
+                            $q1/*->where('estado','1')*/
+                            ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                        }
+                        elseif($opcion=='CERRADOS'){
+                            $q1->where('estado','1')
+                            ->whereBetween('fecha',[$f1,$f2]);
+                        // ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                        }
+                        elseif($opcion=='PENDIENTES'){
+                            $q1->where('estado','0')
+                            ->whereBetween('fecha',[$f1,$f2]);
+                        // ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                        }
+                    });
+                })->get();
+            }
+            else{
+                $web='TODAS LAS PAGINAS';
+                $cotizaciones=Cotizacion::where('anulado','>','0')
+                ->whereHas('paquete_cotizaciones',function($q) use ($f1,$f2,$opcion){
+                    $q->whereHas('pagos_cliente',function($q1) use ($f1,$f2,$opcion){
+                        if($opcion=='PAGADOS'){
+                            $q1/*->where('estado','1')*/
+                            ->whereBetween('fecha',[$f1,$f2]);
+                        }
+                        elseif($opcion=='PROCESADOS'){
+                            $q1/*->where('estado','1')*/
+                            ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                        }
+                        elseif($opcion=='CERRADOS'){
+                            $q1->where('estado','1')
+                            ->whereBetween('fecha',[$f1,$f2]);
+                        // ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                        }
+                        elseif($opcion=='PENDIENTES'){
+                            $q1->where('estado','0')
+                            ->whereBetween('fecha',[$f1,$f2]);
+                        // ->whereBetween('fecha_habilitada',[$f1,$f2]);
+                        }
+                    });
+                })->get();
+            }
+        // dd('filtro:'.$filtro.',mes:'.$mes.',f1:'.$f1.',f2:'.$f2);
+        // dd($cotizaciones);
+        $pagina='';
+        return view('admin.administracion.list-pagos-recientes',compact('cotizaciones','pagina','filtro','opcion','f1','f2','web'));
+    }
 }
