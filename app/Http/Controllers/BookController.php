@@ -2115,16 +2115,6 @@ class BookController extends Controller
         return view('admin.book.traer-lista-proveedores-hotel',compact('hotel_proveedor','hotel','itinerario_cotizaciones_id','cotizacion_id'));
 	}
 	public function traer_lista_proveedores_servicios(Request $request){
-        // $estrellas=$request->input('estrellas');
-		// $localizacion=$request->input('localizacion');
-		// $hotel_id=$request->input('hotel_id');
-		// $itinerario_cotizaciones_id=$request->input('itinerario_cotizaciones_id');
-
-		// $cotizacion_id=$request->input('cotizacion_id');
-		
-		// $hotel_proveedor=HotelProveedor::where('estrellas',$estrellas)->where('localizacion',$localizacion)->get();
-		// $hotel=PrecioHotelReserva::find($hotel_id);
-
 		$action = $request->input('action');
 		$cotizacion_id = $request->input('cotizacion_id');
 		$servicio_id=$request->input('servicio_id');

@@ -67,10 +67,10 @@
                         
                         {{-- <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PAGADOS',$pr_f1,$pr_f2])}}" class="btn btn-primary ">PAGADOS</a>
                         <a href="{{route('pagos.recientes.filtro',["$('#pr_filtro').val()",'PROCESADOS',$pr_f1,$pr_f2])}}" class="btn  btn-outline-primary ">PROCESADOS</a> --}}
-                        <button type="button" id="btn_pagados" class="btn @if($opcion=='PAGADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_ingresos('frm_buscar_pagos_pendinetes','PAGADOS','0')"><i class="fas fa-search"></i> FECHA PAGO</button>
-                        <button type="button" id="btn_procesados" class="btn  @if($opcion=='PROCESADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_ingresos('frm_buscar_pagos_pendinetes','PROCESADOS','1')"><i class="fas fa-search"></i> PROCESADOS</button>
+                        <button type="button" id="btn_pagados" class=" btn @if($opcion=='PAGADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_ingresos('frm_buscar_pagos_pendinetes','PAGADOS','0')"><i class="fas fa-search"></i> FECHA PAGO</button>
+                        <button type="button" id="btn_procesados" class="d-none btn  @if($opcion=='PROCESADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_ingresos('frm_buscar_pagos_pendinetes','PROCESADOS','1')"><i class="fas fa-search"></i> PROCESADOS</button>
                         <button type="button" id="btn_cerrados" class="btn  @if($opcion=='CERRADOS') btn-primary @else btn-outline-primary @endif" onclick="buscar_ingresos('frm_buscar_pagos_pendinetes','CERRADOS','2')"><i class="fas fa-search"></i> PAGADOS</button>
-                        <button type="button" id="btn_pendientes" class="btn  @if($opcion=='PENDIENTES') btn-primary @else btn-outline-primary @endif" onclick="buscar_ingresos('frm_buscar_pagos_pendinetes','PENDIENTES','3')"><i class="fas fa-search"></i> PENDIENTES</button>
+                        <button type="button" id="btn_pendientes" class="d-none btn  @if($opcion=='PENDIENTES') btn-primary @else btn-outline-primary @endif" onclick="buscar_ingresos('frm_buscar_pagos_pendinetes','PENDIENTES','3')"><i class="fas fa-search"></i> PENDIENTES</button>
                     </div>
                 </div>
                 <div class="col-2 d-none">

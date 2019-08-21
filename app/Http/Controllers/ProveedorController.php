@@ -156,6 +156,8 @@ class ProveedorController extends Controller
         $grupos_opera =$request->input('grupos_opera_'.$nro_grupo);
 
 //        dd($grupos_opera);
+        $txt_tipo_proveedor=$request->input('txt_tipo_proveedor_'.$nro_grupo);
+        $txt_tipo_pago=$request->input('txt_tipo_pago_'.$nro_grupo);
         $txt_localizacion=$request->input('txt_localizacion_'.$nro_grupo);
         $txt_localizacion_cod=substr($txt_localizacion,0,1);
         $txt_categoria=$request->input('txt_categoria_'.$nro_grupo);
@@ -186,6 +188,8 @@ class ProveedorController extends Controller
 
         // if($buscar_pro==0){
             $proveedor=new Proveedor();
+            $proveedor->txt_tipo_proveedor=$txt_tipo_proveedor;
+            $proveedor->txt_tipo_pago=$txt_tipo_pago;
             $proveedor->categoria=$txt_categoria;
             $proveedor->ruc=$txt_ruc;
             $proveedor->razon_social=$txt_razon_social;
@@ -248,6 +252,8 @@ class ProveedorController extends Controller
         $grupo = $request->input('posTipoEditcost_' . $id);
 //        $txt_grupo=$tipoServicio[$nro_grupo];
         $txt_grupo_cod = substr($grupo, 0, 2);
+        $txt_tipo_proveedor = $request->input('txt_tipo_proveedor_');
+        $txt_tipo_pago = $request->input('txt_tipo_pago_');
         $txt_localizacion = $request->input('txt_localizacion_');
         $txt_categoria = $request->input('txt_categoria_');
         $txt_localizacion_cod = substr($txt_localizacion, 0, 1);
@@ -297,6 +303,8 @@ class ProveedorController extends Controller
                 }
             }
             $proveedor=Proveedor::findOrFail($id);
+            $proveedor->tipo_proveedor=$txt_tipo_proveedor;
+            $proveedor->tipo_pago=$txt_tipo_pago;
             $proveedor->ruc=$txt_ruc;
             $proveedor->localizacion=$txt_localizacion;
             $proveedor->razon_social=$txt_razon_social;

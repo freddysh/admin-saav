@@ -15,9 +15,9 @@
             <b class="text-primary"><i class="fas fa-globe"></i></b>
             <b class="text-dark">{{strtoupper($web)}}</b> | 
             <b class="text-primary"><i class="fas fa-filter"></i></b>
-            <b class="text-dark">{{$filtro}}</b> @if($filtro=='ENTRE FECHAS') [
-            <b class="text-dark">{{$f1}}</b> - 
-            <b class="text-dark">{{$f2}}</b>]@endif | 
+            <b class="text-dark">{{$filtro}}</b> [
+            <b class="text-dark">{{MisFunciones::fecha_peru($f1)}}</b> - 
+            <b class="text-dark">{{MisFunciones::fecha_peru($f2)}}</b>] | 
             <b class="text-primary"><i class="fas fa-search"></i></b>
             <b class="text-dark">{{$opcion}}</b>
         </div>
@@ -27,9 +27,10 @@
                     <tr>
                         <th>FILE</th>
                         <th>WEB</th>
-                        <th>TOTAL</th>
-                        <th>RESERVADO</th>
-                        <th>CONTABILIDAD</th>
+                        <th>PRECIO VENTA</th>
+                        <th>COSTO RESERVAS</th>
+                        <th>COSTO CONTABILIDAD</th>
+                        <th>PROFIT(VENTA-CONTABILIDAD)</th>
                         <th class=" d-none">PROX. PAGO</th>
                         <th class=" d-none">PROCESADO</th>
                         <th class=" d-none">MONTO</th>
@@ -49,6 +50,9 @@
                     $total_pagado_=0;
 
                     $total_venta=0;
+                    $total_reserva=0;
+                    $total_contabilidad=0;
+                    
                 @endphp
                 @foreach($cotizaciones as $cotizacion_cat_)
                     @php
@@ -73,6 +77,9 @@
                         $utilidad_t=0;
                         $utilidad_por_t=0;
                         $precio_venta_total=0;
+                        $precio_reserva_total=0;
+                        $precio_contabilidad_total=0;
+                        
                     @endphp
 
                     @foreach($cotizacion_cat_->paquete_cotizaciones->take(1) as $paquete)
@@ -133,30 +140,41 @@
                                         $precio_venta_total+=$cotizacion_cat_->nropersonas*$servicios->precio;
                                     @endphp
                                 @endif
+                                @php
+                                    $precio_reserva_total+=$servicios->precio_proveedor;
+                                    $precio_contabilidad_total+=$servicios->precio_c;
+                                @endphp
                             @endforeach
                             @foreach($itinerario->hotel as $hotel)
                                 @if($hotel->personas_s>0)
                                     @php
                                         $precio_hotel_s+=$hotel->precio_s;
                                         $precio_venta_total+=$hotel->personas_s*$hotel->precio_s;
+                                        $precio_reserva_total+=$hotel->personas_s*$hotel->precio_s_r;
+                                        $precio_contabilidad_total+=$hotel->personas_s*$hotel->precio_s_c;
                                     @endphp
                                 @endif
                                 @if($hotel->personas_d>0)
                                     @php
                                         $precio_hotel_d+=$hotel->precio_d/2;
-                                        $precio_venta_total+=$hotel->personas_d*$hotel->precio_d;
+                                        $precio_venta_total+=$hotel->personas_d*$hotel->precio_d;    $precio_reserva_total+=$hotel->personas_d*$hotel->precio_d_r;
+                                        $precio_contabilidad_total+=$hotel->personas_d*$hotel->precio_d_c;
+                                    
                                     @endphp
                                 @endif
                                 @if($hotel->personas_m>0)
                                     @php
                                         $precio_hotel_m+=$hotel->precio_m/2;
                                         $precio_venta_total+=$hotel->personas_m*$hotel->precio_m;
+                                        $precio_reserva_total+=$hotel->personas_m*$hotel->precio_m_r;
+                                        $precio_contabilidad_total+=$hotel->personas_m*$hotel->precio_m_c;
                                     @endphp
                                 @endif
                                 @if($hotel->personas_t>0)
                                     @php
                                         $precio_hotel_t+=$hotel->precio_t/3;
-                                        $precio_venta_total+=$hotel->personas_t*$hotel->precio_t;
+                                        $precio_venta_total+=$hotel->personas_t*$hotel->precio_t;    $precio_reserva_total+=$hotel->personas_t*$hotel->precio_t_r;
+                                        $precio_contabilidad_total+=$hotel->personas_t*$hotel->precio_t_c;
                                     @endphp
                                 @endif
                             @endforeach
@@ -337,13 +355,14 @@
                                 <td class="text-11"><b class="text-success">{{$cotizacion_cat_->codigo}}</b> | {{strtoupper($cotizacion_cat_->nombre_pax)}} x {{$cotizacion_cat_->nropersonas}} {{date_format(date_create($cotizacion_cat_->fecha), 'jS M Y')}}</td>
                                 <td class="text-left">{{$cotizacion_cat_->web}}</td>
                                 <td class="text-right">{{number_format($precio_venta_total,2)}}</td>
-                                <td class="text-right">{{number_format($precio_venta_total,2)}}</td>
-                                <td class="text-right">{{number_format($precio_venta_total,2)}}</td>
+                                <td class="text-right">{{number_format($precio_reserva_total,2)}}</td>
+                                <td class="text-right">{{number_format($precio_contabilidad_total,2)}}</td>
+                                <td class="text-right @if(($precio_venta_total-$precio_contabilidad_total)>0) text-success @else text-danger @endif">{{number_format($precio_venta_total-$precio_contabilidad_total,2)}}</td>
                                 <td class="text-right d-none">{{number_format($total_pagado,2)}}</td>
                                 <td class="text-right d-none">{{number_format($precio_venta_total-$total_pagado,2)}}</td>
                                 <td>
                                 <!-- Large modal -->
-                                    <a href="#!" data-toggle="modal" data-target="#modal_detalle_pagos_{{$cotizacion_cat_->id}}">Detalle</a>
+                                    <a href="#!" data-toggle="modal" data-target="#modal_detalle_pagos_{{$cotizacion_cat_->id}}">Detalle pagos</a>
                                     <div class="modal fade" id="modal_detalle_pagos_{{$cotizacion_cat_->id}}" tabindex="-1" role="dialog">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
@@ -649,18 +668,36 @@
                     @endforeach
                     @php
                         $total_venta+=$precio_venta_total;
+                        $total_reserva+=$precio_reserva_total;
+                        $total_contabilidad+=$precio_contabilidad_total;
                     @endphp
                 @endforeach  
                     <tr>
-                        <td colspan="2"><b>Total</b></td>
-                        <td><b>{{number_format($total_venta,2)}}</b></td>
-                        <td><b>Total</b></td>
-                        <td><b>Total</b></td>
+                        <td colspan="2"><b>SUMATORIA</b></td>
+                        <td class="text-right"><b>{{number_format($total_venta,2)}}</b></td>
+                        <td class="text-right"><b>{{number_format($total_reserva,2)}}</b></td>
+                        <td class="text-right"><b>{{number_format($total_contabilidad,2)}}</b></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                     </tr>
+                    <tr>
+                        <td colspan="8"></td>
+                    </tr>
+                    <tr>
+                        <td><b>MONTO TOTAL VENTAS</b></td>
+                        <td><b>{{number_format($total_venta,2)}}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>MONTO TOTAL CONTABILIDAD</b></td>
+                        <td><b>{{number_format($total_contabilidad,2)}}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>MONTO TOTAL PROFIT</b></td>
+                        <td><b>{{number_format($total_venta-$total_contabilidad,2)}}</b></td>
+                    </tr>
                 </tbody>  
-                <tfoot class="d-none1">
+                <tfoot class="d-none">
                     <tr class="text-15">
                         <th><b class="badge badge-success">Pagado</b></th>
                         <th class="text-right"><b>{{$total_pagado_}}</b></th>
@@ -690,8 +727,7 @@
                             <th class="text-right"><b>{{$total_pendientes}}</b></th>
                         </tr>
                     @endif
-                </tfoot>
-                
+                </tfoot>                
             </table>  
         </div>
     </div>

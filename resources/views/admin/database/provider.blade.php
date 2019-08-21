@@ -107,6 +107,24 @@
                                                                                 <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" value="{{substr($tipoServicio_,0,2)}}{{$auto}}" readonly>
                                                                             </div>
                                                                         </div>
+                                                                        <div class="col-3">
+                                                                            <div class="form-group">
+                                                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Tipo de proveedor</label>
+                                                                                <select class="form-control" id="txt_tipo_proveedor_{{$in_pos}}" name="txt_tipo_proveedor_{{$in_pos}}">
+                                                                                    <option value="EXTERNO">EXTERNO</option>
+                                                                                    <option value="PLANTA">PLANTA</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-3">
+                                                                            <div class="form-group">
+                                                                                <label for="txt_codigo" class="font-weight-bold text-secondary">Forma de pago</label>
+                                                                                <select class="form-control" id="txt_tipo_pago_{{$in_pos}}" name="txt_tipo_pago_{{$in_pos}}">
+                                                                                    <option value="CONTADO">CONTADO</option>
+                                                                                    <option value="CREDITO">CREDITO</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col">

@@ -34,9 +34,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white m-0">
             <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
-            <li class="breadcrumb-item">Contabilidad</li>
-            <li class="breadcrumb-item">Operaciones</li>
-            <li class="breadcrumb-item active">Pagos pendientes</li>
+            <li class="breadcrumb-item">Accounting</li>
+            <li class="breadcrumb-item active">requerimientos</li>
         </ol>
     </nav>
     <hr>
@@ -45,7 +44,17 @@
             <div class="card w-100">
                 <div class="card-body">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="tipo_pago" class="text-secondary font-weight-bold pr-2">Forma de pago</label>
+                                    <select form="preparar_requerimiento" name="tipo_pago" id="tipo_pago" class="form-control">
+                                        <option value="TODOS">TODOS</option>
+                                        <option value="CONTADO">CONTADO</option>
+                                        <option value="CREDITO">CREDITO</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-2">
                                 @php
                                     $ToDay=new Carbon();
                                 @endphp
@@ -87,7 +96,7 @@
                                 </div>
                             </div>
                             <div class="col-2 mt-4">
-                                <button type="button" class="btn btn-primary mt-2 mx-2 btn-block" onclick="buscar_pagos_pendientes($('#tipo_filtro').val(),$('#nombre_form').val(),$('#codigo_form').val(),$('#f_ini_ENTRADA').val(),$('#f_fin_ENTRADA').val(),'ENTRANCES')"><i class="fas fa-search"></i> Filtrar</button>
+                                <button type="button" class="btn btn-primary mt-2 mx-2 btn-block" onclick="buscar_pagos_pendientes($('#tipo_pago').val(),$('#tipo_filtro').val(),$('#nombre_form').val(),$('#codigo_form').val(),$('#f_ini_ENTRADA').val(),$('#f_fin_ENTRADA').val(),'ENTRANCES')"><i class="fas fa-search"></i> Filtrar</button>
                             </div>
                         </div>
                         <div class="row">

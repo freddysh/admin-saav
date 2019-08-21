@@ -49,6 +49,8 @@ use Illuminate\Support\Facades\Redirect;
 use App\PaquetePagoCliente;
 use App\FormaPago;
 use App\TipoFormaPago;
+use App\Helpers\MisFunciones;
+;
 
 
 class PackageCotizacionController extends Controller
@@ -3885,8 +3887,43 @@ class PackageCotizacionController extends Controller
         }
 //        dd($fecha->toDateString().'_'.$proveedor->plazo.'/'.$proveedor->desci);
 
-        return '<label for="exampleInputEmail1">Fecha a pagar</label>
-                <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">';
+        // $itinerario_servicios=ItinerarioServicios::where('fecha_uso',$itinerario->fecha_uso)->where('proveedor_id',$id)->get();
+        $fecha_uso=$itinerario->fecha;
+        $proveedor_id=$id;
+        $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function($query)use($fecha_uso,$proveedor_id){
+            $query->where('fecha',$fecha_uso)
+            ->whereHas('itinerario_servicios',function($query)use($proveedor_id){
+                $query->where('proveedor_id',$proveedor_id);    
+            });
+        })->get();
+        $cadena='';
+        $i=0;
+        if($cotizaciones->count()==0){
+            $cadena='No se encontró ningun file';
+        }
+        else{
+            foreach($cotizaciones as $cotizacion){
+                foreach($cotizacion->paquete_cotizaciones as $paquete_cotizacion){
+                    foreach($paquete_cotizacion->itinerario_cotizaciones->where('fecha',$fecha_uso) as $itinerario_cotizacion){
+                        foreach($itinerario_cotizacion->itinerario_servicios->where('proveedor_id',$proveedor_id) as $itinerario_servicio){
+                            $i++;
+                            if($itinerario_servicio->hora_llegada==''){
+                                $cadena.='#'.$i.' '.$cotizacion->codigo.' | '.$cotizacion->nombre_pax.'x'.$cotizacion->nropersonas.' '.date_format(date_create($cotizacion->fecha), 'jS M Y').' |<span class="badge badge-dark"> Dia '.$itinerario_cotizacion->dias.': '.MisFunciones::fecha_peru($fecha_uso).' Sin hora</span><br>';
+                            }
+                            else{
+                                $cadena.='#'.$i.' '.$cotizacion->codigo.' | '.$cotizacion->nombre_pax.'x'.$cotizacion->nropersonas.' '.date_format(date_create($cotizacion->fecha), 'jS M Y').' |<span class="badge badge-dark"> Dia '.$itinerario_cotizacion->dias.': '.MisFunciones::fecha_peru($fecha_uso).' '.$itinerario_servicio->hora_llegada.'</span><br>';
+                            }
+                            
+                        } 
+                    } 
+                }
+            }
+        }
+        return response()->json(['fecha'=>'<label for="exampleInputEmail1">Fecha a pagar</label>
+        <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">',
+        'asignados'=>$cadena]);
+        // return '<label for="exampleInputEmail1">Fecha a pagar</label>
+                // <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">';
     }
     public function traer_fecha_pago_h(Request $request)
     {
@@ -3931,9 +3968,41 @@ class PackageCotizacionController extends Controller
 
         
 //        dd($fecha->toDateString().'_'.$proveedor->plazo.'/'.$proveedor->desci);
+        $fecha_uso=$itinerario->fecha;
+        $proveedor_id=$hotel_proveedor_id;
+        $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function($query)use($fecha_uso,$proveedor_id){
+            $query->where('fecha',$fecha_uso)
+            ->whereHas('hotel',function($query)use($proveedor_id){
+                $query->where('proveedor_id',$proveedor_id);    
+            });
+        })->get();
+        $cadena='';
+        $i=0;
+        if($cotizaciones->count()==0){
+            $cadena='No se encontró ningun file';
+        }
+        else{
+            foreach($cotizaciones as $cotizacion){
+                foreach($cotizacion->paquete_cotizaciones as $paquete_cotizacion){
+                    foreach($paquete_cotizacion->itinerario_cotizaciones->where('fecha',$fecha_uso) as $itinerario_cotizacion){
+                        foreach($itinerario_cotizacion->hotel->where('proveedor_id',$proveedor_id) as $hotel){
+                            $i++;
+                            if($hotel->hora_llegada==''){
+                                $cadena.='#'.$i.' '.$cotizacion->codigo.' | '.$cotizacion->nombre_pax.'x'.$cotizacion->nropersonas.' '.date_format(date_create($cotizacion->fecha), 'jS M Y').' |<span class="badge badge-dark"> Dia '.$itinerario_cotizacion->dias.': '.MisFunciones::fecha_peru($fecha_uso).' Sin hora</span><br>';
+                            }
+                            else{
+                                $cadena.='#'.$i.' '.$cotizacion->codigo.' | '.$cotizacion->nombre_pax.'x'.$cotizacion->nropersonas.' '.date_format(date_create($cotizacion->fecha), 'jS M Y').' |<span class="badge badge-dark"> Dia '.$itinerario_cotizacion->dias.': '.MisFunciones::fecha_peru($fecha_uso).' '.$hotel->hora_llegada.'</span><br>';
+                            }
+                            
+                        } 
+                    } 
+                }
+            }
+        }
+        return response()->json(['fecha'=>'<label for="exampleInputEmail1">Fecha a pagar</label>
+        <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">',
+        'asignados'=>$cadena]);
 
-        return '<label for="exampleInputEmail1">Fecha a pagar</label>
-                <input type="date" class="form-control" name="fecha_pagar" value="'.$str_fecha.'">';
     }
     public function step1_edit_precio_servicios(Request $request){
         // return response()->json(['mensaje'=>'holaaaaaa']);

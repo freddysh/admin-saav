@@ -4085,10 +4085,12 @@ function dato_producto(valor,proveedor_id,id,itinerario_id){
         data: 'id='+proveedor_id+'&itinerario_id='+itinerario_id,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data1){
+            $('#lista_servicios_asignados_'+id).html('');
             $('#rpt_book_proveedor_fecha_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
         success: function(data) {
-            $('#rpt_book_proveedor_fecha_'+id).html(data);
+            $('#rpt_book_proveedor_fecha_'+id).html(data.fecha);
+            $('#lista_servicios_asignados_'+id).html(data.asignados);
         }
     })
 }
@@ -4385,11 +4387,14 @@ function dato_producto_hotel(valor,hotel_proveedor_id,hotel_id,itinerario_id){
         data: 'hotel_proveedor_id='+hotel_proveedor_id+'&hotel_id='+hotel_id+'&itinerario_id='+itinerario_id,
         // Mostramos un mensaje con la respuesta de PHP
         beforeSend: function(data1){
+            $('#lista_servicios_asignados_h_'+hotel_id).html('');
             $('#rpt_book_proveedor_fecha_h_'+hotel_id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
+            
         },
         success: function(data) {
             console.log('data de la consulta:'+data);
-            $('#rpt_book_proveedor_fecha_h_'+hotel_id).html(data);
+            $('#lista_servicios_asignados_h_'+hotel_id).html(data.asignados);
+            $('#rpt_book_proveedor_fecha_h_'+hotel_id).html(data.fecha);
         }
     })
 }
@@ -6872,7 +6877,7 @@ function pintar(id){
 //         }
 //     }
 //   }
-function buscar_pagos_pendientes(opcion,nombre,codigo,ini,fin,servicio){    
+function buscar_pagos_pendientes(tipo_pago,opcion,nombre,codigo,ini,fin,servicio){    
     console.log('opcion:'+opcion+',nombre:'+nombre+',codigo:'+codigo+',ini:'+ini+',fin:'+fin+',servicio:'+servicio);
     $.ajaxSetup({
         headers: {
@@ -6882,7 +6887,7 @@ function buscar_pagos_pendientes(opcion,nombre,codigo,ini,fin,servicio){
     $.ajax({
         url: '/admin/contabilidad/pagos-en-genral/pendientes/filtrar',
         type: 'post',
-        data: 'opcion=' + opcion +'&nombre=' + nombre+'&codigo=' + codigo+'&ini=' + ini + '&fin=' + fin + '&grupo=' + servicio,
+        data: 'tipo_pago=' + tipo_pago +'&opcion=' + opcion +'&nombre=' + nombre+'&codigo=' + codigo+'&ini=' + ini + '&fin=' + fin + '&grupo=' + servicio,
         beforeSend:function() {
             $("#rpt_hotel").html('');
             $("#rpt_hotel").html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');

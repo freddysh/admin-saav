@@ -7,6 +7,8 @@
             <th>Cat</th>
         @endif
         <th>Codigo</th>
+        <th>Tipo proveedor</th>
+        <th>Forma pago</th>
         <th>Ruc</th>
         <th>Razon social</th>
         <th>Nombre comercial</th>
@@ -25,6 +27,8 @@
                 <td class="text-center">{{$provider->categoria}} <i class="fas fa-star small text-g-yellow"></i></td>
             @endif
             <td>{{$provider->codigo}}</td>
+            <td>{{$provider->tipo_proveedor}}</td>
+            <td>{{$provider->tipo_pago}}</td>
             <td>{{$provider->ruc}}</td>
             <td>{{$provider->razon_social}}</td>
             <td>{{$provider->nombre_comercial}}</td>
@@ -62,12 +66,31 @@
                                             <div class="col-lg-12">
                                                 <div class="card p-3">
                                                     <div class="row text-left">
-                                                        <div class="col-4">
+                                                        <div class="col-3">
                                                             <div class="form-group">
                                                                 <label for="txt_codigo" class="text-secondary font-weight-bold">Codigo</label>
                                                                 <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" value="{{($provider->codigo)}}" readonly>
                                                             </div>
                                                         </div>
+                                                        <div class="col-2">
+                                                            <div class="form-group">
+                                                                <label for="txt_tipo_proveedor" class="text-secondary font-weight-bold">Tipo de proveedor</label>
+                                                                <select class="form-control" name="txt_tipo_proveedor_" id="txt_tipo_proveedor_">
+                                                                    <option value="EXTERNO" @if($provider->tipo_proveedor=='EXTERNO') selected @endif>EXTERNO</option>
+                                                                    <option value="PLANTA" @if($provider->tipo_proveedor=='PLANTA') selected @endif>PLANTA</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <div class="form-group">
+                                                                <label for="txt_tipo_pago_" class="text-secondary font-weight-bold">Forma de pago</label>
+                                                                <select class="form-control" name="txt_tipo_pago_" id="txt_tipo_pago_">
+                                                                    <option value="CONTADO" @if($provider->tipo_pago=='CONTADO') selected @endif>CONTADO</option>
+                                                                    <option value="CREDITO" @if($provider->tipo_pago=='CREDITO') selected @endif>CREDITO</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="col-4">
                                                             <div class="form-group">
                                                                 <label for="txt_codigo" class="text-secondary font-weight-bold">Origen</label>
