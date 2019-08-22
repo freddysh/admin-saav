@@ -2188,12 +2188,12 @@ class PackageCotizacionController extends Controller
             $precio_anterior=$servicios->precio;
             $servicios->precio = $m_servicio->precio_venta;
             $servicios->precio_grupo = $m_servicio->precio_grupo;
-//            $servicios->tipoServicio = $m_servicio->tipoServicio;
-//            $servicios->localizacion = $m_servicio->localizacion;
-//            $servicios->grupo = $m_servicio->grupo;
+            $servicios->tipoServicio = $m_servicio->tipoServicio;
+           $servicios->localizacion = $m_servicio->localizacion;
+           $servicios->grupo = $m_servicio->grupo;
 //            $servicios->clase = $m_servicio->clase;
-//            $servicios->salida = $m_servicio->salida;
-//            $servicios->llegada = $m_servicio->llegada;
+           $servicios->salida = $m_servicio->salida;
+           $servicios->llegada = $m_servicio->llegada;
             $servicios->m_servicios_id = $m_servicio->id;
             $servicios->min_personas = $m_servicio->min_personas;
             $servicios->max_personas = $m_servicio->max_personas;

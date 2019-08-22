@@ -40,6 +40,18 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-9">
+                            <div clas="row">
+                                <div class="col-12">
+                                    <b>
+                                    <i class="fas fa-filter"></i> {{$tipo_pago}} | 
+                                        @if($modo_busqueda=='ENTRE DOS FECHAS'||$modo_busqueda=='ENTRE DOS FECHAS URGENTES')
+                                            <i class="fas fa-calendar"></i> {{$modo_busqueda}} [{{MisFunciones::fecha_peru($txt_ini)}} al {{MisFunciones::fecha_peru($txt_fin)}}]
+                                        @else
+                                        <i class="fas fa-filter"></i> {{$modo_busqueda}} | <i class="fas fa-filter"></i>{{$cod_nom}}
+                                        @endif
+                                    </b>
+                                </div>
+                            </div>
                             <table class="table table-condensed table-bordered table-hover table-sm text-12">
                                 <thead>
                                 <tr>

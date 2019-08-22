@@ -612,7 +612,7 @@
                                 <form id="preparar_requerimiento" action="{{route('contabilidad.preparar_requerimiento')}}" method="POST">
                                     @csrf
                                     <input type="hidden" name="tipo_pago" value='{{$tipo_pago}}'>
-                                    <input type="hidden" name="tipo_filtro" value='{{$tipo_filtro}}'>
+                                    <input type="hidden" name="tipo_filtro" value='{{$opcion}}'>
                                     <input type="hidden" name="txt_ini" value='{{$ini}}'>
                                     <input type="hidden" name="txt_fin" value='{{$fin}}'>
                                     <input type="hidden" name="cod_nom" value='{{$cod_nom}}'>
