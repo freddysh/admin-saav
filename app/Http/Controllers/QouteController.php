@@ -262,9 +262,12 @@ class QouteController extends Controller
         $iti_id=$request->input('iti_id');
         $fecha=$request->input('fecha');
         $titulo=$request->input('titulo');     
+        $nombre_dia=$request->input('nombre_dia');     
+        
         $iti=ItinerarioCotizaciones::FindOrFail($iti_id);
         $iti->fecha=$fecha;
         $iti->titulo=$titulo;
+        $iti->dias=$nombre_dia;
         if($iti->save())
             return '1';
         else

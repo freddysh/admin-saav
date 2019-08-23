@@ -314,10 +314,10 @@
                         $utilidad=$paquete->utilidad;
                         $itis='';
                     @endphp
-                    @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                    @foreach($paquete->itinerario_cotizaciones->sortBy('dias') as $itinerario)
                         <div class="row">
                             <div class="col-1">
-                                <b class="text-g-dark">DAY {{$itinerario->dias}}</b>
+                                <b class="text-g-dark">DAY <span id="iti_dia_nombre_{{$itinerario->id}}">{{$itinerario->dias}}</span></b>
                             </div>
                             <div class="col-10">
                                 <div class="row bg-dark rounded text-white">
@@ -341,6 +341,12 @@
                                                     <div class="modal-body">
                                                             <div class="input-group mb-2 mr-sm-2">
                                                                 <div class="input-group-prepend">
+                                                                <div class="input-group-text"><i class="">DAY</i></div>
+                                                                </div>
+                                                                <input type="number" class="form-control" id="iti_dia_nombre_valor_{{$itinerario->id}}" name="iti_dia_nombre_valor" value="{{$itinerario->dias}}">
+                                                            </div>
+                                                            <div class="input-group mb-2 mr-sm-2">
+                                                                <div class="input-group-prepend">
                                                                 <div class="input-group-text"><i class="fas fa-text-width"></i></div>
                                                                 </div>
                                                                 <input type="text" class="form-control" id="iti_dia{{$itinerario->id}}" name="iti_dia" value="{{$itinerario->titulo}}">
@@ -359,9 +365,8 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         {{csrf_field()}}
-
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary" onclick="modificar_fecha($('#iti_dia{{$itinerario->id}}').val(),$('#fecha_{{$itinerario->id}}').val(),'{{$itinerario->id}}','e')">Guardar cambios</button>
+                                                        <button type="button" class="btn btn-primary" onclick="modificar_fecha($('#iti_dia{{$itinerario->id}}').val(),$('#fecha_{{$itinerario->id}}').val(),'{{$itinerario->id}}','e',$('#iti_dia_nombre_valor_{{$itinerario->id}}').val())">Guardar cambios</button>
                                                     </div>
                                                 </div>
                                             </div>

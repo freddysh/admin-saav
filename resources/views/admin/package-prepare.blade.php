@@ -297,7 +297,7 @@
                         @php
                             $pos=0;
                         @endphp
-                        @foreach($paquete->itinerario_cotizaciones as $itinerario)
+                        @foreach($paquete->itinerario_cotizaciones->sortBy('dias') as $itinerario)
                             @php
                             $precio_hotel_s=0;
                             $precio_hotel_d=0;

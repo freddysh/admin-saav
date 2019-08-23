@@ -5504,7 +5504,7 @@ function buscar_day_by_day_quotes(destino) {
         }
     })
 }
-function  modificar_fecha(titulo,fecha,iti_id,tipo){
+function  modificar_fecha(titulo,fecha,iti_id,tipo,nombre_dia){
     console.log('fecha:'+fecha+',iti_id:'+iti_id);
     $('#rp_cambio_fecha_'+iti_id).removeClass('text-danger');
     $('#rp_cambio_fecha_'+iti_id).removeClass('text-success');
@@ -5519,7 +5519,7 @@ function  modificar_fecha(titulo,fecha,iti_id,tipo){
         $.ajax({
             type: 'POST',
             url: '../../../../../quotes/new/step1/cambiar-fecha/ajax',
-            data: 'fecha=' + fecha + '&iti_id=' + iti_id+ '&titulo=' + titulo,
+            data: 'fecha=' + fecha + '&iti_id=' + iti_id+ '&titulo=' + titulo+'&nombre_dia='+nombre_dia,
             // Mostramos un mensaje con la respuesta de PHP
             beforeSend: function () {
                 $('#rp_cambio_fecha_' + iti_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
@@ -5532,6 +5532,7 @@ function  modificar_fecha(titulo,fecha,iti_id,tipo){
                         return letra.toUpperCase();
                     });
                     $('#iti_titulo_b_' + iti_id).html( titulo);
+                    $('#iti_dia_nombre_' + iti_id).html( nombre_dia);
                     $('#rp_cambio_fecha_' + iti_id).addClass('text-success');
                     $('#rp_cambio_fecha_' + iti_id).html('Datos cambiados correctamente');
                 }
@@ -5546,7 +5547,7 @@ function  modificar_fecha(titulo,fecha,iti_id,tipo){
         $.ajax({
             type: 'POST',
             url: '../../../../../../quotes/new/step1/cambiar-fecha/ajax',
-            data: 'fecha='+fecha+'&iti_id='+iti_id+ '&titulo=' + titulo,
+            data: 'fecha='+fecha+'&iti_id='+iti_id+ '&titulo=' + titulo+'&nombre_dia='+nombre_dia,
             // Mostramos un mensaje con la respuesta de PHP
             beforeSend:
                 function() {
@@ -5560,6 +5561,7 @@ function  modificar_fecha(titulo,fecha,iti_id,tipo){
                         return letra.toUpperCase();
                     });
                     $('#iti_titulo_b_' + iti_id).html(titulo);
+                    $('#iti_dia_nombre_' + iti_id).html( nombre_dia);
                     $('#rp_cambio_fecha_'+iti_id).addClass('text-success');
                     $('#rp_cambio_fecha_'+iti_id).html('Datos cambiados correctamente');
                 }
