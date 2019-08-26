@@ -69,7 +69,7 @@
                 @endif
             </span>
         </td>
-        <td><span class="text-primary"> Se paga {{$hotel_proveedor_->proveedor->plazo}} {{$hotel_proveedor_->proveedor->desci}}</span></td>
+        <td><span class="text-primary">{{$hotel_proveedor_->proveedor->tipo_pago}}  Se paga {{$hotel_proveedor_->proveedor->plazo}} {{$hotel_proveedor_->proveedor->desci}}</span></td>
     </tr>
 @endforeach
 </tbody>

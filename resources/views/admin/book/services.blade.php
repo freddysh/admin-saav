@@ -852,7 +852,27 @@
                                                                                             <div class="col-8  bg-green-goto">
                                                                                                 <label>Files que se reservaron con el proveedor</label>
                                                                                                 <div class="row">
-                                                                                                    <div class="col-12" id="lista_servicios_asignados_{{$servicios->id}}"></div>
+                                                                                                    <div class="col-12" id="lista_servicios_asignados_{{$servicios->id}}">
+                                                                                                        @php
+                                                                                                            $posicion=1;
+                                                                                                        @endphp
+                                                                                                        @foreach($cotizaciones_list as $cotizacion_lista)
+                                                                                                            @foreach($cotizacion_lista->paquete_cotizaciones as $paquete_cotizacion_lista)
+                                                                                                                @foreach($paquete_cotizacion_lista->itinerario_cotizaciones->where('fecha',$itinerario->fecha) as $itinerario_cotizacion_lista)
+                                                                                                                    @foreach($itinerario_cotizacion_lista->itinerario_servicios->where('proveedor_id',$servicios->proveedor_id) as $itinerario_servicio_lista)
+                                                                                                                        @php
+                                                                                                                            $posicion++;
+                                                                                                                        @endphp
+                                                                                                                        @if($itinerario_servicio_lista->hora_llegada=='')
+                                                                                                                            #{{$posicion}} {{$cotizacion_lista->codigo}} | {{$cotizacion_lista->nombre_pax}}x{{$cotizacion_lista->nropersonas}} {{date_format(date_create($cotizacion_lista->fecha), 'jS M Y')}} |<span class="badge badge-dark"> Dia {{$itinerario_cotizacion_lista->dias}}: {{MisFunciones::fecha_peru($itinerario_cotizacion_lista->fecha)}} Sin hora</span><br>
+                                                                                                                        @else
+                                                                                                                            #{{$posicion}} {{$cotizacion_lista->codigo}} | {{$cotizacion_lista->nombre_pax}}x{{$cotizacion_lista->nropersonas}} {{date_format(date_create($cotizacion_lista->fecha), 'jS M Y')}} |<span class="badge badge-dark"> Dia {{$itinerario_cotizacion_lista->dias}}: {{MisFunciones::fecha_peru($itinerario_cotizacion_lista->fecha)}} {{$itinerario_servicio_lista->hora_llegada}}</span><br>
+                                                                                                                        @endif
+                                                                                                                    @endforeach
+                                                                                                                @endforeach
+                                                                                                            @endforeach
+                                                                                                        @endforeach
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="col-4  bg-green-goto">
@@ -1381,8 +1401,26 @@
                                                                                 </div>
                                                                                 <div class="col-12">
                                                                                     <div class="row">
+                                                                                        @php
+                                                                                            $posicion=0
+                                                                                        @endphp
                                                                                         <div class="col-12 px-3" id="lista_proveedores_{{$hotel->id}}">
-                                                                                        
+                                                                                            @foreach($cotizaciones_list as $cotizacion_lista)
+                                                                                                @foreach($cotizacion_lista->paquete_cotizaciones as $paquete_cotizacion_lista)
+                                                                                                    @foreach($paquete_cotizacion_lista->itinerario_cotizaciones->where('fecha',$itinerario->fecha) as $itinerario_cotizacion_lista)
+                                                                                                        @foreach($itinerario_cotizacion_lista->hotel->where('proveedor_id',$hotel->proveedor_id) as $itinerario_servicio_lista)
+                                                                                                            @php
+                                                                                                                $posicion++;
+                                                                                                            @endphp
+                                                                                                            @if($itinerario_servicio_lista->hora_llegada=='')
+                                                                                                                #{{$posicion}} {{$cotizacion_lista->codigo}} | {{$cotizacion_lista->nombre_pax}}x{{$cotizacion_lista->nropersonas}} {{date_format(date_create($cotizacion_lista->fecha), 'jS M Y')}} |<span class="badge badge-dark"> Dia {{$itinerario_cotizacion_lista->dias}}: {{MisFunciones::fecha_peru($itinerario_cotizacion_lista->fecha)}} Sin hora</span><br>
+                                                                                                            @else
+                                                                                                                #{{$posicion}} {{$cotizacion_lista->codigo}} | {{$cotizacion_lista->nombre_pax}}x{{$cotizacion_lista->nropersonas}} {{date_format(date_create($cotizacion_lista->fecha), 'jS M Y')}} |<span class="badge badge-dark"> Dia {{$itinerario_cotizacion_lista->dias}}: {{MisFunciones::fecha_peru($itinerario_cotizacion_lista->fecha)}} {{$itinerario_servicio_lista->hora_llegada}}</span><br>
+                                                                                                            @endif
+                                                                                                        @endforeach
+                                                                                                    @endforeach
+                                                                                                @endforeach
+                                                                                            @endforeach
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>

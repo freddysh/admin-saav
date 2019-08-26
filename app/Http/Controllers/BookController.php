@@ -111,7 +111,8 @@ class BookController extends Controller
 		$cotizacion_archivos=CotizacionArchivos::where('cotizaciones_id',$id)->get();
 		$usuario=User::get();
 		$webs=Web::get();
-		return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id]);
+		$cotizaciones_list=Cotizacion::get();
+		return view('admin.book.services',['cotizacion'=>$cotizacion,'productos'=>$productos,'proveedores'=>$proveedores,'hotel_proveedor'=>$hotel_proveedor,'m_servicios'=>$m_servicios,'ItinerarioServiciosAcumPagos'=>$ItinerarioServiciosAcumPagos,'ItinerarioHotleesAcumPagos'=>$ItinerarioHotleesAcumPagos,'clientes1'=>$clientes1,'cotizacion_archivos'=>$cotizacion_archivos,'usuario'=>$usuario,'webs'=>$webs,'id'=>$id,'cotizaciones_list'=>$cotizaciones_list]);
 	}
 
 	/**

@@ -3536,7 +3536,7 @@ class ContabilidadController extends Controller
                 foreach ($cotizacion->paquete_cotizaciones as $paquete_cotizaciones){
                     foreach ($paquete_cotizaciones->itinerario_cotizaciones as $itinerario_cotizaciones){    
                         foreach ($itinerario_cotizaciones->itinerario_servicios->whereIn('proveedor_id',explode(',',$lista_cotizaciones_proveedor[$cotizacion->id]['proveedores']))/*->where('primera_confirmada','1')*/ as $itinerario_servicio){
-                            if(in_array(Proveedor::find($itinerario_proveedor->proveedor_id)->tipo_pago,$tipo_filtro_array)){
+                            if(in_array(Proveedor::find($itinerario_servicio->proveedor_id)->tipo_pago,$tipo_filtro_array)){
                                 
                             // foreach($hotel->itinerario_proveedor->whereIn('tipo_pago',$tipo_filtro_array) as $pro){
                                 $key=$cotizacion->id.'_'.$itinerario_servicio->proveedor_id;
@@ -3745,8 +3745,9 @@ class ContabilidadController extends Controller
         
         // dd($array_pagos_pendientes_servicios);
         // return view('admin.contabilidad.requerimiento-preparado',compact(['array_pagos_pendientes']));
-        return view('admin.contabilidad.requerimiento-preparado',compact(['proveedor','array_pagos_pendientes','array_pagos_pendientes_servicios', 'cotizacion', 'txt_ini', 'txt_fin','proveedores','webs','grupo','modo_busqueda','tipo_pago','txt_ini','txt_fin','cod_nom']));
-        
+        return view('admin.contabilidad.requerimiento-preparado',compact(['array_pagos_pendientes','array_pagos_pendientes_servicios','webs','modo_busqueda','tipo_pago','txt_ini','txt_fin','cod_nom']));
+
+        // return view('admin.contabilidad.requerimiento-preparado',compact(['proveedor','array_pagos_pendientes','array_pagos_pendientes_servicios', 'cotizacion', 'txt_ini', 'txt_fin','webs','grupo','modo_busqueda','tipo_pago','txt_ini','txt_fin','cod_nom']));
     }
     public function hotel_store_notas(Request $request){
         try{       

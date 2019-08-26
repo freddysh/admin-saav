@@ -61,7 +61,7 @@
                         @endif
                     </td>
                     <td>
-                        <span class="text-primary"> Se paga {{$producto->proveedor->plazo}} {{$producto->proveedor->desci}}</span>
+                        <span class="text-primary">{{$producto->proveedor->tipo_pago}} Se paga {{$producto->proveedor->plazo}} {{$producto->proveedor->desci}}</span>
                     </td>
                 </tr>                
             @endforeach
