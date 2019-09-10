@@ -1136,17 +1136,66 @@ class PackageController extends Controller
         //
         $destino = $request->input('destino');
         if ($destino != 0){
+            $m_destinos=M_Destino::get();
             $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->get()->sortBy('titulo');
-            return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days'));
+            return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days','destino','m_destinos'));
+        }
+        else {
+            return '';
         }
     }
     public function buscar_day_by_day_ajax_dia(Request $request)
     {
         //
         $destino = $request->input('destino');
+        
+        $m_destinos=M_Destino::get();
         if ($destino != 0){
             $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->groupBy('tipo','id')->get()->sortBy('tipo');
-            return view('admin.daybyday.get-day-by-day-x-destino-dia', compact('day_by_days'));
+            return view('admin.daybyday.get-day-by-day-x-destino-dia', compact('day_by_days','destino','m_destinos'));
+        }
+        else{
+            return '';
+        }
+    }
+    public function buscar_day_by_day_ajax_dia_edit(Request $request)
+    {
+        //
+        // $destino = $request->input('destino');
+        // $valor = $request->input('valor');
+        // if ($destino != 0){
+        //     $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->groupBy('tipo','id')->get()->sortBy('tipo');
+        //     return view('admin.daybyday.get-day-by-day-x-destino-dia', compact('day_by_days'));
+        // }
+
+
+        $destino = $request->input('destino');
+        $valor = $request->input('valor');
+        // return $destino.'-'.$valor;
+        $m_destinos=M_Destino::get();
+            
+        if ($destino != 0){
+            if(trim($valor)==''){
+                // $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->get()->sortBy('titulo');
+                // return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days','destino','m_destinos'));
+
+                $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->groupBy('tipo','id')->get()->sortBy('tipo');
+                return view('admin.daybyday.get-day-by-day-x-destino-dia', compact('day_by_days','destino','m_destinos'));
+            }
+            else{
+                $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->where('titulo','like','%'.$valor.'%')->groupBy('tipo','id')->get()->sortBy('titulo');
+                return view('admin.daybyday.get-day-by-day-x-destino-dia', compact('day_by_days','destino','m_destinos'));
+            }
+        }
+        else{
+            if(trim($valor)==''){
+                $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->groupBy('tipo','id')->get()->sortBy('titulo');
+                return view('admin.daybyday.get-day-by-day-x-destino-dia', compact('day_by_days','destino','m_destinos'));
+            }
+            else{
+                $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('titulo','like','%'.$valor.'%')->groupBy('tipo','id')->get()->sortBy('titulo');
+                return view('admin.daybyday.get-day-by-day-x-destino-dia', compact('day_by_days','destino','m_destinos'));
+            }
         }
     }
     public function itineraries_listar_pagina(Request $request)
@@ -1168,5 +1217,36 @@ class PackageController extends Controller
         $m_servicios=M_Servicio::get();
         // dd($itineraries);
         return view('admin.show-itinearies-pagina', compact('itineraries','m_servicios'));
+    }
+
+    public function buscar_day_by_day_ajax_valor(Request $request)
+    {
+        //
+         
+        $destino = $request->input('destino');
+        $valor = $request->input('valor');
+        // return $destino.'-'.$valor;
+        $m_destinos=M_Destino::get();
+            
+        if ($destino != 0){
+            if(trim($valor)==''){
+                $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->get()->sortBy('titulo');
+                return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days','destino','m_destinos'));
+            }
+            else{
+                $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('destino_foco', $destino)->where('titulo','like','%'.$valor.'%')->get()->sortBy('titulo');
+                return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days','destino','m_destinos'));
+            }
+        }
+        else{
+            if(trim($valor)==''){
+                $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->get()->sortBy('titulo');
+                return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days','destino','m_destinos'));
+            }
+            else{
+                $day_by_days = M_Itinerario::select('id','dia','titulo','resumen','descripcion','precio','imagen','imagenB','imagenC','destino_foco','destino_duerme','tipo')->where('titulo','like','%'.$valor.'%')->get()->sortBy('titulo');
+                return view('admin.daybyday.get-day-by-day-x-destino', compact('day_by_days','destino','m_destinos'));
+            }
+        }
     }
 }

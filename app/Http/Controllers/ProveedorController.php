@@ -188,8 +188,8 @@ class ProveedorController extends Controller
 
         // if($buscar_pro==0){
             $proveedor=new Proveedor();
-            $proveedor->txt_tipo_proveedor=$txt_tipo_proveedor;
-            $proveedor->txt_tipo_pago=$txt_tipo_pago;
+            $proveedor->tipo_proveedor=$txt_tipo_proveedor;
+            $proveedor->tipo_pago=$txt_tipo_pago;
             $proveedor->categoria=$txt_categoria;
             $proveedor->ruc=$txt_ruc;
             $proveedor->razon_social=$txt_razon_social;
@@ -352,7 +352,7 @@ class ProveedorController extends Controller
         set_time_limit(0);
         $destino=explode('_',$request->input('destino'));
         $grupo=$request->input('grupo');
-        $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->get();
+        $proveedores=Proveedor::where('grupo',$grupo)->where('localizacion',$destino[1])->get();
         $destinations=M_Destino::get();
         $destinos_opera=DestinosOpera::get();
         $entidadBancaria=EntidadBancaria::get();
@@ -367,7 +367,7 @@ class ProveedorController extends Controller
         $grupo=$request->input('grupo');
         $estrellas=$request->input('estrellas');
 
-        $proveedores=Proveedor::where('localizacion',$destino[1])->where('grupo',$grupo)->where('categoria',$estrellas)->get();
+        $proveedores=Proveedor::where('grupo',$grupo)->where('categoria',$estrellas)->where('localizacion',$destino[1])->get();
         $destinations=M_Destino::get();
         $destinos_opera=DestinosOpera::get();
         $entidadBancaria=EntidadBancaria::get();

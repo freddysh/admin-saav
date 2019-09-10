@@ -146,7 +146,7 @@ class QouteController extends Controller
 
     public function nuevo()
     {
-        $destinos=M_Destino::get();
+        $valors=M_Destino::get();
         $itinerarios=M_Itinerario::get();
         $m_servicios=M_Servicio::get();
 //        dd($servicios);
@@ -818,4 +818,13 @@ class QouteController extends Controller
 
 //        return redirect()->route('current_quote_page_path','expedia.com');
     }
+    public function buscar_day_by_day(Request $request)
+    {
+        set_time_limit ( 0 );
+        $destino=$request->input('detino');
+        $valor=$request->input('detino');
+
+        
+    }
+    
 }

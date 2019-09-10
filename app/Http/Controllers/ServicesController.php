@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use App\M_ItinerarioServicio;
 use Illuminate\Http\Response;
 use App\P_ItinerarioServicios;
+use App\PrecioHotelReserva;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
@@ -678,10 +679,19 @@ class ServicesController extends Controller
         $localizacion=$request->input('localizacion');
         $grupo=$request->input('grupo');
         $servicios_id=$request->input('servicios_id');
-        $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
-        $destinos=M_Destino::get();
-        $proveedores=Proveedor::where('grupo',$grupo)->get();
-        return view('admin.book.mostrar-servicios',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','proveedores']));
+       
+        if($grupo=='HOTELS'){
+            $hotel=PrecioHotelReserva::find($servicios_id);
+            $destinations=M_Destino::get();
+            $hoteles=Hotel::where('localizacion','CUSCO')->get();
+            return view('admin.book.mostrar-servicios-hotel',compact(['destinations','hoteles','hotel','itinerario_id']));
+        }
+        else{
+            $m_servicios=M_Servicio::where('localizacion',$localizacion)->where('grupo',$grupo)->get();
+            $destinos=M_Destino::get();
+            $proveedores=Proveedor::where('grupo',$grupo)->get();
+            return view('admin.book.mostrar-servicios',compact(['m_servicios','servicios_id','grupo','localizacion','destinos','itinerario_id','proveedores']));
+        }
     }
     public function listar_servicios_localizacion(Request $request){
         $itinerario_id=$request->input('itinerario_id');

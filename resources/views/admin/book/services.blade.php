@@ -684,6 +684,9 @@
                                                             <a href="#!" id="boton_prove_{{$servicios->id}}" data-toggle="modal" data-target="#myModal_{{$servicios->id}}" onclick="call_popup_servicios('lista_proveedores_srevicios_{{$servicios->id}}','{{$servicios->id}}','{{$arreglito}}','{{$cotizacion->id}}','{{$itinerario->id}}','a')">
                                                                 <i class="fa fa-plus-circle fa-2x"></i>
                                                             </a>
+                                                            <a id="boton_prove_borrar_{{$servicios->id}}" href="#!" class="text-danger d-none" onclick="call_popup_servicios_borrar('e_lista_proveedores_srevicios_{{$servicios->id}}','{{$servicios->id}}','{{$arreglito}}','{{$cotizacion->id}}','{{$itinerario->id}}','e')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
                                                             <div class="modal fade" id="myModal_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                                                 <div class="modal-dialog modal-lg" role="document">
                                                                     <div class="modal-content">
@@ -795,6 +798,9 @@
                                                             <a id="boton_prove_{{$servicios->id}}" href="#" class="" data-toggle="modal" data-target="#myModal_{{$servicios->id}}" onclick="call_popup_servicios('e_lista_proveedores_srevicios_{{$servicios->id}}','{{$servicios->id}}','{{$arreglito}}','{{$cotizacion->id}}','{{$itinerario->id}}','e')">
                                                                 <i class="fa fa-edit"></i>
                                                             </a>
+                                                            <a id="boton_prove_borrar_{{$servicios->id}}" href="#!" class="text-danger" onclick="call_popup_servicios_borrar('e_lista_proveedores_srevicios_{{$servicios->id}}','{{$servicios->id}}','{{$arreglito}}','{{$cotizacion->id}}','{{$itinerario->id}}','e')">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
                                                             <div class="modal fade" id="myModal_{{$servicios->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                                                 <div class="modal-dialog modal-lg" role="document">
                                                                     <div class="modal-content">
@@ -1106,7 +1112,7 @@
                                                 $titulo_hotel='';
                                             @endphp
                                             @foreach($itinerario->hotel as $hotel)
-                                                <tr id="hotel_{{$hotel->id}}">
+                                                <tr id="hotel_{{$hotel->id}}" class="@if($hotel->anulado==1) {{'alert alert-danger'}} @endif">
                                                     <td class="text-center">
                                                         <b>{{$hotel->estrellas}} <i class="fa fa-star text-warning" aria-hidden="true"></i></b>
                                                         @php
@@ -1360,13 +1366,17 @@
                                                                 {{$hotel->proveedor->nombre_comercial}}
                                                             @endif
                                                         </b>
-                                                    <a href="#!" id="boton_prove_hotel_{{$hotel->id}}" data-toggle="modal" data-target="#myModal_h_{{$hotel->id}}" onclick="call_popup('{{$hotel->estrellas}}','{{$hotel->localizacion}}','lista_proveedores_{{$hotel->id}}','{{$hotel->id}}','{{$itinerario->id}}','{{$cotizacion->id}}')">
+                                                        <a href="#!" id="boton_prove_hotel_{{$hotel->id}}" data-toggle="modal" data-target="#myModal_h_{{$hotel->id}}" onclick="call_popup('{{$hotel->estrellas}}','{{$hotel->localizacion}}','lista_proveedores_{{$hotel->id}}','{{$hotel->id}}','{{$itinerario->id}}','{{$cotizacion->id}}')">
                                                             @if($hotel->proveedor)
                                                                 <i class="fa fa-edit"></i>
                                                             @else
                                                                 <i class="fa fa-plus-circle fa-2x"></i>
                                                             @endif
                                                         </a>
+                                                        <a id="boton_prove_borrar_h_{{$hotel->id}}" href="#!" class="text-danger @if(!$hotel->proveedor) d-none @endif " onclick="call_popup_servicios_borrar_h('{{$hotel->id}}')">
+                                                                    <i class="fas fa-trash"></i>
+                                                        </a>
+
                                                         <div class="modal fade" id="myModal_h_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                                             <div class="modal-dialog modal-lg" role="document">
                                                                 <div class="modal-content">
@@ -1566,6 +1576,47 @@
                                                             <button type="button" class="btn btn-danger btn-sm" onclick="eliminar_servicio_reservas('{{$hotel->id}}','Hotel {{$hotel->estrellas}} estrellas','H')">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
+                                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal_hotel_h_{{$hotel->id}}" onclick="traer_servicios('{{$itinerario->id}}','{{$hotel->id}}','{{$hotel->localizacion}}','HOTELS')">
+                                                                <i class="fas fa-exchange-alt" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade bd-example-modal-lg" id="modal_hotel_h_{{$hotel->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg" role="document">
+                                                                <div class="modal-content">
+                                                                    <form  id="frm_cambiar_hotel_{{$hotel->id}}" action="{{route('cambiar_hotel_reservas_path')}}" method="post">
+                                                                        {{--                                                                <form action="{{route('destination_save_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">--}}
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Cambiar Hotel <span class="text-primary"><i class="fa fa-map-marker" aria-hidden="true"></i> {{$hotel->localizacion}}</span></h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="panel panel-default">
+                                                                                        <div id="list_servicios_h_grupo_{{$hotel->id}}" class="panel-body">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            {{csrf_field()}}
+                                                                            <input type="hidden" id="servicio_pos_{{$servicios->id}}" name="pos" value="{{$servicios->pos}}">
+                                                                            <input type="hidden" name="impu" name="impu" value="servicio_cambiar_{{$itinerario->id}}_{{$grupo}}">
+                                                                            <input type="hidden" id="servicio_antiguo_{{$servicios->id}}" name="id_antiguo" value="{{$servicios->id}}">
+                                                                            <input type="hidden" name="p_itinerario_id" value="{{$itinerario->id}}">
+                                                                            <input type="hidden" name="itinerario_cotizaciones_id" value="{{$hotel->itinerario_cotizaciones_id}}">
+                                                                            <input type="hidden" name="precio_hotel_reserva_id" value="{{$hotel->id}}">
+                                                                            <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="button" class="btn btn-primary" onclick="preparar_envio_hotel('frm_cambiar_hotel_{{$hotel->id}}')">Save changes</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                 </tr>

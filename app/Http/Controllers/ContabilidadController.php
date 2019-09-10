@@ -3927,6 +3927,7 @@ class ContabilidadController extends Controller
     }
     public function enviar_requerimiento(Request $request){
         try{       
+            $tipo_pago=$request->input('tipo_pago');
             $chb_h_pagos=$request->input('chb_h_pagos');
             $chb_h_pagos_servicio=$request->input('chb_h_pagos_servicio');
             $fecha_ini=$request->input('txt_ini');
@@ -3941,13 +3942,17 @@ class ContabilidadController extends Controller
                 $data=Carbon::now()->subHour(5);
                 $requerimiento=new Requerimiento();
                 $requerimiento->codigo=$codigo;
+                $requerimiento->tipo_pago=$tipo_pago;
                 $requerimiento->modo_busqueda=$modo_busqueda;
                 $requerimiento->servicio='HOTEL';
                 $requerimiento->fecha_ini=$fecha_ini;
                 $requerimiento->fecha_fin=$fecha_fin;
                 $requerimiento->solicitante_id=auth()->guard('admin')->user()->id;;
                 $requerimiento->monto_solicitado=$monto_solicitado;
-                $requerimiento->estado=2;
+                //-- en este paso estamos aprobando desde contabilidad, cabe aclarar que se esta obviando la aprobacion por el administrador
+                // $requerimiento->estado=2;
+                $requerimiento->estado=3;
+                
                 $requerimiento->updated_at=$data->year.'-'.$data->month.'-'.$data->day;
                 $requerimiento->save();
                 if(isset($chb_h_pagos)){
@@ -3957,7 +3962,9 @@ class ContabilidadController extends Controller
                         foreach($hoteles as $hotel){
                             $hot=PrecioHotelReserva::find($hotel->id);
                             if(!$hot->requerimientos_id>0){
-                                $hot->estado_contabilidad=2;
+                                //-- en este paso estamos aprobando desde contabilidad, cabe aclarar que se esta obviando la aprobacion por el administrador
+                                // $hot->estado_contabilidad=2;
+                                $hot->estado_contabilidad=3;
                                 $hot->requerimientos_id=$requerimiento->id;
                                 $hot->precio_confirmado_contabilidad=1; 
                                 $hot->save();
@@ -3975,7 +3982,9 @@ class ContabilidadController extends Controller
                         foreach($servicios as $servicio){
                             $objeto=ItinerarioServicios::find($servicio->id);
                             if(!$objeto->requerimientos_id>0){
-                                $objeto->estado_contabilidad=2;
+                                //-- en este paso estamos aprobando desde contabilidad, cabe aclarar que se esta obviando la aprobacion por el administrador
+                                // $objeto->estado_contabilidad=2;
+                                $objeto->estado_contabilidad=3;
                                 $objeto->requerimientos_id=$requerimiento->id;
                                 $objeto->precio_confirmado_contabilidad=1; 
                                 $objeto->save();
@@ -4021,7 +4030,7 @@ class ContabilidadController extends Controller
             $requerimientos_aprovado=Requerimiento::whereIn('estado',['3','4'])->get();
             $requerimientos_pagado=Requerimiento::where('estado','5')->get();
         }
-        dd($requerimientos_pagado);
+        // dd($requerimientos_pagado);
         $webs = Web::get();
         $usuarios=User::get();
         return view('admin.contabilidad.revisar-requerimiento',compact('requerimientos_nuevo','requerimientos_aprovado','requerimientos_pagado','webs','usuarios'));

@@ -623,14 +623,32 @@
                         <div class="col">
                             <div class="row">
                                 <div class="col margin-top-25">
-                                    <select class="form-control" name="destinos_busqueda" id="destinos_busqueda" onclick="buscar_day_by_day_quotes($(this).val())">
-                                        <option value="0">Escoja un destino</option>
-                                        @foreach($destinos as $destino)
-                                            <option value="{{$destino->id}}">{{$destino->destino}}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="text-left align-middle col-12 margin-top-5" id="resultado_busqueda" style="height: 500px; overflow-y: auto;">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <select class="form-control" name="destinos_busqueda" id="destinos_busqueda" onclick="buscar_day_by_day_quotes($(this).val())">
+                                            <option value="0">Escoja un destino</option>
+                                            @foreach($destinos as $destino)
+                                                <option value="{{$destino->id}}">{{$destino->destino}}</option>
+                                            @endforeach
+                                        </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="sr-only" for="txt_buscar">Buscar</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control" id="txt_buscar" name="txt_buscar" placeholder="Buscar" onkeyup="buscar_destino_day_by_day($(this).val())">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="text-left align-middle col-12 margin-top-5" id="resultado_busqueda" style="height: 500px; overflow-y: auto;">
+                                            </div>
+                                        </div>
                                     </div>
+                                    
+
+                                    
                                 </div>
                                 <div class="col-1 margin-top-40">
                                     <a href="#!" class="btn btn-primary" onclick="Pasar_datos1()"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>

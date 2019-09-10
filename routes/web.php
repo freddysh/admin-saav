@@ -661,11 +661,11 @@ Route::get('/admin/daybyday/edit/{id}', [
     'as' => 'editar_dadybyday_parh',
 ]);
 Route::get('admin/operaciones', [
-    'uses' => 'OperacionesController@index',
+    'uses' => 'OperacionesController@index_uno',
     'as' => 'operaciones_path',
 ]);
 Route::post('admin/operaciones/fechas', [
-    'uses' => 'OperacionesController@Lista_fechas',
+    'uses' => 'OperacionesController@Lista_fechas_uno',
     'as' => 'operaciones_lista_path',
 ]);
 Route::get('admin/operaciones/s_p/{id1}/{id2}/{id3}', [
@@ -1388,6 +1388,14 @@ Route::post('admin/book/servicios/traer-lista-proveedores', [
     'as' => 'servicios.traer.lista.proveedores',
 ]);
 
+Route::post('admin/book/servicios/traer-lista-proveedores/borrar', [
+    'uses' => 'BookController@traer_lista_proveedores_servicios_borrar',
+    'as' => 'servicios.traer.lista.proveedores',
+]);
+Route::post('admin/book/servicios/traer-lista-proveedores/borrar/hotel', [
+    'uses' => 'BookController@traer_lista_proveedores_servicios_borrar_hotel',
+    'as' => 'servicios.traer.lista.proveedores.borrar.hotel',
+]);
 Route::post('/admin/contabilidad/preparar-requerimiento', [
     'uses' => 'ContabilidadController@preparar_requerimiento',
     'as' => 'contabilidad.preparar_requerimiento',
@@ -1510,4 +1518,16 @@ Route::get('/admin/administracion/ingresos/general', [
 Route::post('admin/administracion/ingresos/buscar-pagos-recientes', [
     'uses' => 'ContabilidadController@ingresos_filtro',
     'as' => 'ingresos.filtro',
+]);
+Route::post('/admin/quotes/new/buscar/day-by-day', [
+    'uses' => 'PackageController@buscar_day_by_day_ajax_valor',
+    'as' => 'buscar.day_by_day',
+]);
+Route::post('admin/package/buscar-day-by-day/ajax/dia-edit',[
+    'uses' => 'PackageController@buscar_day_by_day_ajax_dia_edit',
+    'as' => 'package_buscar_day_by_day_ajax_edit_path',
+]);
+Route::post('admin/quotes/new/step1/cambiar-hotel-reservas', [
+    'uses' => 'PackageCotizacionController@cambiar_hotel_reservas',
+    'as' => 'cambiar_hotel_reservas_path',
 ]);

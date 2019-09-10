@@ -25,7 +25,6 @@ class OperacionesController extends Controller
         }])
             ->where('confirmado_r', 'ok')
             ->get();
-//        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
         $clientes2 = Cliente::get();
         $array_datos_coti= array();
         $array_datos_cotizacion= array();
@@ -50,12 +49,10 @@ class OperacionesController extends Controller
                             $hora=str_replace(':','.',$servicio->hora_llegada);
                         }
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
-                        // $serv = M_Servicio::Find($servicio->m_servicios_id);
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
                             // $pro1=null;
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
-                            // if(is_array($pro1)){
                                 if(count((array)$pro1)>0){
                                     if (strlen($pro1->nombre_comercial) > 0)
                                         $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
@@ -65,7 +62,6 @@ class OperacionesController extends Controller
                                 else{
                                     $nombre_comercial = 'Proveedor borrado de la db';
                                 }
-                            // }
                         }
                         if(array_key_exists($key,$array_datos_cotizacion)){
                             $horario='';
@@ -89,18 +85,13 @@ class OperacionesController extends Controller
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
                             $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'anulado'=>$cotizacion->anulado,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
-//
-//                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
+
                         }
                     }
                     foreach ($itinerario->hotel->sortby('hora_llegada') as $hotel) {
                         $hora='00.00';
-//                        if($hotel->hora_llegada!=''){
-//                            $hora=str_replace(':','.',$hotel->hora_llegada);
-//                        }
                         if(trim($hotel->hora_llegada)!='')
                             $hora=str_replace(':','.',$hotel->hora_llegada);
-//                            $hora=trim($servicio->hora_llegada);
                         $cadena='';
                         if($hotel->personas_s>0)
                             $cadena.=$hotel->personas_s.' Single';
@@ -124,7 +115,6 @@ class OperacionesController extends Controller
                             }
                         }
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
-//                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
                         if(array_key_exists($key,$array_hotel))
                             $array_hotel[$key].=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.'</p>';
                         else
@@ -133,14 +123,11 @@ class OperacionesController extends Controller
                 }
             }
         }
-//        $array_datos_cotizacion[$key]=substr($array_datos_cotizacion[$key],0,strlen($array_datos_cotizacion[$key])-1);
-//            dd($array_hotel);
         $sort=array();
         foreach ($array_datos_coti as $key => $part) {
             $sort[$key] = strtotime($part['fecha']);
         }
         array_multisort($sort, SORT_ASC, $array_datos_coti);
-        //-- ordenamos el multiarray
         $sort1=array();
         foreach ($array_datos_cotizacion as $key => $part) {
             $sort1[$key] = strtotime($part['dates']);
@@ -157,6 +144,195 @@ class OperacionesController extends Controller
         $filtro='filtro';
         return view('admin.operaciones.operaciones-copia', compact(['desde', 'hasta', 'array_datos_cotizacion', 'array_datos_coti', 'array_hotel', 'grupo', 'webs']));
     }
+    public function index_uno()
+    {
+        set_time_limit(0);
+        $desde=date('Y-m-d');
+        $hasta=date('Y-m-d');
+        $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
+            $query->whereBetween('fecha', array($desde, $hasta));
+        }])->get();
+        /*===========================================================================================*/
+        $arreglo_de_datos=array();
+        foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
+            $cel='No tiene';
+            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+                if(strlen($cotizacion_cliente->cliente->telefono) > 4){
+                    $cel=$cotizacion_cliente->cliente->telefono;
+                }
+            }
+            $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cel.'</span> ';
+            foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
+                foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
+                    $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
+                    $array_datos_coti[$key1]=Array('fecha'=>$itinerario->fecha,'datos'=>$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas);
+                    foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
+                        $hora='00.00';
+                        if(trim($servicio->hora_llegada)!=''){
+                            $hora=str_replace(':','.',$servicio->hora_llegada);
+                        }
+                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
+                        $nombre_comercial='Sin reserva';
+                        if($servicio->proveedor_id>0) {
+                            $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
+                            if(count((array)$pro1)>0){
+                                if (strlen($pro1->nombre_comercial) > 0)
+                                    $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
+                                else
+                                    $nombre_comercial = 'Sin nombre comercial';
+                            }
+                            else{
+                                $nombre_comercial = 'Proveedor borrado de la db';
+                            }
+                        }
+                        if($this->search($arreglo_de_datos,$key,$servicio->grupo)){
+                            $horario='';
+                            if($servicio->grupo=='TRAINS'){
+                                $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
+                            }
+                            $clase='';
+                            $anulado='';
+                            if($servicio->anulado=='1'){
+                                $clase='alert alert-danger';
+                                $anulado='<b>Anulado</b>';
+                            }
+                            
+                            // $arreglo_de_datos[$key]['OBSERVACIONES'] = $itinerario->notas;
+
+                            $arreglo_de_datos[$key][$servicio->grupo] .= '<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                        }
+                        else{
+                            $horario='';
+                            if($servicio->grupo=='TRAINS'){
+                                $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
+                            }
+                            $clase='';
+                            $anulado='';
+                            if($servicio->anulado=='1'){
+                                $clase='alert alert-danger';
+                                $anulado='<b>Anulado</b>';
+                            }
+                            $var_TOURS='';
+                            $var_HOTELS='';
+                            $var_REPRESENT='';
+                            $var_MOVILID='';
+                            $var_ENTRANCES='';
+                            $var_FOOD='';
+                            $var_TRAINS='';
+                            $var_FLIGHTS='';
+                            $var_OTHERS='';
+                            $var_OBSERVACIONES='';
+                            
+                            if($servicio->grupo=='TOURS'){
+                                $var_TOURS='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='REPRESENT'){
+                                $var_REPRESENT='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='MOVILID'){
+                                $var_MOVILID='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='ENTRANCES'){
+                                $var_ENTRANCES='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='FOOD'){
+                                $var_FOOD='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='TRAINS'){
+                                $var_TRAINS='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='FLIGHTS'){
+                                $var_FLIGHTS='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='OTHERS'){
+                                $var_OTHERS='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            
+
+                            $arreglo_de_datos[$key] = array('FECHA'=>$itinerario->fecha,
+                            'HORA'=>$hora,
+                            'CODIGO'=>$cotizacion->codigo,
+                            'DATOS'=>$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas,
+                            'COTIZACION_STATE'=>$cotizacion->anulado,
+                            'TOURS'=>$var_TOURS,'HOTELS'=>$var_HOTELS,'REPRESENT'=>$var_REPRESENT,'MOVILID'=>$var_MOVILID,'ENTRANCES'=>$var_ENTRANCES,
+                            'FOOD'=>$var_FOOD,'TRAINS'=>$var_TRAINS,'FLIGHTS'=>$var_FLIGHTS,'OTHERS'=>$var_OTHERS,'OBSERVACIONES'=>$itinerario->notas);                            
+                        }
+                    }
+                    foreach ($itinerario->hotel->sortby('hora_llegada') as $hotel) {
+                        $hora='00.00';
+                        if(trim($hotel->hora_llegada)!='')
+                            $hora=str_replace(':','.',$hotel->hora_llegada);
+                        $cadena='';
+                        if($hotel->personas_s>0)
+                            $cadena.=$hotel->personas_s.' Single';
+                        if($hotel->personas_d>0)
+                            $cadena.=$hotel->personas_d.' Double';
+                        if($hotel->personas_m>0)
+                            $cadena.=$hotel->personas_m.' Matrimonial';
+                        if($hotel->personas_t>0)
+                            $cadena.=$hotel->personas_t.' Triple';
+                        $nombre_comercial='Sin reserva';
+                        if($hotel->proveedor_id>0) {
+                            $pro1=Proveedor::where('id',$hotel->proveedor_id)->first();
+                            if(count((array)$pro1)>0){
+                                if (strlen($pro1->nombre_comercial) > 0)
+                                    $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
+                                else
+                                    $nombre_comercial = 'Sin nombre comercial';
+                            }
+                            else{
+                                $nombre_comercial = 'Proveedor borrado de la db';
+                            }
+                        }
+                        $clase='';
+                        $anulado='';
+                        if($hotel->anulado=='1'){
+                            $clase='alert alert-danger';
+                            $anulado='<b>Anulado</b>';
+                        }
+                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
+                        if($this->search($arreglo_de_datos,$key,$servicio->grupo)){
+                            $arreglo_de_datos[$key]['HOTELS'].= '<div class="'.$clase.'">'.$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$hotel->codigo_verificacion.'</p>'.$anulado.'</div>';
+                        }
+                        else{
+                            $var_TOURS='';
+                            $var_HOTELS='';
+                            $var_REPRESENT='';
+                            $var_MOVILID='';
+                            $var_ENTRANCES='';
+                            $var_FOOD='';
+                            $var_TRAINS='';
+                            $var_FLIGHTS='';
+                            $var_OTHERS='';
+                            $var_OBSERVACIONES='';
+                            $var_HOTELS= '<div class="'.$clase.'">'.$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$hotel->codigo_verificacion.'</p>'.$anulado.'</div>';
+
+                            $arreglo_de_datos[$key] = array('FECHA'=>$itinerario->fecha,
+                            'HORA'=>$hora,
+                            'CODIGO'=>$cotizacion->codigo,
+                            'DATOS'=>$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas,
+                            'COTIZACION_STATE'=>$cotizacion->anulado,
+                            'TOURS'=>$var_TOURS,'HOTELS'=>$var_HOTELS,'REPRESENT'=>$var_REPRESENT,'MOVILID'=>$var_MOVILID,'ENTRANCES'=>$var_ENTRANCES,
+                            'FOOD'=>$var_FOOD,'TRAINS'=>$var_TRAINS,'FLIGHTS'=>$var_FLIGHTS,'OTHERS'=>$var_OTHERS,'OBSERVACIONES'=>$itinerario->notas);
+                        }
+                    }
+                }
+            }
+        }
+        $sort1=array();
+        $sort2=array();
+        $sort3=array();
+        foreach ($arreglo_de_datos as $key => $part) {
+            $sort1[$key] = strtotime($part['FECHA']);
+            $sort2[$key] = strtotime($part['HORA']);
+            $sort3[$key] = strtotime($part['CODIGO']);
+        }
+        array_multisort($sort1, SORT_ASC,$sort2, SORT_ASC,$sort3, SORT_ASC, $arreglo_de_datos);
+        /*===========================================================================================*/
+        $grupo='HOTELS';
+        $webs=Web::get();
+        return view('admin.operaciones.operaciones-copia-2', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel','grupo','webs','arreglo_de_datos'));
+    }
     public function Lista_fechas(Request $request)
     {
         set_time_limit(0);
@@ -164,10 +340,7 @@ class OperacionesController extends Controller
         $hasta = $request->input('txt_hasta');
         $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
             $query->whereBetween('fecha', array($desde, $hasta));
-        }])
-            // ->where('confirmado_r', 'ok')
-            ->get();
-//        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
+        }])->get();
         $clientes2 = Cliente::get();
         $array_datos_coti = array();
         $array_datos_cotizacion = array();
@@ -181,15 +354,6 @@ class OperacionesController extends Controller
                 }
             }
             $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cel.'</span> ';
-            
-            // $clientes_ ='';
-            // foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
-            //     foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    // $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
-                    // $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cotizacion->cotizaciones_cliente->where('estado','1')->cliente->telefono.'</span> ';
-           
-            //     }
-            // }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
                 foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
@@ -200,7 +364,6 @@ class OperacionesController extends Controller
                             $hora=str_replace(':','.',$servicio->hora_llegada);
                         }
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
-                        // $serv = M_Servicio::Find($servicio->m_servicios_id);
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
@@ -222,10 +385,9 @@ class OperacionesController extends Controller
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                                    
                             $array_datos_cotizacion[$key]['dates']= $itinerario->fecha.'_'.$hora;
                             $array_datos_cotizacion[$key]['anulado']=$cotizacion->anulado;
-                            $array_datos_cotizacion[$key]['servicio'].= $servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%';
+                            $array_datos_cotizacion[$key]['servicio'].= $servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p></div>%';
                         }
                         else{
                             $horario='';
@@ -235,19 +397,13 @@ class OperacionesController extends Controller
                             $clase='';
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
-                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'anulado'=>$cotizacion->anulado,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
-//
-//                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
+                            $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'anulado'=>$cotizacion->anulado,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p></div>%');
                         }
                     }
                     foreach ($itinerario->hotel->sortby('hora_llegada') as $hotel) {
                         $hora='00.00';
-//                        if($hotel->hora_llegada!=''){
-//                            $hora=str_replace(':','.',$hotel->hora_llegada);
-//                        }
                         if(trim($hotel->hora_llegada)!='')
                             $hora=str_replace(':','.',$hotel->hora_llegada);
-//                            $hora=trim($servicio->hora_llegada);
                         $cadena='';
                         if($hotel->personas_s>0)
                             $cadena.=$hotel->personas_s.' Single';
@@ -271,17 +427,14 @@ class OperacionesController extends Controller
                             }
                         }
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
-//                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
                         if(array_key_exists($key,$array_hotel))
-                            $array_hotel[$key].=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.'</p>';
+                            $array_hotel[$key].=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$hotel->codigo_verificacion.'</p>';
                         else
-                            $array_hotel[$key]=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.'</p>';
+                            $array_hotel[$key]=$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$hotel->codigo_verificacion.'</p>';
                     }
                 }
             }
         }
-//        $array_datos_cotizacion[$key]=substr($array_datos_cotizacion[$key],0,strlen($array_datos_cotizacion[$key])-1);
-//            dd($array_hotel);
         $sort=array();
         foreach ($array_datos_coti as $key => $part) {
             $sort[$key] = strtotime($part['fecha']);
@@ -293,11 +446,217 @@ class OperacionesController extends Controller
             $sort1[$key] = strtotime($part['dates']);
         }
         array_multisort($sort1, SORT_ASC, $array_datos_cotizacion);
-//        dd($array_datos_cotizacion);
         $grupo='HOTELS';
         $webs=Web::get();
         return view('admin.operaciones.operaciones-copia', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel','grupo','webs'));
     }
+    public function Lista_fechas_uno(Request $request)
+    {
+        set_time_limit(0);
+        $desde = $request->input('txt_desde');
+        $hasta = $request->input('txt_hasta');
+        $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
+            $query->whereBetween('fecha', array($desde, $hasta));
+        }])->get();
+
+        /*===========================================================================================*/
+        $arreglo_de_datos=array();
+        foreach ($cotizaciones->sortby('fecha') as $cotizacion) {
+            $cel='No tiene';
+            foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
+                if(strlen($cotizacion_cliente->cliente->telefono) > 4){
+                    $cel=$cotizacion_cliente->cliente->telefono;
+                }
+            }
+            $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cel.'</span> ';
+            foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
+                foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
+                    $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
+                    $array_datos_coti[$key1]=Array('fecha'=>$itinerario->fecha,'datos'=>$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas);
+                    foreach ($itinerario->itinerario_servicios->sortby('hora_llegada') as $servicio) {
+                        $hora='00.00';
+                        if(trim($servicio->hora_llegada)!=''){
+                            $hora=str_replace(':','.',$servicio->hora_llegada);
+                        }
+                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
+                        $nombre_comercial='Sin reserva';
+                        if($servicio->proveedor_id>0) {
+                            $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
+                            if(count((array)$pro1)>0){
+                                if (strlen($pro1->nombre_comercial) > 0)
+                                    $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
+                                else
+                                    $nombre_comercial = 'Sin nombre comercial';
+                            }
+                            else{
+                                $nombre_comercial = 'Proveedor borrado de la db';
+                            }
+                        }
+                        if($this->search($arreglo_de_datos,$key,$servicio->grupo)){
+                            $horario='';
+                            if($servicio->grupo=='TRAINS'){
+                                $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
+                            }
+                            $clase='';
+                            $anulado='';
+                            if($servicio->anulado=='1'){
+                                $clase='alert alert-danger';
+                                $anulado='<b>Anulado</b>';
+                            }
+                            
+                            // $arreglo_de_datos[$key]['OBSERVACIONES'] = $itinerario->notas;
+
+                            $arreglo_de_datos[$key][$servicio->grupo] .= '<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                        }
+                        else{
+                            $horario='';
+                            if($servicio->grupo=='TRAINS'){
+                                $horario='['.$servicio->salida.'-'.$servicio->llegada.']<br>';
+                            }
+                            $clase='';
+                            $anulado='';
+                            if($servicio->anulado=='1'){
+                                $clase='alert alert-danger';
+                                $anulado='<b>Anulado</b>';
+                            }
+                            $var_TOURS='';
+                            $var_HOTELS='';
+                            $var_REPRESENT='';
+                            $var_MOVILID='';
+                            $var_ENTRANCES='';
+                            $var_FOOD='';
+                            $var_TRAINS='';
+                            $var_FLIGHTS='';
+                            $var_OTHERS='';
+                            $var_OBSERVACIONES='';
+                            
+                            if($servicio->grupo=='TOURS'){
+                                $var_TOURS='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='REPRESENT'){
+                                $var_REPRESENT='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='MOVILID'){
+                                $var_MOVILID='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='ENTRANCES'){
+                                $var_ENTRANCES='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='FOOD'){
+                                $var_FOOD='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='TRAINS'){
+                                $var_TRAINS='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='FLIGHTS'){
+                                $var_FLIGHTS='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            if($servicio->grupo=='OTHERS'){
+                                $var_OTHERS='<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$servicio->codigo_verificacion.'</p>'.$anulado.'</div>';
+                            }
+                            
+
+                            $arreglo_de_datos[$key] = array('FECHA'=>$itinerario->fecha,
+                            'HORA'=>$hora,
+                            'CODIGO'=>$cotizacion->codigo,
+                            'DATOS'=>$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas,
+                            'COTIZACION_STATE'=>$cotizacion->anulado,
+                            'TOURS'=>$var_TOURS,'HOTELS'=>$var_HOTELS,'REPRESENT'=>$var_REPRESENT,'MOVILID'=>$var_MOVILID,'ENTRANCES'=>$var_ENTRANCES,
+                            'FOOD'=>$var_FOOD,'TRAINS'=>$var_TRAINS,'FLIGHTS'=>$var_FLIGHTS,'OTHERS'=>$var_OTHERS,'OBSERVACIONES'=>$itinerario->notas);                            
+                        }
+                    }
+                    foreach ($itinerario->hotel->sortby('hora_llegada') as $hotel) {
+                        $hora='00.00';
+                        if(trim($hotel->hora_llegada)!='')
+                            $hora=str_replace(':','.',$hotel->hora_llegada);
+                        $cadena='';
+                        if($hotel->personas_s>0)
+                            $cadena.=$hotel->personas_s.' Single';
+                        if($hotel->personas_d>0)
+                            $cadena.=$hotel->personas_d.' Double';
+                        if($hotel->personas_m>0)
+                            $cadena.=$hotel->personas_m.' Matrimonial';
+                        if($hotel->personas_t>0)
+                            $cadena.=$hotel->personas_t.' Triple';
+                        $nombre_comercial='Sin reserva';
+                        if($hotel->proveedor_id>0) {
+                            $pro1=Proveedor::where('id',$hotel->proveedor_id)->first();
+                            if(count((array)$pro1)>0){
+                                if (strlen($pro1->nombre_comercial) > 0)
+                                    $nombre_comercial = $pro1->nombre_comercial.', Cel:'.$pro1->telefono;
+                                else
+                                    $nombre_comercial = 'Sin nombre comercial';
+                            }
+                            else{
+                                $nombre_comercial = 'Proveedor borrado de la db';
+                            }
+                        }
+                        $clase='';
+                        $anulado='';
+                        if($hotel->anulado=='1'){
+                            $clase='alert alert-danger';
+                            $anulado='<b>Anulado</b>';
+                        }
+                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
+                        if($this->search($arreglo_de_datos,$key,$servicio->grupo)){
+                            $arreglo_de_datos[$key]['HOTELS'].= '<div class="'.$clase.'">'.$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$hotel->codigo_verificacion.'</p>'.$anulado.'</div>';
+                        }
+                        else{
+                            $var_TOURS='';
+                            $var_HOTELS='';
+                            $var_REPRESENT='';
+                            $var_MOVILID='';
+                            $var_ENTRANCES='';
+                            $var_FOOD='';
+                            $var_TRAINS='';
+                            $var_FLIGHTS='';
+                            $var_OTHERS='';
+                            $var_OBSERVACIONES='';
+                            $var_HOTELS= '<div class="'.$clase.'">'.$cadena.'<br><span class="text-11 text-danger">('.$hotel->localizacion.')</span><p class="text-primary">'.$nombre_comercial.' ,Cod:'.$hotel->codigo_verificacion.'</p>'.$anulado.'</div>';
+
+                            $arreglo_de_datos[$key] = array('FECHA'=>$itinerario->fecha,
+                            'HORA'=>$hora,
+                            'CODIGO'=>$cotizacion->codigo,
+                            'DATOS'=>$itinerario->fecha.'|'.$cotizacion->nropersonas.'|'.$clientes_.'|'.$cotizacion->web.'|'.$cotizacion->idioma_pasajeros.'|'.$itinerario->notas,
+                            'COTIZACION_STATE'=>$cotizacion->anulado,
+                            'TOURS'=>$var_TOURS,'HOTELS'=>$var_HOTELS,'REPRESENT'=>$var_REPRESENT,'MOVILID'=>$var_MOVILID,'ENTRANCES'=>$var_ENTRANCES,
+                            'FOOD'=>$var_FOOD,'TRAINS'=>$var_TRAINS,'FLIGHTS'=>$var_FLIGHTS,'OTHERS'=>$var_OTHERS,'OBSERVACIONES'=>$itinerario->notas);
+                        }
+                    }
+                }
+            }
+        }
+        $sort1=array();
+        $sort2=array();
+        $sort3=array();
+        foreach ($arreglo_de_datos as $key => $part) {
+            $sort1[$key] = strtotime($part['FECHA']);
+            $sort2[$key] = strtotime($part['HORA']);
+            $sort3[$key] = strtotime($part['CODIGO']);
+        }
+        array_multisort($sort1, SORT_ASC,$sort2, SORT_ASC,$sort3, SORT_ASC, $arreglo_de_datos);
+        /*===========================================================================================*/
+        $grupo='HOTELS';
+        $webs=Web::get();
+        return view('admin.operaciones.operaciones-copia-2', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel','grupo','webs','arreglo_de_datos'));
+    }
+    protected function saludo(){
+		return "Saludo";
+    }
+    protected function search($arreglo_de_datos, $key_buscar1,$key_buscar2)
+    {
+        $rpt=false;
+        foreach($arreglo_de_datos as $key =>$valor){
+            foreach($valor as $key2 =>$valor2){
+                if($key.'_'.$key2==$key_buscar1.'_'.$key_buscar2){
+                    $rpt=true;
+                    break 2;
+                }
+            }
+        }
+        return $rpt;
+    }
+
     public function sp($id1,$id,$sp)
     {
         $iti=ItinerarioServicios::FindOrFail($id);

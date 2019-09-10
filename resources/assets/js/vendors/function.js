@@ -3423,6 +3423,7 @@ function Guardar_proveedor(id,url,csrf_field,id_pro) {
                 $('#book_proveedor_'+id).fadeIn();
                 $('#estado_proveedor_serv_'+id).html('<i class="fa fa-check fa-2x text-success"></i>');
                 $('#nro_servicios_reservados').val(parseInt($('#nro_servicios_reservados').val())+1);
+                $('#boton_prove_borrar_'+id).removeClass('d-none');
                 mostrar_barra_avance();
             }
             else{
@@ -5085,7 +5086,12 @@ function traer_servicios(itinerario_id,servicios_id,localizacion,grupo) {
         data: 'localizacion='+localizacion+'&grupo='+grupo+'&servicios_id='+servicios_id+'&itinerario_id='+itinerario_id,
         // Mostramos un mensaje con la respuesta de PHP
         success: function(data) {
+        if(grupo=='HOTELS'){
+            $('#list_servicios_h_grupo_'+servicios_id).html(data);
+        }
+        else{
             $('#list_servicios_grupo_'+servicios_id).html(data);
+        }
         }
     })
 }
@@ -5686,7 +5692,6 @@ function buscar_pqts(pagina,duracion){
     }
 }
 
-
 function anular_servicio_reservas(id,servicio,tipo) {
     // alert('holaaa');
     var estado='';
@@ -6260,17 +6265,11 @@ function preparar_envio(id){
 
     var con_sin_hotel=$('#con_sin_hotel').val();
     var acomodacion_hotel=$('#acomodacion_hotel').val();
-// alert('cost_d_serv:'+cost_d_serv);
-    // $('#'+id).append();
     $.ajax({
         url: $('#'+id).attr('action'),
         type: 'post',
         data: $('#'+id).serialize()
         +'&cost_s_serv='+cost_s_serv+'&cost_d_serv='+cost_d_serv+'&cost_m_serv='+cost_m_serv+'&cost_sh_serv='+cost_sh_serv+'&pv_s_serv='+pv_s_serv+'&pv_d_serv='+pv_d_serv+'&pv_m_serv='+pv_m_serv+'&pv_t_serv='+pv_t_serv+'&pv_sh_serv='+pv_sh_serv+'&con_sin_hotel='+con_sin_hotel+'&acomodacion_hotel='+acomodacion_hotel,
-        // dataType:'json',
-        // contentType:false,
-        // cache:false,
-        // processData: false,
         success: function (data) {
             console.log('rpt:');
             console.log(data.mensaje);
@@ -7025,10 +7024,12 @@ var chb_h_pagos=$('#chb_h_pagos').val();
         $("#fila_"+grupo+"_"+key).remove();
     })
 }
-function borrar_items_pago(key,codigo){
+function borrar_items_pago(key,codigo,state){
+    var pregunta=state;
+    var mensa='Al borrar este registro todos los servicios volveran a mostrarse en la lista de requerimientos incluso los pagos guardados';
     swal({
         title: 'MENSAJE DEL SISTEMA',
-        text: "¿Esta seguro de borrar el grupo de pagos con codigo: "+codigo+"?",
+        text: "Nota: "+mensa+",¿Esta seguro de borrar el registro con codigo: "+codigo+"?",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -7314,4 +7315,202 @@ function buscar_ingresos(form,valor,valor_estatico){
             }
         })
     // });
+}
+function call_popup_servicios_borrar(rpt_id,servicio_id,arreglo,cotizacion_id,itinerario_id,action){
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Esta seguro de borrar la reserva escojida con este proveedor?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: "../book/servicios/traer-lista-proveedores/borrar",
+            data: 'servicio_id='+servicio_id+'&arreglo='+arreglo+'&cotizacion_id='+cotizacion_id+'&itinerario_id='+itinerario_id+'&action='+action,
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend: function(data1){
+                // $('#'+rpt_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+            success: function(data){
+                if(data.mensaje==1){
+                    
+                    $('#book_proveedor_'+servicio_id).html('');
+                    $('#boton_prove_hotel_'+servicio_id).removeClass('d-none');
+                    $('#boton_prove_borrar_'+servicio_id).addClass('d-none');
+                    $('#book_precio_asig_'+servicio_id).html('');
+                    // $('#'+rpt_id).html(data.mensaje);
+                }
+            }
+        });
+
+    });
+    
+    
+}
+function call_popup_servicios_borrar_h(hotel_id){
+    swal({
+        title: 'MENSAJE DEL SISTEMA',
+        text: "¿Esta seguro de borrar la reserva escojida con este proveedor?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('[name="_token"]').val()
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: "../book/servicios/traer-lista-proveedores/borrar/hotel",
+            data: 'hotel_id='+hotel_id,
+            // Mostramos un mensaje con la respuesta de PHP
+            beforeSend: function(data1){
+                // $('#'+rpt_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            },
+            success: function(data){
+                if(data.mensaje==1){
+                    $('#book_proveedor_hotel_'+hotel_id).html('');
+                    // $('#boton_prove_hotel_'+servicio_id).removeClass('d-none');
+                    // $('#boton_prove_borrar_'+servicio_id).addClass('d-none');
+                    $('#book_precio_asig_hotel_'+hotel_id).html('');
+                }
+            }
+        });
+
+    });
+    
+    
+}
+function buscar_destino_day_by_day(valor){
+    var destino='0';
+    destino=$('#destinos_busqueda').val();
+    console.log('valor de la busqueda:'+destino+'_'+valor);
+    
+    $('#resultado_busqueda').html('');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "../buscar/day-by-day",
+        data: 'destino='+destino+'&valor='+valor,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#resultado_busqueda').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            // $('#'+rpt_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#resultado_busqueda').html('');
+            $('#resultado_busqueda').html(data);
+        }
+    });
+}
+function buscar_destino_day_by_day_edit(valor){
+    var destino='0';
+    destino=$('#txt_destino').val();
+    console.log('valor de la busqueda:'+destino+'_'+valor);
+    
+    $('#resultado_busqueda').html('');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../../../../../../package/buscar-day-by-day/ajax/dia-edit',
+        // url: "../../../../buscar/day-by-day",
+        data: 'destino='+destino+'&valor='+valor,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#resultado_busqueda').html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+            // $('#'+rpt_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#resultado_busqueda').html('');
+            $('#resultado_busqueda').html(data);
+        }
+    });
+}
+
+function llamar_hoteles_reservas(loca,tipo,id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "../quotes/editar/step1/list-localizacion-hoteles",
+        data: 'loca='+loca+'&id='+id,
+        // Mostramos un mensaje con la respuesta de PHP
+        beforeSend: function(data1){
+            $('#lista_hoteles_'+tipo+'_'+id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
+        },
+        success: function(data){
+            $('#lista_hoteles_'+tipo+'_'+id).html(data);
+        }
+    });
+}
+
+function preparar_envio_hotel(id){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+
+    // var cost_s_serv=$('#cost_s_serv').val();
+    // var cost_d_serv=$('#cost_d_serv').val();
+    // var cost_m_serv=$('#cost_m_serv').val();
+    // var cost_t_serv=$('#cost_t_serv').val();
+    // var cost_sh_serv=$('#cost_sh_serv').val();
+
+    // var utilidad_s_serv=$('#utilidad_s_serv').val();
+    // var utilidad_d_serv=$('#utilidad_d_serv').val();
+    // var utilidad_m_serv=$('#utilidad_m_serv').val();
+    // var utilidad_t_serv=$('#utilidad_t_serv').val();
+    // var utilidad_sh_serv=$('#utilidad_sh_serv').val();
+
+    // var pv_s_serv=$('#pv_s_serv').val();
+    // var pv_d_serv=$('#pv_d_serv').val();
+    // var pv_m_serv=$('#pv_m_serv').val();
+    // var pv_t_serv=$('#pv_t_serv').val();
+    // var pv_sh_serv=$('#pv_sh_serv').val();
+
+    // var con_sin_hotel=$('#con_sin_hotel').val();
+    // var acomodacion_hotel=$('#acomodacion_hotel').val();
+// alert('cost_d_serv:'+cost_d_serv);
+    // $('#'+id).append();
+    $.ajax({
+        url: $('#'+id).attr('action'),
+        type: 'post',
+        data: $('#'+id).serialize()/*
+        +'&cost_s_serv='+cost_s_serv+'&cost_d_serv='+cost_d_serv+'&cost_m_serv='+cost_m_serv+'&cost_sh_serv='+cost_sh_serv+'&pv_s_serv='+pv_s_serv+'&pv_d_serv='+pv_d_serv+'&pv_m_serv='+pv_m_serv+'&pv_t_serv='+pv_t_serv+'&pv_sh_serv='+pv_sh_serv+'&con_sin_hotel='+con_sin_hotel+'&acomodacion_hotel='+acomodacion_hotel*/,
+        // dataType:'json',
+        // contentType:false,
+        // cache:false,
+        // processData: false,
+        success: function (data) {
+            console.log('rpt:');
+            console.log(data.mensaje);
+            location.reload();
+        },
+        error: function () {
+            
+        }
+    });
 }

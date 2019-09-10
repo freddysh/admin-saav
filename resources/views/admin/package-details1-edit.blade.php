@@ -258,14 +258,14 @@
                     <div class="modal-content">
                         <form id="frm_add_dias" action="{{route('ventas.edit.agregar.dia')}}" method="post">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">AGREGAR NUEVO HOTEL</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">AGREGAR DIA</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-12">
                                         {{csrf_field()}}
                                         <select class="form-control" name="txt_destino" id="txt_destino" onchange="buscar_day_by_day_quotes_step1($(this).val())">
                                             <option value="0">Escoja un destino</option>
@@ -273,6 +273,17 @@
                                                 <option value="{{$destino->id}}">{{$destino->destino}}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="sr-only" for="txt_buscar">Buscar</label>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                            </div>
+                                            <input type="text" class="form-control" id="txt_buscar" name="txt_buscar" placeholder="Buscar" onkeyup="buscar_destino_day_by_day_edit($(this).val())">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
                                         <div id="resultado_busqueda" class="text-left align-middle col-12 margin-top-5" style="height: 500px; overflow-y: auto;">
                                         </div>
                                     </div>

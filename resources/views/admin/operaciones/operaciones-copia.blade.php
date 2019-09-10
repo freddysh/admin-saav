@@ -143,6 +143,13 @@
                         <td>
                             @if(array_key_exists($key,$array_hotel))
                                 {!! $array_hotel[$key] !!}
+                            @else
+                                @foreach ($array_hotel as $clavesita => $item)
+                                   @if(substr($key,0,strlen($key)-5)==substr($clavesita,0,strlen($clavesita)-5))
+                                    {!! $item !!}
+                                   @endif
+                                @endforeach
+                                {{--  {!! $array_hotel[$key] !!}  --}}
                             @endif
                         </td>
                         <td>

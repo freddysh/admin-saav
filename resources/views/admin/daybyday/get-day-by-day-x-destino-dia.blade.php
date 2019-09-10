@@ -57,7 +57,7 @@
             <span class="input-group-append text-12">                
             <button class="btn {{$tipo_msj_clase}} text-12" type="button" data-toggle="collapse">{{$tipo_msj}}</button>
             </span>
-            <input type="text" name="titulo_{{$day_by_day->id}}" class="form-control text-11" aria-label="..." value="{{$day_by_day->titulo}}" readonly>
+            <input type="text" name="titulo_{{$day_by_day->id}}" class="form-control text-11" aria-label="..." value="{{$day_by_day->titulo}} [{{$m_destinos->where('id',$day_by_day->destino_foco)->first()->codigo}}]" readonly>
             <span class="input-group-append">
                 <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapse_{{$day_by_day->id}}"><b>${{$precio_iti}}</b> <i class="fas fa-angle-down"></i></button>
             </span>

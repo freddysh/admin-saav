@@ -976,7 +976,7 @@ class BookController extends Controller
 		$estado = $request->input('estado');
 		$hotel =PrecioHotelReserva::FindOrFail($id);
 		$hotel->anulado=$estado;
-		if($hotel->delete())
+		if($hotel->save())
 			return 1;
 		else
 			return 0;
@@ -2134,7 +2134,73 @@ class BookController extends Controller
 		}
 		return view('admin.book.traer-lista-proveedores-servicios',compact('productos','cotizacion','servicios','itinerario_id','action'));	
 	}
+	public function traer_lista_proveedores_servicios_borrar(Request $request){
+		$action = $request->input('action');
+		$cotizacion_id = $request->input('cotizacion_id');
+		$servicio_id=$request->input('servicio_id');
+		$arregloo=$request->input('arreglo');
+		$arregloo=explode('_',$arregloo);
+		// dd($arregloo);
+		$itinerario_id = $request->input('itinerario_id');
+		$cotizacion=Cotizacion::find($cotizacion_id);
+		$servicios=ItinerarioServicios::find($servicio_id);
+		$servicios->precio_proveedor=null;
+		$servicios->precio_c=0;
+		$servicios->estado_contabilidad=0;
+		$servicios->notas_contabilidad='';
+		$servicios->notas_contabilidad_aprovador='';
+		$servicios->precio_confirmado_contabilidad=0;		
+		$servicios->proveedor_id=0;
+		$servicios->fecha_venc=null;
+		// $servicios->codigo_verificacion=null;
+		$servicios->prioridad='NORMAL ';
+		$servicios->boleta_factura=0;
+		$servicios->requerimientos_id=0;
+		$servicios->estado_contabilidad=0;
+		$servicios->save();
 
-	
+		return response()->json(['mensaje'=>'1']);
+
+		// if($action=='a'){
+		// 	$productos=M_Producto::where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->get();
+		// }
+		// else if($action=='e'){
+		// 	$productos=M_Producto::where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->get();
+		// }
+		// return view('admin.book.traer-lista-proveedores-servicios',compact('productos','cotizacion','servicios','itinerario_id','action'));	
+	}
+	public function traer_lista_proveedores_servicios_borrar_hotel(Request $request){
+		$hotel_id = $request->input('hotel_id');
+		$hotel=PrecioHotelReserva::find($hotel_id);
+		$hotel->precio_s_r=null;
+		$hotel->precio_s_c=null;
+		$hotel->precio_d_r=null;
+		$hotel->precio_d_c=null;
+		$hotel->precio_m_r=null;
+		$hotel->precio_m_c=null;
+		$hotel->precio_t_r=null;
+		$hotel->precio_t_c=null;
+		$hotel->estado_contabilidad=0;
+		$hotel->notas_contabilidad=null;
+		$hotel->notas_contabilidad_aprovador=null;
+		$hotel->precio_confirmado_contabilidad=0;
+		$hotel->proveedor_id=0;
+		$hotel->fecha_venc=null;
+		// $hotel->codigo_verificacion=null;
+		$hotel->prioridad='NORMAL';
+		$hotel->requerimientos_id=0;
+		$hotel->estado_contabilidad=0;
+		$hotel->save();
+
+		return response()->json(['mensaje'=>'1']);
+
+		// if($action=='a'){
+		// 	$productos=M_Producto::where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->whereIn('tipo_producto',$arregloo)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->get();
+		// }
+		// else if($action=='e'){
+		// 	$productos=M_Producto::where('localizacion',$servicios->localizacion)->where('grupo',$servicios->grupo)->where('tipo_producto',$servicios->tipoServicio)->where('clase',$servicios->clase)->where('nombre',$servicios->nombre)->get();
+		// }
+		// return view('admin.book.traer-lista-proveedores-servicios',compact('productos','cotizacion','servicios','itinerario_id','action'));	
+	}
 
 }

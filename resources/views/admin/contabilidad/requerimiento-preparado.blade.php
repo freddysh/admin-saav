@@ -296,6 +296,7 @@
                                     <form id="enviar_requerimiento" action="{{route('contabilidad.enviar_requerimiento')}}" method="POST">
                                         @csrf
                                         <input type="hidden" name="prueba" value="hola">
+                                        <input type="hidden" name="tipo_pago" id="tipo_pago" value="{{$tipo_pago}}">
                                         <input type="hidden" name="txt_ini" id="txt_ini" value="{{$txt_ini}}">
                                         <input type="hidden" name="txt_fin" id="txt_fin" value="{{$txt_fin}}">
                                         <input type="hidden" name="modo_busqueda" id="modo_busqueda" value="{{$modo_busqueda}}">
