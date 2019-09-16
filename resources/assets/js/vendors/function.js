@@ -4703,7 +4703,6 @@ function mostrar_class(proveedor_id,array_pro,grupo,id,idservicio) {
     var proveedor = proveedor_id.split('_');
     var pos=6;
     if (proveedor_id!='0'){
-
         $.each(array_prove_train, function (key, value){
             $("#proveedor_" + value+'_'+idservicio).addClass('d-none');
             $("#proveedor_" + value+'_'+idservicio).fadeOut("slow");
@@ -4743,11 +4742,28 @@ function mostrar_class(proveedor_id,array_pro,grupo,id,idservicio) {
             // '</button>'+
             // '</div>'+
             '</div>';
-        $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).html(iti_temp1);
+        var proveedor_compro=$('#id_lista_costos_' + grupo + '_' + id + '_' + idservicio).val();
+        // console.log('proveedor_compro:'+proveedor_compro);
+        // console.log('lista_costos_:'+'#lista_costos_'+grupo+'_'+id+'_'+idservicio);
+        // console.log('fila_p_:'+'#fila_p_'+idservicio+'_'+proveedor_compro+'_'+proveedor[0]);
+        // var valors=$('#lista_costos_'+grupo+'_'+id+'_'+idservicio).find('#fila_p_'+idservicio+'_'+proveedor_compro+'_'+proveedor[0]);
+        // console.log('valors:'+valors);
+        var valors_costo=$('#fila_p_'+idservicio+'_'+proveedor_compro+'_'+proveedor[0]);
+        var valors_nuevo=$('#fila_'+grupo+'_'+id+'_'+idservicio+'_'+proveedor[0]);
+        console.log('valors:'+valors_costo.length);
+        // console.log('childs:'+proveedor_compro);
+        // var childs=$('#lista_costos_'+grupo+'_'+id+'_'+idservicio).find('#fila_p_'+idservicio+'_'+proveedor_compro+'_'+proveedor[0]).length;
+        // console.log('childs:'+childs);
+        if(valors_costo.length==0){
+            $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).append(iti_temp1);
+        }
+        if(valors_nuevo.length==0){
+            $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).append(iti_temp1);
+        }
     }
-    else {
-        $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).html('');
-    }
+    // else {
+    //     $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).html('');
+    // }
 }
 function eliminar_hotel_provider(id,servicio) {
     // alert('holaaa');

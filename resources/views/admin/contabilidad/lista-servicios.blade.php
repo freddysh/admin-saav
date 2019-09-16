@@ -901,6 +901,9 @@
                                                             </a>
                                                         </div>
                                                         <div class="col-7">
+                                                            @php
+                                                                $proveedor_costito=0;
+                                                            @endphp
                                                             <div id="lista_costos_{{$destino[1]}}_{{$id}}_{{$servicio->id}}">
                                                                 @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->unique() as $costo)
                                                                     <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
@@ -918,6 +921,9 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
+                                                                    @php
+                                                                        $proveedor_costito=$costo->id;
+                                                                    @endphp
                                                                 @endforeach
                                                                 @php
                                                                     $nro_tresnes=$costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->count();
@@ -940,6 +946,7 @@
                                                                         {{--</div>--}}
                                                                 {{--@endif--}}
                                                             </div>
+                                                            <input type="text" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1817,6 +1824,9 @@
                                                             </a>
                                                         </div>
                                                         <div class="col-7">
+                                                            @php
+                                                                $proveedor_costito=0;
+                                                            @endphp
                                                             <div id="lista_costos_{{$destino[1]}}_{{$id}}_{{$servicio->id}}">
                                                                 @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->unique() as $costo)
                                                                     <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
@@ -1834,6 +1844,9 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
+                                                                    @php
+                                                                        $proveedor_costito=$costo->id;
+                                                                    @endphp
                                                                 @endforeach
                                                                 @php
                                                                     $nro_tresnes=$costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->count();
@@ -1856,6 +1869,7 @@
                                                                 {{--</div>--}}
                                                                 {{--@endif--}}
                                                             </div>
+                                                            <input type="text" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2733,6 +2747,9 @@
                                                             </a>
                                                         </div>
                                                         <div class="col-7">
+                                                            @php
+                                                                $proveedor_costito=0;
+                                                            @endphp
                                                             <div id="lista_costos_{{$destino[1]}}_{{$id}}_{{$servicio->id}}">
                                                                 @foreach ($costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->unique() as $costo)
                                                                     <div id="fila_p_{{$servicio->id}}_{{$costo->id}}_{{$costo->proveedor->id}}" class="row align-items-center">
@@ -2750,6 +2767,9 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
+                                                                    @php
+                                                                        $proveedor_costito=$costo->id;
+                                                                    @endphp
                                                                 @endforeach
                                                                 @php
                                                                     $nro_tresnes=$costos->where('m_servicios_id',$servicio->id)->where('grupo', $destino[1])->where('localizacion',$servicio->localizacion)->count();
@@ -2772,6 +2792,7 @@
                                                                 {{--</div>--}}
                                                                 {{--@endif--}}
                                                             </div>
+                                                            <input type="text" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
                                                         </div>
                                                     </div>
                                                 </div>
