@@ -89,7 +89,7 @@
                         <i class="fas fa-pencil-alt"></i>
                     </button>
                     <div class="modal fade bd-example-modal-lg" id="modal_edit_producto{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-dialog modal-lg-x" role="document">
                             <div class="modal-content">
                                 <form id="frm_modal_edit_producto_{{$servicio->id}}" action="{{route('service_edit_path')}}" method="post">
                                     <div class="modal-header">
@@ -946,7 +946,7 @@
                                                                         {{--</div>--}}
                                                                 {{--@endif--}}
                                                             </div>
-                                                            <input type="text" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
+                                                            <input type="hidden" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1011,7 +1011,7 @@
                         <i class="fas fa-pencil-alt"></i>
                     </button>
                     <div class="modal fade bd-example-modal-lg" id="modal_edit_producto{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-dialog modal-lg-x" role="document">
                             <div class="modal-content">
                                 <form id="frm_modal_edit_producto_{{$servicio->id}}" action="{{route('service_edit_path')}}" method="post">
                                     <div class="modal-header">
@@ -1869,7 +1869,7 @@
                                                                 {{--</div>--}}
                                                                 {{--@endif--}}
                                                             </div>
-                                                            <input type="text" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
+                                                            <input type="hidden" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1934,7 +1934,7 @@
                         <i class="fas fa-pencil-alt"></i>
                     </button>
                     <div class="modal fade bd-example-modal-lg" id="modal_edit_producto{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-dialog modal-lg-x" role="document">
                             <div class="modal-content">
                                 <form id="frm_modal_edit_producto_{{$servicio->id}}" action="{{route('service_edit_path')}}" method="post">
                                     <div class="modal-header">
@@ -2792,7 +2792,7 @@
                                                                 {{--</div>--}}
                                                                 {{--@endif--}}
                                                             </div>
-                                                            <input type="text" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
+                                                            <input type="hidden" id="id_lista_costos_{{ $destino[1]}}_{{ $id}}_{{$servicio->id}}" value="{{ $proveedor_costito }}">
                                                         </div>
                                                     </div>
                                                 </div>

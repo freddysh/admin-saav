@@ -358,11 +358,10 @@ class ProveedorController extends Controller
         $entidadBancaria=EntidadBancaria::get();
         $grupos_opera=GrupoOpera::get();
         $m_categories=M_Category::where('nombre','!=','HOTELS')->get();
-        
-        $m_categoras=M_Category::get();
-        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera','entidadBancaria','grupos_opera','m_categories','m_categoras']));
+        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera','entidadBancaria','grupos_opera','m_categories']));
     }
     public function call_providers_localizacion_estrellas(Request $request){
+        set_time_limit(0);
         $destino=explode('_',$request->input('destino'));
         $grupo=$request->input('grupo');
         $estrellas=$request->input('estrellas');
@@ -371,6 +370,20 @@ class ProveedorController extends Controller
         $destinations=M_Destino::get();
         $destinos_opera=DestinosOpera::get();
         $entidadBancaria=EntidadBancaria::get();
-        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera','entidadBancaria']));
+        $grupos_opera=GrupoOpera::get();
+        $m_categories=M_Category::where('nombre','!=','HOTELS')->get();
+        return view('admin.database.get-proveedores',compact(['proveedores','destinations','grupo','destinos_opera','entidadBancaria','grupos_opera','m_categories']));
     }
+    public function modal(Request $request){
+        $id=$request->input('id');
+        $grupo=$request->input('grupo');
+        $provider=Proveedor::findOrFail($id);
+        $destinations=M_Destino::get();
+        $entidadBancaria=EntidadBancaria::get();
+        $m_categories=M_Category::get();
+        $destinos_opera=DestinosOpera::get();
+        $grupos_opera=GrupoOpera::get();
+        return view('admin.database.modal-editar-proveedor',compact('id','provider','destinations','grupo','entidadBancaria','m_categories','destinos_opera','grupos_opera'));
+    }
+
 }

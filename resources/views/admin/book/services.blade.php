@@ -255,90 +255,104 @@
                                     </span>
                                 </div>
                             </div>
+
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="alert alert-success" role="alert">
-                                        @if(trim($cotizacion->notas)!='')
-                                            {!! $cotizacion->notas !!}
-                                        @else
-                                            No hay notas.
-                                        @endif
+                                <div class="col-12 mb-2">
+                                    <div class="btn btn-group">
+                                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Notas</button>
+                                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Pasajeros</button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                                <div class="card card-body">
+                                                    {!! $cotizacion->notas !!}
+                                                </div>
+                                            </div>
+                                            <div class="collapse multi-collapse" id="multiCollapseExample2">
+                                                <div class="card card-body">
+                                                    <table class="table table-bordered table-sm">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="text-center">NOMBRES</th>
+                                                            <th class="text-center">NACIONALIDAD</th>
+                                                            <th class="text-center">PASAPORTE</th>
+                                                            <th class="text-center">GENERO</th>
+                                                            <th class="text-center">HOTEL</th>
+                                                            <th class="text-center">DD/MM/AAAA | EDAD</th>
+                                                            <th class="text-center d-none">RESTRICCIONES</th>
+                                                            <th class="text-center">IDIOMA</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($cotizacion->cotizaciones_cliente as $coti_cliente)
+                                                            @foreach($clientes1->where('id',$coti_cliente->clientes_id) as $cliente)
+                                                                <tr>
+                                                                    <td><i class="fas fa-user @if($coti_cliente->estado==1) text-success @endif"></i> {{strtoupper($cliente->nombres)}} {{strtoupper($cliente->apellidos)}}</td>
+                                                                    <td>{{strtoupper($cliente->nacionalidad)}}</td>
+                                                                    <td>{{strtoupper($cliente->pasaporte)}} <span class="badge badge-g-yellow">{{MisFunciones::fecha_peru($cliente->expiracion)}}</span> </td>
+                                                                    <td>{{strtoupper($cliente->sexo)}}</td>
+                                                                    <td>
+                                                                        @foreach($cotizacion->paquete_cotizaciones as $paquete)
+                                                                            @if($paquete->estado==2)
+                                                                                @if($paquete->paquete_precios->count()==0)
+                                                                                    CTA PAXS
+                                                                                @else
+                                                                                    @foreach($paquete->paquete_precios as $pqt_precio)
+                                                                                        @if($pqt_precio->personas_s>0)
+                                                                                            <span class="">SINGLE</span>
+                                                                                        @endif
+                                                                                        @if($pqt_precio->personas_d>0)
+                                                                                            | <span class="">DOBLE</span>
+                                                                                        @endif
+                                                                                        @if($pqt_precio->personas_m>0)
+                                                                                            | <span class="">MATRIMONIAL</span>
+                                                                                        @endif
+                                                                                        @if($pqt_precio->personas_t>0)
+                                                                                            | <span class="">TRIPLE</span>
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </td>
+                                                                    <td>
+                                                                        {{MisFunciones::fecha_peru($cliente->fechanacimiento)}}
+                                                                        |
+                                                                        {{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años
+                                                                    </td>
+                                                                    <td class="d-none"><span class="text-11">{{strtoupper($cliente->restricciones)}}</span> </td>
+                                                                    <td>{{strtoupper($cotizacion->idioma_pasajeros)}}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <table class="table table-bordered table-sm">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">NOMBRES</th>
-                                    <th class="text-center">NACIONALIDAD</th>
-                                    <th class="text-center">PASAPORTE</th>
-                                    <th class="text-center">GENERO</th>
-                                    <th class="text-center">HOTEL</th>
-                                    <th class="text-center">DD/MM/AAAA | EDAD</th>
-                                    <th class="text-center d-none">RESTRICCIONES</th>
-                                    <th class="text-center">IDIOMA</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($cotizacion->cotizaciones_cliente as $coti_cliente)
-                                    @foreach($clientes1->where('id',$coti_cliente->clientes_id) as $cliente)
-                                        <tr>
-                                            <td><i class="fas fa-user @if($coti_cliente->estado==1) text-success @endif"></i> {{strtoupper($cliente->nombres)}} {{strtoupper($cliente->apellidos)}}</td>
-                                            <td>{{strtoupper($cliente->nacionalidad)}}</td>
-                                            <td>{{strtoupper($cliente->pasaporte)}} <span class="badge badge-g-yellow">{{MisFunciones::fecha_peru($cliente->expiracion)}}</span> </td>
-                                            <td>{{strtoupper($cliente->sexo)}}</td>
-                                            <td>
-                                                @foreach($cotizacion->paquete_cotizaciones as $paquete)
-                                                    @if($paquete->estado==2)
-                                                        @if($paquete->paquete_precios->count()==0)
-                                                            CTA PAXS
-                                                        @else
-                                                            @foreach($paquete->paquete_precios as $pqt_precio)
-                                                                @if($pqt_precio->personas_s>0)
-                                                                    <span class="">SINGLE</span>
-                                                                @endif
-                                                                @if($pqt_precio->personas_d>0)
-                                                                    | <span class="">DOBLE</span>
-                                                                @endif
-                                                                @if($pqt_precio->personas_m>0)
-                                                                    | <span class="">MATRIMONIAL</span>
-                                                                @endif
-                                                                @if($pqt_precio->personas_t>0)
-                                                                    | <span class="">TRIPLE</span>
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
-                                                    @endif
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                {{MisFunciones::fecha_peru($cliente->fechanacimiento)}}
-                                                |
-                                                {{\Carbon\Carbon::parse($cliente->fechanacimiento)->age }} años
-                                            </td>
-                                            <td class="d-none"><span class="text-11">{{strtoupper($cliente->restricciones)}}</span> </td>
-                                            <td>{{strtoupper($cotizacion->idioma_pasajeros)}}</td>
-                                        </tr>
-                                    @endforeach
-                                @endforeach
-                                </tbody>
-                            </table>
 
                             <table class="table table-bordered table-sm table-hover">
                                 <thead>
-                                <tr class="small">
-                                    <th></th>
-                                    <th class="d-none">GROUP</th>
-                                    <th>SERVICE</th>
-                                    <th class="d-none">DESTINATION</th>
-                                    <th>CALCULO</th>
-                                    <th>SALES</th>
-                                    <th>RESERVED</th>
-                                    <th>PROVIDER</th>
-                                    <th>VERIFICATION CODE</th>
-                                    <th>HOUR</th>
-                                    <th></th>
-                                </tr>
+                                    <tr class="bg-primary text-white">
+                                        <th colspan="10">SERVICIOS</th>
+                                    </tr>
+                                    <tr class="small1">
+                                        <th></th>
+                                        <th class="d-none">GROUP</th>
+                                        <th>SERVICE</th>
+                                        <th class="d-none">DESTINATION</th>
+                                        <th>CALCULO</th>
+                                        <th>SALES</th>
+                                        <th>RESERVED</th>
+                                        <th>PROVIDER</th>
+                                        <th>VERIFICATION CODE</th>
+                                        <th>HOUR</th>
+                                        <th></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 @php
@@ -362,7 +376,7 @@
                                             @endforeach
                                             <tr>
                                                 {{--<td rowspan="{{$nro_servicios}}"><b class="text-primary">Day {{$itinerario->dias}}</b></td>--}}
-                                                <td class="bg-g-dark text-white" colspan="12">
+                                                <td class="bg-dark text-white" colspan="12">
                                                     <div class="row align-items-center">
                                                         <div class="col-10">
                                                         <b class="px-2"><i class="fas fa-angle-right"></i> Day {{$itinerario->dias}}</b>
@@ -841,7 +855,11 @@
                                                                                         @php
                                                                                         $producto_id_=0;   
                                                                                         @endphp
-                                                                                        
+                                                                                        @if ($servicios->proveedor_id>0)
+                                                                                            @php
+                                                                                                $producto_id_=$servicios->proveedor_id;   
+                                                                                            @endphp
+                                                                                        @endif
                                                                                         {{-- if($servicios->servicio) --}}
                                                                                         <div class="row">
                                                                                             <div class="col-12 bg-green-goto">
@@ -917,7 +935,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="col-12">
-                                                                                        <b id="rpt_book_proveedor_{{$servicios->id}}" class="text-success"></b>
+                                                                                        <b id="rpt_book_proveedor_{{ $servicios->id }}" class="text-success"></b>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -1625,7 +1643,7 @@
                                     @endif
                                 @endforeach
                                 </tbody>
-                                <tbody>
+                                <tbody class="d-none">
                                 <tr>
                                     <td colspan="4"><b>Total</b></td>
                                     <td class="text-right h5 text-g-yellow"><b><sup>$</sup>{{$sumatotal_v}}</b></td>

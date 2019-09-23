@@ -4461,14 +4461,15 @@ class PackageCotizacionController extends Controller
         $pqt_precio=PrecioHotelReserva::Find($precio_hotel_reserva_id);
         $estrellas=$request->input('categoria_');
         $txt_destino=$request->input('txt_destino');
-        // $temp_hotel=Hotel::where('localizacion',$txt_destino)->where('estrellas',$estrellas)->get()->first();
+        $destino=explode('_',$txt_destino);
+        $temp_hotel=Hotel::where('localizacion',$destino[1])->where('estrellas',$estrellas)->get()->first();
         
-        return response()->json(['mensaje'=>$txt_destino]);
+        // return response()->json(['mensaje'=>$temp_hotel->id]);
         // $nombre='hotel_id_'.$estrellas[0];        
         // $hotel_id=$request->input($nombre);
-        $hotel=PrecioHotelReserva::Find($precio_hotel_reserva_id);
-        $hotel->estrellas=$estrellas;
-        $hotel->localizacion=$txt_destino;
+        $hotel=PrecioHotelReserva::findOrfail($precio_hotel_reserva_id);
+        $hotel->estrellas=$estrellas[0];
+        $hotel->localizacion=$destino[1];
         $hotel->precio_s_r=0;
         $hotel->precio_d_r=0;
         $hotel->precio_m_r=0;

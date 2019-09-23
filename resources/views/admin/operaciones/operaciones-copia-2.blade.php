@@ -46,7 +46,7 @@
                 <!-- Default panel contents -->
                 <div class="card-header">
                     Lista de operaciones de <span class="badge badge-primary">{{MisFunciones::fecha_peru($desde)}}</span> a <span class="badge badge-primary">{{MisFunciones::fecha_peru($hasta)}}</span>
-                    <a href="{{route('imprimir_operaciones_path',[$desde,$hasta])}}" class="btn btn-danger btn-sm">
+                    <a href="{{route('imprimir_operaciones_path',[$desde,$hasta])}}" class="btn btn-danger btn-sm d-none">
                         <i class="fas fa-file-pdf"></i>
                     </a>
                     <a href="{{route('imprimir_operaciones_excel_path',[$desde,$hasta])}}" class="btn btn-success btn-sm d-none">

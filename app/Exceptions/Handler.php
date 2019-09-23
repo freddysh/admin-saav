@@ -57,6 +57,20 @@ class Handler extends ExceptionHandler
         // if ($exception->getStatusCode() == 500||$exception->getStatusCode() == 0) {
         //     return response()->view('errors.500', [], 500);
         // }
+
+        if ($e instanceof ModelNotFoundException) {
+            $e = new NotFoundHttpException($e->getMessage(), $e);
+        }
+
+        if ($e instanceof \Illuminate\Session\TokenMismatchException) {    
+
+          // flash your message
+
+            \Session::flash('flash_message_important', 'Opps, tu sesión ha expirado. Por favor ingresa tus redenciales.'); 
+
+            return redirect('/');
+        }
+
         return parent::render($request, $exception);
 
 

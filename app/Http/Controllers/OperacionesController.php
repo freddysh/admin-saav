@@ -329,9 +329,10 @@ class OperacionesController extends Controller
         }
         array_multisort($sort1, SORT_ASC,$sort2, SORT_ASC,$sort3, SORT_ASC, $arreglo_de_datos);
         /*===========================================================================================*/
+        // dd($arreglo_de_datos);
         $grupo='HOTELS';
         $webs=Web::get();
-        return view('admin.operaciones.operaciones-copia-2', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel','grupo','webs','arreglo_de_datos'));
+        return view('admin.operaciones.operaciones-copia-2', compact('desde', 'hasta','grupo','webs','arreglo_de_datos'));
     }
     public function Lista_fechas(Request $request)
     {
@@ -638,7 +639,9 @@ class OperacionesController extends Controller
         /*===========================================================================================*/
         $grupo='HOTELS';
         $webs=Web::get();
-        return view('admin.operaciones.operaciones-copia-2', compact('desde', 'hasta','array_datos_cotizacion','array_datos_coti','array_hotel','grupo','webs','arreglo_de_datos'));
+
+        // dd($arreglo_de_datos);
+        return view('admin.operaciones.operaciones-copia-2', compact('desde', 'hasta','grupo','webs','arreglo_de_datos'));
     }
     protected function saludo(){
 		return "Saludo";
@@ -667,14 +670,10 @@ class OperacionesController extends Controller
     public function pdf($desde,$hasta)
     {
         set_time_limit(0);
-//        $desde = $request->input('txt_desde');
-//        $hasta = $request->input('txt_hasta');
         $cotizaciones = Cotizacion::with(['paquete_cotizaciones.itinerario_cotizaciones' => function ($query) use ($desde, $hasta) {
             $query->whereBetween('fecha', array($desde, $hasta));
         }])
-            // ->where('confirmado_r', 'ok')
             ->get();
-//        $cotizaciones = Cotizacion::where('confirmado_r', 'ok')->get();
         $clientes2 = Cliente::get();
         $array_datos_coti= array();
         $array_datos_cotizacion= array();
@@ -688,15 +687,6 @@ class OperacionesController extends Controller
                 }
             }
             $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cel.'</span> ';
-            
-            // $clientes_ ='';
-            // foreach ($cotizacion->cotizaciones_cliente->where('estado','1') as $cotizacion_cliente) {
-            //     foreach ($clientes2->where('id', $cotizacion_cliente->clientes_id) as $cliente) {
-                    // $clientes_= '<span class="text-primary">'.$cotizacion->codigo.'</span> '.$cotizacion->nombre_pax;
-                    // $clientes_='<span class="text-success">'.$cotizacion->codigo.'</span> <span class="text-primary">'.$cotizacion->nombre_pax.', Cel.'.$cotizacion->cotizaciones_cliente->where('estado','1')->cliente->telefono.'</span> ';
-           
-            //     }
-            // }
             foreach ($cotizacion->paquete_cotizaciones->where('estado', '2') as $pqts) {
                 foreach ($pqts->itinerario_cotizaciones->where('fecha','>=',$desde)->where('fecha','<=',$hasta)->sortby('fecha') as $itinerario) {
                     $key1=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
@@ -707,7 +697,6 @@ class OperacionesController extends Controller
                             $hora=str_replace(':','.',$servicio->hora_llegada);
                         }
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
-                        // $serv = M_Servicio::Find($servicio->m_servicios_id);
                         $nombre_comercial='Sin reserva';
                         if($servicio->proveedor_id>0) {
                             $pro1=Proveedor::where('id',$servicio->proveedor_id)->first();
@@ -742,19 +731,13 @@ class OperacionesController extends Controller
                             if($servicio->anulado=='1')
                                 $clase='alert alert-danger';
                             $array_datos_cotizacion[$key]=array('dates'=>$itinerario->fecha.'_'.$hora,'anulado'=>$cotizacion->anulado,'servicio'=>$servicio->grupo.'|<div class="'.$clase.'">'.$servicio->nombre.'<br>'.$horario.'<span class="text-11 text-danger">('.$servicio->localizacion.')</span> <span class="text-11 text-danger">('.$servicio->s_p.')</span><p class="text-primary">'.$nombre_comercial.'</p></div>%');
-//
-//                            $array_datos_cotizacion[$key]='|<br><span class="text-11 text-danger">()</span> <span class="text-11 text-danger">()</span><p class="text-primary"></p>%';
                         }
                     }
-//                    $array_datos_cotizacion[$key]=substr($array_datos_cotizacion[$key],0,strlen($array_datos_cotizacion[$key])-2);
-                    foreach ($itinerario->hotel->sortby('hora_llegada') as $hotel) {
+                   foreach ($itinerario->hotel->sortby('hora_llegada') as $hotel) {
                         $hora='00.00';
-//                        if($hotel->hora_llegada!=''){
-//                            $hora=str_replace(':','.',$hotel->hora_llegada);
-//                        }
                         if(trim($hotel->hora_llegada)!='')
                             $hora=str_replace(':','.',$hotel->hora_llegada);
-//                            $hora=trim($servicio->hora_llegada);
+
                         $cadena='';
                         if($hotel->personas_s>0)
                             $cadena.=$hotel->personas_s.' Single';
@@ -778,7 +761,7 @@ class OperacionesController extends Controller
                             }
                         }
                         $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id.'_'.$hora;
-//                        $key=$cotizacion->id.'_'.$pqts->id.'_'.$itinerario->id;
+                        
                         if(array_key_exists($key,$array_hotel))
                             $array_hotel[$key].=$cadena.'<span class="text-11 text-danger">('.$hotel->localizacion.')</span><br><span class="text-primary">'.$nombre_comercial.'</span>';
                         else
@@ -788,9 +771,6 @@ class OperacionesController extends Controller
             }
         }
 
-//        dd($array_datos_coti);
-//        dd($array_datos_cotizacion);
-//        dd($array_hotel);
         $sort=array();
         foreach ($array_datos_coti as $key => $part) {
             $sort[$key] = strtotime($part['fecha']);

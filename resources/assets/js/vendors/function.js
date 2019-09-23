@@ -3963,7 +3963,7 @@ function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
         $.ajax({
             type: 'POST',
             url: '../admin/ventas/service/eliminar-proveedor',
-            data: 'costo_id='+costo_id+'&proveedor_id='+proveedor_id+'&id='+id,
+            data: 'costo_id='+costo_id+'&proveedor_id='+proveedor_id+'&id='+id+'&confirmacion=no-borrar',
             // Mostramos un mensaje con la respuesta de PHP
             success: function(data) {
                 if(data=='1'){
@@ -3976,6 +3976,48 @@ function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
                     // este costo se esta usado en una cotizacion
                     $('#result_'+id).addClass('bg-danger');
                     $('#result_'+id).html('Este proveedor esta siendo usado en una cotizacion');
+
+                    swal({
+                        title: 'MENSAJE DEL SISTEMA',
+                        text: "¿Este proveedor esta siendo usado en una cotizacion. Estas seguro de eliminar a "+nombre+"?",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes'
+                    }).then(function () {
+                        $('#result_'+id).html('');
+                        $('#result_'+id).removeClass('bg-success');
+                        $('#result_'+id).removeClass('bg-danger');
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('[name="_token"]').val()
+                            }
+                        });
+                        $.ajax({
+                            type: 'POST',
+                            url: '../admin/ventas/service/eliminar-proveedor',
+                            data: 'costo_id='+costo_id+'&proveedor_id='+proveedor_id+'&id='+id+'&confirmacion=borrar',
+                            // Mostramos un mensaje con la respuesta de PHP
+                            success: function(data) {
+                                if(data=='1'){
+                                    $('#fila_p_'+id+'_'+costo_id+'_'+proveedor_id).fadeOut("slow");
+                                    $('#fila_p_'+id+'_'+costo_id+'_'+proveedor_id).remove();
+                
+                                    // se elimino con exito
+                                }
+                                // else if(data=='2'){
+                                //     // este costo se esta usado en una cotizacion
+                                //     $('#result_'+id).addClass('bg-danger');
+                                //     $('#result_'+id).html('Este proveedor esta siendo usado en una cotizacion');
+                                // }
+                                // console.log(data);
+                
+                            }
+                        })
+                
+                        // $("#fila_"+id).fadeOut( "slow");
+                    });
                 }
                 console.log(data);
 
@@ -4754,12 +4796,14 @@ function mostrar_class(proveedor_id,array_pro,grupo,id,idservicio) {
         // console.log('childs:'+proveedor_compro);
         // var childs=$('#lista_costos_'+grupo+'_'+id+'_'+idservicio).find('#fila_p_'+idservicio+'_'+proveedor_compro+'_'+proveedor[0]).length;
         // console.log('childs:'+childs);
-        if(valors_costo.length==0){
-            $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).append(iti_temp1);
-        }
-        if(valors_nuevo.length==0){
-            $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).append(iti_temp1);
-        }
+        // if(valors_costo.length==0){
+        //     $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).append(iti_temp1);
+        // }
+        // if(valors_nuevo.length==0){
+        //     $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).append(iti_temp1);
+        // }
+        
+        $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).html(iti_temp1);
     }
     // else {
     //     $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).html('');
@@ -6593,7 +6637,7 @@ function call_popup(estrellas,localizacion,rpt_id,hotel_id,itinerario_cotizacion
         beforeSend: function(data1){
             $('#'+rpt_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
-        success: function(data){
+        success: function(data){ 
             $('#'+rpt_id).html(data);
         }
     });
@@ -7524,6 +7568,26 @@ function preparar_envio_hotel(id){
             console.log('rpt:');
             console.log(data.mensaje);
             location.reload();
+        },
+        error: function () {
+            
+        }
+    });
+}
+function mostrar_modal(objeto_id,grupo){
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('[name="_token"]').val()
+        }
+    });
+    $.ajax({
+        url: '../../admin/provider/modal',
+        type: 'post',
+        data: 'id='+objeto_id+'&grupo='+grupo,
+        success: function (data) {
+            $('#caja_modal_'+objeto_id).html(data);
+            $('#modal_edit_cost_'+objeto_id).modal({backdrop: 'static', keyboard: false}); 
+            
         },
         error: function () {
             

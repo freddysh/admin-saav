@@ -591,21 +591,12 @@ class ServicesController extends Controller
     }
     public function eliminar_proveedores_service(Request $request)
     {
+        $confirmacion= $request->input('confirmacion');
         $id= $request->input('id');
         $costo_id= $request->input('costo_id');
         $proveedor_id= $request->input('proveedor_id');
-        $m_servicio=M_Servicio::find($id);
-        $nro_usados=ItinerarioServicios::where('localizacion',$m_servicio->localizacion)
-        ->where('grupo',$m_servicio->grupo)
-        ->where('tipoServicio',$m_servicio->tipoServicio)
-        ->where('clase',$m_servicio->clase)
-        ->where('nombre',$m_servicio->nombre)
-        ->where('proveedor_id',$proveedor_id)->count('proveedor_id');
-        
-        if($nro_usados>0){
-            return 2;
-        }
-        elseif($nro_usados==0){
+
+        if($confirmacion=='borrar'){
             $costo=M_Producto::FindOrFail($costo_id);
             $valor=$costo->delete();
             if($valor>0)
@@ -613,6 +604,27 @@ class ServicesController extends Controller
             else
                 return 0;
         }
+        else{
+            $m_servicio=M_Servicio::find($id);
+            $nro_usados=ItinerarioServicios::where('localizacion',$m_servicio->localizacion)
+            ->where('grupo',$m_servicio->grupo)
+            ->where('tipoServicio',$m_servicio->tipoServicio)
+            ->where('clase',$m_servicio->clase)
+            ->where('nombre',$m_servicio->nombre)
+            ->where('proveedor_id',$proveedor_id)->count('proveedor_id');
+            
+            if($nro_usados>0){
+                return 2;
+            }
+            elseif($nro_usados==0){
+                $costo=M_Producto::FindOrFail($costo_id);
+                $valor=$costo->delete();
+                if($valor>0)
+                    return 1;
+                else
+                    return 0;
+            }
+        }        
     }
 
     public function listarServicios_destino_empresa(Request $request)

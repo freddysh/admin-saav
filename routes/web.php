@@ -1531,3 +1531,7 @@ Route::post('admin/quotes/new/step1/cambiar-hotel-reservas', [
     'uses' => 'PackageCotizacionController@cambiar_hotel_reservas',
     'as' => 'cambiar_hotel_reservas_path',
 ]);
+Route::post('admin/provider/modal', [
+    'uses' => 'ProveedorController@modal',
+    'as' => 'provider_modal_path',
+]);

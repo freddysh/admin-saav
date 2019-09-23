@@ -1,314 +1,117 @@
-
-<div class="table-responsive">
-<table id="tb_HOTELS" class="table table-striped table-bordered table-sm small">
-    <thead>
-    <tr>
-        @if($grupo=='HOTELS')
-            <th>Cat</th>
-        @endif
-        <th>Codigo</th>
-        <th>Tipo proveedor</th>
-        <th>Forma pago</th>
-        <th>Ruc</th>
-        <th>Razon social</th>
-        <th>Nombre comercial</th>
-        <th>Reservas</th>
-        <th>Contabilidad</th>
-        <th>Operaciones</th>
-        <th>Plazo</th>
-        <th>Opciones</th>
-
-    </tr>
-    </thead>
-    <tbody>
-    @foreach($proveedores->sortBy('nombre_comercial') as $provider)
-        <tr id="lista_provider_{{$provider->id}}">
-            @if($grupo=='HOTELS')
-                <td class="text-center">{{$provider->categoria}} <i class="fas fa-star small text-g-yellow"></i></td>
-            @endif
-            <td>{{$provider->codigo}}</td>
-            <td>{{$provider->tipo_proveedor}}</td>
-            <td>{{$provider->tipo_pago}}</td>
-            <td>{{$provider->ruc}}</td>
-            <td>{{$provider->razon_social}}</td>
-            <td>{{$provider->nombre_comercial}}</td>
-            <td>
-                <b>Cel:</b>{{$provider->r_telefono}}<br>
-
-                <b>Email:</b><br>{{$provider->r_email}}
-            </td>
-            <td>
-                <b>Cel:</b>{{$provider->c_telefono}}<br>
-                <b>Email:</b><br>{{$provider->c_email}}
-            </td>
-            <td>
-                <b>Cel:</b>{{$provider->o_telefono}}<br>
-                <b>Email:</b><br>{{$provider->o_email}}
-            </td>
-            <td>{{$provider->plazo}} dias {{$provider->desci}}</td>
-            <td class="text-center">
-                <b href="!#" class="puntero text-warning"  data-toggle="modal" data-target="#modal_edit_cost_{{$provider->id}}">
-                    <i class="fas fa-pencil-alt"></i>
-                </b>
-                <div class="modal fade bd-example-modal-lg" id="modal_edit_cost_{{$provider->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <form action="{{route('provider_edit_path')}}" method="post" id="service_save_id" enctype="multipart/form-data">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Edit Provider</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="tab-content">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="card p-3">
-                                                    <div class="row text-left">
-                                                        <div class="col-3">
-                                                            <div class="form-group">
-                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Codigo</label>
-                                                                <input type="text" class="form-control" id="txt_codigo" name="txt_codigo" value="{{($provider->codigo)}}" readonly>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <div class="form-group">
-                                                                <label for="txt_tipo_proveedor" class="text-secondary font-weight-bold">Tipo de proveedor</label>
-                                                                <select class="form-control" name="txt_tipo_proveedor_" id="txt_tipo_proveedor_">
-                                                                    <option value="EXTERNO" @if($provider->tipo_proveedor=='EXTERNO') selected @endif>EXTERNO</option>
-                                                                    <option value="PLANTA" @if($provider->tipo_proveedor=='PLANTA') selected @endif>PLANTA</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-2">
-                                                            <div class="form-group">
-                                                                <label for="txt_tipo_pago_" class="text-secondary font-weight-bold">Forma de pago</label>
-                                                                <select class="form-control" name="txt_tipo_pago_" id="txt_tipo_pago_">
-                                                                    <option value="CONTADO" @if($provider->tipo_pago=='CONTADO') selected @endif>CONTADO</option>
-                                                                    <option value="CREDITO" @if($provider->tipo_pago=='CREDITO') selected @endif>CREDITO</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Origen</label>
-                                                                <select class="form-control" id="txt_localizacion_" name="txt_localizacion_">
-                                                                    @foreach($destinations as $destination)
-                                                                        <option value="{{$destination->destino}}" <?php if($grupo==$provider->grupo){if($provider->localizacion==$destination->destino) echo 'selected';}?>>{{$destination->destino}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <input type="hidden" name="tipoServicio_" id="tipoServicio_" value="{{$grupo}}">
-                                                            </div>
-                                                        </div>
-                                                        @if($grupo=='HOTELS')
-                                                            <div class="col-4">
-                                                                <div class="form-group">
-                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Categoria</label>
-                                                                    <select class="form-control" id="txt_categoria_" name="txt_categoria_">
-                                                                        <option value="2" @if($provider->categoria=='2') selected @endif>2 STARS</option>
-                                                                        <option value="3" @if($provider->categoria=='3') selected @endif>3 STARS</option>
-                                                                        <option value="4" @if($provider->categoria=='4') selected @endif>4 STARS</option>
-                                                                        <option value="5" @if($provider->categoria=='5') selected @endif>5 STARS</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        @endif
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Ruc</label>
-                                                                <input type="text" class="form-control" id="txt_ruc_" name="txt_ruc_" placeholder="Ruc"  value="<?php if($grupo==$provider->grupo) echo $provider->ruc;?>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="txt_type" class="text-secondary font-weight-bold">Razon social</label>
-                                                                <input type="text" class="form-control" id="txt_razon_social_" name="txt_razon_social_" placeholder="Razon social" value="<?php if($grupo==$provider->grupo) echo $provider->razon_social;?>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <div class="form-group">
-                                                                <label for="txt_type" class="text-secondary font-weight-bold">Nombre comercial</label>
-                                                                <input type="text" class="form-control" id="txt_nombre_comercial_" name="txt_nombre_comercial_" placeholder="nombre comercial" value="<?php if($grupo==$provider->grupo) echo $provider->nombre_comercial;?>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="form-group">
-                                                                <label for="txt_precio" class="text-secondary font-weight-bold">Direccion</label>
-                                                                <input type="text" class="form-control" id="txt_direccion_" name="txt_direccion_" placeholder="Direccion" value="<?php if($grupo==$provider->grupo) echo $provider->direccion;?>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="txt_price" class="text-secondary font-weight-bold text-g-yellow">Plazo a pagar en dias</label>
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <div class="form-group">
-                                                                        <input type="text" class="form-control" id="txt_plazo_" name="txt_plazo_" min="0" value="{{$provider->plazo}}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <div class="form-group">
-                                                                        <select class="form-control" id="txt_desci_" name="txt_desci_">
-                                                                            <option value="antes" @if($provider->desci=='antes') selected @endif>Antes</option>
-                                                                            <option value="despues" @if($provider->desci=='despues') selected @endif>Despues</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3 text-left">
-                                                    <div class="col-md-4">
-                                                        <div class="card p-3 bg-light">
-                                                            <div class="form-group">
-                                                                <label for="txt_price" class="text-secondary font-weight-bold">Cel. Reservas</label>
-                                                                <input type="text" class="form-control" id="txt_r_telefono_" name="txt_r_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->r_telefono;?>">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="txt_price">Email Reservas</label>
-                                                                <input type="text" class="form-control" id="txt_r_email_" name="txt_r_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->r_email;?>">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="card p-3 bg-light">
-                                                            <div class="form-group">
-                                                                <label for="txt_price" class="text-secondary font-weight-bold">Cel. Contabilidad</label>
-                                                                <input type="text" class="form-control" id="txt_c_telefono_" name="txt_c_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->c_telefono;?>">
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="txt_price">Email Contabilidad</label>
-                                                                <input type="text" class="form-control" id="txt_c_email_" name="txt_c_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->c_email;?>">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="card p-3 bg-light">
-                                                            <div class="form-group">
-                                                                <label for="txt_price" class="text-secondary font-weight-bold">Cel. Operaciones</label>
-                                                                <input type="text" class="form-control" id="txt_o_telefono_" name="txt_o_telefono_" placeholder="Celular" value="<?php if($grupo==$provider->grupo) echo $provider->o_telefono;?>">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="txt_price">Email Operaciones</label>
-                                                                <input type="text" class="form-control" id="txt_o_email_" name="txt_o_email_" placeholder="Email" value="<?php if($grupo==$provider->grupo) echo $provider->o_email;?>">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3">
-                                                    <div class="col">
-                                                        <div class="card bg-light w-100">
-                                                            <div class="col-lg-12">
-                                                                <div class="form-group">
-                                                                    <label for="txt_product" class="text-secondary font-weight-bold">Cta corriente</label>
-                                                                    <select class="form-control" name="txt_banco_nombre_cta_corriente_" id="txt_banco_nombre_cta_corriente_">
-                                                                        <option value="0">Escoja una Entidad Bancaria</option>
-                                                                        @foreach($entidadBancaria as $entidadBancaria_)
-                                                                            <option value="{{$entidadBancaria_->id}}" @if($provider->banco_nombre_cta_corriente==$entidadBancaria_->id){{'selected'}} @endif>{{$entidadBancaria_->nombre}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="form-group">
-                                                                    {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Reservas</label>--}}
-                                                                    <input type="text" class="form-control" id="txt_banco_nro_cta_corriente_" name="txt_banco_nro_cta_corriente_" placeholder="Numero Cta Corriente" value="{{$provider->banco_nro_cta_corriente}}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="card bg-light w-100">
-                                                            <div class="col-lg-12">
-                                                                <div class="form-group">
-                                                                    <label for="txt_product" class="text-secondary font-weight-bold">Cta Interbancaria</label>
-                                                                    <select class="form-control" name="txt_banco_nombre_cta_cci_" id="txt_banco_nombre_cta_cci_">
-                                                                        <option value="0">Escoja una Entidad Bancaria</option>
-                                                                        @foreach($entidadBancaria as $entidadBancaria_)
-                                                                            <option value="{{$entidadBancaria_->id}}" @if($provider->banco_nombre_cta_cci==$entidadBancaria_->id){{'selected'}} @endif>{{$entidadBancaria_->nombre}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="form-group">
-                                                                    {{--<label for="txt_product" class="text-secondary font-weight-bold">Email Reservas</label>--}}
-                                                                    <input type="text" class="form-control" id="txt_banco_nro_cta_cci_" name="txt_banco_nro_cta_cci_" placeholder="Numero Cta CCI" value="{{$provider->banco_nro_cta_cci}}">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3 text-left">
-                                                    <div class="col">
-                                                        <div class="card p-3 bg-light">
-                                                            <div class="form-group">
-                                                                <label for="txt_codigo" class="text-secondary font-weight-bold">Lugares que opera</label>
-                                                            </div>
-                                                            <div class="row padding-10">
-                                                                @foreach($destinations as $destination)
-                                                                    @php
-                                                                        $nrocoincidencias=$destinos_opera->where('proveedor_id',$provider->id)->where('m_destinos_id',$destination->id)->count();
-                                                                    @endphp
-                                                                    <div class="col-2 form-group form-check">
-                                                                        <input type="checkbox" class="form-check-input" id="destinos_opera_{{$provider->id}}_{{$destination->id}}" name="destinos_opera_[]" value="{{$destination->id}}" @if($nrocoincidencias>0) {{'checked'}} @endif>
-                                                                        <label class="form-check-label" for="destinos_opera_{{$provider->id}}_{{$destination->id}}">{{$destination->destino}}</label>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @if($provider->grupo!='HOTELS')
-                                                    <div class="row mt-3 text-left">
-                                                        <div class="col">
-                                                            <div class="card p-3 bg-light">
-                                                                <div class="form-group">
-                                                                    <label for="txt_codigo" class="text-secondary font-weight-bold">Servicios que opera</label>
-                                                                </div>
-                                                                <div class="row padding-10">
-                                                                    @foreach($m_categories as $m_category)
-                                                                        @php
-                                                                            $nrocoincidencias=$grupos_opera->where('proveedor_id',$provider->id)->where('m_category_id',$m_category->id)->count();
-                                                                        @endphp
-                                                                        <div class="col-2 form-group form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="grupos_opera_{{$provider->id}}_{{$m_category->id}}" name="grupos_opera_[]" value="{{$m_category->id}}" @if($nrocoincidencias>0) {{'checked'}} @endif>
-                                                                            <label class="form-check-label" for="grupos_opera_{{$provider->id}}_{{$m_category->id}}">{{$m_category->nombre}}</label>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    {{csrf_field()}}
-                                    <input type="hidden" name="posTipoEditcost_{{$provider->id}}" id="posTipoEditcost_{{$provider->id}}" value="{{$provider->grupo}}">
-                                    <input type="hidden" name="id" id="id" value="{{$provider->id}}">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+<div class="row">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-11">
+                <h2 class="">LISTADO DE PROVEEDORES</h2>
+            </div>
+            <div class="col-1 text-right">
+                <div class="btn btn-group">
+                    <button class="btn btn-danger">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                    <button class="btn btn-success">
+                        <i class="fas fa-file-excel"></i>
+                    </button>
                 </div>
-
-                <b href="!#" class="puntero text-danger" onclick="eliminar_provider('{{$provider->id}}','{{$provider->razon_social}}')">
-
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-
-                </b>
-            </td>
-        </tr>
-    @endforeach
-    </tbody>
-</table>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <table id="example_tabla_{{ $grupo }}" class="table table-striped table-bordered table-sm small">
+                    <thead>
+                    <tr>
+                        @if($grupo=='HOTELS')
+                            <th>Cat</th>
+                        @endif
+                        <th>Codigo</th>
+                        <th>Tipo proveedor</th>
+                        <th>Forma pago</th>
+                        <th>Ruc</th>
+                        <th>Razon social</th>
+                        <th>Nombre comercial</th>
+                        <th>Reservas</th>
+                        <th>Contabilidad</th>
+                        <th>Operaciones</th>
+                        <th>Plazo</th>
+                        <th>Opciones</th>
+                
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($proveedores->sortBy('nombre_comercial') as $provider)
+                        <tr id="lista_provider_{{$provider->id}}">
+                            @if($grupo=='HOTELS')
+                                <td class="text-center">{{$provider->categoria}} <i class="fas fa-star small text-g-yellow"></i></td>
+                            @endif
+                            <td>{{$provider->codigo}}</td>
+                            <td>{{$provider->tipo_proveedor}}</td>
+                            <td>{{$provider->tipo_pago}}</td>
+                            <td>{{$provider->ruc}}</td>
+                            <td>{{$provider->razon_social}}</td>
+                            <td>{{$provider->nombre_comercial}}</td>
+                            <td>
+                                <b>Cel:</b>{{$provider->r_telefono}}<br>
+                
+                                <b>Email:</b><br>{{$provider->r_email}}
+                            </td>
+                            <td>
+                                <b>Cel:</b>{{$provider->c_telefono}}<br>
+                                <b>Email:</b><br>{{$provider->c_email}}
+                            </td>
+                            <td>
+                                <b>Cel:</b>{{$provider->o_telefono}}<br>
+                                <b>Email:</b><br>{{$provider->o_email}}
+                            </td>
+                            <td>{{$provider->plazo}} dias {{$provider->desci}}</td>
+                            <td class="text-center">
+                                <a href="#!" class="puntero text-warning" onclick="mostrar_modal('{{ $provider->id }}','{{ $grupo }}')">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <div id="caja_modal_{{ $provider->id }}">
+                                </div>               
+                                <a href="!#" class="puntero text-danger" onclick="eliminar_provider('{{$provider->id}}','{{$provider->razon_social}}')">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                                
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+    
+    </div>
 </div>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    
+<script>
+        $(document).ready( function () {
+            // $('#example_tabla').DataTable({
+            //     paging: false,
+            //     dom: 'Bfrtip',
+            //     buttons: [
+            //         'copyHtml5',
+            //         'excelHtml5',
+            //     ]
+            // });
 
+            var table = $('#example_tabla_{{ $grupo }}').DataTable( {
+                "ordering": false,
+                paging: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ],
+            } );
+
+            table.buttons().container()
+                .appendTo( '#example_tabla_wrapper .col-md-6:eq(0)' );
+        } );
+    </script>
