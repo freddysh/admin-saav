@@ -676,6 +676,10 @@ Route::get('admin/operaciones/pdf/{id1}/{id2}', [
     'uses' => 'OperacionesController@pdf',
     'as' => 'imprimir_operaciones_path',
 ]);
+Route::get('admin/operaciones/pdf-uno/{id1}/{id2}', [
+    'uses' => 'OperacionesController@pdf_uno',
+    'as' => 'imprimir_operaciones_uno_path',
+]);
 Route::get('admin/operaciones/excel/{id1}/{id2}', [
     'uses' => 'OperacionesController@excel',
     'as' => 'imprimir_operaciones_excel_path',
