@@ -538,7 +538,6 @@ function sumar_servicios_edit(grupo){
     // console.log('total:'+total_ci);
     $('#total_ci_'+grupo).html(total_ci);
     $('#precio_itinerario_'+grupo).val(total_ci);
-
 }
 function  filtrar_grupos_edit(itinerario){
     $("input[class='servicios']").each(function (index1) {

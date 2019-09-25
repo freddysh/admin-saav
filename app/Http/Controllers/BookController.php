@@ -648,14 +648,14 @@ class BookController extends Controller
 		$webs=Web::get();
 		return view('admin.book.ver-liquidacion',['liquidaciones'=>$liquidaciones,'fecha_ini'=>$fecha_ini,'fecha_fin'=>$fecha_fin,'servicios'=>$servicios,'servicios_movi'=>$servicios_movi,'webs'=>$webs]);
 	}
-	function nuevo_servicio($cotizaciones_id,$itinerartio_cotis_id,$dia){
+	function nuevo_servicio_uno($cotizaciones_id,$itinerartio_cotis_id,$dia){
 			$destinations=M_Destino::get();
 			$services=M_Servicio::get();
 			$categorias=M_Category::get();
 			$pro_clase=ProveedorClases::get();
 			$servicios=array();
 			$webs=Web::get();
-			return view('admin.book.agregar_servicio_dia',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id,'pro_clase'=>$pro_clase,'webs'=>$webs]);
+			return view('admin.book.agregar_servicio_dia_uno',['destinations'=>$destinations,'services'=>$services,'categorias'=>$categorias,'itinerartio_cotis_id'=>$itinerartio_cotis_id,'servicios'=>$servicios,'dia'=>$dia,'cotizaciones_id'=>$cotizaciones_id,'pro_clase'=>$pro_clase,'webs'=>$webs]);
 	}
 	public function nuevo_servicio_add(Request $request){
 		$origen=$request->input('origen');
@@ -664,6 +664,7 @@ class BookController extends Controller
 		$txt_id=$request->input('itinerario_id');
 		$destinos=$request->input('destinos');
 		$servicios=$request->input('servicios'.$txt_id);
+		
 		foreach ($destinos as $destino){
 			$dato=explode('_',$destino);
 			$valorBuscado=ItinerarioDestinos::where('destino',$dato[1])->where('itinerario_cotizaciones_id',$dato[2])->count('id');
@@ -706,6 +707,7 @@ class BookController extends Controller
 			$p_servicio->tipoServicio=$m_servicio->tipoServicio;
 			$p_servicio->save();
 		}
+		
 		if($origen=='reservas')
 			return redirect()->route('book_show_path',$cotizaciones_id);
 		elseif($origen=='ventas') {
@@ -718,6 +720,38 @@ class BookController extends Controller
 			}
 			return redirect()->route('show_step1_path', [$cliente, $cotizaciones_id, $itineario->paquete_cotizaciones_id]);
 		}
+	}
+	public function nuevo_servicio_add_uno(Request $request){
+		$cotizaciones_id=$request->input('cotizaciones_id');
+		$txt_id=$request->input('itinerario_id');		
+		$servicios_reservas=$request->input('servicios');
+		foreach ($servicios_reservas as $servicio){
+			$dato=explode('_',$servicio);
+			$m_servicio=M_Servicio::FindOrFail($dato[2]);
+			$p_servicio=new ItinerarioServicios();
+			$p_servicio->nombre=$m_servicio->nombre;
+			$p_servicio->observacion='';
+			$p_servicio->precio=$m_servicio->precio_venta;
+			$p_servicio->itinerario_cotizaciones_id=$txt_id;
+			$p_servicio->user_id=auth()->guard('admin')->user()->id;
+			$p_servicio->precio_grupo=$m_servicio->precio_grupo;
+			$p_servicio->min_personas=$m_servicio->min_personas;
+			$p_servicio->max_personas=$m_servicio->max_personas;
+			$p_servicio->precio_c=0;
+			$p_servicio->estado=1;
+			$p_servicio->salida=$m_servicio->salida;
+			$p_servicio->llegada=$m_servicio->llegada;
+			$p_servicio->clase=$m_servicio->clase;
+			$p_servicio->m_servicios_id=$m_servicio->id;
+			$p_servicio->justificacion_precio_proveedor='';
+			$p_servicio->grupo=$m_servicio->grupo;
+			$p_servicio->localizacion=$m_servicio->localizacion;
+			$p_servicio->tipoServicio=$m_servicio->tipoServicio;
+			$p_servicio->save();
+		}
+		
+		return redirect()->route('book_show_path',$cotizaciones_id);
+		
 	}
 	public function eliminar_servicio_reservas(Request $request)
 	{

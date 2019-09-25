@@ -1539,3 +1539,11 @@ Route::post('admin/provider/modal', [
     'uses' => 'ProveedorController@modal',
     'as' => 'provider_modal_path',
 ]);
+Route::get('/admin/book/servicios/add/uno/{id1}/{id2}/{id3}',[
+    'uses' => 'BookController@nuevo_servicio_uno',
+    'as' => 'servicios_add_uno_path',
+]);
+Route::post('/admin/book/nuevo-servicio/nuevo/uno',[
+    'uses' => 'BookController@nuevo_servicio_add_uno',
+    'as' => 'nuevo_servicio_add_uno_path',
+]);

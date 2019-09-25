@@ -387,7 +387,7 @@
                                                             <!-- Large modal -->
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-warning float-right btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg_{{$itinerario->id}}"><i class="far fa-comment-alt"></i></button>
-                                                                <a href="{{route('servicios_add_path',[$cotizacion->id,$itinerario->id,$itinerario->dias])}}"  class="btn btn-primary float-left btn-sm">
+                                                                <a href="{{route('servicios_add_uno_path',[$cotizacion->id,$itinerario->id,$itinerario->dias])}}"  class="btn btn-primary float-left btn-sm">
                                                                         <i class="fas fa-glass-martini"></i>
                                                                 </a>
                                                             </div>

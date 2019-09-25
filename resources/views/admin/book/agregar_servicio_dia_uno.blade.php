@@ -9,15 +9,127 @@
 @stop
 @section('content')
     <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>Reservation</li>
-            <li>Detail</li>
-            <li class="active">Add Service</li>
-        </ol>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-white m-0">
+                <li class="breadcrumb-item" aria-current="page"><a href="/">Home</a></li>
+                <li class="breadcrumb-item">Reservation</li>
+                <li class="breadcrumb-item">Detail</li>
+                <li class="breadcrumb-item active">Add Service</li>
+            </ol>
+        </nav>
     </div>
-    <div class="row margin-top-20">
-        <form action="{{route('nuevo_servicio_add_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
+    <form action="{{ route('nuevo_servicio_add_uno_path')}}" method="post">
+        <div class="row mt-3">
+                <div class="col-lg-12">
+                    
+                    <select class="form-control" name="txt_destino" id="txt_destino" onchange="limpiar_caja_servicios()">
+                        @foreach($destinations as $destino)
+                            <option value="{{$destino->id}}_{{$destino->destino}}">{{$destino->destino}}</option>
+                        @endforeach
+                    </select>
+                    <div class="row mt-4">
+                        @foreach($categorias as $categoria)
+                            <?php
+                            $tipoServicio[]=$categoria->nombre;
+                            ?>
+                        @endforeach
+                        <div class="col-10">
+                            <div class="row">
+                                <div class="col-3 m-0">
+                                    <div class="list-group text-center">
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[1]}}')"> <i class="fas fa-map fa-2x text-info"></i><b class="small d-block">{{$tipoServicio[1] }}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[2]}}')"> <i class="fa fa-bus fa-2x text-warning"></i><b class="small d-block">{{$tipoServicio[2]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[3]}}')"> <i class="fa fa-users fa-2x text-success"></i><b class="small d-block">{{$tipoServicio[3]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[4]}}')"> <i class="fas fa-ticket-alt fa-2x text-warning"></i><b class="small d-block">{{$tipoServicio[4]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[5]}}')"> <i class="fas fa-utensils fa-2x text-danger"></i><b class="small d-block">{{$tipoServicio[5]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[6]}}')"> <i class="fa fa-train fa-2x text-info"></i><b class="small d-block">{{$tipoServicio[6]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[7]}}')"> <i class="fa fa-plane fa-2x text-primary"></i><b class="small d-block">{{$tipoServicio[7]}}</b></a>
+                                        <a href="#!" class="list-group-item" onclick="llamar_servicios($('#txt_destino').val(),'{{$tipoServicio[8]}}')"> <i class="fa fa-question fa-2x text-success"></i><b class="small d-block">{{$tipoServicio[8]}}</b></a>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <div class="panel panel-default">
+                                        <div id="list_servicios_grupo" class="panel-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col">
+                            <div class="list-group text-center">
+                                <p class="alert alert-danger">
+                                    <b>Nota:</b>Solo se agregarán los servicios en la vista seleccionada 
+                                </p>
+                                <button type="button" class="btn btn-primary text-center d-none" onclick="escojer_servicio()">
+                                    <i class="fa fa-arrow-right  text-center" aria-hidden="true"></i>
+                                </button>
+                                {{ csrf_field() }}
+                                {{-- <input type="text" name="precio_itinerario" value="{{ $itinerartio_cotis_id }}">
+                                <input type="text" name="itinerario_id" value="{{ $itinerartio_cotis_id }}">
+                                <input type="text" name="cotizaciones_id" value="{{ $itinerartio_cotis_id }}"> --}}
+
+                                {{-- <input type="hidden" name="precio_itinerario" id="precio_itinerario" value="{{ $total_pre_ven_edit}}"> --}}
+                                <input type="hidden" name="itinerario_id" id="itinerario_id" value="{{$itinerartio_cotis_id}}">
+                                <input type="hidden" name="cotizaciones_id" id="cotizaciones_id" value="{{$cotizaciones_id}}">
+                                <input type="hidden" name="origen" id="origen" value="reservas">
+                                
+                                <button class="btn btn-primary text-center " type="submit">Agregar al dia {{ $dia }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="col-lg-4 d-none">
+                <div class="card">
+                    <div class="card-header">SERVICIOS ESCOJIDOS</div>
+                    <div class="card-body">
+                        <input type="hidden" id="nroServicios" value="0">
+                        <div id="caja_1" class="caja_sort ml-0">
+                            {{--<div id="elto_1" class="col-lg-11 elemento_sort">--}}
+                            {{--<div class="row">--}}
+                            {{--<div class="col-lg-1"><span class="text-unset"><i class="fa fa-hand-o-up" aria-hidden="true"></i></span></div>--}}
+                            {{--<div class="col-lg-1 pos">1</div>--}}
+                            {{--<div class="col-lg-9">Contenido de la fila 1</div>--}}
+                            {{--<div class="col-lg-1"><span class="text-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></span></div>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="txt_travel_date">Origen</label>
+                                    <select class="form-control" name="txt_destino_foco" id="txt_destino_foco">
+                                        <option value="0">Escoja un destino</option>
+                                        @foreach($destinations as $destino)
+                                            <option value="{{$destino->id}}">{{$destino->destino}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="foco" id="foco" value="0">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="txt_travel_date">Destino</label>
+                                    <select class="form-control" name="txt_destino_duerme" id="txt_destino_duerme">
+                                        <option value="0">Escoja un destino</option>
+                                        <option value="-1">NO DUERME</option>
+                                        @foreach($destinations as $destino)
+                                            <option value="{{$destino->id}}">{{$destino->destino}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="duerme" id="duerme" value="0">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+    <div class="row margin-top-20 d-none">
+        <form action="{{ route('nuevo_servicio_add_path')}}" method="post" id="destination_save_id" enctype="multipart/form-data">
             <div class="row margin-top-20">
                 <div class="col-md-12">
                     <h4 class="font-montserrat text-orange-goto">Lista de servicios para el dia {{$dia}}</h4>
@@ -26,6 +138,14 @@
             </div>
             <div class="row">
                 {{csrf_field()}}
+                <div class="form-group">
+                    <label for="destino_x">Destino</label>
+                    <select class="form-control" name="destino_x" id="destino_x" onchange="filtrar_grupos_edit({{$itinerartio_cotis_id}})">
+                        @foreach($destinations as $destino)
+                            <option value="{{$destino->id}}_{{ $destino->destino}}_{{ $itinerartio_cotis_id}}">{{ $destino->destino }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 @foreach($destinations as $destino)
                     <?php $estado=''?>
 
@@ -1224,62 +1344,4 @@
             <input type="hidden" name="cotizaciones_id" id="cotizaciones_id" value="{{$cotizaciones_id}}">
         </form>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-            /* Valida el tamaño maximo de un archivo adjunto */
-
-        } );
-
-        function ValidarImagen(obj,nro){
-            var uploadFile = obj.files[0];
-
-            if (!window.FileReader) {
-//                alert('El navegador no soporta la lectura de archivos');
-                $('#mensaje_file'+nro).html('El navegador no soporta la lectura de archivos');
-                $('#mensaje_file'+nro).removeClass('text-success');
-                $('#mensaje_file'+nro).addClass('text-danger');
-
-                return;
-            }
-
-            if (!(/\.(jpg|png|gif)$/i).test(uploadFile.name)) {
-                $('#mensaje_file'+nro).html('El archivo a adjuntar no es una imagen');
-                $('#mensaje_file'+nro).removeClass('text-success');
-                $('#mensaje_file'+nro).addClass('text-danger');
-//                alert('El archivo a adjuntar no es una imagen');
-            }
-            else {
-                var img = new Image();
-                img.onload = function () {
-                    if (this.width.toFixed(0) != 360 && this.height.toFixed(0) != 360) {
-                        $('#mensaje_file'+nro).html('Las medidas deben ser: 360 x 360, no '+this.width.toFixed(0)+'x'+this.height.toFixed(0));
-                        $('#mensaje_file'+nro).removeClass('text-success');
-                        $('#mensaje_file'+nro).addClass('text-danger');
-//                        alert('Las medidas deben ser: 360 * 360');
-                    }
-                    else if (uploadFile.size > 20000000)
-                    {
-                        $('#mensaje_file'+nro).html('El peso de la imagen no puede exceder los 2Mb, no '+uploadFile.size);
-//                         alert('El peso de la imagen no puede exceder los 200kb')
-                        $('#mensaje_file'+nro).removeClass('text-success');
-                        $('#mensaje_file'+nro).addClass('text-danger');
-                    }
-                    else {
-                        $('#mensaje_file'+nro).html('Imagen correcta :)');
-                        $('#mensaje_file'+nro).removeClass('text-danger');
-                        $('#mensaje_file'+nro).addClass('text-success');
-//                      alert('Imagen correcta :)')
-                    }
-                };
-                img.src = URL.createObjectURL(uploadFile);
-            }
-        }
-
-    </script>
-    <script>
-        // Replace the <textarea id="editor1"> with a CKEditor
-        // instance, using default configuration.
-        CKEDITOR.replace( 'txt_descripcion' );
-    </script>
 @stop
