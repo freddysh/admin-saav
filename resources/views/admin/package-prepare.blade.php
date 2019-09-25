@@ -53,7 +53,7 @@
                     $cotizacion_id=$cotizacion->id;
                 @endphp
                 <p class="text-18">Web:<b class="text-info">{{$cotizacion->web}}</b> | Codigo:<b class="text-info">{{$cotizacion->codigo}}</b> | Idioma:<b class="text-info">{{$cotizacion->idioma_pasajeros}}</b></p>
-                <b class="text-g-yellow h2">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} <i class="fa fa-star" aria-hidden="true"></i>:</b>
+                <b class="text-warning h2">{{$cotizacion->nropersonas}} PAXS {{$cotizacion->star_2}}{{$cotizacion->star_3}}{{$cotizacion->star_4}}{{$cotizacion->star_5}} <i class="fa fa-star" aria-hidden="true"></i>:</b>
                 @foreach($cotizacion->paquete_cotizaciones->where('id',$paquete_precio_id) as $paquete)
                     @php
                     $duracion=$paquete->duracion;
@@ -194,7 +194,7 @@
                         {{--<div class="checkbox1">--}}
                         <small class="text-primary">
                             {{--<input class="destinospack" type="checkbox" name="destinos[]" checked="checked">--}}
-                            {{ucwords(strtolower($destino))}} <span class="text-g-yellow">|</span>
+                            {{ucwords(strtolower($destino))}} <span class="text-warning">|</span>
                         </small>
                         {{--</div>--}}
                         {{--</div>--}}
@@ -367,14 +367,14 @@
                                 $pre_sh=$precio;
                                 $prem_sh+=$pre_sh;
                             @endphp
-                            <div id="itinerario_" class="bg-g-dark text-white p-2 rounded small mb-2">
+                            <div id="itinerario_" class="bg-dark text-white p-2 rounded small mb-2">
                                    
                                 <div class="row">
                                     <div class="col-7">
                                         <div class="row">
                                             <div class="col-12">
                                                 @foreach($itinerario->itinerario_destinos as $destino)
-                                                    <b class="dias text-g-yellow">{{ucwords(strtolower($destino->destino))}}</b> |
+                                                    <b class="dias text-warning">{{ucwords(strtolower($destino->destino))}}</b> |
                                                 @endforeach
                                             </div>
                                             <div class="col-12">
@@ -444,7 +444,7 @@
                     </div>
                     <div class="row text-right">
                         <div class="col-7 text-left">
-                            <b class="text-g-yellow">COST</b>
+                            <b class="text-warning">COST</b>
                         </div>
                         {{--<div class="col-sm-6">--}}
                             <div class="col @if($duracion>1) @if($s==0) d-none @endif @else d-none @endif">
@@ -531,7 +531,7 @@
 
 
                         <div class="col-7">
-                            <b class="text-g-yellow text-15">SALES</b>
+                            <b class="text-warning text-15">SALES</b>
                         </div>
                         <div class="col @if($duracion>1) @if($s==0) d-none @endif @else d-none @endif">
                             <input class="form-control text-right" type="text" name="sale_s" id="sale_s" value="@if($s!=0){{round(round($prem_s,2)+$utilidad_s,2)}}@else{{0}}@endif" onchange="variar_sales('s')">
@@ -575,10 +575,10 @@
 
                             {{csrf_field()}}
                             @if($imprimir=='no')
-                                <button class="btn btn-g-yellow" type="submit" name="create" value="create">GUARDAR {{$plan[$pos_plan]}}</button>
+                                <button class="btn btn-warning" type="submit" name="create" value="create">GUARDAR {{$plan[$pos_plan]}}</button>
                                 <button class="btn btn-success" type="submit" name="create" value="create_template">GUARDAR {{$plan[$pos_plan]}} y CREAR TEMPLATE</button>
                             @else
-                                <button class="btn btn-g-yellow" type="submit" name="create" value="create">EDITAR {{$plan[$pos_plan]}}</button>
+                                <button class="btn btn-warning" type="submit" name="create" value="create">EDITAR {{$plan[$pos_plan]}}</button>
                                 @if($imprimir=='si_create')
                                     <p><b class="text-success text-20">Gracias. Su paquete fue creado correctamente!!!</b></p>
                                 @else
