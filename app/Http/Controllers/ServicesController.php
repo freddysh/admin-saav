@@ -291,15 +291,15 @@ class ServicesController extends Controller
 
         $nro_templates_serv_usados=P_ItinerarioServicios::where('m_servicios_id',$id)->count('id');
         $nro_m_itinerario_servicios_usados=M_ItinerarioServicio::where('m_servicios_id',$id)->count('id');
-        
-        
+
+
         // $nro_productos_usados=M_Producto::where('grupo',$servicio->grupo)
         //                     ->where('localizacion',$servicio->localizacion)
         //                     ->where('tipo_producto',$servicio->tipoServicio)
         //                     ->where('clase',$servicio->clase)
         //                     ->where('nombre',$servicio->nombre)
-        //                     ->count('id');        
-        
+        //                     ->count('id');
+
 
         if($nro_files_serv_usados==0){
             if($nro_templates_serv_usados==0){
@@ -315,7 +315,7 @@ class ServicesController extends Controller
             }
             else{
                 return '2_El servicio esta siendo usado en una plantilla';
-            }            
+            }
         }
         else{
             return '2_El servicio esta siendo usado en una cotizacion';
@@ -405,7 +405,7 @@ class ServicesController extends Controller
                         $producto->min_personas = $destino->min_personas;
                         $producto->save();
                         // return $producto;
-                        
+
                     }
                 } else {
                     $producto = M_Producto::FindOrFail($costos_bolsa_->id);
@@ -491,6 +491,7 @@ class ServicesController extends Controller
 
     public function listarServicios_destino(Request $request)
     {
+        // return 'hol';
         set_time_limit(0);
         $filtro = $request->input('filtro');
         $destino = $request->input('destino');
@@ -515,8 +516,9 @@ class ServicesController extends Controller
         $destino_operados=DestinosOpera::get();
         $grupos_operados=GrupoOpera::get();
         $categorias=M_Category::get();
+    //    return  dd('holaa');
 //        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','filtro']));
-        return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','ruta','filtro','tipo','destino_operados','grupos_operados','categorias']));
+         return view('admin.contabilidad.lista-servicios',compact(['id','destino','destinations','sericios','proveedores','costos','categoria_id','ruta','filtro','tipo','destino_operados','grupos_operados','categorias']));
     }
 
     public function eliminar_servicio_hotel(Request $request)
@@ -612,7 +614,7 @@ class ServicesController extends Controller
             ->where('clase',$m_servicio->clase)
             ->where('nombre',$m_servicio->nombre)
             ->where('proveedor_id',$proveedor_id)->count('proveedor_id');
-            
+
             if($nro_usados>0){
                 return 2;
             }
@@ -624,7 +626,7 @@ class ServicesController extends Controller
                 else
                     return 0;
             }
-        }        
+        }
     }
 
     public function listarServicios_destino_empresa(Request $request)
@@ -691,7 +693,7 @@ class ServicesController extends Controller
         $localizacion=$request->input('localizacion');
         $grupo=$request->input('grupo');
         $servicios_id=$request->input('servicios_id');
-       
+
         if($grupo=='HOTELS'){
             $hotel=PrecioHotelReserva::find($servicios_id);
             $destinations=M_Destino::get();
@@ -745,7 +747,9 @@ class ServicesController extends Controller
         $cliente=Cliente::FindOrFail($cliente_id);
         $cotizaciones=Cotizacion::where('id',$cotizacion_id)->get();
         $m_servicios=M_Servicio::get();
-        return view('admin.agregar-servicio-hotel',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id]);
+        // return view('admin.agregar-servicio-hotel',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$pqt_id]);
+        return view('admin.agregar-servicio-hotel',['cliente'=>$cliente,'cotizaciones'=>$cotizaciones,/*'destinos'=>$destinos*/'m_servicios'=>$m_servicios,'paquete_precio_id'=>$paquete_precio_id]);
+
     }
     public function cambiar_estado(Request $request)
     {

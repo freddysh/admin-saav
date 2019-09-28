@@ -2055,7 +2055,7 @@ function enviar_form1(){
         $('#notas1').val($('#txt_notas').val());
         $('#estrellas_from').val($('#hotel').val());
         $('#txt_movilid1').val($('#txt_movilid').val());
-        
+
         if($('#notas1').val().trim()=='') {
             $('#notas1').focus();
             swal(
@@ -2523,7 +2523,7 @@ function validar_envio(){
     });
 }
 function enviar_form2(){
-    
+
     $('#form_nuevo_pqt_').submit(function() {
         tinymce.triggerSave();
         $('#txt_country1_').val($('#txt_country').val());
@@ -2539,7 +2539,7 @@ function enviar_form2(){
         $('#notas_').val($('#txt_notas').val());
         $('#estrellas_from_').val($('#hotel').val());
         $('#txt_movilid2').val($('#txt_movilid').val());
-        
+
         if($('#notas_').val().trim()==''){
             $('#notas_').focus();
             swal(
@@ -2703,11 +2703,11 @@ function borrar_serv_quot_paso1(id,servicio){
     var pv_m_serv_e_s=$('#pv_m_serv_e_s').val();
     var pv_t_serv_e_s=$('#pv_t_serv_e_s').val();
     var pv_sh_serv_e_s=$('#pv_sh_serv_e_s').val();
-    
+
     var con_sin_hotel_e_s=$('#con_sin_hotel_e_s').val();
     var acomodacion_hotel_e_s=$('#acomodacion_hotel_e_s').val();
-    var cotizacion_id=$('#cotizacion_id').val();   
-    
+    var cotizacion_id=$('#cotizacion_id').val();
+
     swal({
         title: 'MENSAJE DEL SISTEMA',
         text: "¿Estas seguro de eliminar el "+servicio+"?",
@@ -2723,7 +2723,7 @@ function borrar_serv_quot_paso1(id,servicio){
             }
         });
         $.post('/admin/quotes/servicio/delete', 'id='+id+'&cost_s_serv_e_s='+cost_s_serv_e_s+'&cost_d_serv_e_s='+cost_d_serv_e_s+'&cost_m_serv_e_s='+cost_m_serv_e_s+'&cost_t_serv_e_s='+cost_t_serv_e_s+'&cost_sh_serv_e_s='+cost_sh_serv_e_s+'&pv_s_serv_e_s='+pv_s_serv_e_s+'&pv_d_serv_e_s='+pv_d_serv_e_s+'&pv_m_serv_e_s='+pv_m_serv_e_s+'&pv_t_serv_e_s='+pv_t_serv_e_s+'&pv_sh_serv_e_s='+pv_sh_serv_e_s+'&con_sin_hotel_e_s='+con_sin_hotel_e_s+'&acomodacion_hotel_e_s='+acomodacion_hotel_e_s+'&cotizacion_id='+cotizacion_id, function(data) {
-             
+
             console.log(data.mensaje);
             if(data.mensaje==1){
                 // $("#lista_servicios_"+id).fadeOut( "slow");
@@ -2752,11 +2752,11 @@ function borrar_hotel_quot_paso1(id,dia){
     var pv_m_serv_e_s=$('#pv_m_serv_e_s').val();
     var pv_t_serv_e_s=$('#pv_t_serv_e_s').val();
     var pv_sh_serv_e_s=$('#pv_sh_serv_e_s').val();
-    
+
     var con_sin_hotel_e_s=$('#con_sin_hotel_e_s').val();
     var acomodacion_hotel_e_s=$('#acomodacion_hotel_e_s').val();
-    var cotizacion_id=$('#cotizacion_id').val();   
-    
+    var cotizacion_id=$('#cotizacion_id').val();
+
     swal({
         title: 'MENSAJE DEL SISTEMA',
         text: "¿Estas seguro de eliminar el hotel para el "+dia+"?",
@@ -2772,7 +2772,7 @@ function borrar_hotel_quot_paso1(id,dia){
             }
         });
         $.post('/admin/quotes/hotel/delete', 'id='+id+'&cost_s_serv_e_s='+cost_s_serv_e_s+'&cost_d_serv_e_s='+cost_d_serv_e_s+'&cost_m_serv_e_s='+cost_m_serv_e_s+'&cost_t_serv_e_s='+cost_t_serv_e_s+'&cost_sh_serv_e_s='+cost_sh_serv_e_s+'&pv_s_serv_e_s='+pv_s_serv_e_s+'&pv_d_serv_e_s='+pv_d_serv_e_s+'&pv_m_serv_e_s='+pv_m_serv_e_s+'&pv_t_serv_e_s='+pv_t_serv_e_s+'&pv_sh_serv_e_s='+pv_sh_serv_e_s+'&con_sin_hotel_e_s='+con_sin_hotel_e_s+'&acomodacion_hotel_e_s='+acomodacion_hotel_e_s+'&cotizacion_id='+cotizacion_id, function(data) {
-             
+
             console.log(data.mensaje);
             if(data.mensaje==1){
                 // $("#lista_servicios_"+id).fadeOut( "slow");
@@ -2933,6 +2933,7 @@ function escojer_pqt(id) {
 function mostrar_tabla_destino(grupo,id){
     var destino=$("#Destinos_"+grupo).val();
     console.log('mostrar_tabla_destino:'+destino);
+    console.log('hola freddy');
     $("#tb_datos_"+grupo).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
     $.ajaxSetup({
         headers: {
@@ -2943,6 +2944,7 @@ function mostrar_tabla_destino(grupo,id){
         $("#tb_datos_"+grupo).html(data);
 
     }).fail(function (data) {
+        console.log(data);
     });
 }
 
@@ -3648,7 +3650,7 @@ function dato_producto_hotel(valor,hotel_proveedor_id,hotel_id,itinerario_id){
         beforeSend: function(data1){
             $('#lista_servicios_asignados_h_'+hotel_id).html('');
             $('#rpt_book_proveedor_fecha_h_'+hotel_id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
-            
+
         },
         success: function(data) {
             console.log('data de la consulta:'+data);
@@ -4002,7 +4004,7 @@ function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
                                 if(data=='1'){
                                     $('#fila_p_'+id+'_'+costo_id+'_'+proveedor_id).fadeOut("slow");
                                     $('#fila_p_'+id+'_'+costo_id+'_'+proveedor_id).remove();
-                
+
                                     // se elimino con exito
                                 }
                                 // else if(data=='2'){
@@ -4011,10 +4013,10 @@ function eliminar_proveedor_comprobando(id,costo_id,proveedor_id,nombre) {
                                 //     $('#result_'+id).html('Este proveedor esta siendo usado en una cotizacion');
                                 // }
                                 // console.log(data);
-                
+
                             }
                         })
-                
+
                         // $("#fila_"+id).fadeOut( "slow");
                     });
                 }
@@ -4801,7 +4803,7 @@ function mostrar_class(proveedor_id,array_pro,grupo,id,idservicio) {
         // if(valors_nuevo.length==0){
         //     $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).append(iti_temp1);
         // }
-        
+
         $('#lista_costos_' + grupo + '_' + id + '_' + idservicio).html(iti_temp1);
     }
     // else {
@@ -5574,7 +5576,7 @@ function  modificar_fecha(titulo,fecha,iti_id,tipo,nombre_dia){
     $('#rp_cambio_fecha_'+iti_id).removeClass('text-danger');
     $('#rp_cambio_fecha_'+iti_id).removeClass('text-success');
     $('#rp_cambio_fecha_'+iti_id).addClass('text-primary');
-    
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -5944,7 +5946,7 @@ function mostrar_opcion(opcion){
         $('#codigo').addClass('d-none');
         $('#nombre').addClass('d-none');
         $('#bloque_filtros').removeClass('d-none');
-        
+
     }
     else if(opcion=='ENTRE DOS FECHAS' || opcion=='ENTRE DOS FECHAS URGENTES'){
         $('#from').removeClass('d-none');
@@ -6085,7 +6087,7 @@ function Anular_cotizacion(id,titulo) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes'
     }).then(function () {
-        $('#anulado_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>'); 
+        $('#anulado_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6094,12 +6096,12 @@ function Anular_cotizacion(id,titulo) {
         $.post('/admin/cotizacion/anular', 'id='+id+'&anular='+valor, function(data) {
             if(data==1){
                 if(anular==1){
-                    $('#anulado_'+id).html('<i class="fas fa-times-circle text-grey-goto"></i>');    
+                    $('#anulado_'+id).html('<i class="fas fa-times-circle text-grey-goto"></i>');
                     $('#hanulado_'+id).val('0');
                 }
                 else if(anular==0){
-                    $('#anulado_'+id).html('<i class="fas fa-check-circle text-success"></i>');   
-                    $('#hanulado_'+id).val('1'); 
+                    $('#anulado_'+id).html('<i class="fas fa-check-circle text-success"></i>');
+                    $('#hanulado_'+id).val('1');
                 }
             }
         }).fail(function (data) {
@@ -6202,7 +6204,7 @@ function pintar(id){
 //         }
 //     }
 //   }
-function buscar_pagos_pendientes(tipo_pago,opcion,nombre,codigo,ini,fin,servicio){    
+function buscar_pagos_pendientes(tipo_pago,opcion,nombre,codigo,ini,fin,servicio){
     console.log('opcion:'+opcion+',nombre:'+nombre+',codigo:'+codigo+',ini:'+ini+',fin:'+fin+',servicio:'+servicio);
     $.ajaxSetup({
         headers: {
@@ -6221,13 +6223,13 @@ function buscar_pagos_pendientes(tipo_pago,opcion,nombre,codigo,ini,fin,servicio
             $('#rpt_hotel').html(data);
         },
         error: function () {
-            
+
         }
     });
 }
 
 function traer_datos(clave,grupo,clase,lista_items,nro_personas,estado_contabilidad){
-    
+
     $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
     $('#'+grupo+'_'+clase+'_datos_'+clave).addClass('text-center');
     $('#'+grupo+'_'+clase+'_datos_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
@@ -6244,10 +6246,10 @@ function traer_datos(clave,grupo,clase,lista_items,nro_personas,estado_contabili
         success: function (data) {
             $('#'+grupo+'_'+clase+'_datos_'+clave).removeClass('text-center');
             $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
-            $('#'+grupo+'_'+clase+'_datos_'+clave).html(data);            
+            $('#'+grupo+'_'+clase+'_datos_'+clave).html(data);
         },
         error: function () {
-            
+
         }
     });
 }
@@ -6279,21 +6281,21 @@ function contabilidad_hotel_store(grupo,clave){
             $('#rpt_'+grupo+'_'+clave).html(data.mensaje);
             console.log('total obtenido:'+data.total);
             if(data.total>0){
-                
+
             console.log('total>0:'+data.total);
-                $("#chb_"+grupo+"_"+clave).prop('disabled', false);  
+                $("#chb_"+grupo+"_"+clave).prop('disabled', false);
                 $("#warning_"+grupo+"_"+clave).addClass('d-none');
                 $("#warning_"+grupo+"_"+clave).html('costo ingresado');
-                
+
             }
             else{
                 console.log('total<=0:'+data.total);
                 $("#chb_"+grupo+"_"+clave).prop('disabled', true);
-        
+
             }
         },
         error: function () {
-            
+
         }
     });
 }
@@ -6335,7 +6337,7 @@ function preparar_envio(id){
             location.reload();
         },
         error: function () {
-            
+
         }
     });
 }
@@ -6403,7 +6405,7 @@ function buscar_day_by_day_quotes_step1(destino) {
 //             location.reload();
 //         },
 //         error: function () {
-            
+
 //         }
 //     });
 // }
@@ -6439,10 +6441,10 @@ function agregar_plan_pago(paquete_id){
             '</td>'+
             '</tr>';
             $('#lista_pagos_'+paquete_id).append(cadena);
-} 
+}
 
 function borrar_plan_pago(paquete_id,nropagos){
-    $('#pago_'+paquete_id+'_'+nropagos).remove();    
+    $('#pago_'+paquete_id+'_'+nropagos).remove();
     var nropagos=$('#nro_pagos_'+paquete_id).val();
     nropagos--;
     $('#nro_pagos_'+paquete_id).val(nropagos);
@@ -6450,26 +6452,26 @@ function borrar_plan_pago(paquete_id,nropagos){
 // cuota_nro
     var i=1;
     $(".cuota_nro").each(function(){
-        var divcito = $(this).html('Cuota 0'+i);        
+        var divcito = $(this).html('Cuota 0'+i);
         i++;
     });
     sumar_pagos_monto(paquete_id);
-} 
+}
 //-- Revisar esta funcion porque ya se tiene otra con el mismo nombre, al parecer tiene que ver con los palnes de pagos de las cotizaciones
 function cambiar_estado_plan_pagos(paquete_id,pos){
     console.log('paquete_id:'+paquete_id+',pos:'+pos);
     var estado=$('#confirmar_pagos_'+paquete_id+'_'+pos).val();
     if(estado==0){
-        $('#btn_confirmar_'+paquete_id+'_'+pos).removeClass('btn-unset'); 
+        $('#btn_confirmar_'+paquete_id+'_'+pos).removeClass('btn-unset');
         $('#btn_confirmar_'+paquete_id+'_'+pos).addClass('btn-success');
         $('#btn_confirmar_'+paquete_id+'_'+pos).html('<i class="fas fa-lock"></i>');
-        // $('#fecha_pago_'+paquete_id+'_'+pos).attr('readonly', true);   
-        // $('#monto_pago_'+paquete_id+'_'+pos).attr('readonly', true); 
-        // $('#nota_pago_'+paquete_id+'_'+pos).attr('readonly', true);    
+        // $('#fecha_pago_'+paquete_id+'_'+pos).attr('readonly', true);
+        // $('#monto_pago_'+paquete_id+'_'+pos).attr('readonly', true);
+        // $('#nota_pago_'+paquete_id+'_'+pos).attr('readonly', true);
         $('#confirmar_pagos_'+paquete_id+'_'+pos).val('1');
     }
     else if(estado==1){
-        $('#btn_confirmar_'+paquete_id+'_'+pos).removeClass('btn-success'); 
+        $('#btn_confirmar_'+paquete_id+'_'+pos).removeClass('btn-success');
         $('#btn_confirmar_'+paquete_id+'_'+pos).addClass('btn-unset');
         $('#btn_confirmar_'+paquete_id+'_'+pos).html('<i class="fas fa-unlock"></i>');
         // $('#fecha_pago_'+paquete_id+'_'+pos).attr('readonly', false);
@@ -6521,13 +6523,13 @@ function preparar_envio_pagos(id,paquete_id){
         // })
         // return false;
     });
-    
+
     // $.ajaxSetup({
     //     headers: {
     //         'X-CSRF-TOKEN': $('[name="_token"]').val()
     //     }
     // });
-    
+
     // $.ajax({
     //     url: $('#'+id).attr('action'),
     //     type: 'post',
@@ -6544,7 +6546,7 @@ function preparar_envio_pagos(id,paquete_id){
     //         }
     //     },
     //     error: function () {
-            
+
     //     }
     // });
 }
@@ -6554,11 +6556,11 @@ function sumar_pagos_monto(paquete_id){
     var suma=0;
     $("input[name='monto_pago[]']").each(function(indice, elemento) {
         if($.isNumeric($(elemento).val()))
-            suma+=parseFloat($(elemento).val());    
+            suma+=parseFloat($(elemento).val());
     });
     $("input[name='monto_pago_[]']").each(function(indice, elemento) {
         if($.isNumeric($(elemento).val()))
-            suma+=parseFloat($(elemento).val());    
+            suma+=parseFloat($(elemento).val());
     });
     suma=suma.toFixed(2);
     $('#total_'+paquete_id).val(suma);
@@ -6593,7 +6595,7 @@ function buscar_pagos(valor1,valor2,columna,campo,pagina){
 }
 
 function filtrar_(valor,tipo){
-    
+
     if(valor!='ENTRE FECHAS'){
         $('#fechas_'+tipo).addClass('d-none');
     }
@@ -6636,7 +6638,7 @@ function call_popup(estrellas,localizacion,rpt_id,hotel_id,itinerario_cotizacion
         beforeSend: function(data1){
             $('#'+rpt_id).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
-        success: function(data){ 
+        success: function(data){
             $('#'+rpt_id).html(data);
         }
     });
@@ -6669,35 +6671,35 @@ function sumar_hotel_subtotales(clave){
         console.log('valor_s:'+$(value).val());
         if($.isNumeric($(value).val())){
             suma+=parseFloat($(value).val());
-        } 
+        }
     });
     // sumamos los double
     $("input[name='precio_d_c_"+clave+"[]']").each(function(index,value) {
-        
+
         console.log('valor_d:'+$(value).val());
-        if($.isNumeric($(value).val())){                
-            suma+=parseFloat($(value).val());   
+        if($.isNumeric($(value).val())){
+            suma+=parseFloat($(value).val());
         }
     });
     // sumamos los double
     $("input[name='precio_m_c_"+clave+"[]']").each(function(index,value) {
-        
+
         console.log('valor_m:'+$(value).val());
         if($.isNumeric($(value).val())){
-            suma+=parseFloat($(value).val());   
-        } 
+            suma+=parseFloat($(value).val());
+        }
     });
     // sumamos los double
     $("input[name='precio_t_c_"+clave+"[]']").each(function(index,value) {
-        
+
         console.log('valor_t:'+$(value).val());
         if($.isNumeric($(value).val())){
             suma+=parseFloat($(value).val());
-        }    
+        }
     });
     console.log('suma:'+suma);
     $('#precio_total_'+clave).val(suma);
-    
+
 }
 function contabilidad_guardar_notas_requerimiento(clave,grupo,servicio){
     tinymce.triggerSave();
@@ -6719,12 +6721,12 @@ function contabilidad_guardar_notas_requerimiento(clave,grupo,servicio){
             $('#rpt_notas_'+grupo+'_'+clave).html(data.mensaje);
         },
         error: function () {
-            
+
         }
     });
 }
 function estado_contabilidad(id,proveedor,hoteles,grupo) {
-    
+
     var solicitado=$('#s_total').html();
     var aprovado=parseFloat($('#s_total_aprovado').html());
     var suma_resta=parseFloat($('#monto_c_'+id).html());
@@ -6735,7 +6737,7 @@ function estado_contabilidad(id,proveedor,hoteles,grupo) {
         valor=3;
         msj='Descartar';
     }
-    
+
     // alert('holaaa');
     // swal({
     //     title: 'MENSAJE DEL SISTEMA',
@@ -6746,7 +6748,7 @@ function estado_contabilidad(id,proveedor,hoteles,grupo) {
     //     cancelButtonColor: '#d33',
     //     confirmButtonText: 'Yes'
     // }).then(function () {
-        // $('#estado_contabilidad_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>'); 
+        // $('#estado_contabilidad_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6755,15 +6757,15 @@ function estado_contabilidad(id,proveedor,hoteles,grupo) {
         $.post('../estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles+'&grupo='+grupo, function(data) {
             if(data==1){
                 if(anular==3){
-                    $('#estado_view_'+id).html('<b class="badge badge-danger">Observado</b>'); 
-                    $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-off fa-3x text-danger"></i>');    
+                    $('#estado_view_'+id).html('<b class="badge badge-danger">Observado</b>');
+                    $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-off fa-3x text-danger"></i>');
                     $('#hestado_contabilidad_'+id).val('4');
                     aprovado-=suma_resta;
                 }
                 else if(anular==4){
-                    $('#estado_view_'+id).html('<b class="badge badge-primary">Aprovado</b>'); 
-                    $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-on fa-3x text-success"></i>');   
-                    $('#hestado_contabilidad_'+id).val('3'); 
+                    $('#estado_view_'+id).html('<b class="badge badge-primary">Aprovado</b>');
+                    $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-on fa-3x text-success"></i>');
+                    $('#hestado_contabilidad_'+id).val('3');
                     aprovado+=suma_resta;
                 }
                 $('#s_total_aprovado').html(aprovado);
@@ -6775,10 +6777,10 @@ function estado_contabilidad(id,proveedor,hoteles,grupo) {
     // })
 }
 function sr_programar_pagos_h(clave){
-    
+
 }
 function traer_datos_detalle(clave,grupo,clase,lista_items,nro_personas,operacion,estado_contabilidad){
-    
+
     // $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
     $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
     $('#'+grupo+'_'+clase+'_datos_'+clave).addClass('text-center');
@@ -6796,8 +6798,8 @@ function traer_datos_detalle(clave,grupo,clase,lista_items,nro_personas,operacio
         success: function (data) {
             $('#'+grupo+'_'+clase+'_datos_'+clave).html('');
             $('#'+grupo+'_'+clase+'_datos_'+clave).html(data);
-                
-            // if(data.estado=='1'){                
+
+            // if(data.estado=='1'){
             //     toastr.success('Datos modificados correctamente.','MENSAJE DEL SISTEMA');
             //     $('#fila_'+clave).remove();
             //     $('#datos_'+clave).removeClass('text-center');
@@ -6812,10 +6814,10 @@ function traer_datos_detalle(clave,grupo,clase,lista_items,nro_personas,operacio
             //     $('#datos_'+clave).html(data.mensaje);
             //     // $('#s_total').html(data.s_total);
             //     // $('#s_total_aprovado').html(data.s_total_aprovado);
-            // }            
+            // }
         },
         error: function () {
-            
+
         }
     });
 }
@@ -6837,7 +6839,7 @@ function contabilidad_hotel_store_notas(clave){
         // processData: false,
         beforeSend:
         function() {
-            
+
             $('#rpt_'+clave).html('');
             $('#rpt_'+clave).html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span>');
         },
@@ -6847,28 +6849,28 @@ function contabilidad_hotel_store_notas(clave){
             $('#rpt_'+clave).html(data.mensaje);
             // console.log('total obtenido:'+data.total);
             // if(data.total>0){
-                
+
             // console.log('total>0:'+data.total);
-            //     $("#chb_"+clave).prop('disabled', false);  
+            //     $("#chb_"+clave).prop('disabled', false);
             //     $("#warning_"+clave).addClass('d-none');
             //     $("#warning_"+clave).html('costo ingresado');
-                
+
             // }
             // else{
             //     console.log('total<=0:'+data.total);
             //     $("#chb_"+clave).prop('disabled', true);
-        
+
             // }
         },
         error: function () {
-            
+
         }
     });
 }
 function requerimiento_revisado(){
     var operacion=$('#operacion').val();
     if(operacion=='aprobar'){
-    
+
         $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6893,7 +6895,7 @@ function requerimiento_revisado(){
                 }
             },
             error: function () {
-                
+
             }
         });
 
@@ -6932,20 +6934,20 @@ function requerimiento_revisado(){
                 }
             },
             error: function () {
-                
+
             }
         });
     });
     }
-    
+
 }
 
 function pagar_proveedor(id,proveedor,hoteles,grupo) {
-    
+
     var solicitado=$('#s_total').html();
     var aprovado=parseFloat($('#s_total_aprovado').html());
     var suma_resta=parseFloat($('#monto_c_'+id).html());
-    
+
 
     var anular=$('#hestado_contabilidad_'+id).val();
     var valor=5;
@@ -6954,7 +6956,7 @@ function pagar_proveedor(id,proveedor,hoteles,grupo) {
         valor=3;
         msj='Descartar';
     }
-    
+
     // alert('holaaa');
     // swal({
     //     title: 'MENSAJE DEL SISTEMA',
@@ -6965,7 +6967,7 @@ function pagar_proveedor(id,proveedor,hoteles,grupo) {
     //     cancelButtonColor: '#d33',
     //     confirmButtonText: 'Yes'
     // }).then(function () {
-        // $('#estado_contabilidad_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>'); 
+        // $('#estado_contabilidad_'+id).html('<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i><span class="sr-only">Loading...</span>');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('[name="_token"]').val()
@@ -6974,8 +6976,8 @@ function pagar_proveedor(id,proveedor,hoteles,grupo) {
         $.post('../../requerimientos/estado-contabiliadad/cambiar/contabilidad', 'id='+id+'&valor='+valor+'&hoteles='+hoteles+'&grupo='+grupo, function(data) {
             if(data==1){
                 if(anular==3){
-                    $('#estado_view_'+id).html('<b class="badge badge-success">Pagado</b>'); 
-                    // $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-off fa-3x text-danger"></i>');    
+                    $('#estado_view_'+id).html('<b class="badge badge-success">Pagado</b>');
+                    // $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-off fa-3x text-danger"></i>');
                     $('#hestado_contabilidad_'+id).val('5');
                     $('#btn_pagar_'+id).html('Pagado');
                     $('#btn_pagar_'+id).removeClass('btn-primary');
@@ -6983,9 +6985,9 @@ function pagar_proveedor(id,proveedor,hoteles,grupo) {
                     // aprovado-=suma_resta;
                 }
                 else if(anular==5){
-                    $('#estado_view_'+id).html('<b class="badge badge-primary">Aprovado</b>'); 
-                    // $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-on fa-3x text-success"></i>');   
-                    $('#hestado_contabilidad_'+id).val('3'); 
+                    $('#estado_view_'+id).html('<b class="badge badge-primary">Aprovado</b>');
+                    // $('#estado_contabilidad_'+id).html('<i class="fas fa-toggle-on fa-3x text-success"></i>');
+                    $('#hestado_contabilidad_'+id).val('3');
                     $('#btn_pagar_'+id).html('Pagar');
                     $('#btn_pagar_'+id).removeClass('btn-success');
                     $('#btn_pagar_'+id).addClass('btn-primary');
@@ -7018,7 +7020,7 @@ function pagar_proveedor(id,proveedor,hoteles,grupo) {
 //             $('#rpt_').html(data.mensaje);
 //             $("#btn_enviar").prop('disabled', true);
 //         },
-//         error: function () {            
+//         error: function () {
 //         }
 //     });
 // }
@@ -7053,7 +7055,7 @@ function enviar_consulta(form){
                 $('#rpt_').html(data.mensaje);
                 $("#btn_enviar").prop('disabled', true);
             },
-            error: function () {            
+            error: function () {
             }
         });
     // });
@@ -7157,7 +7159,7 @@ function calcular_venta_contabilidad(tipo,nropersonas){
         var total_c_boleta_=Number(total_c_boleta+total_c_profit*nropersonas).toFixed(2)
         var total_c_factura=Number(total_c_vendido-(total_c_boleta+total_c_profit*nropersonas)).toFixed(2);
         console.log('total_c_boleta:'+total_c_boleta+',total_c_profit+',total_c_profit+',total_c_vendido:'+total_c_vendido+',total_c_factura:'+total_c_factura);
-        $("#total_c_boleta_").val(total_c_boleta_);    
+        $("#total_c_boleta_").val(total_c_boleta_);
         $("#total_c_factura").val(total_c_factura);
     }
     else if(tipo=='venta'){
@@ -7172,7 +7174,7 @@ function calcular_venta_contabilidad(tipo,nropersonas){
         }
         var total_c_factura=Number(total_c_vendido-total_c_boleta).toFixed(2);
         console.log('total_c_boleta:'+total_c_boleta+',total_c_profit+',total_c_profit+',total_c_vendido:'+total_c_vendido+',total_c_factura:'+total_c_factura);
-        $("#total_c_factura").val(total_c_factura);   
+        $("#total_c_factura").val(total_c_factura);
     }
 }
 function cambiar_a(para,itinerario_id,servicio_id){
@@ -7182,7 +7184,7 @@ function cambiar_a(para,itinerario_id,servicio_id){
         var total_venta_v=$("#total_c_boleta_html").html();
         var total_factura_v=$("#total_c_factura_html").html();
         var total_venvidido_v=$("#total_c_vendido_html").html();
-        
+
         var icon=$("#icon_"+itinerario_id+"_"+servicio_id).html();
         var concepto=$("#concepto_"+itinerario_id+"_"+servicio_id).html();
         var calculado=$("#calculado_"+itinerario_id+"_"+servicio_id).html();
@@ -7205,14 +7207,14 @@ function cambiar_a(para,itinerario_id,servicio_id){
             '<button class="btn btn-dark btn-sm" onclick="cambiar_a(\'b\',\''+itinerario_id+'\',\''+servicio_id+'\')"><i class="fas fa-arrow-circle-left"></i></button>'+
         '</div>'+
         '</div>';
-        
+
         $("#b_"+itinerario_id+"_"+servicio_id).remove();
         $("#f_"+itinerario_id).append(div_creado_copiado);
-    }    
+    }
 }
 
 function marcar_checked(clase){
-    
+
     // if($("input[name="+clase+"]").is(':checked')){//-- si se marco el check
     //     // console.log('Esta marcado');
     //     $('.'+clase).each(function (index) {
@@ -7241,7 +7243,7 @@ function buscar_pagos_pendinetes(form,valor,valor_estatico){
     // $('#'+form).submit(function() {
 
         // Enviamos el formulario usando AJAX
-        
+
         if(valor_estatico=='0'){
             // $("#boton").val(0);
             $("#btn_pagados").removeClass('btn-outline-primary');
@@ -7302,7 +7304,7 @@ function buscar_pagos_pendinetes(form,valor,valor_estatico){
                 $('#rpt_pr').html(data);
                 // $("#btn_enviar").prop('disabled', true);
             },
-            error: function () {            
+            error: function () {
             }
         })
     // });
@@ -7370,7 +7372,7 @@ function buscar_ingresos(form,valor,valor_estatico){
                 $('#rpt_pr').html(data);
                 // $("#btn_enviar").prop('disabled', true);
             },
-            error: function () {            
+            error: function () {
             }
         })
     // });
@@ -7400,7 +7402,7 @@ function call_popup_servicios_borrar(rpt_id,servicio_id,arreglo,cotizacion_id,it
             },
             success: function(data){
                 if(data.mensaje==1){
-                    
+
                     $('#book_proveedor_'+servicio_id).html('');
                     $('#boton_prove_hotel_'+servicio_id).removeClass('d-none');
                     $('#boton_prove_borrar_'+servicio_id).addClass('d-none');
@@ -7411,8 +7413,8 @@ function call_popup_servicios_borrar(rpt_id,servicio_id,arreglo,cotizacion_id,it
         });
 
     });
-    
-    
+
+
 }
 function call_popup_servicios_borrar_h(hotel_id){
     swal({
@@ -7448,14 +7450,14 @@ function call_popup_servicios_borrar_h(hotel_id){
         });
 
     });
-    
-    
+
+
 }
 function buscar_destino_day_by_day(valor){
     var destino='0';
     destino=$('#destinos_busqueda').val();
     console.log('valor de la busqueda:'+destino+'_'+valor);
-    
+
     $('#resultado_busqueda').html('');
     $.ajaxSetup({
         headers: {
@@ -7481,7 +7483,7 @@ function buscar_destino_day_by_day_edit(valor){
     var destino='0';
     destino=$('#txt_destino').val();
     console.log('valor de la busqueda:'+destino+'_'+valor);
-    
+
     $('#resultado_busqueda').html('');
     $.ajaxSetup({
         headers: {
@@ -7569,7 +7571,7 @@ function preparar_envio_hotel(id){
             location.reload();
         },
         error: function () {
-            
+
         }
     });
 }
@@ -7585,11 +7587,11 @@ function mostrar_modal(objeto_id,grupo){
         data: 'id='+objeto_id+'&grupo='+grupo,
         success: function (data) {
             $('#caja_modal_'+objeto_id).html(data);
-            $('#modal_edit_cost_'+objeto_id).modal({backdrop: 'static', keyboard: false}); 
-            
+            $('#modal_edit_cost_'+objeto_id).modal({backdrop: 'static', keyboard: false});
+
         },
         error: function () {
-            
+
         }
     });
 }

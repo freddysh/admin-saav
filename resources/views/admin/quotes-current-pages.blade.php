@@ -1,7 +1,7 @@
 @extends('layouts.admin.admin')
 @section('archivos-css')
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
-    
+
 @stop
 @section('archivos-js')
     <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
@@ -55,7 +55,7 @@
                     @if ($page=='expedia.com')
                         <a href="{{route('quotes_new1_expedia_path')}}" class="btn btn-primary"><i class="fas fa-plus"></i> NEW</a>
                     @else
-                        <a href="{{route('quotes_new1_pagina_path',$page)}}" class="btn btn-primary"><i class="fas fa-plus"></i> NEW</a>    
+                        <a href="{{route('quotes_new1_pagina_path',$page)}}" class="btn btn-primary"><i class="fas fa-plus"></i> NEW</a>
                     @endif
                 </div>
             </div>
@@ -69,7 +69,7 @@
                 <div class="col-8">
                     @if ($profit_tope==0)
                         @php
-                            $profit_tope=1;    
+                            $profit_tope=1;
                         @endphp
                     @endif
                     @php
@@ -77,7 +77,7 @@
                     @endphp
                     @if ($ancho_monto>100)
                         @php
-                            $ancho_monto=100;    
+                            $ancho_monto=100;
                         @endphp
                     @endif
                     <div class="row border">
@@ -188,7 +188,7 @@
                                     @endphp
                                 @endif
                             @endif
-                        @endforeach   
+                        @endforeach
                         <tr id="content-list-{{$cotizacion_->id}}">
                             <td>{{$pos}}</td>
                             <td>{{$cotizacion_->fecha_venta}} </td>
@@ -221,7 +221,7 @@
                             $pos++;
                         @endphp
                     @endforeach
-                    
+
                 </body>
             </table>
         </div>
@@ -490,7 +490,7 @@
             </div>
         </div>
     </div>
-    
+
     </div>
 <script>
     // $(function() {

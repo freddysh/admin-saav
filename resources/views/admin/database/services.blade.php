@@ -53,6 +53,7 @@
             <a href="{{route('nuevo_producto_path')}}" class="btn btn-primary btn-sm">
                 <i class="fa fa-plus" aria-hidden="true"></i> New
             </a>
+            @csrf
         </div>
     </div>
     <div class="row mt-3">
@@ -317,7 +318,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                {{csrf_field()}}
+                                                {{ csrf_field()}}
                                                 <input type="hidden" name="id" value="{{$hotel_->id}}">
                                                 <input type="hidden" name="posTipo" id="posTipo" value="0">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

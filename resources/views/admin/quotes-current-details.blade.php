@@ -61,12 +61,12 @@
     <hr>
     <div id="opctions" class="d-none">
         @foreach ($forma_pagos->sortby('nombre') as $item)
-            <option value="{{$item->id}}">{{$item->nombre}} ({{$item->tiempo_proceso}} dias)</option>    
+            <option value="{{$item->id}}">{{$item->nombre}} ({{$item->tiempo_proceso}} dias)</option>
         @endforeach
     </div>
     <div id="tipo_opctions" class="d-none">
         @foreach ($tipo_forma_pagos->sortby('nombre') as $item)
-            <option value="{{$item->id}}">{{$item->nombre}} @if($item->observacion) ({{$item->observacion}})@endif</option>  
+            <option value="{{$item->id}}">{{$item->nombre}} @if($item->observacion) ({{$item->observacion}})@endif</option>
         @endforeach
     </div>
     <div class="row">
@@ -391,15 +391,15 @@
                     <td>TOTAL</td>
                     <td class="d-none">DETALLE</td>
                     <td>EDITAR</td>
-                    <td>PDF</td>
-                    <td>LINK</td>
-                    <td>CREAR TEMPLATE</td>
+                    <td class="d-none">PDF</td>
+                    <td class="d-none">LINK</td>
+                    <td class="d-none">CREAR TEMPLATE</td>
                     <td>PLAN DE PAGOS</td>
                     <td>AGREGAR ARCHIVOS</td>
                     <td>AGREGAR NOTAS</td>
-                    <td>PEDIR DATOS</td>
+                    <td class="d-none">PEDIR DATOS</td>
                     <td>INGRESAR DATOS</td>
-                    <td>REVISAR DATOS</td>
+                    <td class="d-none">REVISAR DATOS</td>
                     <td>ESTADO</td>
                 </th>
                 </thead>
@@ -431,12 +431,14 @@
                             @endif
                         @endforeach
                     </td>
-                <td><small class="display-block text-primary"><sup>$</sup>{{$precio_venta_total+$utilidad_hoteles_}}</small></td>
+                    <td>
+                        <small class="display-block text-primary"><sup>$</sup>{{$precio_venta_total+$utilidad_hoteles_}}</small>
+                    </td>
                     <td class="d-none"><a class="text-primary" href="#!" data-toggle="tooltip" data-placement="top" title="Detalles"><b><i class="fa fa-eye" aria-hidden="true"></i></b></a></td>
                     <td><a class="text-warning" href="{{route('show_current_paquete_edit_path',[$paquete->id])}}" data-toggle="tooltip" data-placement="top" title="Edit Plan"><b><i class="fa fa-edit" aria-hidden="true"></i></b></a></td>
-                    <td><a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a></td>
-                    <td><a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.com.pe/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a></td>
-                    <td><a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a></td>
+                    <td class="d-none"><a class="text-danger" href="{{route('quotes_pdf_path',$paquete->id)}}" data-toggle="tooltip" data-placement="top" title="Export PDF"><b><i class="fas fa-file-pdf" aria-hidden="true"></i></b></a></td>
+                    <td class="d-none"><a class="text-primary" target="_blank" href="http://yourtrip.gotoperu.com.pe/coti/{{$cotizacion_->id}}-{{$paquete->id}}" data-toggle="tooltip" data-placement="top" title="Generate Link"><b><i class="fa fa-link" aria-hidden="true"></i></b></a></td>
+                    <td class="d-none"><a href="{{route('generar_pantilla1_path',[$paquete->id,$cotizacion_->id])}}" class="text-success small"><i class="fas fa-plus-circle" aria-hidden="true"></i> Create Template</a></td>
                     <td>
                         <a class="text-primary small" href="#!" id="archivos" data-toggle="modal" data-target="#myModal_plan_pagos">
                             <i class="fas fa-file-alt"></i>Plan de pagos
@@ -508,12 +510,12 @@
                                                                         <input type="text" class="form-control" name="numero_operacion[]" id="numero_operacion_{{$paquete->id}}_{{$i}}" style="width:150px">
                                                                     </td>
                                                                     <td style="width:120px">
-                                                                        <input type="hidden" name="estado_pago[]" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">             
+                                                                        <input type="hidden" name="estado_pago[]" id="confirmar_pagos_{{$paquete->id}}_{{$i}}" value="0">
                                                                         <button type="button" class="btn btn-unset" id="btn_confirmar_{{$paquete->id}}_{{$i}}" onclick="cambiar_estado_plan_pagos('{{$paquete->id}}','{{$i}}')">
-                                                                            <i class="fas fa-unlock"></i>   
+                                                                            <i class="fas fa-unlock"></i>
                                                                         </button>
                                                                         <button type="button" class="btn btn-primary" onclick="agregar_plan_pago('{{$paquete->id}}')">
-                                                                            <i class="fas fa-plus"></i>   
+                                                                            <i class="fas fa-plus"></i>
                                                                         </button>
                                                                     </td>
                                                                 </tr>
@@ -560,29 +562,29 @@
                                                                         <td style="width:120px">
                                                                             <input type="hidden" name="pago_id_[]" value="{{$pagos_cliente->id}}">
                                                                             <input type="hidden" name="estado_pago_[]" id="confirmar_pagos_{{$paquete->id}}_{{$pagos_cliente->id}}" value="{{$pagos_cliente->estado}}">
-                                                                                    
+
                                                                             <button type="button" class="btn @if($pagos_cliente->estado=='0') btn-unset @else btn-success @endif " id="btn_confirmar_{{$paquete->id}}_{{$pagos_cliente->id}}" onclick="cambiar_estado_plan_pagos('{{$paquete->id}}','{{$pagos_cliente->id}}')">
-                                                                                <i class="fas @if($pagos_cliente->estado=='0') fa-unlock @else fa-lock @endif"></i>   
+                                                                                <i class="fas @if($pagos_cliente->estado=='0') fa-unlock @else fa-lock @endif"></i>
                                                                             </button>
                                                                             @if($k==1)
                                                                                 <button type="button" class="btn btn-primary" onclick="agregar_plan_pago('{{$paquete->id}}')">
-                                                                                    <i class="fas fa-plus"></i>   
+                                                                                    <i class="fas fa-plus"></i>
                                                                                 </button>
                                                                             @else
                                                                                 <button type="button" class="btn btn-danger" onclick="borrar_plan_pago('{{$paquete->id}}','{{$pagos_cliente->id}}')">
-                                                                                    <i class="fas fa-trash-alt"></i>   
+                                                                                    <i class="fas fa-trash-alt"></i>
                                                                                 </button>
                                                                             @endif
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
                                                             @endif
-                                                            
+
                                                         </tbody>
                                                         <tfoot>
                                                             <tr>
                                                                 <td colspan="3">
-                                                                    <b>SUMATORIA</b>   
+                                                                    <b>SUMATORIA</b>
                                                                 </td>
                                                                 <td>
                                                                 </td>
@@ -591,14 +593,14 @@
                                                                 <input type="hidden" name="total" id="total_pago_{{$paquete->id}}" value="{{$precio_venta_total+$utilidad_hoteles_}}">
                                                                 </td>
                                                                 <td>Falta:
-                                                                <b class="text-danger"><sup>$</sup><span id="falta_{{$paquete->id}}">0</span></b>   
+                                                                <b class="text-danger"><sup>$</sup><span id="falta_{{$paquete->id}}">0</span></b>
                                                                 </td>
                                                             </tr>
                                                         </tfoot>
-                                                    </table>   
-                                                    <input type="hidden" id="nro_pagos_{{$paquete->id}}" value="1">   
+                                                    </table>
+                                                    <input type="hidden" id="nro_pagos_{{$paquete->id}}" value="1">
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             {{csrf_field()}}
@@ -747,7 +749,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td class="d-none">
                         <a id="pedir_datos_{{$paquete->id}}" href="#!" class="@if($paquete->pedir_datos>0) {{'text-succcess'}} @else {{'text-primary'}}@endif small" data-toggle="modal" data-target="#Modal_pedir_info_{{$paquete->id}}">
                             <i class="fas fa-list-alt" aria-hidden="true"></i>Pedir Datos
                         </a>
@@ -858,57 +860,57 @@
                                                                 </div>
                                                                 <input type="text" class="form-control" id="pasaporte" name="pasaporte[]" value="{{$cliente_coti->cliente->pasaporte}}" required>
                                                             </div>
-                                                        </td>   
+                                                        </td>
                                                         <td>
                                                             <input type="text" class="form-control" id="nacionalidad" name="nacionalidad[]" value="{{$cliente_coti->cliente->nacionalidad}}" required>
                                                         </td>
                                                     </tr>
-                                                    
+
                                                 @endforeach
                                                 <tbody>
                                             </table>
                                             <div class="col-6 mb-2 d-none">
                                                     <div class="card p-2">
-                                                        
+
                                                         <div class="input-group mb-2">
                                                                 <div class="input-group-prepend">
                                                                     <div class="input-group-text">Nombres</div>
                                                                 </div>
-                                                            
+
                                                         </div>
                                                         <div class="input-group mb-2">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Apellidos</div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                         <div class="input-group mb-2">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Gender</div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                         <div class="input-group mb-2">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Fecha de nacimiento</div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                         <div class="input-group mb-2">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Pasaporte</div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                         <div class="input-group mb-2">
                                                             <div class="input-group-prepend">
                                                                 <div class="input-group-text">Nacionalidad</div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                            
+
                                             <div class="row">
                                                 <div class="col-12">
                                                     <b id="response_idatos_{{$paquete->id}}" class="text-22"></b>
@@ -927,7 +929,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td class="d-none">
                         <a href="http://yourtrip.gotoperu.com.pe/booking_information_full/{{$cotizacion_->id}}-{{$paquete->id}}" class="text-unset small" target="_blank"><i class="fas fa-users" aria-hidden="true"></i> Revisar Datos</a>
                     </td>
                     <td>
@@ -1026,9 +1028,9 @@
                                     @endphp
                                     @foreach($paquete->paquete_precios as $precio_paquete2)
                                         @if($precio_paquete2->estado == 1)
-                                            <div id="star_{{$precio_paquete2->estrellas}}" class="hide">
+                                            <div id="star_{{$precio_paquete2->estrellas}}" class="d-none">
                                                 <h5 class="no-margin"><b>CATEGORIA: {{$precio_paquete2->estrellas}} ESTRELLAS</b></h5>
-                                                <table class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
+                                                <table class="d-none table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
                                                     <thead>
                                                     <tr>
                                                         <th>Nro</th>
@@ -1202,7 +1204,7 @@
                                                     @endif
                                                     </thead>
                                                 </table>
-                                                <div class="text-right">
+                                                <div class="text-right d-none">
                                                     <b class="text-25">Precio del paquete: $<span id="total_{{$precio_paquete2->estrellas}}" class=" text-success"></span></b>
                                                 </div>
                                                 <input type="hidden" id="precio_paquete_id" name="precio_paquete_id_{{$precio_paquete2->estrellas}}"   value="{{$precio_paquete2->id}}">

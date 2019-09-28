@@ -2,7 +2,7 @@
 
             <nav id="sidebar" class="bg-light p-2">
                 <div class="sidebar-header">
-                    <img alt="Brand" src="{{asset("img/logos/logo-gotoperu.png")}}" class="w-100">
+                    <img alt="Brand" src="{{asset("img/logos/logo-saav-xoddo.png")}}" class="w-100">
                     <div class="row justify-content-center my-3">
                         <div class="col-8 text-center">
                             <img src="https://scontent.flim9-1.fna.fbcdn.net/v/t1.0-9/31739806_993323907486435_1000599518791598080_n.jpg?_nc_cat=0&oh=5eb66ecc0cc7c6c1897958ef0907c7b1&oe=5B9E1A5A" alt="" class="rounded-circle w-100">

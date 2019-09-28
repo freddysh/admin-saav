@@ -27,10 +27,10 @@ class IndexController extends Controller
         //     $cotizacion=Cotizacion::where('web', $page)->get();
         // $webs=Web::get();
         // return view('admin.index',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'webs'=>$webs,'hotel_proveedor_id'=>0,'id'=>0,'fecha_ini'=>date("Y-m-d"),'fecha_fin'=>date("Y-m-d")]);
-      
+
         $anio=date("Y");
         $mes=date("m");
-        $page='gotoperu.com';
+        $page='ejemplo.com';
         $tipo_filtro='close-date';
         return redirect()->route('current_sales_type_page_path',compact(['anio','mes','page','tipo_filtro']));
     }
@@ -38,15 +38,15 @@ class IndexController extends Controller
         $user_name=auth()->guard('admin')->user()->name;
         $user_tipo=auth()->guard('admin')->user()->tipo_user;
         session()->put('menu', 'ventas');
-        $page='gotoperu.com';
+        $page='ejemplo.com';
         if($user_tipo=='ventas')
             $cotizacion=Cotizacion::where('users_id',auth()->guard('admin')->user()->id)->where('web', $page)->get();
         else
             $cotizacion=Cotizacion::where('web', $page)->get();
-        
+
         $webs=Web::get();
         return view('admin.menu',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'webs'=>$webs]);
-        
+
     }
     public function inicio()
     {
@@ -314,12 +314,13 @@ class IndexController extends Controller
 
     }
     public function crearp(Request $request){
+        $txt_name=$request->input('txt_name');
         $email=$request->input('txt_codigo');
         $contrasena=$request->input('txt_password');
         $tipo=$request->input('tipo');
 
         $user=new User();
-        $user->name='freddy';
+        $user->name=$txt_name;
         $user->email=$email;
         $user->tipo_user=$tipo;
         $user->password=bcrypt($contrasena);

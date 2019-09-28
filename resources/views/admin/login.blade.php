@@ -2,7 +2,7 @@
 @section('content')
     <div class="row justify-content-center align-items-center mt-5">
         <div class="col-lg-4">
-            <img alt="Logo goto peru" src="{{asset("img/logos/logo-gotoperu.png")}}" class="w-100 px-4 pb-0">
+            <img alt="Logo goto peru" src="{{asset("img/logos/logo-saav-xoddo.png")}}" class="w-100 px-4 pb-0">
             <p class="text-white text-center">System v0.1</p>
             <form action="{{route('login_path')}}" method="post">
             <div class="card">

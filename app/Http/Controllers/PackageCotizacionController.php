@@ -810,7 +810,7 @@ class PackageCotizacionController extends Controller
         $cliente_id=0;
         $estrela = $request->input('estrellas_from');
         $date = date_create($request->input('txt_date1'));
-        
+
         $movilid=$request->input('txt_movilid1');
 //        $fecha =strftime("%d %B, %Y", strtotime(str_replace('-','/', $date)));
         if($plan=='0') {
@@ -1158,7 +1158,7 @@ class PackageCotizacionController extends Controller
                                 ->get();
                             }
                         }
-                        
+
                         foreach($servicios_list->take(1) as $servi){
                             $st-=$p_servicio->precio;
                             $p_servicio1=ItinerarioServicios::FindOrFail($p_servicio->id);
@@ -1233,7 +1233,7 @@ class PackageCotizacionController extends Controller
         }
     //  return redirect()->route('show_step1_path',[$cliente_id,$cotizacion_id,$paquete->id,'nuevo']);
      return redirect()->route('show_current_paquete_edit_path',[$paquete->id]);
-     
+
 
     }
     public function nuevo_paquete_(Request $request)
@@ -1245,7 +1245,7 @@ class PackageCotizacionController extends Controller
         $notas = $request->input('notas_');
         $estrela = $request->input('estrellas_from_');
         $date = date_create($request->input('txt_date1_'));
-        
+
         $movilid=$request->input('txt_movilid2');
 //        $fecha =strftime("%d %B, %Y", strtotime(str_replace('-','/', $date)));
         $acomodacion_s=0;
@@ -1605,7 +1605,7 @@ class PackageCotizacionController extends Controller
                                     ->where('max_personas','>=',$nro_personas)
                                     ->get();
                                 }
-                            }                          
+                            }
 
                             foreach($servicios_list->take(1) as $servi){
                                 $st-=$p_servicio->precio;
@@ -1743,7 +1743,7 @@ class PackageCotizacionController extends Controller
                 $paquete_precio->utilidad_por_m = $profit_por_m;
                 $paquete_precio->utilidad_por_t = $profit_por_t;
                 $paquete_precio->save();
-                
+
             }
             $itinerarios = ItinerarioCotizaciones::where('paquete_cotizaciones_id', $paquete_id)->get();
             foreach ($itinerarios as $itinerario) {
@@ -1886,7 +1886,7 @@ class PackageCotizacionController extends Controller
 
     }
     public function delete_servicio_quotes_paso1(Request $request){
-        
+
         // return response()->json(['mensaje'=>$request->all()]);
 
         $id = $request->input('id');
@@ -1901,7 +1901,7 @@ class PackageCotizacionController extends Controller
         $pv_m_serv=$request->input('pv_m_serv_e_s');
         $pv_t_serv=$request->input('pv_t_serv_e_s');
         $pv_sh_serv=$request->input('pv_sh_serv_e_s');
-    
+
         $con_sin_hotel=$request->input('con_sin_hotel_e_s');
         $acomodacion_hotel=$request->input('acomodacion_hotel_e_s');
 
@@ -1915,7 +1915,7 @@ class PackageCotizacionController extends Controller
         else{
             $costo_add=(0-$objeto->precio);
         }
-        
+
         // dd($con_sin_hotel);
         if($con_sin_hotel=='ch'){
             $acomodacion_hotel=explode('_',$acomodacion_hotel);
@@ -1935,8 +1935,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_s=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[1]>0){
                 $costo=$cost_d_serv;
@@ -1954,8 +1954,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_d=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[2]>0){
                 $costo=$cost_m_serv;
@@ -1973,8 +1973,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_m=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[3]>0){
                 $costo=$cost_t_serv;
@@ -1992,9 +1992,9 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_t=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
-            }    
+                    }
+                }
+            }
         }
         elseif($con_sin_hotel=='sh'){
             $costo=$cost_sh_serv;
@@ -2003,13 +2003,13 @@ class PackageCotizacionController extends Controller
             foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
                 $temp_hotel=PaqueteCotizaciones::find($paquete->id);
                 $temp_hotel->utilidad=$profit_nuevo;
-                $temp_hotel->save();                     
-            }  
+                $temp_hotel->save();
+            }
         }
 
         $objeto->delete();
         return response()->json(['mensaje'=>'1']);
-        
+
     }
     public function cotizacion_cliente_autocomplete(){
         $term=Input::get('term');
@@ -2224,8 +2224,8 @@ class PackageCotizacionController extends Controller
                                 $temp_hotel->utilidad_s=$profit_nuevo;
                                 $temp_hotel->save();
                             }
-                        }       
-                    }  
+                        }
+                    }
                 }
                 if($acomodacion_hotel[1]>0){
                     $costo=$request->input('cost_d_serv');
@@ -2243,8 +2243,8 @@ class PackageCotizacionController extends Controller
                                 $temp_hotel->utilidad_d=$profit_nuevo;
                                 $temp_hotel->save();
                             }
-                        }       
-                    }  
+                        }
+                    }
                 }
                 if($acomodacion_hotel[2]>0){
                     $costo=$request->input('cost_m_serv');
@@ -2262,8 +2262,8 @@ class PackageCotizacionController extends Controller
                                 $temp_hotel->utilidad_m=$profit_nuevo;
                                 $temp_hotel->save();
                             }
-                        }       
-                    }  
+                        }
+                    }
                 }
                 if($acomodacion_hotel[3]>0){
                     $costo=$request->input('cost_t_serv');
@@ -2281,8 +2281,8 @@ class PackageCotizacionController extends Controller
                                 $temp_hotel->utilidad_t=$profit_nuevo;
                                 $temp_hotel->save();
                             }
-                        }       
-                    }  
+                        }
+                    }
                 }
             }
             elseif($con_sin_hotel=='sh'){
@@ -2292,8 +2292,8 @@ class PackageCotizacionController extends Controller
                 foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
                     $temp_hotel=PaqueteCotizaciones::find($paquete->id);
                     $temp_hotel->utilidad=$profit_nuevo;
-                    $temp_hotel->save();                     
-                }  
+                    $temp_hotel->save();
+                }
             }
         }
 //        return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id,'nuevo_ajax']);
@@ -2330,7 +2330,7 @@ class PackageCotizacionController extends Controller
         return redirect()->route('show_step1_ser_edit_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
     }
     public function delete_hotel_quotes_paso1(Request $request){
-        
+
         // return response()->json(['mensaje'=>$request->all()]);
 
         $cost_s_serv=$request->input('cost_s_serv_e_s');
@@ -2344,7 +2344,7 @@ class PackageCotizacionController extends Controller
         $pv_m_serv=$request->input('pv_m_serv_e_s');
         $pv_t_serv=$request->input('pv_t_serv_e_s');
         $pv_sh_serv=$request->input('pv_sh_serv_e_s');
-    
+
         $con_sin_hotel=$request->input('con_sin_hotel_e_s');
         $acomodacion_hotel=$request->input('acomodacion_hotel_e_s');
 
@@ -2371,8 +2371,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_s=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[1]>0){
                 $costo=$cost_d_serv;
@@ -2390,14 +2390,14 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_d=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[2]>0){
                 $costo=$cost_m_serv;
                 $venta=$pv_m_serv;
                 $profit_nuevo=$venta-($costo-($objeto->precio_m/2));
-                
+
                 // dd($profit_nuevo);
                 foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
                     foreach($paquete->paquete_precios as $paquete_precios){
@@ -2411,8 +2411,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_m=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[3]>0){
                 $costo=$cost_t_serv;
@@ -2430,11 +2430,11 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_t=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
-            }    
+                    }
+                }
+            }
         }
-                
+
         $itinerario_cotizaciones_id=$objeto->itinerario_cotizaciones_id;
         $localizacion=$objeto->localizacion;
         if($objeto->delete()){
@@ -2497,7 +2497,7 @@ class PackageCotizacionController extends Controller
         $coti->posibilidad=100;
         $coti->fecha_venta=$hoy->toDateString();
         $coti->confirm_user_id=auth()->guard('admin')->user()->id;
-        
+
         $coti->save();
         $pqt=PaqueteCotizaciones::FindOrFail($id);
         $pqt->estado=$valor;
@@ -2754,13 +2754,13 @@ class PackageCotizacionController extends Controller
         $precio_m_a=0;
         $precio_t_a=0;
         // $precio_sh_a=0;
-        
+
         $precio_hotel_reserva=PrecioHotelReserva::FindOrFail($id);
         $precio_s_a=$precio_hotel_reserva->precio_s;
         $precio_d_a=$precio_hotel_reserva->precio_d;
         $precio_m_a=$precio_hotel_reserva->precio_m;
         $precio_t_a=$precio_hotel_reserva->precio_t;
-        
+
         $precio_hotel_reserva->precio_s=$precio_s;
         $precio_hotel_reserva->precio_d=ceil($precio_d*2);
         $precio_hotel_reserva->precio_m=ceil($precio_m*2);
@@ -2770,7 +2770,7 @@ class PackageCotizacionController extends Controller
 
         $cotizacion_id=$request->input('id_cotizacion');
         $cotizacion=Cotizacion::FindOrFail($cotizacion_id);
-        
+
         if($request->input('con_sin_hotel')=='ch'){
             $acomodacion_hotel=$request->input('acomodacion_hotel');
             $acomodacion_hotel=explode('_',$acomodacion_hotel);
@@ -2791,8 +2791,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_s=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[1]>0){
                 $costo=$request->input('cost_d_serv');
@@ -2810,8 +2810,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_d=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[2]>0){
                 $costo=$request->input('cost_m_serv');
@@ -2832,8 +2832,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_m=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[3]>0){
                 $costo=$request->input('cost_t_serv');
@@ -2853,8 +2853,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_t=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
         }
         elseif($request->input('con_sin_hotel')=='sh'){
@@ -2864,8 +2864,8 @@ class PackageCotizacionController extends Controller
             foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
                 $temp_hotel=PaqueteCotizaciones::find($paquete->id);
                 $temp_hotel->utilidad=$profit_nuevo;
-                $temp_hotel->save();                     
-            }  
+                $temp_hotel->save();
+            }
         }
         // return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
         // return redirect()->route('show_step1_editar_path',[$id_client,$id_cotizacion,$id_paquete,'editar']);
@@ -2947,8 +2947,8 @@ class PackageCotizacionController extends Controller
         $notas=$request->input('r_dir_notas');
         $coti=Cotizacion::find($cotizacion_id);
         $coti->notas=$notas;
-        // return $notas; 
-        
+        // return $notas;
+
         if($coti->save())
             return 1;
         else
@@ -2981,7 +2981,7 @@ class PackageCotizacionController extends Controller
         else
         return 0;
     }
-    
+
     public function current_cotizacion_page_($anio,$mes,$page,$tipo_filtro)
     {
         $user_name=auth()->guard('admin')->user()->name;
@@ -3004,7 +3004,7 @@ class PackageCotizacionController extends Controller
             else{
                 $cotizacion = Cotizacion::where('web', $page)->whereYear($filtro_sale,$anio)->whereMonth($filtro_sale,$mes)->where('users_id', auth()->guard('admin')->user()->id)->get();
             }
-            
+
         }
         else {
             if($tipo_filtro=='arrival-date'){
@@ -3017,12 +3017,12 @@ class PackageCotizacionController extends Controller
         // dd($cotizacion);
         session()->put('menu-lateral', 'quotes/current');
         $webs=Web::get();
-        
+
         $goal= GoalProfit::where('pagina',$page)->where('anio',$anio)->where('mes',$mes)->get()->first();
         $profit_tope =0;
         if(count((array)$goal)>0)
             $profit_tope =$goal->goal;
-        
+
         $profit_suma=0;
         // profit alcanzado
         foreach ($cotizacion->sortByDesc($filtro_sale) as $cotizacion_){
@@ -3031,37 +3031,37 @@ class PackageCotizacionController extends Controller
             foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete_cotizaciones){
                 if($paquete_cotizaciones->duracion==1){
                     $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                }                    
+                }
                 else{
                     $nro_personas=0;
                     $uti=0;
-                    
+
                     if($paquete_cotizaciones->paquete_precios->count()>=1){
                         foreach($paquete_cotizaciones->paquete_precios as $precio){
                             $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
                             if($precio->personas_s>0)
                                 $uti+=$precio->utilidad_s*$precio->personas_s;
-                            
+
                             if($precio->personas_d>0)
                                     $uti+=$precio->utilidad_d*$precio->personas_d*2;
-                            
+
                             if($precio->personas_m>0)
                                     $uti+=$precio->utilidad_m*$precio->personas_m*2;
-                            
+
                             if($precio->personas_t>0)
                                 $uti+=$precio->utilidad_t*$precio->personas_t*3;
-                        
+
                         }
 
                         if($nro_personas>0)
                             $profit+=$uti;
                         else
                             $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                            
+
                     }
                     else
                         $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                    
+
                 }
             }
             if($cotizacion_->estado==2){
@@ -3071,7 +3071,7 @@ class PackageCotizacionController extends Controller
             }
         }
         $profit_alcanzado = $profit_suma;
-        
+
         $profit_suma_anio_pasado=0;
         // profit alcanzado anio pasado
         $cotizacion_anio_pasado=null;
@@ -3090,39 +3090,39 @@ class PackageCotizacionController extends Controller
             foreach($cotizacion_->paquete_cotizaciones->take(1) as $paquete_cotizaciones){
                 if($paquete_cotizaciones->duracion==1){
                     $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                }                    
+                }
                 else{
                     $nro_personas=0;
                     $uti=0;
-                    
+
                     if($paquete_cotizaciones->paquete_precios->count()>=1){
                         foreach($paquete_cotizaciones->paquete_precios as $precio){
                             $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
                             if($precio->personas_s>0)
                                 $uti+=$precio->utilidad_s*$precio->personas_s;
-                            
+
                             if($precio->personas_d>0)
                                     $uti+=$precio->utilidad_d*$precio->personas_d*2;
-                            
+
                             if($precio->personas_m>0)
                                     $uti+=$precio->utilidad_m*$precio->personas_m*2;
-                            
+
                             if($precio->personas_t>0)
                                 $uti+=$precio->utilidad_t*$precio->personas_t*3;
-                        
+
                         }
 
                         if($nro_personas>0)
                             $profit+=$uti;
                         else
                             $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                            
+
                     }
                     else
                         $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                    
+
                 }
-            }            
+            }
             $profit_suma_anio_pasado+=$profit;
         }
         $profit_anio_pasado = $profit_suma_anio_pasado;
@@ -3131,6 +3131,7 @@ class PackageCotizacionController extends Controller
         //     return view('admin.quotes-current-page-expedia',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs]);
         // }
         // else{
+            // dd($tipo_filtro);
             return view('admin.quotes-current-pages',['cotizacion'=>$cotizacion, 'page'=>$page,'user_name'=>$user_name,'user_tipo'=>$user_tipo,'anio'=>$anio,'mes'=>$mes,'webs'=>$webs,'profit_tope'=>$profit_tope,'profit_alcanzado'=>$profit_alcanzado,'profit_anio_pasado'=>$profit_anio_pasado,'tipo_filtro'=>$tipo_filtro]);
         // }
     }
@@ -3153,12 +3154,12 @@ class PackageCotizacionController extends Controller
         // dd($cotizacion);
         session()->put('menu-lateral', 'quotes/current');
         $webs=Web::get();
-        
+
         $goal= GoalProfit::where('pagina',$page)->where('anio',$anio)->where('mes',$mes)->get()->first();
         $profit_tope =0;
         if(count((array)$goal)>0)
             $profit_tope =$goal->goal;
-        
+
         $profit_suma=0;
         // profit alcanzado
         foreach ($cotizacion->sortByDesc('fecha_venta') as $cotizacion_){
@@ -3167,43 +3168,43 @@ class PackageCotizacionController extends Controller
             foreach($cotizacion_->paquete_cotizaciones->where('estado',2) as $paquete_cotizaciones){
                 if($paquete_cotizaciones->duracion==1){
                     $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                }                    
+                }
                 else{
                     $nro_personas=0;
                     $uti=0;
-                    
+
                     if($paquete_cotizaciones->paquete_precios->count()>=1){
                         foreach($paquete_cotizaciones->paquete_precios as $precio){
                             $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
                             if($precio->personas_s>0)
                                 $uti+=$precio->utilidad_s*$precio->personas_s;
-                            
+
                             if($precio->personas_d>0)
                                     $uti+=$precio->utilidad_d*$precio->personas_d*2;
-                            
+
                             if($precio->personas_m>0)
                                     $uti+=$precio->utilidad_m*$precio->personas_m*2;
-                            
+
                             if($precio->personas_t>0)
                                 $uti+=$precio->utilidad_t*$precio->personas_t*3;
-                        
+
                         }
 
                         if($nro_personas>0)
                             $profit+=$uti;
                         else
                             $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                            
+
                     }
                     else
                         $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                    
+
                 }
-            }            
+            }
             $profit_suma+=$profit;
         }
         $profit_alcanzado = $profit_suma;
-        
+
         $profit_suma_anio_pasado=0;
         // profit alcanzado anio pasado
         $cotizacion_anio_pasado=null;
@@ -3222,39 +3223,39 @@ class PackageCotizacionController extends Controller
             foreach($cotizacion_->paquete_cotizaciones->where('estado',2) as $paquete_cotizaciones){
                 if($paquete_cotizaciones->duracion==1){
                     $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                }                    
+                }
                 else{
                     $nro_personas=0;
                     $uti=0;
-                    
+
                     if($paquete_cotizaciones->paquete_precios->count()>=1){
                         foreach($paquete_cotizaciones->paquete_precios as $precio){
                             $nro_personas=$precio->personas_s+$precio->personas_d+$precio->personas_m+$precio->personas_t;
                             if($precio->personas_s>0)
                                 $uti+=$precio->utilidad_s*$precio->personas_s;
-                            
+
                             if($precio->personas_d>0)
                                     $uti+=$precio->utilidad_d*$precio->personas_d*2;
-                            
+
                             if($precio->personas_m>0)
                                     $uti+=$precio->utilidad_m*$precio->personas_m*2;
-                            
+
                             if($precio->personas_t>0)
                                 $uti+=$precio->utilidad_t*$precio->personas_t*3;
-                        
+
                         }
 
                         if($nro_personas>0)
                             $profit+=$uti;
                         else
                             $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                            
+
                     }
                     else
                         $profit=$paquete_cotizaciones->utilidad*$cotizacion_->nropersonas;
-                    
+
                 }
-            }            
+            }
             $profit_suma_anio_pasado+=$profit;
         }
         $profit_anio_pasado = $profit_suma_anio_pasado;
@@ -3296,7 +3297,7 @@ class PackageCotizacionController extends Controller
         if(count($ppaquetes)==0){
             $ppaquetes = P_Paquete::where('pagina',$pagina)->where('duracion',$duracion)->get();
         }
-                
+
         // if($pagina=='gotoperu.com'){
         //     $ppaquetes =P_Paquete::whereIn('pagina',[$pagina,'expedia.com'])->where('duracion',$duracion)->get();
         // }
@@ -3345,7 +3346,7 @@ class PackageCotizacionController extends Controller
             $temp->save();
             if($m_servicio->precio_grupo==1)
                 $costo_add+=$m_servicio->precio_venta/$cotizacion->nropersonas;
-            elseif($m_servicio->precio_grupo==0)   
+            elseif($m_servicio->precio_grupo==0)
                 $costo_add+=$m_servicio->precio_venta;
 
         }
@@ -3370,8 +3371,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_s=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[1]>0){
                 $costo=$request->input('cost_d_serv');
@@ -3389,8 +3390,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_d=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[2]>0){
                 $costo=$request->input('cost_m_serv');
@@ -3408,8 +3409,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_m=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[3]>0){
                 $costo=$request->input('cost_t_serv');
@@ -3427,8 +3428,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_t=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
         }
         elseif($con_sin_hotel=='sh'){
@@ -3438,11 +3439,11 @@ class PackageCotizacionController extends Controller
             foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
                 $temp_hotel=PaqueteCotizaciones::find($paquete->id);
                 $temp_hotel->utilidad=$profit_nuevo;
-                $temp_hotel->save();                     
+                $temp_hotel->save();
             }
         }
 
-        
+
         // $s=0;
         // $d=0;
         // $m=0;
@@ -3475,7 +3476,7 @@ class PackageCotizacionController extends Controller
         //     if($cotizacion->star_0=='0'){
         //         $pv_sh=$costo+$paquete->utilidad;
         //     }
-        //     elseif($cotizacion->star_2=='2' || $cotizacion->star_3=='3' || $cotizacion->star_4=='4' || $cotizacion->star_5=='5'){          
+        //     elseif($cotizacion->star_2=='2' || $cotizacion->star_3=='3' || $cotizacion->star_4=='4' || $cotizacion->star_5=='5'){
         //         foreach($paquete->itinerario_cotizaciones as $itinerario_cotizaciones){
         //             foreach($itinerario_cotizaciones->hotel as $hotel){
         //                 if($hotel->personas_s){
@@ -3499,7 +3500,7 @@ class PackageCotizacionController extends Controller
         //         $pv_s=$costo+$utilidad_s+$s;
         //         $pv_d=$costo+$utilidad_d+$d;
         //         $pv_m=$costo+$utilidad_m+$m;
-        //         $pv_t=$costo+$utilidad_t+$t;                
+        //         $pv_t=$costo+$utilidad_t+$t;
         //     }
         // }
         // // dd($utilidad_m);
@@ -3536,7 +3537,7 @@ class PackageCotizacionController extends Controller
         //             else{
         //                 $costo2+=$itinerario_servicio->precio/$cotizacion->nropersonas;
         //             }
-        //         }              
+        //         }
         //     }
         // }
         //-- si el file no tiene hotel
@@ -3545,10 +3546,10 @@ class PackageCotizacionController extends Controller
         // $profit_d=0;
         // $profit_m=0;
         // $profit_t=0;
-        
+
 
         // foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
-            
+
         //     if($cotizacion->star_0=='0'){
         //         $tempo=PaqueteCotizaciones::FindOrFail($paquete->id);
         //         $tempo->utilidad=$profit_sh;
@@ -3639,8 +3640,8 @@ class PackageCotizacionController extends Controller
                         $temp_hotel->utilidad_s=$profit_nuevo;
                         $temp_hotel->save();
                     }
-                }       
-            }  
+                }
+            }
         }
         if($acomodacion_hotel[1]>0){
             $costo=$request->input('cost_d_serv');
@@ -3659,8 +3660,8 @@ class PackageCotizacionController extends Controller
                         $temp_hotel->utilidad_d=$profit_nuevo;
                         $temp_hotel->save();
                     }
-                }       
-            }  
+                }
+            }
         }
         if($acomodacion_hotel[2]>0){
             $costo=$request->input('cost_m_serv');
@@ -3678,8 +3679,8 @@ class PackageCotizacionController extends Controller
                         $temp_hotel->utilidad_m=$profit_nuevo;
                         $temp_hotel->save();
                     }
-                }       
-            }  
+                }
+            }
         }
         if($acomodacion_hotel[3]>0){
             $costo=$request->input('cost_t_serv');
@@ -3697,8 +3698,8 @@ class PackageCotizacionController extends Controller
                         $temp_hotel->utilidad_t=$profit_nuevo;
                         $temp_hotel->save();
                     }
-                }       
-            }  
+                }
+            }
         }
         return redirect()->back();
     }
@@ -3762,8 +3763,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_s=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[1]>0){
                 $costo=$request->input('cost_d_serv');
@@ -3781,8 +3782,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_d=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[2]>0){
                 $costo=$request->input('cost_m_serv');
@@ -3801,8 +3802,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_m=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[3]>0){
                 $costo=$request->input('cost_t_serv');
@@ -3821,8 +3822,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_t=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
         }
         $pqt_precio->delete();
@@ -3854,7 +3855,7 @@ class PackageCotizacionController extends Controller
             foreach($itinerario_cotizaciones as $itinerario_cotizacion){
                 foreach($itinerario_cotizacion->itinerario_servicios->where('proveedor_id',$valor_1) as $servicio){
                     if(!$encontrado){
-                        
+
                         $str_fecha=$servicio->fecha_venc;
                         $encontrado=true;
                     }
@@ -3884,7 +3885,7 @@ class PackageCotizacionController extends Controller
         $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function($query)use($fecha_uso,$proveedor_id){
             $query->where('fecha',$fecha_uso)
             ->whereHas('itinerario_servicios',function($query)use($proveedor_id){
-                $query->where('proveedor_id',$proveedor_id);    
+                $query->where('proveedor_id',$proveedor_id);
             });
         })->get();
         $cadena='';
@@ -3904,9 +3905,9 @@ class PackageCotizacionController extends Controller
                             else{
                                 $cadena.='#'.$i.' '.$cotizacion->codigo.' | '.$cotizacion->nombre_pax.'x'.$cotizacion->nropersonas.' '.date_format(date_create($cotizacion->fecha), 'jS M Y').' |<span class="badge badge-dark"> Dia '.$itinerario_cotizacion->dias.': '.MisFunciones::fecha_peru($fecha_uso).' '.$itinerario_servicio->hora_llegada.'</span><br>';
                             }
-                            
-                        } 
-                    } 
+
+                        }
+                    }
                 }
             }
         }
@@ -3957,14 +3958,14 @@ class PackageCotizacionController extends Controller
             }
         }
 
-        
+
 //        dd($fecha->toDateString().'_'.$proveedor->plazo.'/'.$proveedor->desci);
         $fecha_uso=$itinerario->fecha;
         $proveedor_id=$hotel_proveedor_id;
         $cotizaciones=Cotizacion::whereHas('paquete_cotizaciones.itinerario_cotizaciones',function($query)use($fecha_uso,$proveedor_id){
             $query->where('fecha',$fecha_uso)
             ->whereHas('hotel',function($query)use($proveedor_id){
-                $query->where('proveedor_id',$proveedor_id);    
+                $query->where('proveedor_id',$proveedor_id);
             });
         })->get();
         $cadena='';
@@ -3984,9 +3985,9 @@ class PackageCotizacionController extends Controller
                             else{
                                 $cadena.='#'.$i.' '.$cotizacion->codigo.' | '.$cotizacion->nombre_pax.'x'.$cotizacion->nropersonas.' '.date_format(date_create($cotizacion->fecha), 'jS M Y').' |<span class="badge badge-dark"> Dia '.$itinerario_cotizacion->dias.': '.MisFunciones::fecha_peru($fecha_uso).' '.$hotel->hora_llegada.'</span><br>';
                             }
-                            
-                        } 
-                    } 
+
+                        }
+                    }
                 }
             }
         }
@@ -4009,17 +4010,17 @@ class PackageCotizacionController extends Controller
         $itinerario_servicio->save();
 
         $cotizacion=Cotizacion::FindOrFail($id_cotizacion);
-        $costo_add=0;                                                                                                                                                                                                    
+        $costo_add=0;
         if($itinerario_servicio->precio_grupo==1){
             $costo_add=($precio-$precio_anterior)/$cotizacion->nropersonas;
         }
         else{
             $costo_add=($precio-$precio_anterior);
         }
-        
+
         $con_sin_hotel=$request->input('con_sin_hotel');
 
-        
+
         if($con_sin_hotel=='ch'){
             $acomodacion_hotel=$request->input('acomodacion_hotel');
             $acomodacion_hotel=explode('_',$acomodacion_hotel);
@@ -4027,7 +4028,7 @@ class PackageCotizacionController extends Controller
                 $costo=$request->input('cost_s_serv');
                 $venta=$request->input('pv_s_serv');
                 $profit_nuevo=$venta-($costo_add+$costo);
-                
+
                 foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
                     foreach($paquete->paquete_precios as $paquete_precios){
                         $temp_hotel=PaquetePrecio::find($paquete_precios->id);
@@ -4040,8 +4041,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_s=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[1]>0){
                 $costo=$request->input('cost_d_serv');
@@ -4060,8 +4061,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_d=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[2]>0){
                 $costo=$request->input('cost_m_serv');
@@ -4080,8 +4081,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_m=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
             if($acomodacion_hotel[3]>0){
                 $costo=$request->input('cost_t_serv');
@@ -4099,8 +4100,8 @@ class PackageCotizacionController extends Controller
                             $temp_hotel->utilidad_t=$profit_nuevo;
                             $temp_hotel->save();
                         }
-                    }       
-                }  
+                    }
+                }
             }
         }
         elseif($con_sin_hotel=='sh'){
@@ -4111,7 +4112,7 @@ class PackageCotizacionController extends Controller
             foreach($cotizacion->paquete_cotizaciones->take(1) as $paquete){
                 $temp_hotel=PaqueteCotizaciones::find($paquete->id);
                 $temp_hotel->utilidad=$profit_nuevo;
-                $temp_hotel->save();                     
+                $temp_hotel->save();
             }
         }
         // return redirect()->route('show_step1_ser_path', [$id_client,$id_cotizacion,$id_paquete,$id]);
@@ -4129,7 +4130,7 @@ class PackageCotizacionController extends Controller
         $cotizacion->anulado=$anular;
         $cotizacion->anulado_fecha=$hoy->toDateTimeString();
         $cotizacion->anulado_user=auth()->guard('admin')->user()->id;
-        
+
         if($cotizacion->save()){
             // if($anular=='0'){
                 $usuario = auth()->guard('admin')->user();
@@ -4159,7 +4160,7 @@ class PackageCotizacionController extends Controller
             return 0;
     }
     public function agregar_dia(Request $request){
-        
+
         // dd($request->all());
         $cotizacion_id = $request->input('cotizacion_id');
         $itinerarios_ = $request->input('itinerarios');
@@ -4261,7 +4262,7 @@ class PackageCotizacionController extends Controller
                                 ->get();
                             }
                         }
-                        
+
                         foreach($servicios_list->take(1) as $servi){
                             $st-=$p_servicio->precio;
                             $p_servicio1=ItinerarioServicios::FindOrFail($p_servicio->id);
@@ -4334,7 +4335,7 @@ class PackageCotizacionController extends Controller
         // if($paquete_precio_id!=0) {
         //     $paquetePrecio = PaquetePrecio::FindOrFail($paquete_precio_id);
         //     foreach ($itinerario_cotizaciones as $itinerario_cotizacion) {
-                
+
         //     }
         // }
 
@@ -4350,7 +4351,7 @@ class PackageCotizacionController extends Controller
         // $cotizacion->anulado=$anular;
         // $cotizacion->anulado_fecha=$hoy->toDateTimeString();
         // $cotizacion->anulado_user=auth()->guard('admin')->user()->id;
-        
+
         // if($cotizacion->save()){
         //     // if($anular=='0'){
         //         $usuario = auth()->guard('admin')->user();
@@ -4384,11 +4385,11 @@ class PackageCotizacionController extends Controller
 
     public function agregar_pago(Request $request){
         //-- Lisita de pagos exstentes
-        $fecha_pago_=$request->input('fecha_pago_');        
+        $fecha_pago_=$request->input('fecha_pago_');
         $forma_pago_=$request->input('forma_pago_');
         $tipo_forma_pago_=$request->input('tipo_forma_pago_');
         $nota_pago_=$request->input('nota_pago_');
-        $monto_pago_=$request->input('monto_pago_');        
+        $monto_pago_=$request->input('monto_pago_');
         $numero_operacion=$request->input('numero_operacion_');
         $estado_pago_=$request->input('estado_pago_');
         $pago_id_=$request->input('pago_id_');
@@ -4396,7 +4397,7 @@ class PackageCotizacionController extends Controller
         $paquete_id=$request->input('paquete_id');
         if(isset($pago_id_)){
             $pagos=PaquetePagoCliente::where('paquete_cotizaciones_id',$paquete_id)->get();
-                    
+
             // agregamos los nuevos pagos
             foreach($pagos as $key => $value){
                 if(in_array($value->id,$pago_id_)){
@@ -4405,7 +4406,7 @@ class PackageCotizacionController extends Controller
                     $tiempo_proceso=$forma_pago->tiempo_proceso;
                     $fecha_habilitada= Carbon::createFromFormat('Y-m-d',$fecha_pago_[$arreglo_pos[0]]);
                     $fecha_habilitada->addDays($tiempo_proceso);
-                    
+
                     $temp=PaquetePagoCliente::find($value->id);
                     $temp->fecha=$fecha_pago_[$arreglo_pos[0]];
                     $temp->forma_pago_id=$forma_pago_[$arreglo_pos[0]];
@@ -4425,7 +4426,7 @@ class PackageCotizacionController extends Controller
             }
         }
         // dd($request->all());
-        
+
         $fecha_pago=$request->input('fecha_pago');
         $forma_pago=$request->input('forma_pago');
         $tipo_forma_pago=$request->input('tipo_forma_pago');
@@ -4451,7 +4452,7 @@ class PackageCotizacionController extends Controller
             }
         }
 
-        
+
         return redirect()->back();
     }
     public function cambiar_hotel_reservas(Request $request)
@@ -4463,9 +4464,9 @@ class PackageCotizacionController extends Controller
         $txt_destino=$request->input('txt_destino');
         $destino=explode('_',$txt_destino);
         $temp_hotel=Hotel::where('localizacion',$destino[1])->where('estrellas',$estrellas)->get()->first();
-        
+
         // return response()->json(['mensaje'=>$temp_hotel->id]);
-        // $nombre='hotel_id_'.$estrellas[0];        
+        // $nombre='hotel_id_'.$estrellas[0];
         // $hotel_id=$request->input($nombre);
         $hotel=PrecioHotelReserva::findOrfail($precio_hotel_reserva_id);
         $hotel->estrellas=$estrellas[0];
@@ -4536,8 +4537,8 @@ class PackageCotizacionController extends Controller
         //                     $temp_hotel->utilidad_s=$profit_nuevo;
         //                     $temp_hotel->save();
         //                 }
-        //             }       
-        //         }  
+        //             }
+        //         }
         //     }
         //     if($acomodacion_hotel[1]>0){
         //         $costo=$request->input('cost_d_serv');
@@ -4555,8 +4556,8 @@ class PackageCotizacionController extends Controller
         //                     $temp_hotel->utilidad_d=$profit_nuevo;
         //                     $temp_hotel->save();
         //                 }
-        //             }       
-        //         }  
+        //             }
+        //         }
         //     }
         //     if($acomodacion_hotel[2]>0){
         //         $costo=$request->input('cost_m_serv');
@@ -4575,8 +4576,8 @@ class PackageCotizacionController extends Controller
         //                     $temp_hotel->utilidad_m=$profit_nuevo;
         //                     $temp_hotel->save();
         //                 }
-        //             }       
-        //         }  
+        //             }
+        //         }
         //     }
         //     if($acomodacion_hotel[3]>0){
         //         $costo=$request->input('cost_t_serv');
@@ -4595,8 +4596,8 @@ class PackageCotizacionController extends Controller
         //                     $temp_hotel->utilidad_t=$profit_nuevo;
         //                     $temp_hotel->save();
         //                 }
-        //             }       
-        //         }  
+        //             }
+        //         }
         //     }
         // }
         // $pqt_precio->delete();

@@ -145,7 +145,7 @@
                                                         <label for="txt_precio" class="font-weight-bold text-secondary">Provider</label>
                                                         <input type="text" class="form-control" id="txt_provider_{{$pos0}}" name="txt_provider_{{$pos0}}" placeholder="Provider" >
                                                     </div>
-                                                    <div class="col mt-1">
+                                                    <div class="col mt-1 d-none">
                                                         <button type="button" class="btn btn-primary mt-4" data-toggle="modal" data-target="#modal_new_provider" onclick="pasar_pos_provider('0')">
                                                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                                         </button>

@@ -768,7 +768,7 @@ Route::get('admin/current-quotes/plan/total/{id}', [
 ]);
 Route::post('admin/productos/lista', [
     'uses' => 'ServicesController@listarServicios_destino',
-    'as' => 'generar_codigo_plantilla_path',
+    'as' => 'generar_codigo_plantillaq_path',
 ]);
 Route::post('admin/hotel/delete', [
     'uses' => 'ServicesController@eliminar_servicio_hotel',
@@ -1482,10 +1482,10 @@ Route::post('admin/contabilidad/revisar/requerimientos/borrar-lista/uno', [
 //     'as' => 'contabilidad.borrar_file_programacion',
 // ]);
 
-//-- estado de pagos de un file 
-// Rutas para contabilidad, facturaciones 
+//-- estado de pagos de un file
+// Rutas para contabilidad, facturaciones
 Route::get('/admin/contabilidad/facturacion/{anio}/{mes}/{page}/{tipo_filtro}', [
-    'uses' => 'ContabilidadController@contabilidad_facturacion_path',  
+    'uses' => 'ContabilidadController@contabilidad_facturacion_path',
     'as' => 'contabilidad.facturacion.path',
 ]);
 Route::get('admin/contabilidad/facturacion/show/{id}/{anio}/{mes}/{pagina}/{filtro}', [

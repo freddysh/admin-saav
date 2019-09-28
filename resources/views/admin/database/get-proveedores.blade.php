@@ -4,7 +4,7 @@
             <div class="col-11">
                 <h2 class="">LISTADO DE PROVEEDORES</h2>
             </div>
-            <div class="col-1 text-right">
+            <div class="col-1 text-right d-none">
                 <div class="btn btn-group">
                     <button class="btn btn-danger">
                         <i class="fas fa-file-pdf"></i>
@@ -34,7 +34,7 @@
                         <th>Operaciones</th>
                         <th>Plazo</th>
                         <th>Opciones</th>
-                
+
                     </tr>
                     </thead>
                     <tbody>
@@ -51,7 +51,7 @@
                             <td>{{$provider->nombre_comercial}}</td>
                             <td>
                                 <b>Cel:</b>{{$provider->r_telefono}}<br>
-                
+
                                 <b>Email:</b><br>{{$provider->r_email}}
                             </td>
                             <td>
@@ -64,21 +64,25 @@
                             </td>
                             <td>{{$provider->plazo}} dias {{$provider->desci}}</td>
                             <td class="text-center">
-                                <a href="#!" class="puntero text-warning" onclick="mostrar_modal('{{ $provider->id }}','{{ $grupo }}')">
+                                <div class="btn btn-group">
+                                    <button class="btn btn-warning"  onclick="mostrar_modal('{{ $provider->id }}','{{ $grupo }}')"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger" onclick="eliminar_provider('{{$provider->id}}','{{$provider->razon_social}}')"><i class="fa fa-trash"></i></button>
+                                </div>
+                                <a href="#!" class="puntero text-warning d-none">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <div id="caja_modal_{{ $provider->id }}">
-                                </div>               
-                                <a href="!#" class="puntero text-danger" onclick="eliminar_provider('{{$provider->id}}','{{$provider->razon_social}}')">
+                                </div>
+                                <a href="!#" class="puntero text-danger d-none" >
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </a>
-                                
+
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
-    
+
     </div>
 </div>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -87,7 +91,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-    
+
 <script>
         $(document).ready( function () {
             // $('#example_tabla').DataTable({
