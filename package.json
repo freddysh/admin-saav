@@ -28,7 +28,7 @@
         "@lgaitan/pace-progress": "^1.0.7",
         "jquery-dropdown": "^1.0.0",
         "swiper": "^4.3.3",
-        "tinymce": "^5.0.3",
+        "tinymce": "^5.9.0",
         "toastr": "^2.1.4"
     }
 }
